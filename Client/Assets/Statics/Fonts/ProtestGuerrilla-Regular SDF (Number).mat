@@ -11,7 +11,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - BEVEL_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -36,7 +37,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 3418744104433536750, guid: 9a7f187f335714e44883b0bdb05e20a4, type: 2}
+        m_Texture: {fileID: -2708864865263348173, guid: 9a7f187f335714e44883b0bdb05e20a4, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineTex:
@@ -56,26 +57,26 @@ Material:
     - _ColorMask: 15
     - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: 0.21
+    - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlowInner: 0.05
     - _GlowOffset: 0
     - _GlowOuter: 0.05
     - _GlowPower: 0.75
-    - _GradientScale: 6
+    - _GradientScale: 11
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.492
+    - _OutlineWidth: 0.161
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.8333333
-    - _ScaleRatioB: 0.50208336
-    - _ScaleRatioC: 0.50208336
+    - _ScaleRatioA: 0.90909094
+    - _ScaleRatioB: 0.7386364
+    - _ScaleRatioC: 0.7386364
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -86,8 +87,8 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _TextureHeight: 1024
-    - _TextureWidth: 1024
+    - _TextureHeight: 2048
+    - _TextureWidth: 2048
     - _UnderlayDilate: 0
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
