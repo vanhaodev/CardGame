@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Utils
@@ -24,21 +26,17 @@ namespace Utils
                 return;
             }
 
+            Init();
+        }
+
+        async void Init()
+        {
+            await Task.Yield();
             lastOrientation = Screen.orientation;
-            lastSafeArea = Screen.safeArea;
+            lastSafeArea = Screen.safeArea; 
             ApplySafeArea(lastSafeArea);
         }
-
-        void OnEnable()
-        {
-            // Unity event khi xoay màn hình hoặc window thay đổi
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += OnSceneChanged;
-        }
-
-        void OnDisable()
-        {
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= OnSceneChanged;
-        }
+        
 
         void OnApplicationFocus(bool hasFocus)
         {
@@ -50,24 +48,19 @@ namespace Utils
             if (!isPaused) CheckSafeArea();
         }
 
-        void OnSceneChanged(UnityEngine.SceneManagement.Scene current, UnityEngine.SceneManagement.Scene next)
-        {
-            CheckSafeArea();
-        }
+        // void Update() //just for cross if use both landcape and portrail
+        // {
+        //     // Chỉ check khi xoay màn hình
+        //     if (Screen.orientation != lastOrientation)
+        //     {
+        //         lastOrientation = Screen.orientation;
+        //         CheckSafeArea();
+        //     }
+        // }
 
-        void Update()
+        async void CheckSafeArea()
         {
-            // Chỉ check khi xoay màn hình
-            if (Screen.orientation != lastOrientation)
-            {
-                lastOrientation = Screen.orientation;
-                CheckSafeArea();
-            }
-        }
-
-        [Sirenix.OdinInspector.Button]
-        void CheckSafeArea()
-        {
+            await Task.Yield();
             Rect safeArea = Screen.safeArea;
             if (safeArea != lastSafeArea)
             {
@@ -76,8 +69,9 @@ namespace Utils
             }
         }
 
-        void ApplySafeArea(Rect safeArea)
+        async void ApplySafeArea(Rect safeArea)
         {
+            await Task.Yield();
             if (panel == null) return;
 
             Vector2 anchorMin = safeArea.position;
