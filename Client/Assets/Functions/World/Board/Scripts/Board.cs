@@ -11,6 +11,7 @@ namespace World.Board
         [SerializeField] GameObject _prefabCard;
         [SerializeField] List<BoardFaction> _objFactions;
         [SerializeField] private TextMeshProUGUI _txTurnRemainingTimeSecond; //turn will have time limit
+
         private void Start()
         {
             RefreshCardPosition();
@@ -29,7 +30,7 @@ namespace World.Board
             RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
             float screenHeight = canvasRect.rect.height;
             float screenWidth = canvasRect.rect.width;
-            
+
             float colSpacing = screenWidth / 3; // 3 cột, chia đều theo chiều ngang
             float rowSpacing = screenHeight / 6; // 3 hàng, chia đều theo chiều dọc
             float startX = -screenWidth / 2 + colSpacing / 2; // Căn giữa theo chiều ngang
@@ -41,11 +42,12 @@ namespace World.Board
                 if (pos.ObjCard != null)
                 {
                     RectTransform cardTransform = pos.ObjCard.GetComponent<RectTransform>();
-                    int row = pos.Index / 3;
-                    int col = pos.Index % 3;
+                    int row = pos.Index / 3; //2 rows
+                    int col = pos.Index % 3; //3 cols
                     float xPos = startX + (col * colSpacing);
                     float yPos = startY - (row * rowSpacing * (isBottom ? -1 : 1));
                     cardTransform.anchoredPosition = new Vector2(xPos, yPos);
+                    faction.SetRootPositions(pos.Index, new Vector2(xPos, yPos));
                 }
             }
         }
