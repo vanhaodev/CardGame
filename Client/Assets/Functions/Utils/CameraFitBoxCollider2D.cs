@@ -8,7 +8,7 @@ namespace Utils
     {
         public Camera targetCamera; // Camera cần điều chỉnh
         public BoxCollider2D targetCollider; // Collider cần bao trọn
-        public float padding = 0.1f; // Thêm một ít khoảng trống để không bị cắt
+        public float padding = -1f; // Thêm một ít khoảng trống để không bị cắt
 
         private void Start()
         {

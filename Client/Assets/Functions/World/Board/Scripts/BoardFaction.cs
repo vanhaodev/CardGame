@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,33 +9,33 @@ namespace World.Board
     public class BoardFaction : MonoBehaviour
     {
         [System.Serializable]
-        public struct Position
+        public class Position
         {
             public int Index; // Đổi từ byte sang int
-            public GameObject ObjCard;
+            public Vector2 OriginalPosition;
+            public GameObject Card;
         }
 
         [SerializeField] private Image _imageFrame; //skin just apply for owner faction
         [SerializeField] private List<Position> Positions;
-        /// <summary>
-        /// When card move to attack, lerp to index with root pos
-        /// </summary>
-        private Dictionary<int, Vector2> _cardRootPositions = new Dictionary<int, Vector2>();
 
-        public void SetRootPositions(int index, Vector2 position)
+        [Button]
+        private void InitOriginalPosition()
         {
-            _cardRootPositions[index] = position;
+            foreach (var p in Positions)
+            {
+                var rect = p.Card.GetComponent<RectTransform>();
+                p.OriginalPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y);
+            }
         }
-
-        public Vector2 GetRootPosition(int index)
+        [Button]
+        private void ResetToOriginalPosition()
         {
-            if (_cardRootPositions.TryGetValue(index, out var position)) return position;
-            return Vector2.zero;
-        }
-
-        public List<Position> GetPositions()
-        {
-            return Positions;
+            foreach (var p in Positions)
+            {
+                var rect = p.Card.GetComponent<RectTransform>();
+                rect.anchoredPosition = p.OriginalPosition;
+            }
         }
     }
 }
