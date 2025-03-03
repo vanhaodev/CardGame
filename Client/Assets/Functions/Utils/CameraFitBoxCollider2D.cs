@@ -1,14 +1,15 @@
-using System;
 using System.Threading.Tasks;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Utils
 {
     public class CameraFitBoxCollider2D : MonoBehaviour
     {
-        public Camera targetCamera; // Camera cần điều chỉnh
+        public Camera targetCamera; // Main Camera thường
+        public CinemachineCamera targetCamera2; // Cinemachine Camera (ưu tiên nếu có)
         public BoxCollider2D targetCollider; // Collider cần bao trọn
-        public float padding = -1f; // Thêm một ít khoảng trống để không bị cắt
+        public float padding = -1f; // Thêm khoảng trống tránh bị cắt
 
         private void Start()
         {
@@ -18,22 +19,35 @@ namespace Utils
         async void Init()
         {
             await Task.Yield();
-            if (targetCamera == null || targetCollider == null) return;
+            if (targetCollider == null) return;
 
-            // Lấy tọa độ các điểm biên của collider
+            // Kiểm tra xem có sử dụng Cinemachine không
+            bool useCinemachine = targetCamera2 != null;
+            float orthoSize;
+
+            // Lấy tọa độ biên của collider
             Bounds bounds = targetCollider.bounds;
-
-            // Chiều rộng và chiều cao của collider trong thế giới
             float colliderWidth = bounds.size.x;
             float colliderHeight = bounds.size.y;
 
-            // Tính aspect ratio của camera
+            // Aspect ratio của camera
             float screenRatio = (float)Screen.width / Screen.height;
             float targetSizeByHeight = colliderHeight / 2f + padding;
             float targetSizeByWidth = (colliderWidth / 2f + padding) / screenRatio;
 
             // Chọn kích thước lớn hơn để đảm bảo bao trọn
-            targetCamera.orthographicSize = Mathf.Max(targetSizeByHeight, targetSizeByWidth);
+            orthoSize = Mathf.Max(targetSizeByHeight, targetSizeByWidth);
+
+            if (useCinemachine)
+            {
+                // Nếu dùng Cinemachine, chỉnh kích thước trên CinemachineCamera
+                targetCamera2.Lens.OrthographicSize = orthoSize;
+            }
+            else if (targetCamera != null)
+            {
+                // Nếu không dùng Cinemachine, chỉnh trực tiếp trên Main Camera
+                targetCamera.orthographicSize = orthoSize;
+            }
         }
     }
 }

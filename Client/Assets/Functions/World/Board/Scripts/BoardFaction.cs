@@ -8,17 +8,13 @@ namespace World.Board
 {
     public class BoardFaction : MonoBehaviour
     {
-        [System.Serializable]
-        public class Position
-        {
-            public int Index; // Đổi từ byte sang int
-            public Vector2 OriginalPosition;
-            public GameObject Card;
-        }
-
         [SerializeField] private Image _imageFrame; //skin just apply for owner faction
-        [SerializeField] private List<Position> Positions;
+        [SerializeField] private List<BoardFactionPosition> Positions;
 
+        public BoardFactionPosition GetPosition(int index)
+        {
+            return Positions[index-1];
+        }
         [Button]
         private void InitOriginalPosition()
         {
