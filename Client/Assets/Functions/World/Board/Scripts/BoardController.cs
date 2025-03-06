@@ -12,7 +12,14 @@ namespace World.Board
     public class BoardController : MonoBehaviour
     {
         [SerializeField] Board _board;
+        /// <summary>
+        /// the actor slibing index need to highest in canvas
+        /// </summary>
         [SerializeField] private Transform _cardActingContainer;
+        /// <summary>
+        /// the actor slibing index need to highest in canvas but under actor
+        /// </summary>
+        [SerializeField] private Transform _cardTargetContainer;
         [SerializeField] CinemachineCameraShake _cameraShake;
 
         [Button]
@@ -42,18 +49,21 @@ namespace World.Board
             var actorFaction = _board.GetFaction(testAction.ActorFaction);
             var actor = actorFaction.GetPosition(testAction.ActorIndex);
             var targetFaction = _board.GetFaction(testAction.ActorFaction == 1 ? 2 : 1);
-            var originalContainer = actor.Card.transform.parent;
+            var originalActorContainer = actor.Card.transform.parent;
+          
             Vector3 originalPosition = actor.Card.transform.position; // Lưu vị trí gốc
 
             // Chuyển card vào container hành động mà không thay đổi scale/rotation
             actor.Card.transform.SetParent(_cardActingContainer, false);
+          
             actor.Card.ShowVital(false);
             foreach (var target in testAction.TargetIndex)
             {
                 var targetCard = targetFaction.GetPosition(target).Card.transform;
                 Vector3 targetPosition = targetCard.position;
                 Vector3 actorPosition = actor.Card.transform.position;
-
+                var originalTargetContainer = targetCard.parent;
+                targetCard.transform.SetParent(_cardTargetContainer, false);
                 // Nếu actor ở trên target thì +1 Y, nếu ở dưới thì -1 Y
                 float offsetY = actorPosition.y > targetPosition.y ? 1.0f : -1.0f;
                 Vector3 attackPosition = new Vector3(targetPosition.x, targetPosition.y + offsetY, targetPosition.z);
@@ -69,17 +79,16 @@ namespace World.Board
                     {
                         if (tween.ElapsedPercentage() >= 0.5f)
                         {
-                            Debug.Log(tween.ElapsedPercentage());
+                            // Debug.Log(tween.ElapsedPercentage());
                             //target ngã ra sau
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
                                 targetPosition.z);
-                            await targetCard.transform.DOMove(takeHitPos, 0.3f).SetEase(Ease.OutQuad).OnPlay(() =>
+                            await targetCard.transform.DOMove(takeHitPos, 0.3f).OnPlay(() =>
                             {
-                                Freeze(0.2f);
                                 _cameraShake.Shake(2f, 3f, 0.2f); // Attack shake
+                                // Freeze(0.2f);
                             }).AsyncWaitForCompletion();
-                            await targetCard.transform.DOMove(targetPosition, 0.3f).SetEase(Ease.OutQuad)
-                                .AsyncWaitForCompletion();
+                          
                             isActingDone = true;
                         }
                     });
@@ -88,16 +97,17 @@ namespace World.Board
 
                 // Xoay lại vị trí ban đầu
                 await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad).AsyncWaitForCompletion();
-
-                // Chờ 1 giây
                 await Task.Delay(200);
+                await targetCard.transform.DOMove(targetPosition, 0.3f)
+                    .AsyncWaitForCompletion();
+                targetCard.transform.SetParent(originalTargetContainer, false);
             }
 
             // Quay về vị trí gốc
             await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
 
             // Trả card về container cũ
-            actor.Card.transform.SetParent(originalContainer, false);
+            actor.Card.transform.SetParent(originalActorContainer, false);
             actor.Card.ShowVital();
         }
 
