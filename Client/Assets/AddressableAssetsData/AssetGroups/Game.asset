@@ -25,8 +25,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 902c8f94553060f4db49a3541cf802d7
+    m_Address: Popup/PopupCard.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b897d7ba218a8f842a80c8a7afd7c74d
-    m_Address: FloatingEffect/Prefabs/FloatingEffect.prefab
+    m_Address: FloatingEffect/FloatingEffectDamage.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

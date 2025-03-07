@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 1254380282938778965}
   - component: {fileID: 7210149038899179487}
   m_Layer: 5
-  m_Name: FloatingEffect
+  m_Name: FloatingEffect(Sample)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _txContent: {fileID: 2984551099144143513}
+  _canvasGroup: {fileID: 7210149038899179487}
   PrefabAddress: 
 --- !u!225 &7210149038899179487
 CanvasGroup:
@@ -197,6 +198,6 @@ CanvasGroup:
   m_GameObject: {fileID: 2440710707501007570}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

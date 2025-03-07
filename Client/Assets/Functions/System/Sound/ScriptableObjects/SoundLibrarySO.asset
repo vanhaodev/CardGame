@@ -19,3 +19,9 @@ MonoBehaviour:
   - Type: 2
     Id: 2
     AudioClip: {fileID: 8300000, guid: fa1b2571f6a55864290466389a17a5b1, type: 3}
+  - Type: 2
+    Id: 3
+    AudioClip: {fileID: 8300000, guid: db848221788907541b579e741e2347da, type: 3}
+  - Type: 2
+    Id: 4
+    AudioClip: {fileID: 8300000, guid: 8caaa63e20a08a44984ce227369eb712, type: 3}
