@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Game
   m_GUID: 34776c83da527e74ab4c5ecd9ac57adc
   m_SerializeEntries:
+  - m_GUID: 024420a60f6dd174281db0653cd1e195
+    m_Address: Card/Datas/CardTemplateData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 428815636188b7c49b61841608fb35e8
     m_Address: Cards
     m_ReadOnly: 0
