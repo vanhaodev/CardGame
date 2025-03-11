@@ -27,14 +27,14 @@ namespace World.Card
 
             try
             {
-                GlobalFunction.Instance.SoundManager.PlaySoundOneShot(3);
+                GlobalFunction.Instance.Get<SoundManager>().PlaySoundOneShot(3);
                 // Phóng to và thu nhỏ với hiệu ứng bubble
-                await _transform.DOScale(_realScale * 1.2f, 0.2f)  // Phóng to 1.2 lần kích thước thực tế trong 0.2s
+                await _transform.DOScale(_realScale * 1.2f, 0.2f) // Phóng to 1.2 lần kích thước thực tế trong 0.2s
                     // .SetEase(Ease.OutBack)  // Ease OutBack để tạo cảm giác bật lại
                     .AsyncWaitForCompletion();
 
                 // Thu nhỏ lại về kích thước ban đầu
-                await _transform.DOScale(_realScale, 0.2f)   // Thu nhỏ lại về kích thước ban đầu
+                await _transform.DOScale(_realScale, 0.2f) // Thu nhỏ lại về kích thước ban đầu
                     // .SetEase(Ease.InBack)  // Ease InBack để tạo cảm giác dừng lại
                     .AsyncWaitForCompletion();
             }

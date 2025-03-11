@@ -11,19 +11,23 @@ using Utils;
 
 namespace Popup
 {
-    public partial class PopupManager : MonoBehaviour
+    public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [Button]
         public async void ShowCard()
         {
             var pop = await GetPopup(nameof(PopupCard)) as PopupCard;
-            
+
             pop.gameObject.SetActive(true);
-            GlobalFunction.Instance.SoundManager.PlaySoundOneShot(4);
+            GlobalFunction.Instance.Get<SoundManager>().PlaySoundOneShot(4);
+        }
+
+        public UniTask Init()
+        {return UniTask.CompletedTask;
         }
     }
 
-    public partial class PopupManager : MonoBehaviour
+    public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [SerializeField]
         private SerializedDictionary<string /*Popup class name*/, string /*addressabel path*/> _addressablePathByType
@@ -67,7 +71,7 @@ namespace Popup
             }
 
             string popupTypeName = popup.GetType().Name; // Lấy tên class làm key
-            GlobalFunction.Instance.SoundManager.PlaySoundOneShot(4);
+            GlobalFunction.Instance.Get<SoundManager>().PlaySoundOneShot(4);
             if (_popupPools.TryGetValue(popupTypeName, out var pool))
             {
                 Debug.Log("Put");

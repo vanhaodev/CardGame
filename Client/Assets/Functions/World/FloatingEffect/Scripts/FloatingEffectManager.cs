@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Globals;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,7 +10,7 @@ using Utils;
 
 namespace FloatingEffect
 {
-    public partial class FloatingEffectManager : MonoBehaviour
+    public partial class FloatingEffectManager : MonoBehaviour, IGlobal
     {
         // Hàm hiển thị Damage
         [Button]
@@ -48,6 +49,11 @@ namespace FloatingEffect
                 // Trả hiệu ứng về pool sau khi kết thúc để tái sử dụng
                 ReleaseEffect(effect); // Nếu bạn sử dụng hệ thống pool để quản lý lại đối tượng này
             });
+        }
+
+        public UniTask Init()
+        {
+            return UniTask.CompletedTask;  
         }
     }
 

@@ -9,7 +9,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Globals
 {
-    public class GlobalData : SingletonMonoBehavior<GlobalData>
+    public class GlobalData : GlobalBase<GlobalData>
     {
 
     }

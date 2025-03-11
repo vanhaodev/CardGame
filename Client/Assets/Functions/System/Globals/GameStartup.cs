@@ -24,7 +24,7 @@ namespace Globals
 
             await InitFunction();
             LoadLocalSaveData();
-            GlobalFunction.Instance.SoundManager.PlaySoundLoop(1, 1);
+            GlobalFunction.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
 
             ConnectNetwork();
         }
@@ -43,9 +43,9 @@ namespace Globals
             // GlobalTemplate.Instance.Load(save.Load<SaveTemplateModel>().Template);
             //set volume
             var sound = save.Load<SaveSettingSoundModel>();
-            GlobalFunction.Instance.SoundManager.SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
-            GlobalFunction.Instance.SoundManager.SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
-            GlobalFunction.Instance.SoundManager.SetVolumeAll(SoundType.Effect, sound.EffectVolume);
+            GlobalFunction.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
+            GlobalFunction.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
+            GlobalFunction.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Effect, sound.EffectVolume);
         }
 
         /// <summary>

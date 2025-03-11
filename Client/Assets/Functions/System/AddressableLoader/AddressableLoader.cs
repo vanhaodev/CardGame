@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using Globals;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class AddressableLoader : MonoBehaviour
+public class AddressableLoader : MonoBehaviour, IGlobal
 {
     private Dictionary<int, AsyncOperationHandle> _loadedAssets = new Dictionary<int, AsyncOperationHandle>();
 
@@ -130,5 +132,10 @@ public class AddressableLoader : MonoBehaviour
             Addressables.Release(handle);
         }
         _loadedAssets.Clear();
+    }
+
+    public UniTask Init()
+    {
+        return UniTask.CompletedTask;
     }
 }

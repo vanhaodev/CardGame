@@ -7,8 +7,6 @@ namespace World.Card
     public class CardTemplateModel
     {
         public ushort Id;
-        public string Name;
-        public string History;
         public List<AttributeModel> Attributes;
     }
 }

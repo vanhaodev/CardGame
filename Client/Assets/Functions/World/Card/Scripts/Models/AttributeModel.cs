@@ -1,5 +1,8 @@
-﻿namespace World.Card
+﻿using System;
+
+namespace World.Card
 {
+    [Serializable]
     public class AttributeModel
     {
         public AttributeType Type;

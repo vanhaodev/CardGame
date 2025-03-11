@@ -9,7 +9,7 @@ namespace Popup
         {
             Debug.Log("Close");
      
-            GlobalFunction.Instance.PopupManager.ClosePopup(this);
+            GlobalFunction.Instance.Get<PopupManager>().ClosePopup(this);
         }
     }
 }

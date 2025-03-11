@@ -4,7 +4,7 @@ using Utils;
 
 namespace Globals
 {
-    public class GlobalCanvas : SingletonMonoBehavior<GlobalCanvas>
+    public class GlobalCanvas  : GlobalBase<GlobalCanvas>
     {
     }
 }

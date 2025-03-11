@@ -1,14 +1,28 @@
+using System;
 using Globals;
+using Popup;
 using UnityEngine;
 using UnityEngine.UI;
+using World.Board;
+using Random = UnityEngine.Random;
 
 namespace World.Card
 {
     public class Card : MonoBehaviour
     {
+        [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
         [SerializeField] private CardVital _vital;
+
+        private async void Start()
+        {
+            //test
+            _cardModel.TemplateId = (ushort)Random.Range(1, 3);
+            //
+            var template = await GlobalTemplate.Instance.Get<CardLoader>().GetCardTemplate(_cardModel.TemplateId);
+            _spriteCharacter.sprite = template.StarSkins[0];
+        }
 
         public void ShowVital(bool isShow = true)
         {
@@ -21,12 +35,12 @@ namespace World.Card
         /// </summary>
         public void OnTouch()
         {
-            if (GlobalFunction.Instance.BoardCommander.IsSelectingTarget())
+            if (GlobalFunction.Instance.Get<BoardCommander>().IsSelectingTarget())
             {
                 
                 return;
             }
-            GlobalFunction.Instance.PopupManager.ShowCard();
+            GlobalFunction.Instance.Get<PopupManager>().ShowCard();
         }
     }
 }

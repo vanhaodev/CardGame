@@ -15,11 +15,6 @@ MonoBehaviour:
   m_GroupName: Game
   m_GUID: 34776c83da527e74ab4c5ecd9ac57adc
   m_SerializeEntries:
-  - m_GUID: 024420a60f6dd174281db0653cd1e195
-    m_Address: Card/Datas/CardTemplateData.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 428815636188b7c49b61841608fb35e8
     m_Address: Cards
     m_ReadOnly: 0
@@ -37,6 +32,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b897d7ba218a8f842a80c8a7afd7c74d
     m_Address: FloatingEffect/FloatingEffectDamage.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c171fb3d24e59384687b540e874fad6f
+    m_Address: Card/Templates
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

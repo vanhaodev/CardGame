@@ -7,11 +7,8 @@ using UnityEngine;
 
 namespace Globals
 {
-    public class GlobalTemplate : SingletonMonoBehavior<GlobalTemplate>
+    public class GlobalTemplate  : GlobalBase<GlobalTemplate>
     {
-        public async UniTask Init()
-        {
 
-        }
     }
 }
