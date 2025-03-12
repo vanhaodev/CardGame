@@ -1,28 +1,23 @@
 ﻿
 using UnityEngine;
-[System.Serializable]
-public class SaveModel
-{
-    /// <summary>
-    /// The name of data type
-    /// </summary>
-    public string DataName { get; protected set; }
 
-    public SaveModel()
-    {
-        DataName = GetType().Name;
-    }
-    public virtual void SetDefault() { }
-}
-[System.Serializable]
-public class SaveLoginModel : SaveModel
+namespace Save
 {
-    public string UserName;
-    public string Password;
-    public override void SetDefault()
+    [System.Serializable]
+    public class SaveModel
     {
-        base.SetDefault();
-        UserName = "";
-        Password = "";
+        /// <summary>
+        /// The name of data type
+        /// </summary>
+        public string DataName { get; protected set; }
+
+        public SaveModel()
+        {
+            DataName = GetType().Name;
+        }
+
+        public virtual void SetDefault()
+        {
+        }
     }
 }

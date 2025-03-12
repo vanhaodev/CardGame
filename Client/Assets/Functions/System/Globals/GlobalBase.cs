@@ -9,7 +9,13 @@ namespace Globals
 {
     public abstract class GlobalBase<T> : SingletonMonoBehavior<T> where T : MonoBehaviour
     {
+        /// <summary>
+        /// Just create gameobject child and add compnent => Global will create instance
+        /// </summary>
         private Dictionary<Type, IGlobal> _instances = new();
+        /// <summary>
+        /// If compnent want to singleton in other gameobject, just drag ref to _outers
+        /// </summary>
         [SerializeField] List<MonoBehaviour> _outers;
 
         protected override void Awake()

@@ -14,6 +14,7 @@ namespace World.Card
     [CreateAssetMenu(fileName = "CardTemplateListSO", menuName = "World/Card/CardTemplateListSO")]
     public class CardTemplateListSO : ScriptableObject
     {
+        
         public SerializedDictionary<ushort, AssetReferenceT<CardTemplateSO>> CardTemplateRefs; // ID → Addressables Reference
 
 #if UNITY_EDITOR

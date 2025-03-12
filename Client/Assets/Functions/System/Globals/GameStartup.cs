@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Save;
 using UnityEngine;
 using Utils;
+using World.Player.Character;
 
 namespace Globals
 {
@@ -19,51 +21,34 @@ namespace Globals
         private async void StartupLocal()
         {
             await UniTask.WaitUntil(() =>
-                GlobalConfig.Instance != null && GlobalTemplate.Instance != null && GlobalFunction.Instance != null &&
-                GlobalCanvas.Instance != null);
+                Global.Instance != null);
 
             await InitFunction();
             LoadLocalSaveData();
-            GlobalFunction.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
-
-            ConnectNetwork();
+            Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
+            
         }
 
         private async UniTask InitFunction()
         {
-            await GlobalConfig.Instance.Init();
-            await GlobalTemplate.Instance.Init();
-            await GlobalFunction.Instance.Init();
+            await Global.Instance.Init();
+            await Global.Instance.Init();
         }
 
         private void LoadLocalSaveData()
         {
             var save = new SaveManager();
-            // GlobalConfig.Instance.Load(save.Load<SaveConfigModel>().Config);
-            // GlobalTemplate.Instance.Load(save.Load<SaveTemplateModel>().Template);
             //set volume
             var sound = save.Load<SaveSettingSoundModel>();
-            GlobalFunction.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
-            GlobalFunction.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
-            GlobalFunction.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Effect, sound.EffectVolume);
+            Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
+            Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
+            Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Effect, sound.EffectVolume);
+            
+            //set playerdata
+            var playerData = save.Load<SavePlayerModel>();
+            Global.Instance.Get<CharacterData>().CharacterModel = playerData.CharacterModel;
         }
-
-        /// <summary>
-        /// Check network and connect
-        /// </summary>
-        private async void ConnectNetwork()
-        {
-        }
-
-        private void CheckVersion()
-        {
-        }
-
-        public void HandleVersion()
-        {
-            FinishStartup();
-        }
-
+        
         public void FinishStartup()
         {
             //show the ui

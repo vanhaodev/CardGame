@@ -81,13 +81,13 @@ namespace World.Board
                     // Xoay thẻ bài như động tác chém (giả sử xoay 70 độ)
                     tween = actor.Card.transform.DORotate(new Vector3(0, 0, offsetY < 0 ? 80 : -80), 0.2f)
                         .SetEase(Ease.InQuad).OnPlay(
-                            () => { GlobalFunction.Instance.Get<SoundManager>().PlaySoundOneShot(2); }).OnUpdate(async () =>
+                            () => { Global.Instance.Get<SoundManager>().PlaySoundOneShot(2); }).OnUpdate(async () =>
                         {
                             if (tween.ElapsedPercentage() >= 0.5f)
                             {
                                 if (isShowFloatingEffect == false)
                                 {
-                                    GlobalFunction.Instance.Get<FloatingEffectManager>().ShowDamage(Random.Range(0, 1000000),
+                                    Global.Instance.Get<FloatingEffectManager>().ShowDamage(Random.Range(0, 1000000),
                                         targetPosition);
                                     isShowFloatingEffect = true;
                                 }

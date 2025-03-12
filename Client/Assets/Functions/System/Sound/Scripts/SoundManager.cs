@@ -62,7 +62,7 @@ public class SoundManager : MonoBehaviour, IGlobal
         {
             //Debug.LogError("_soundLibrarySO = await");
             // Sử dụng AddressableLoader để tải ScriptableObject
-            _soundLibrarySO = await GlobalFunction.Instance.Get<AddressableLoader>().LoadAssetAsync<SoundLibrarySO>("SoundLibrarySO.asset");
+            _soundLibrarySO = await Global.Instance.Get<AddressableLoader>().LoadAssetAsync<SoundLibrarySO>("SoundLibrarySO.asset");
             _soundLibrarySO.Init();
         }
     }

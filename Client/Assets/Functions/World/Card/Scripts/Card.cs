@@ -44,7 +44,7 @@ namespace World.Card
 
         private async void Init()
         {
-            var template = await GlobalTemplate.Instance.Get<CardLoader>().GetCardTemplate(_cardModel.TemplateId);
+            var template = await Global.Instance.Get<CardLoader>().GetCardTemplate(_cardModel.TemplateId);
             _spriteCharacter.sprite = template.StarSkins[0];
         }
         public void ShowVital(bool isShow = true)
@@ -58,12 +58,12 @@ namespace World.Card
         /// </summary>
         public void OnTouch()
         {
-            if (GlobalFunction.Instance.Get<BoardCommander>().IsSelectingTarget())
+            if (Global.Instance.Get<BoardCommander>().IsSelectingTarget())
             {
                 
                 return;
             }
-            GlobalFunction.Instance.Get<PopupManager>().ShowCard(_cardModel);
+            Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
         }
     }
 }
