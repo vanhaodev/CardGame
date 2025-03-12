@@ -8,22 +8,28 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Utils;
+using World.Card;
 
 namespace Popup
 {
-    public partial class PopupManager : MonoBehaviour
+    public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [Button]
-        public async void ShowCard()
+        public async void ShowCard(CardModel cardModel)
         {
             var pop = await GetPopup(nameof(PopupCard)) as PopupCard;
-            
             pop.gameObject.SetActive(true);
-            GlobalFunction.Instance.SoundManager.PlaySoundOneShot(4);
+            pop.Setup(cardModel);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot(4);
+        }
+
+        public UniTask Init()
+        {
+            return UniTask.CompletedTask;
         }
     }
 
-    public partial class PopupManager : MonoBehaviour
+    public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [SerializeField]
         private SerializedDictionary<string /*Popup class name*/, string /*addressabel path*/> _addressablePathByType
@@ -63,11 +69,10 @@ namespace Popup
             {
                 Debug.Log("NULL");
                 throw new Exception(nameof(popup));
-                return;
             }
 
             string popupTypeName = popup.GetType().Name; // Lấy tên class làm key
-            GlobalFunction.Instance.SoundManager.PlaySoundOneShot(4);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot(4);
             if (_popupPools.TryGetValue(popupTypeName, out var pool))
             {
                 Debug.Log("Put");

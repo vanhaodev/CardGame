@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5682e2badbf74778b16ec5782ba7b2ba, type: 3}
+  m_Name: example
+  m_EditorClassIdentifier: 
+  Content: "{\r\n  \"$type\": \"World.Player.Inventory.EquipmentItemTemplateModel\",\r\n 
+    \"Id\": 3,\r\n  \"ItemType\": \"Weapon\",\r\n  \"QualityType\": \"Epic\",\r\n 
+    \"Name\": \"Flame Sword\",\r\n  \"LifeSpanMinute\": null,\r\n  \"Sell\": {\r\n   
+    \"Currencies\": [\r\n      {\r\n        \"Type\": \"Gold\",\r\n        \"MinAmount\":
+    500,\r\n        \"MaxAmount\": 600\r\n      }\r\n    ],\r\n    \"Exps\": [\r\n     
+    {\r\n        \"Type\": \"CombatExp\",\r\n        \"MinAmount\": 100,\r\n       
+    \"MaxAmount\": 200\r\n      }\r\n    ],\r\n    \"Items\": []\r\n  },\r\n  \"Description\":
+    \"A sword imbued with fire magic.\",\r\n  \"Requirement\": {\r\n    \"Levels\":
+    [\r\n      {\r\n        \"Type\": \"CombatLevel\",\r\n        \"Min\": 10,\r\n       
+    \"Max\": 20\r\n      }\r\n    ],\r\n    \"Currency\": {\r\n      \"Type\": \"Gold\",\r\n     
+    \"Amount\": 1000\r\n    },\r\n    \"Items\": [\r\n      {\r\n        \"ItemTemplateId\":
+    1,\r\n        \"Quality\": \"Good\",\r\n        \"Quantity\": 5\r\n      }\r\n   
+    ],\r\n    \"CompletedQuestIds\": [101, 102]\r\n  },\r\n  \"MaxDurability\": 100,\r\n 
+    \"AttributeTemplate\": {\r\n    \"AttributeLines\": {\r\n      \"Epic\": [\r\n       
+    {\r\n          \"Type\": \"AttackPower\",\r\n          \"MinValue\": 20,\r\n         
+    \"MaxValue\": 30,\r\n          \"MinPercentValue\": 5,\r\n          \"MaxPercentValue\":
+    10\r\n        }\r\n      ]\r\n    },\r\n    \"RandomAttributeLines\": {\r\n     
+    \"Epic\": [\r\n        {\r\n          \"Attribute\": {\r\n            \"Type\":
+    \"FireBonus\",\r\n            \"MinValue\": 5,\r\n            \"MaxValue\": 10,\r\n           
+    \"MinPercentValue\": 2,\r\n            \"MaxPercentValue\": 5\r\n          },\r\n         
+    \"Chance\": 2000\r\n        }\r\n      ]\r\n    },\r\n    \"UpgradeAttributeLines\":
+    {\r\n      \"Epic\": {\r\n        \"1\": [\r\n          {\r\n            \"Attribute\":
+    {\r\n              \"Type\": \"AttackPower\",\r\n              \"MinValue\":
+    25,\r\n              \"MaxValue\": 35,\r\n              \"MinPercentValue\":
+    6,\r\n              \"MaxPercentValue\": 12\r\n            },\r\n           
+    \"Chance\": 3000\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}\r\n"

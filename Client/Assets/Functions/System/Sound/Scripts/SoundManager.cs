@@ -9,7 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D.IK;
 using Utils;
-public class SoundManager : MonoBehaviour
+public class SoundManager : MonoBehaviour, IGlobal
 {
     //spawner
     [SerializeField] private SoundPlayer soundPlayerPrefab;
@@ -62,7 +62,7 @@ public class SoundManager : MonoBehaviour
         {
             //Debug.LogError("_soundLibrarySO = await");
             // Sử dụng AddressableLoader để tải ScriptableObject
-            _soundLibrarySO = await GlobalFunction.Instance.AddressableLoader.LoadAssetAsync<SoundLibrarySO>("SoundLibrarySO.asset");
+            _soundLibrarySO = await Global.Instance.Get<AddressableLoader>().LoadAssetAsync<SoundLibrarySO>("SoundLibrarySO.asset");
             _soundLibrarySO.Init();
         }
     }
