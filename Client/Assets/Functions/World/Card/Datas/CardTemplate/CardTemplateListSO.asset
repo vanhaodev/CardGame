@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardTemplateRefs:
     _serializedList:
-    - Key: 2
+    - Key: 1
       Value:
-        m_AssetGUID: 73c0bf546b48b3446bb0f5c145dd46f2
+        m_AssetGUID: 4ba847ea163c8d14d913359d2321a2d7
         m_SubObjectName: 
         m_SubObjectGUID: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
-    - Key: 1
+    - Key: 2
       Value:
-        m_AssetGUID: 4ba847ea163c8d14d913359d2321a2d7
+        m_AssetGUID: 73c0bf546b48b3446bb0f5c145dd46f2
         m_SubObjectName: 
         m_SubObjectGUID: 
         m_SubObjectType: 

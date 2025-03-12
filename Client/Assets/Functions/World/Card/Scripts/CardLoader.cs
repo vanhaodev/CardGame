@@ -19,6 +19,7 @@ namespace World.Card
 
         public async UniTask<CardTemplateSO> GetCardTemplate(ushort id)
         {
+            Debug.Log($"Loading card template: {id}");
             // Nếu đã load, trả về ngay
             if (_loadedCards.TryGetValue(id, out var card))
             {

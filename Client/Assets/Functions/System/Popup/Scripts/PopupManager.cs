@@ -8,22 +8,24 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Utils;
+using World.Card;
 
 namespace Popup
 {
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [Button]
-        public async void ShowCard()
+        public async void ShowCard(CardModel cardModel)
         {
             var pop = await GetPopup(nameof(PopupCard)) as PopupCard;
-
             pop.gameObject.SetActive(true);
+            pop.Setup(cardModel);
             GlobalFunction.Instance.Get<SoundManager>().PlaySoundOneShot(4);
         }
 
         public UniTask Init()
-        {return UniTask.CompletedTask;
+        {
+            return UniTask.CompletedTask;
         }
     }
 

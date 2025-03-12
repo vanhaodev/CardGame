@@ -10,20 +10,43 @@ namespace World.Card
 {
     public class Card : MonoBehaviour
     {
+
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
         [SerializeField] private CardVital _vital;
 
-        private async void Start()
+        public CardModel CardModel
+        {
+            get => _cardModel;
+            set
+            {
+                _cardModel = value;
+                Init();
+            }
+        }
+        
+        private void Start()
         {
             //test
             _cardModel.TemplateId = (ushort)Random.Range(1, 3);
+            foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
+            {
+                _cardModel.CalculatedAttributes.Add(new AttributeModel
+                {
+                    Type = type,
+                    Value = Random.Range(1, 500)
+                });
+            }
             //
+            Init();
+        }
+
+        private async void Init()
+        {
             var template = await GlobalTemplate.Instance.Get<CardLoader>().GetCardTemplate(_cardModel.TemplateId);
             _spriteCharacter.sprite = template.StarSkins[0];
         }
-
         public void ShowVital(bool isShow = true)
         {
             _vital.gameObject.SetActive(isShow);
@@ -40,7 +63,7 @@ namespace World.Card
                 
                 return;
             }
-            GlobalFunction.Instance.Get<PopupManager>().ShowCard();
+            GlobalFunction.Instance.Get<PopupManager>().ShowCard(_cardModel);
         }
     }
 }
