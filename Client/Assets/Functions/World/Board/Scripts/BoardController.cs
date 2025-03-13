@@ -49,7 +49,7 @@ namespace World.Board
                     Random.Range(1, 7)
                 }
             };
-            int hitCount = 5;
+            int hitCount = 1;
             var actorFaction = _board.GetFaction(testAction.ActorFaction);
             var actor = actorFaction.GetPosition(testAction.ActorIndex);
             var targetFaction = _board.GetFaction(testAction.ActorFaction == 1 ? 2 : 1);
@@ -88,6 +88,8 @@ namespace World.Board
                                 if (isShowFloatingEffect == false)
                                 {
                                     Global.Instance.Get<FloatingEffectManager>().ShowDamage(Random.Range(0, 1000000),
+                                        targetPosition);
+                                    Global.Instance.Get<FloatingEffectManager>().ShowSlash(
                                         targetPosition);
                                     isShowFloatingEffect = true;
                                 }

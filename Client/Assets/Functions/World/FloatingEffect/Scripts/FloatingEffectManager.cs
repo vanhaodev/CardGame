@@ -50,7 +50,19 @@ namespace FloatingEffect
                 ReleaseEffect(effect); // Nếu bạn sử dụng hệ thống pool để quản lý lại đối tượng này
             });
         }
+ [Button]
+        public async void ShowSlash(Vector3 position)
+        {
+            string prefabAddress = "FloatingEffect/FloatingEffectSlash.prefab"; // Địa chỉ prefab cho Damage
 
+            // Lấy hiệu ứng từ pool hoặc tạo mới nếu không có
+            FloatingEffectParticle effect = await GetEffectFromPoolOrCreate(prefabAddress) as FloatingEffectParticle;
+            
+            Transform effectTransform = effect.transform;
+            effectTransform.position = new Vector3(position.x, position.y, position.z);
+            await effect.Play();
+            ReleaseEffect(effect);
+        }
         public UniTask Init()
         {
             return UniTask.CompletedTask;  

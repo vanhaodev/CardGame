@@ -10,11 +10,11 @@ namespace World.Card
 {
     public class Card : MonoBehaviour
     {
-
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
         [SerializeField] private CardVital _vital;
+        [SerializeField] CardEffect _effect;
 
         public CardModel CardModel
         {
@@ -25,10 +25,12 @@ namespace World.Card
                 Init();
             }
         }
+
         private async void Init()
         {
             _spriteCharacter.sprite = await Global.Instance.Get<GameConfig.GameConfig>().GetCardSprite(_cardModel);
         }
+
         public void ShowVital(bool isShow = true)
         {
             _vital.gameObject.SetActive(isShow);
@@ -42,10 +44,16 @@ namespace World.Card
         {
             if (Global.Instance.Get<BoardCommander>().IsSelectingTarget())
             {
-                
                 return;
             }
+
+            _effect.PlayTouchEffect();
             Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
+        }
+
+        public void OnDie()
+        {
+            _effect.PlayDie();
         }
     }
 }

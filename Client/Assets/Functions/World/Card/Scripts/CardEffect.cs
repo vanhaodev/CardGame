@@ -44,5 +44,10 @@ namespace World.Card
                 Debug.Log("Bubble effect cancelled");
             }
         }
+
+        public async void PlayDie()
+        {
+            
+        }
     }
 }
