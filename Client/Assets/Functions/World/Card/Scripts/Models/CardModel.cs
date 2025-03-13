@@ -18,5 +18,6 @@ namespace World.Card
         /// Calculated = equipments + base
         /// </summary>
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
+        
     } 
 }

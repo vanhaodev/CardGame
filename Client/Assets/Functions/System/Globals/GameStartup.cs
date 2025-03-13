@@ -32,7 +32,6 @@ namespace Globals
         private async UniTask InitFunction()
         {
             await Global.Instance.Init();
-            await Global.Instance.Init();
         }
 
         private void LoadLocalSaveData()

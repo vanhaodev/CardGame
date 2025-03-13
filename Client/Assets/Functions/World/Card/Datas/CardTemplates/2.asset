@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5682e2badbf74778b16ec5782ba7b2ba, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: 
+  Content: "{\r\n  \"Id\": 1,\r\n  \"Name\": \"L\xEA H\u1EEFu Tr\xE1c\",\r\n  \"History\":
+    \"L\xEA H\u1EEFu Tr\xE1c (1724\u20131791), hi\u1EC7u H\u1EA3i Th\u01B0\u1EE3ng
+    L\xE3n \xD4ng, l\xE0 danh y n\u1ED5i ti\u1EBFng th\u1EDDi L\xEA-Tr\u1ECBnh, \u0111\u01B0\u1EE3c
+    xem l\xE0 \xF4ng t\u1ED5 c\u1EE7a y h\u1ECDc c\u1ED5 truy\u1EC1n Vi\u1EC7t Nam.
+    \xD4ng sinh t\u1EA1i l\xE0ng Li\xEAu X\xE1, huy\u1EC7n \u0110\u01B0\u1EDDng H\xE0o
+    (nay thu\u1ED9c H\u01B0ng Y\xEAn), xu\u1EA5t th\xE2n trong m\u1ED9t gia \u0111\xECnh
+    quan l\u1EA1i.\\nBan \u0111\u1EA7u, \xF4ng theo nghi\u1EC7p v\xF5 nh\u01B0ng
+    v\u1EC1 sau t\u1EEB b\u1ECF \u0111\u1EC3 chuy\xEAn t\xE2m h\u1ECDc y. V\u1EDBi
+    tinh th\u1EA7n nghi\xEAn c\u1EE9u s\xE2u s\u1EAFc v\xE0 l\xF2ng nh\xE2n \xE1i,
+    \xF4ng \u0111\xE3 d\xE0nh c\u1EA3 \u0111\u1EDDi \u0111\u1EC3 ch\u1EEFa b\u1EC7nh
+    cho d\xE2n ngh\xE8o, ph\xE1t tri\u1EC3n y thu\u1EADt. \xD4ng \u0111\u1EC3 l\u1EA1i
+    b\u1ED9 s\xE1ch \\\"H\u1EA3i Th\u01B0\u1EE3ng y t\xF4ng t\xE2m l\u0129nh\\\"
+    g\u1ED3m 66 quy\u1EC3n, t\u1ED5ng h\u1EE3p ki\u1EBFn th\u1EE9c \u0110\xF4ng y
+    qu\xFD gi\xE1.\\nL\xEA H\u1EEFu Tr\xE1c t\u1EEBng \u0111\u01B0\u1EE3c tri\u1EC7u
+    v\xE0o cung ch\u1EEFa b\u1EC7nh cho th\u1EBF t\u1EED Tr\u1ECBnh C\xE1n, con ch\xFAa
+    Tr\u1ECBnh S\xE2m. \xD4ng nh\u1EADn ra th\u1EBF t\u1EED m\u1EAFc b\u1EC7nh do
+    cu\u1ED9c s\u1ED1ng xa hoa, kh\xF4ng v\u1EADn \u0111\u1ED9ng. D\xF9 bi\u1EBFt
+    ch\xFAa mu\u1ED1n gi\u1EEF con b\u1EB1ng m\u1ECDi gi\xE1, \xF4ng v\u1EABn k\xEA
+    \u0111\u01A1n theo l\u1EBD t\u1EF1 nhi\xEAn, tr\xE1nh \u0111\u1EC3 \u0111\u1EE9a
+    tr\u1EBB ch\u1ECBu \u0111au \u0111\u1EDBn v\u1EC1 sau.\",\r\n  \"Attributes\":
+    [\r\n    {\r\n      \"Type\": 0,\r\n      \"Value\": 100\r\n    },\r\n    {\r\n     
+    \"Type\": 1,\r\n      \"Value\": 50\r\n    }\r\n  ]\r\n}\r\n"

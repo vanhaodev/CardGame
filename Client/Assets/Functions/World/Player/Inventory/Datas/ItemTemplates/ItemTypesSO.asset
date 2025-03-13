@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5682e2badbf74778b16ec5782ba7b2ba, type: 3}
-  m_Name: ItemTypeSO
+  m_Name: ItemTypesSO
   m_EditorClassIdentifier: 
   Content: "[\r\n  {\r\n    \"Type\": 1,\r\n    \"GroupType\": 2,\r\n    \"Name\":
     \"Th\u1EF1c Ph\u1EA9m\"\r\n  },\r\n  {\r\n    \"Type\": 2,\r\n    \"GroupType\":

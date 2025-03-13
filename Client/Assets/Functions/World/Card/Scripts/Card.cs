@@ -25,27 +25,9 @@ namespace World.Card
                 Init();
             }
         }
-        
-        private void Start()
-        {
-            //test
-            _cardModel.TemplateId = (ushort)Random.Range(1, 3);
-            foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
-            {
-                _cardModel.CalculatedAttributes.Add(new AttributeModel
-                {
-                    Type = type,
-                    Value = Random.Range(1, 500)
-                });
-            }
-            //
-            Init();
-        }
-
         private async void Init()
         {
-            var template = await Global.Instance.Get<CardLoader>().GetCardTemplate(_cardModel.TemplateId);
-            _spriteCharacter.sprite = template.StarSkins[0];
+            _spriteCharacter.sprite = await Global.Instance.Get<GameConfig.GameConfig>().GetCardSprite(_cardModel);
         }
         public void ShowVital(bool isShow = true)
         {
