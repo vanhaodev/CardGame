@@ -9,6 +9,7 @@ namespace World.Card
     public class CardEffect : MonoBehaviour
     {
         [SerializeField] private Transform _transform;
+        [SerializeField] CanvasGroup _canvasGroup;
         private Vector3 _realScale; // Lưu trữ kích thước thực tế của card
         private CancellationTokenSource _touchCancellation; // Cancellation riêng cho hiệu ứng touch
 
@@ -47,7 +48,7 @@ namespace World.Card
 
         public async void PlayDie()
         {
-            
+            await _canvasGroup.DOFade(0, 1f).AsyncWaitForCompletion();
         }
     }
 }

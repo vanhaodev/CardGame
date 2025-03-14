@@ -11,13 +11,11 @@ namespace Globals
     {
         [SerializeField] GameObject[] _objEnableAfterDone;
 
-        protected override void Awake()
+        public async UniTask InitGame()
         {
-            base.Awake();
             StartupLocal();
             FinishStartup();
         }
-
         private async void StartupLocal()
         {
             await UniTask.WaitUntil(() =>
@@ -34,11 +32,11 @@ namespace Globals
             await Global.Instance.Init();
         }
 
-        private void LoadLocalSaveData()
+        private async UniTask LoadLocalSaveData()
         {
             var save = new SaveManager();
             //set volume
-            var sound = save.Load<SaveSettingSoundModel>();
+            var sound = await save.Load<SaveSettingSoundModel>();
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Effect, sound.EffectVolume);
