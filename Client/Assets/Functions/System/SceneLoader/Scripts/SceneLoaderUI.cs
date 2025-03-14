@@ -34,21 +34,24 @@ namespace System.SceneLoader
             }
         }
 
-        public async UniTask SetProgress(float progress, CancellationToken token = default)
+        public void SetProgress(float targetProgress)
         {
-            _ctsProgress?.Cancel(); // Hủy animation cũ nếu có
+            _ctsProgress?.Cancel();
             _ctsProgress = new CancellationTokenSource();
+            var token = _ctsProgress.Token;
 
-            _txProgress.text = progress.ToString("0") + "%";
+            float currentProgress = _imageLoadingFill.fillAmount;
+            float duration = Mathf.Lerp(1f, 2f, currentProgress); // Gần 100% thì chậm lại
 
-            try
-            {
-                _imageLoadingFill.DOFillAmount(progress, 0.2f).ToUniTask(cancellationToken: _ctsProgress.Token);
-            }
-            catch 
-            {
-                
-            }
+            DOVirtual.Float(currentProgress, targetProgress, duration, value =>
+                {
+                    if (token.IsCancellationRequested) return;
+                    _imageLoadingFill.fillAmount = value;
+                    _txProgress.text = $"{Mathf.RoundToInt(value * 100)}%";
+                })
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnKill(() => _ctsProgress?.Cancel());
         }
 
         private void OnDestroy()

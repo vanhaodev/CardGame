@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Save;
@@ -10,29 +11,10 @@ namespace Globals
     public class GameStartup : SingletonMonoBehavior<GameStartup>
     {
         [SerializeField] GameObject[] _objEnableAfterDone;
-
-        public async UniTask InitGame()
-        {
-            StartupLocal();
-            FinishStartup();
-        }
-        private async void StartupLocal()
-        {
-            await UniTask.WaitUntil(() =>
-                Global.Instance != null);
-
-            await InitFunction();
-            LoadLocalSaveData();
-            Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
-            
-        }
-
-        private async UniTask InitFunction()
-        {
-            await Global.Instance.Init();
-        }
-
-        private async UniTask LoadLocalSaveData()
+        public async UniTask WaitGlobal() => await UniTask.WaitUntil(() =>
+            Global.Instance != null);
+        public async UniTask InitGlobal() => await Global.Instance.Init();
+        public async UniTask LoadSaveData()
         {
             var save = new SaveManager();
             //set volume
@@ -40,13 +22,12 @@ namespace Globals
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.Effect, sound.EffectVolume);
-            
+
             //set playerdata
-            var playerData = save.Load<SavePlayerModel>();
+            var playerData = await save.Load<SavePlayerModel>();
             Global.Instance.Get<CharacterData>().CharacterModel = playerData.CharacterModel;
         }
-        
-        public void FinishStartup()
+        public async UniTask FinishStartup()
         {
             //show the ui
             foreach (var obj in _objEnableAfterDone)
@@ -55,6 +36,7 @@ namespace Globals
             }
 
             Destroy(gameObject);
+            Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
         }
     }
 }
