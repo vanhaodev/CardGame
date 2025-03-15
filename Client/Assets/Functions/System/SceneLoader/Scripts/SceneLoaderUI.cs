@@ -23,6 +23,7 @@ namespace System.SceneLoader
             {
                 _imageLoadingFill.fillAmount = 0;
                 _txProgress.text = "0%";
+                gameObject.SetActive(true);
             }
 
             try
@@ -31,6 +32,11 @@ namespace System.SceneLoader
             }
             catch
             {
+            }
+
+            if (!isShow)
+            {
+                gameObject.SetActive(false);
             }
         }
 
