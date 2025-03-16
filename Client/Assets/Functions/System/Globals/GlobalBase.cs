@@ -13,14 +13,13 @@ namespace Globals
         /// Just create gameobject child and add compnent => Global will create instance
         /// </summary>
         private Dictionary<Type, IGlobal> _instances = new();
-        /// <summary>
-        /// If compnent want to singleton in other gameobject, just drag ref to _outers
-        /// </summary>
-        [SerializeField] List<MonoBehaviour> _outers;
 
-        protected override void Awake()
+        protected override void CustomAwake()
         {
-            base.Awake();
+            Debug.LogError("GlobalBase: Awake");
+            base.CustomAwake();
+            _instances = _instances.Where(pair => pair.Value != null)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             // Duyệt qua tất cả các component trong gameObject hiện tại
             foreach (var component in GetComponentsInChildren<MonoBehaviour>(true))
@@ -31,22 +30,36 @@ namespace Globals
                 }
             }
 
-            // Duyệt qua các MonoBehaviour trong _outers và thêm vào dictionary
-            foreach (var outer in _outers)
+            // Tìm tất cả GlobalNeeder trong scene
+            var needers = GameObject.FindObjectsByType<GlobalNeeder>(FindObjectsSortMode.None);
+            if (needers != null && needers.Length > 0) // Kiểm tra danh sách không rỗng
             {
-                if (outer != null && outer is IGlobal globalComponent) // Kiểm tra xem outer có thực thi IGlobal không
+                foreach (var needer in needers)
                 {
-                    _instances[outer.GetType()] = globalComponent; // Thêm vào dictionary
-                }
-                else
-                {
-                    // Log lỗi nếu không phải IGlobal
-                    Debug.LogError(
-                        $"❌ Component {outer.GetType()} không thực thi IGlobal và sẽ không được thêm vào dictionary.");
+                    var comps = needer.GetNeeders();
+                    if (comps == null || comps.Count == 0) continue; // Bỏ qua nếu không có component nào
+
+                    foreach (var comp in comps)
+                    {
+                        if (comp is IGlobal globalComponent)
+                        {
+                            var type = comp.GetType();
+                            if (!_instances.ContainsKey(type))
+                            {
+                                _instances[type] = globalComponent; // Thêm vào dictionary nếu chưa có
+                            }
+                        }
+                    }
                 }
             }
         }
 
+        public async UniTask WaitForInit<T>() where T : IGlobal
+        {
+            Debug.LogWarning("GlobalBase: WaitForInit");
+            await UniTask.WaitUntil(() => _instances.ContainsKey(typeof(T)));
+            Debug.LogWarning("GlobalBase: WaitForInit done");
+        }
 
         public TComponent Get<TComponent>() where TComponent : class, IGlobal
         {

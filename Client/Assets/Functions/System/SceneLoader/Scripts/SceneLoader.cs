@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Globals;
 using Sirenix.OdinInspector;
@@ -16,17 +17,12 @@ namespace System.SceneLoader
         [Button]
         public void Test()
         {
-            LoadScene(1, () => new List<Func<UniTask>>() // Chỉ tạo danh sách task sau khi scene load xong
-            {
-                () => GameStartup.Instance.WaitGlobal(),
-                () => UniTask.Delay(1000),
-                () => GameStartup.Instance.InitGlobal(),
-                () => UniTask.Delay(1000),
-                () => GameStartup.Instance.LoadSaveData(),
-                () => UniTask.Delay(1000),
-                () => GameStartup.Instance.FinishStartup(),
-                () => UniTask.Delay(1000),
-            });
+            LoadScene(1, () => 
+                new List<Func<UniTask>>()
+                {
+                    () => Global.Instance.WaitForInit<GameStartup>()
+                }.Concat(Global.Instance.Get<GameStartup>().GetTasks()).ToList()
+            );
         }
 
         public async UniTask LoadScene(int buildIndex, Func<List<Func<UniTask>>> loadingTaskProvider,

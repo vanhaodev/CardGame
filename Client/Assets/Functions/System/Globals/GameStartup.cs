@@ -8,13 +8,17 @@ using World.Player.Character;
 
 namespace Globals
 {
-    public class GameStartup : SingletonMonoBehavior<GameStartup>
+    public class GameStartup : StartupBase, IGlobal
     {
         [SerializeField] GameObject[] _objEnableAfterDone;
-        public async UniTask WaitGlobal() => await UniTask.WaitUntil(() =>
+
+        private async UniTask WaitGlobal() => await UniTask.WaitUntil(() =>
             Global.Instance != null);
-        public async UniTask InitGlobal() => await Global.Instance.Init();
-        public async UniTask LoadSaveData()
+
+        private async UniTask InitGlobal() => await Global.Instance.Init();
+        địt mẹ phải tách gamestart ra khỏi global vì gamestartup là cái xuất hiện đầu tiên nhé
+
+        private async UniTask LoadSaveData()
         {
             var save = new SaveManager();
             //set volume
@@ -27,7 +31,8 @@ namespace Globals
             var playerData = await save.Load<SavePlayerModel>();
             Global.Instance.Get<CharacterData>().CharacterModel = playerData.CharacterModel;
         }
-        public async UniTask FinishStartup()
+
+        private async UniTask FinishStartup()
         {
             //show the ui
             foreach (var obj in _objEnableAfterDone)
@@ -37,6 +42,14 @@ namespace Globals
 
             Destroy(gameObject);
             Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
+        }
+
+        public async UniTask Init()
+        {
+            AddTask(WaitGlobal);
+            AddTask(InitGlobal);
+            AddTask(LoadSaveData);
+            AddTask(FinishStartup);
         }
     }
 }
