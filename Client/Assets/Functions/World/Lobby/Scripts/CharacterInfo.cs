@@ -16,10 +16,11 @@ namespace World.Lobby
         [SerializeField] TextMeshProUGUI _txGold;
         [SerializeField] TextMeshProUGUI _txSliver;
 
-        private void Start()
+        private void OnEnable()
         {
             var cd = Global.Instance.Get<CharacterData>();
             cd.OnCharacterChanged.Subscribe(_ => Setup(cd.CharacterModel)).AddTo(this);
+            Setup(cd.CharacterModel);
         }
 
         public void Setup(CharacterModel characterModel)

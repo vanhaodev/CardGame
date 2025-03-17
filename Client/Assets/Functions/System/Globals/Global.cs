@@ -4,5 +4,6 @@ namespace Globals
 {
     public class Global : GlobalBase<Global>
     {
+        
     }
 }

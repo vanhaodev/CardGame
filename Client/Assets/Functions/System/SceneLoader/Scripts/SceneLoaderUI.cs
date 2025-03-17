@@ -49,17 +49,24 @@ namespace System.SceneLoader
             float currentProgress = _imageLoadingFill.fillAmount;
             float duration = Mathf.Lerp(1f, 2f, currentProgress); // Gần 100% thì chậm lại
 
-            DOVirtual.Float(currentProgress, targetProgress, duration, value =>
+            var tween = DOVirtual.Float(currentProgress, targetProgress, duration, value =>
                 {
                     if (token.IsCancellationRequested) return;
                     _imageLoadingFill.fillAmount = value;
                     _txProgress.text = $"{Mathf.RoundToInt(value * 100)}%";
                 })
                 .SetEase(Ease.OutQuad)
-                .SetUpdate(true)
-                .OnKill(() => _ctsProgress?.Cancel());
+                .SetUpdate(true);
+
+            token.Register(() => tween.Kill()); // Hủy tween khi token bị hủy
+            Debug.Log(_imageLoadingFill.fillAmount);
         }
 
+        public async UniTask WaitFillAmountFull()
+        {
+            await UniTask.WaitUntil(() => (int)_imageLoadingFill.fillAmount >= 1);
+            await UniTask.WaitForSeconds(1);
+        }
         private void OnDestroy()
         {
             _ctsShow?.Cancel();

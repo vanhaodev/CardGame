@@ -69,6 +69,23 @@ namespace Save
                 return temp;
             }
         }
+        public void Delete<T>() where T : SaveModel, new()
+        {
+            try
+            {
+                T temp = new T();
+                string filePath = GetSaveFilePath(temp.DataName + $".{extName}");
+                if (!File.Exists(filePath))
+                    return;
+
+                File.Delete(filePath);
+                Debug.Log($"Deleted save file: {filePath}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error when deleting save of {typeof(T)}: {e.Message}");
+            }
+        }
 
         private string GetSaveFilePath(string fileName)
         {
