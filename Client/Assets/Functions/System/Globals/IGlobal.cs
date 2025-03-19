@@ -2,7 +2,7 @@
 
 namespace Globals 
 {
-    public interface IGlobal 
+    public interface IGlobal
     {
         UniTask Init();
     }

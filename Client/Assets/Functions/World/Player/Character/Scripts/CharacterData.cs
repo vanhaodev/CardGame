@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Globals;
+using Save;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,9 +24,13 @@ namespace World.Player.Character
             }
         }
 
-        public UniTask Init()
+        public async UniTask Init()
         {
-            return UniTask.CompletedTask;
+            PlayerPrefs.SetInt("IsNewbie", 1);
+            Debug.Log("Loading playerData data");
+            var save = new SaveManager();
+            var playerData = await save.Load<SavePlayerModel>();
+            Global.Instance.Get<CharacterData>().CharacterModel = playerData.CharacterModel;
         }
     }   
 }

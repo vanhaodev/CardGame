@@ -14,7 +14,10 @@ namespace World.Card
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
-        [SerializeField] private CardVital _vital;
+       
+        [SerializeField] CardEffect _effect;
+        [SerializeField] CardBattle _battle;
+        public CardBattle Battle => _battle;
 
         public CardModel CardModel
         {
@@ -25,31 +28,11 @@ namespace World.Card
                 Init();
             }
         }
-        
-        private void Start()
-        {
-            //test
-            _cardModel.TemplateId = (ushort)Random.Range(1, 3);
-            foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
-            {
-                _cardModel.CalculatedAttributes.Add(new AttributeModel
-                {
-                    Type = type,
-                    Value = Random.Range(1, 500)
-                });
-            }
-            //
-            Init();
-        }
 
         private async void Init()
         {
-            var template = await Global.Instance.Get<CardLoader>().GetCardTemplate(_cardModel.TemplateId);
-            _spriteCharacter.sprite = template.StarSkins[0];
-        }
-        public void ShowVital(bool isShow = true)
-        {
-            _vital.gameObject.SetActive(isShow);
+            _spriteCharacter.sprite = await Global.Instance.Get<GameConfig.GameConfig>().GetCardSprite(_cardModel);
+            _battle.SetupBattle(this);
         }
 
         /// <summary>
@@ -60,9 +43,10 @@ namespace World.Card
         {
             if (Global.Instance.Get<BoardCommander>().IsSelectingTarget())
             {
-                
                 return;
             }
+
+            _effect.PlayTouchEffect();
             Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
         }
     }

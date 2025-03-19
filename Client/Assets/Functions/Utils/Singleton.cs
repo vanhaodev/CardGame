@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 namespace Utils
 {
     public class SingletonNonMonoBehavior<T> where T : new()
@@ -14,6 +16,7 @@ namespace Utils
         private static readonly T _instance = new T();
         public static T Instance => _instance;
     }
+
     public class SingletonMonoBehavior<T> : MonoBehaviour where T : Component
     {
         private static T instance;
@@ -31,18 +34,30 @@ namespace Utils
                 if (dontDestroyOverload)
                 {
                     DontDestroyOnLoad(gameObject);
+                    SceneManager.sceneLoaded += OnSceneLoaded;
                 }
 
-                CustomAwake();
             }
             else
             {
-                Debug.LogWarning($"Singleton conflict in scene: {gameObject.scene.name} and Instance == {(Instance == null ? "null" : "have")}", gameObject);
+                Debug.LogWarning(
+                    $"Singleton conflict in scene: {gameObject.scene.name} and Instance == {(Instance == null ? "null" : "have")}",
+                    gameObject);
                 Destroy(gameObject);
-                
             }
         }
 
-        protected virtual void CustomAwake() { }
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (instance == this) // Chỉ gọi nếu là instance chính
+            {
+                CustomAwake();
+            }
+        }
+
+
+        protected virtual void CustomAwake()
+        {
+        }
     }
 }

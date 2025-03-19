@@ -22,7 +22,6 @@ namespace Popup
             pop.Setup(cardModel);
             Global.Instance.Get<SoundManager>().PlaySoundOneShot(4);
         }
-
         public UniTask Init()
         {
             return UniTask.CompletedTask;

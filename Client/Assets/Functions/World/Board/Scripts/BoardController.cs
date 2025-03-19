@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using FloatingEffect;
 using Globals;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using Utils;
 
@@ -29,38 +30,98 @@ namespace World.Board
         [Button]
         public async void TestLoop()
         {
+            for (int i = 0; i < 6; i++)
+            {
+                var battler = _board.GetFaction(1).GetPosition(i + 1);
+                battler.Card.Battle.SetupBattle(battler.Card);
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                var battler = _board.GetFaction(2).GetPosition(i + 1);
+                battler.Card.Battle.SetupBattle(battler.Card);
+            }
+
             while (!destroyCancellationToken.IsCancellationRequested)
             {
-                await PlayAction();
+                var result = await PlayAction();
+                if (result != null)
+                {
+                    Debug.Log(JsonConvert.SerializeObject(result));
+                    break;
+                }
+
                 await Task.Delay(200);
             }
         }
 
         private Tween tween;
 
-        public async Task PlayAction()
+        private List<int> GetTargets(BoardFaction targetFaction)
+        {
+            List<int> targets = new List<int>();
+            int targetCount = Random.Range(1, 3); //allow skill target count
+            for (int i = 0; i < 6; i++)
+            {
+                var theTarget = targetFaction.GetPosition(i + 1);
+                if (!theTarget.Card.Battle.IsDead)
+                {
+                    targets.Add(i + 1);
+                }
+                if(targets.Count >= targetCount) break;
+            }
+
+            return targets;
+        }
+
+        private int GetActorIndex(BoardFaction actorFaction)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                var theTarget = actorFaction.GetPosition(i + 1);
+                if (!theTarget.Card.Battle.IsDead)
+                {
+                    return i + 1;
+                }
+            }
+
+            return 0;
+        }
+
+        public async Task<BoardEndResultModel> PlayAction()
         {
             var testAction = new CardActionModel
             {
                 ActorFaction = Random.Range(1, 3),
-                ActorIndex = Random.Range(1, 7),
-                TargetIndex = new List<int>
-                {
-                    Random.Range(1, 7)
-                }
             };
-            int hitCount = 5;
+            //actor
+            int hitCount = 1;
             var actorFaction = _board.GetFaction(testAction.ActorFaction);
+            var actorIndex = GetActorIndex(actorFaction);
+            if (actorIndex == 0)
+            {
+                return new BoardEndResultModel()
+                {
+                    IsEnd = true, WinFactionIndex = testAction.ActorFaction == 1 ? 2 : 1
+                };
+            }
+
+            testAction.ActorIndex = GetActorIndex(actorFaction);
             var actor = actorFaction.GetPosition(testAction.ActorIndex);
+            //=================================================================================
+
+            //target
             var targetFaction = _board.GetFaction(testAction.ActorFaction == 1 ? 2 : 1);
+            testAction.TargetIndex = GetTargets(targetFaction);
             var originalActorContainer = actor.Card.transform.parent;
+            //=================================================================================
 
             Vector3 originalPosition = actor.Card.transform.position; // Lưu vị trí gốc
 
             // Chuyển card vào container hành động mà không thay đổi scale/rotation
             actor.Card.transform.SetParent(_cardActingContainer, false);
 
-            actor.Card.ShowVital(false);
+            actor.Card.Battle.Vital.Show(false);
             foreach (var target in testAction.TargetIndex)
             {
                 var targetCard = targetFaction.GetPosition(target).Card.transform;
@@ -87,7 +148,11 @@ namespace World.Board
                             {
                                 if (isShowFloatingEffect == false)
                                 {
-                                    Global.Instance.Get<FloatingEffectManager>().ShowDamage(Random.Range(0, 1000000),
+                                    int damage = Random.Range(0, 100);
+                                    targetFaction.GetPosition(target).Card.Battle.OnTakeDamage(damage);
+                                    Global.Instance.Get<FloatingEffectManager>().ShowDamage(damage,
+                                        targetPosition);
+                                    Global.Instance.Get<FloatingEffectManager>().ShowSlash(
                                         targetPosition);
                                     isShowFloatingEffect = true;
                                 }
@@ -111,6 +176,7 @@ namespace World.Board
                     await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
                         .AsyncWaitForCompletion();
                 }
+
                 await targetCard.transform.DOMove(targetPosition, 0.3f)
                     .AsyncWaitForCompletion();
                 targetCard.transform.SetParent(originalTargetContainer, false);
@@ -121,7 +187,8 @@ namespace World.Board
 
             // Trả card về container cũ
             actor.Card.transform.SetParent(originalActorContainer, false);
-            actor.Card.ShowVital();
+            actor.Card.Battle.Vital.Show();
+            return null;
         }
 
         public async void Freeze(float duration, float slowFactor = 0.05f)

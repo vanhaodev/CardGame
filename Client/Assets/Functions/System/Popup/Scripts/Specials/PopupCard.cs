@@ -18,7 +18,7 @@ namespace Popup
 
         public async void OpenInfo()
         {
-            var temp = await Global.Instance.Get<CardLoader>().GetCardTemplate(_card.CardModel.TemplateId);
+            var temp = await Global.Instance.Get<GameConfig.GameConfig>().GetCardTemplate(_card.CardModel.TemplateId);
             _txInfo.text = $"{temp.Name}\n" +
                            $"{temp.History}\n" +
                            $"{string.Join("\n", _card.CardModel.CalculatedAttributes.Select(a => $"{a.Type}: {a.Value}"))}";

@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.SceneLoader;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Globals;
+using Save;
+using Startup;
+using UnityEngine;
+
+public class HomeMenuUI : MonoBehaviour
+{
+    public DOTweenAnimation _tweenTapToPlay;
+    public DOTweenAnimation _tweenPlayMenu;
+    [SerializeField] private GameObject _btnContinue;
+
+    private void Start()
+    {
+        if (_tweenTapToPlay.tween == null) _tweenTapToPlay.CreateTween();
+        _tweenTapToPlay.DOPlay();
+    }
+
+    public void TapTopPlay()
+    {
+        var isNewbie = PlayerPrefs.GetInt("IsNewbie") == 0;
+        _btnContinue.SetActive(!isNewbie);
+
+        if (_tweenPlayMenu.tween == null) _tweenPlayMenu.CreateTween();
+        _tweenTapToPlay.DOPlayBackwards();
+        _tweenPlayMenu.DOPlay();
+
+        _tweenTapToPlay.tween.OnComplete(() => { _tweenTapToPlay.tween.Kill(); });
+        _tweenPlayMenu.tween.OnComplete(() => { _tweenPlayMenu.tween.Kill(); });
+        // _tweenTapToPlay.tween.Kill();
+        // _tweenPlayMenu.tween.Kill();
+    }
+
+    public void NewGame()
+    {
+        var save = new SaveManager();
+        save.Delete<SavePlayerModel>();
+        Global.Instance.Get<SceneLoader>().LoadScene(1,
+            null
+        );
+    }
+
+    public void ContinueGame()
+    {
+        // Global.Instance.Get<SceneLoader>().LoadScene(1, () => GameStartup.Instance.GetTasks());
+    }
+
+    public void GameInfo()
+    {
+    }
+
+    public void Setting()
+    {
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+}

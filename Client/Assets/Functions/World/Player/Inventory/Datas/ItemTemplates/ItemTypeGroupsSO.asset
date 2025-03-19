@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5682e2badbf74778b16ec5782ba7b2ba, type: 3}
+  m_Name: ItemTypeGroupsSO
+  m_EditorClassIdentifier: 
+  Content: "[\r\n  {\r\n    \"Type\": 1,\r\n    \"Name\": \"Th\xF4ng Th\u01B0\u1EDDng\",\r\n   
+    \"StackLimit\": 65000\r\n  },\r\n  {\r\n    \"Type\": 2,\r\n    \"Name\": \"Ti\xEAu
+    Th\u1EE5\",\r\n    \"StackLimit\": 65000\r\n  },\r\n  {\r\n    \"Type\": 3,\r\n   
+    \"Name\": \"Nguy\xEAn Li\u1EC7u\",\r\n    \"StackLimit\": 65000\r\n  },\r\n 
+    {\r\n    \"Type\": 4,\r\n    \"Name\": \"K\xEDch Ho\u1EA1t\",\r\n    \"StackLimit\":
+    65000\r\n  },\r\n  {\r\n    \"Type\": 5,\r\n    \"Name\": \"V\u0169 Kh\xED\",\r\n   
+    \"StackLimit\": 1\r\n  },\r\n  {\r\n    \"Type\": 6,\r\n    \"Name\": \"Trang
+    B\u1ECB\",\r\n    \"StackLimit\": 1\r\n  },\r\n  {\r\n    \"Type\": 7,\r\n   
+    \"Name\": \"C\xF4ng C\u1EE5\",\r\n    \"StackLimit\": 1\r\n  }\r\n]\r\n"
