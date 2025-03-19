@@ -25,7 +25,7 @@ namespace System.SceneLoader
             // );
         }
 
-        public async UniTask LoadScene(int buildIndex, LoadingTaskProviderModel loadingTaskProvider,
+        public async UniTask LoadScene(int buildIndex, LoadingTaskProviderModel afterLoadedSceneloadingTaskProvider,
             UnityAction<float> progressCallback = null)
         {
             await _ui.Show(true);
@@ -48,24 +48,18 @@ namespace System.SceneLoader
             loadOperation.allowSceneActivation = true;
             // **Đợi scene kích hoạt hoàn toàn trước khi gọi GameStartup**
             await UniTask.WaitUntil(() => SceneManager.GetActiveScene().buildIndex == buildIndex);
-
-
-           
-            //==================TASK===============//
-            Debug.Log($"Loading Task scene: {buildIndex}");
-
-            // Kiểm tra null trước khi truy cập Tasks
-            if (loadingTaskProvider == null || !loadingTaskProvider.Tasks.Any())
+            await UniTask.Yield(PlayerLoopTiming.LastPostLateUpdate);
+            //=============================STARTUP======================================//
+            var startup = FindAnyObjectByType<StartupBase>();
+            if (startup != null)
             {
-                Debug.LogWarning("No tasks to load.");
-            }
-            else
-            {
-                var tasks = loadingTaskProvider.Tasks.ToList();
+                var tasks = startup.GetTasks();
                 int totalTasks = tasks.Count;
                 Debug.Log($"Total tasks: {totalTasks}");
 
                 int i = 0;
+                float baseProgress = 0.3f; // Phần trăm ban đầu của progress
+                float maxTaskProgress = 0.35f; // Phần trăm tối đa dành cho task
                 foreach (var loadingTask in tasks)
                 {
                     i++;
@@ -73,16 +67,83 @@ namespace System.SceneLoader
 
                     if (loadingTask != null)
                     {
-                        await loadingTask();
+                        try
+                        {
+                            await loadingTask();
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"Error executing task: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Task is null!");
+                    }  
+                    // Giảm số lần cập nhật progress để tránh overload UI
+                    float taskProgress = (i / (float)totalTasks) * maxTaskProgress;
+                    float currentProgress = baseProgress + taskProgress;
+
+                    // if (i == totalTasks || i % 5 == 0) // Cập nhật mỗi 5 task hoặc task cuối
+                    // {
+                    //     progressCallback?.Invoke(currentProgress);
+                    //     _ui.SetProgress(currentProgress);
+                    // }
+                    progressCallback?.Invoke(currentProgress);
+                    _ui.SetProgress(currentProgress);
+                }
+            }
+
+            //==================afterLoadedSceneloadingTaskProvider===============//
+            Debug.Log($"Loading Task scene: {buildIndex}");
+
+            // Kiểm tra null trước khi truy cập Tasks
+            if (afterLoadedSceneloadingTaskProvider == null || afterLoadedSceneloadingTaskProvider.Tasks == null || !afterLoadedSceneloadingTaskProvider.Tasks.Any())
+            {
+                Debug.LogWarning("No tasks to load.");
+            }
+            else
+            {
+                var tasks = afterLoadedSceneloadingTaskProvider.Tasks;
+                int totalTasks = tasks.Count;
+                Debug.Log($"Total tasks: {totalTasks}");
+
+                int i = 0;
+                float baseProgress = 0.65f; // Phần trăm ban đầu của progress
+                float maxTaskProgress = 0.35f; // Phần trăm tối đa dành cho task
+
+                foreach (var loadingTask in tasks)
+                {
+                    i++;
+                    Debug.Log($"Executing task {i}/{totalTasks}");
+
+                    if (loadingTask != null)
+                    {
+                        try
+                        {
+                            await loadingTask();
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"Error executing task {i}: {ex.Message}");
+                        }
                     }
                     else
                     {
                         Debug.LogWarning($"Task {i} is null!");
                     }
 
-                    float taskProgress = (i / (float)totalTasks) * 0.7f;
-                    progressCallback?.Invoke(0.3f + taskProgress);
-                    _ui.SetProgress(0.3f + taskProgress);
+                    // Giảm số lần cập nhật progress để tránh overload UI
+                    float taskProgress = (i / (float)totalTasks) * maxTaskProgress;
+                    float currentProgress = baseProgress + taskProgress;
+
+                    // if (i == totalTasks || i % 5 == 0) // Cập nhật mỗi 5 task hoặc task cuối
+                    // {
+                    //     progressCallback?.Invoke(currentProgress);
+                    //     _ui.SetProgress(currentProgress);
+                    // }
+                    progressCallback?.Invoke(currentProgress);
+                    _ui.SetProgress(currentProgress);
                 }
             }
 

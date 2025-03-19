@@ -40,11 +40,8 @@ public class HomeMenuUI : MonoBehaviour
     {
         var save = new SaveManager();
         save.Delete<SavePlayerModel>();
-        var tasks = new LoadingTaskProviderModel()
-            .Add(() => UniTask.WaitUntil(() => GameStartup.Instance != null))
-            .AddRange(GameStartup.Instance.GetTasks());
         Global.Instance.Get<SceneLoader>().LoadScene(1,
-            tasks
+            null
         );
     }
 

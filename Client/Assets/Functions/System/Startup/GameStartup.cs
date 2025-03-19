@@ -14,12 +14,12 @@ namespace Startup
         protected override void Awake()
         {
             base.Awake();
-            // AddTask(Global.Instance.Init);
-            // AddTask(FinishStartup);
-            // AddTask(async () =>
-            // {
-            //     Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
-            // });
+            AddTask(Global.Instance.Init);
+            AddTask(FinishStartup);
+            AddTask(async () =>
+            {
+                Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
+            });
             Debug.Log("Initialized Game Startup");
         }
         public async UniTask Init()
