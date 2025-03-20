@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -8,6 +9,7 @@ using Globals;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using Utils;
+using Random = UnityEngine.Random;
 
 namespace World.Board
 {
@@ -26,6 +28,7 @@ namespace World.Board
         [SerializeField] private Transform _cardTargetContainer;
 
         [SerializeField] CinemachineCameraShake _cameraShake;
+        
 
         [Button]
         public async void TestLoop()
