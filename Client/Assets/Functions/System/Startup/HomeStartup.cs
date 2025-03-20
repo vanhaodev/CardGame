@@ -9,6 +9,7 @@ namespace Globals
         protected override async void Awake()
         {
             base.Awake();
+            Application.targetFrameRate = 60;
             await UniTask.WaitUntil(()=> Global.Instance != null);
             await Global.Instance.Init();
             await Global.Instance.WaitForInit<SoundManager>();

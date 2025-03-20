@@ -29,7 +29,14 @@ namespace World.Board
 
         [SerializeField] CinemachineCameraShake _cameraShake;
         
-
+        void OnGUI()
+        {
+            // Tạo một button tại vị trí (100, 100) với kích thước 200x50
+            if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
+            {
+                TestLoop();
+            }
+        }
         [Button]
         public async void TestLoop()
         {
