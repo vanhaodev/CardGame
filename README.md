@@ -50,8 +50,10 @@ git lfs install
 git lfs track "Client/Assets/Firebase/Plugins/x86_64/*.bundle"
 git lfs track "Client/Assets/Firebase/Plugins/x86_64/*.so"
 git add .gitattributes
+git add Client/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_7_0.bundle
+git add Client/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_7_0.so
 git commit -m "Track large Firebase files with LFS"
-git push origin main
+git push
 ```
 
 ---
