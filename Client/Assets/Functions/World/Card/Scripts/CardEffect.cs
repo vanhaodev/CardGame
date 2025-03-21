@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using FloatingEffect;
 using Globals;
 
 namespace World.Card
@@ -48,7 +50,10 @@ namespace World.Card
 
         public async void PlayDie()
         {
-            await _canvasGroup.DOFade(0, 1f).AsyncWaitForCompletion();
+            Global.Instance.Get<FloatingEffectManager>().ShowDeath(gameObject.transform.position).Forget();
+            await _canvasGroup.DOFade(0, 1f)
+                // .OnPlay()
+                .AsyncWaitForCompletion();
         }
     }
 }

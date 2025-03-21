@@ -63,6 +63,18 @@ namespace FloatingEffect
             await effect.Play();
             ReleaseEffect(effect);
         }
+        public async UniTask ShowDeath(Vector3 position)
+        {
+            string prefabAddress = "FloatingEffect/FloatingEffectDeath.prefab"; // Địa chỉ prefab cho Damage
+
+            // Lấy hiệu ứng từ pool hoặc tạo mới nếu không có
+            FloatingEffectParticle effect = await GetEffectFromPoolOrCreate(prefabAddress) as FloatingEffectParticle;
+            
+            Transform effectTransform = effect.transform;
+            effectTransform.position = new Vector3(position.x, position.y, position.z);
+            await effect.Play();
+            ReleaseEffect(effect);
+        }
         public UniTask Init()
         {
             return UniTask.CompletedTask;  

@@ -55,6 +55,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb989056171e61240bfcd87d567dc298
+    m_Address: FloatingEffect/FloatingEffectDeath.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d2c8729a14652cb46a9e998b1386319e
     m_Address: ItemTemplates
     m_ReadOnly: 0
