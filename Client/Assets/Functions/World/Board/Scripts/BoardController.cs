@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,12 +8,15 @@ using FloatingEffect;
 using Globals;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
+using Unity.Cinemachine;
 using Utils;
+using Random = UnityEngine.Random;
 
 namespace World.Board
 {
     public class BoardController : MonoBehaviour
     {
+        [SerializeField] CinemachineCamera _camera;
         [SerializeField] Board _board;
 
         /// <summary>
@@ -26,17 +30,25 @@ namespace World.Board
         [SerializeField] private Transform _cardTargetContainer;
 
         [SerializeField] CinemachineCameraShake _cameraShake;
-
+        
+        void OnGUI()
+        {
+            // Tạo một button tại vị trí (100, 100) với kích thước 200x50
+            if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
+            {
+                TestLoop();
+            }
+        }
         [Button]
         public async void TestLoop()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 9; i++)
             {
                 var battler = _board.GetFaction(1).GetPosition(i + 1);
                 battler.Card.Battle.SetupBattle(battler.Card);
             }
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 9; i++)
             {
                 var battler = _board.GetFaction(2).GetPosition(i + 1);
                 battler.Card.Battle.SetupBattle(battler.Card);
@@ -61,7 +73,7 @@ namespace World.Board
         {
             List<int> targets = new List<int>();
             int targetCount = Random.Range(1, 3); //allow skill target count
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 9; i++)
             {
                 var theTarget = targetFaction.GetPosition(i + 1);
                 if (!theTarget.Card.Battle.IsDead)
@@ -76,7 +88,7 @@ namespace World.Board
 
         private int GetActorIndex(BoardFaction actorFaction)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 9; i++)
             {
                 var theTarget = actorFaction.GetPosition(i + 1);
                 if (!theTarget.Card.Battle.IsDead)
@@ -108,6 +120,11 @@ namespace World.Board
 
             testAction.ActorIndex = GetActorIndex(actorFaction);
             var actor = actorFaction.GetPosition(testAction.ActorIndex);
+            //set cam
+            _camera.Follow = actor.Card.transform;
+            DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 4.2f, 0.5f)
+                .SetEase(Ease.InOutSine);
+
             //=================================================================================
 
             //target
@@ -188,6 +205,8 @@ namespace World.Board
             // Trả card về container cũ
             actor.Card.transform.SetParent(originalActorContainer, false);
             actor.Card.Battle.Vital.Show();
+            DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 7.2f, 0.5f)
+                .SetEase(Ease.InOutSine);
             return null;
         }
 
