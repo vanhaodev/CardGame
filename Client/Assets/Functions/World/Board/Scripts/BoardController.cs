@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace World.Board
     public class BoardController : MonoBehaviour
     {
         [SerializeField] CinemachineCamera _camera;
+        [SerializeField] private Transform _transFormCameraCenterPoint;
         [SerializeField] Board _board;
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace World.Board
         [SerializeField] private Transform _cardTargetContainer;
 
         [SerializeField] CinemachineCameraShake _cameraShake;
-        
+
         void OnGUI()
         {
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50
@@ -39,6 +41,7 @@ namespace World.Board
                 TestLoop();
             }
         }
+
         [Button]
         public async void TestLoop()
         {
@@ -71,34 +74,49 @@ namespace World.Board
 
         private List<int> GetTargets(BoardFaction targetFaction)
         {
-            List<int> targets = new List<int>();
-            int targetCount = Random.Range(1, 3); //allow skill target count
+            List<int> validIndexes = new List<int>();
+
             for (int i = 0; i < 9; i++)
             {
                 var theTarget = targetFaction.GetPosition(i + 1);
                 if (!theTarget.Card.Battle.IsDead)
                 {
-                    targets.Add(i + 1);
+                    validIndexes.Add(i + 1);
                 }
-                if(targets.Count >= targetCount) break;
             }
 
-            return targets;
+            int targetCount = Random.Range(1, 3); // allow skill target count
+            Shuffle(validIndexes); // Xáo trộn danh sách
+
+            return validIndexes.Take(Mathf.Min(targetCount, validIndexes.Count)).ToList();
+        }
+
+        // Hàm xáo trộn danh sách (Fisher-Yates Shuffle)
+        private void Shuffle<T>(List<T> list)
+        {
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
         }
 
         private int GetActorIndex(BoardFaction actorFaction)
         {
+            List<int> validIndexes = new List<int>();
+
             for (int i = 0; i < 9; i++)
             {
                 var theTarget = actorFaction.GetPosition(i + 1);
                 if (!theTarget.Card.Battle.IsDead)
                 {
-                    return i + 1;
+                    validIndexes.Add(i + 1);
                 }
             }
 
-            return 0;
+            return validIndexes.Count > 0 ? validIndexes[UnityEngine.Random.Range(0, validIndexes.Count)] : 0;
         }
+
 
         public async Task<BoardEndResultModel> PlayAction()
         {
@@ -122,8 +140,8 @@ namespace World.Board
             var actor = actorFaction.GetPosition(testAction.ActorIndex);
             //set cam
             _camera.Follow = actor.Card.transform;
-            DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 4.2f, 0.5f)
-                .SetEase(Ease.InOutSine);
+            await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 4.2f, 0.5f)
+                .SetEase(Ease.InOutSine).AsyncWaitForCompletion();
 
             //=================================================================================
 
@@ -205,8 +223,9 @@ namespace World.Board
             // Trả card về container cũ
             actor.Card.transform.SetParent(originalActorContainer, false);
             actor.Card.Battle.Vital.Show();
-            DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 7.2f, 0.5f)
-                .SetEase(Ease.InOutSine);
+            await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 7.2f, 0.5f)
+                .OnPlay(() => _camera.Follow = _transFormCameraCenterPoint)
+                .SetEase(Ease.InOutSine).AsyncWaitForCompletion();
             return null;
         }
 
