@@ -80,6 +80,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb2d63aaefec98f48bfed877eca171e8
+    m_Address: FloatingEffect/FloatingEffectBullet.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 2700156480cc2364fbbf9e624c5f03e0, type: 2}
   m_SchemaSet:

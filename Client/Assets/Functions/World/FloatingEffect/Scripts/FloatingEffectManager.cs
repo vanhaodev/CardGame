@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Globals;
@@ -63,6 +64,19 @@ namespace FloatingEffect
             await effect.Play();
             ReleaseEffect(effect);
         }
+        public async UniTask ShowBullet(Vector3 actorPos, Vector3 targetPosition)
+        {
+            string prefabAddress = "FloatingEffect/FloatingEffectBullet.prefab";
+
+            // Lấy viên đạn từ pool hoặc tạo mới nếu không có
+            FloatingEffectParticle effect = await GetEffectFromPoolOrCreate(prefabAddress) as FloatingEffectParticle;
+            Transform effectTransform = effect.transform;
+            effectTransform.position = actorPos;
+            await effectTransform.DOMove(targetPosition, 0.25f).SetEase(Ease.Linear).AsyncWaitForCompletion();
+
+            ReleaseEffect(effect);
+        }
+
         public async UniTask ShowDeath(Vector3 position)
         {
             string prefabAddress = "FloatingEffect/FloatingEffectDeath.prefab"; // Địa chỉ prefab cho Damage
