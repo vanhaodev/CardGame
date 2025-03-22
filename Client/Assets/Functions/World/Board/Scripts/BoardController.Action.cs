@@ -41,7 +41,8 @@ namespace World.Board
             //========================[Perform Attacks]===============\
             if (Random.Range(0, 2) == 1)
             {
-                await Ranged(actor, testAction.TargetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
+                await Ranged(actor,
+                    testAction.TargetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
             }
             else
             {
@@ -56,7 +57,7 @@ namespace World.Board
         public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets)
         {
             //========================[Camera Focus]===============\
-            await PerformCameraFocus(actor.Card.transform, 4.2f);
+            await PerformCameraFocus(actor.Card.transform, 5.2f);
             //========================[Prepare Melee Attack]===============\
             Vector3 originalPosition = actor.Card.transform.position;
 
@@ -160,7 +161,7 @@ namespace World.Board
                 // await actor.Card.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad).AsyncWaitForCompletion();
 
                 bool isActingDone = false;
-  
+
                 bool isShowFloatingEffect = false;
 
                 //========================[Perform Melee Attack Animation]===============\
@@ -178,7 +179,9 @@ namespace World.Board
                 {
                     angle -= 90f;
                 }
+
                 Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+                await PerformCameraFocus(actor.Card.transform, 5.2f);
                 await actor.Card.transform.DORotateQuaternion(targetRotation, 0.5f).SetEase(Ease.OutQuad)
                     .AsyncWaitForCompletion();
                 //
@@ -191,7 +194,9 @@ namespace World.Board
                         {
                             isShowFloatingEffect = true;
                             int damage = Random.Range(0, 100);
-                            await Global.Instance.Get<FloatingEffectManager>().ShowBullet(actorPosition, targetPosition);
+                            PerformCameraReset().Forget();
+                            await Global.Instance.Get<FloatingEffectManager>()
+                                .ShowBullet(actorPosition, targetPosition);
                             target.Card.Battle.OnTakeDamage(damage);
                             Global.Instance.Get<FloatingEffectManager>().ShowDamage(damage, targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
@@ -233,16 +238,20 @@ namespace World.Board
 
         private async UniTask PerformCameraFocus(Transform target, float zoom)
         {
-            _camera.Follow = target;
+            // _camera.Follow = target;
+            // _cinemachineConfiner.InvalidateBoundingShapeCache();
             await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, zoom, 0.5f)
-                .SetEase(Ease.InOutSine).AsyncWaitForCompletion();
+                .OnPlay(() => { _camera.Follow = target; })
+                .SetEase(Ease.InOutSine)
+                .AsyncWaitForCompletion();
         }
 
         private async UniTask PerformCameraReset()
         {
             await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 7.2f, 0.5f)
-                .OnPlay(() => _camera.Follow = _transFormCameraCenterPoint)
-                .SetEase(Ease.InOutSine).AsyncWaitForCompletion();
+                .OnPlay(() => { _camera.Follow = _transFormCameraCenterPoint; })
+                .SetEase(Ease.InOutSine)
+                .AsyncWaitForCompletion();
         }
     }
 }

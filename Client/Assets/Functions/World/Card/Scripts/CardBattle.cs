@@ -30,6 +30,7 @@ public partial class CardBattle : MonoBehaviour
         SetupHpMp(AttributeType.Mp, AttributeType.MpMax);
         _vital.UpdateHp(_attributes[AttributeType.Hp], _attributes[AttributeType.HpMax]);
         _vital.UpdateMp(_attributes[AttributeType.Mp], _attributes[AttributeType.MpMax]);
+        _effect.PlaySpawn();
     }
 
     private void SetupHpMp(AttributeType current, AttributeType max)

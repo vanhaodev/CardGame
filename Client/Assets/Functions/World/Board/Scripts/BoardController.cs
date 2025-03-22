@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace World.Board
 
         [SerializeField] CinemachineCameraShake _cameraShake;
         private Tween _tweenAction;
+        private CancellationTokenSource _ctsTestLoop;
 
         void OnGUI()
         {
@@ -40,25 +42,29 @@ namespace World.Board
             if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
             {
                 TestLoop();
+                Event.current.Use(); // Chặn sự kiện chuột
             }
         }
 
         [Button]
         public async void TestLoop()
         {
-            for (int i = 0; i < 9; i++)
+            _ctsTestLoop?.Cancel();
+            _ctsTestLoop = new CancellationTokenSource();
+
+            for (int i = 0; i < 6; i++)
             {
                 var battler = _board.GetFaction(1).GetPosition(i + 1);
                 battler.Card.Battle.SetupBattle(battler.Card);
             }
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var battler = _board.GetFaction(2).GetPosition(i + 1);
                 battler.Card.Battle.SetupBattle(battler.Card);
             }
 
-            while (!destroyCancellationToken.IsCancellationRequested)
+            while (!_ctsTestLoop.IsCancellationRequested)
             {
                 var result = await PlayAction();
                 if (result != null)
@@ -76,7 +82,7 @@ namespace World.Board
         {
             List<int> validIndexes = new List<int>();
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var theTarget = targetFaction.GetPosition(i + 1);
                 if (!theTarget.Card.Battle.IsDead)
@@ -105,7 +111,7 @@ namespace World.Board
         {
             List<int> validIndexes = new List<int>();
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var theTarget = actorFaction.GetPosition(i + 1);
                 if (!theTarget.Card.Battle.IsDead)

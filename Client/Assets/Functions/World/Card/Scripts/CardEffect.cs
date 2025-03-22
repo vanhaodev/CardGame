@@ -48,6 +48,13 @@ namespace World.Card
             }
         }
 
+        public async void PlaySpawn()
+        {
+            Global.Instance.Get<FloatingEffectManager>().ShowDeath(gameObject.transform.position).Forget();
+            await _canvasGroup.DOFade(1, 1f)
+                // .OnPlay()
+                .AsyncWaitForCompletion();
+        }
         public async void PlayDie()
         {
             Global.Instance.Get<FloatingEffectManager>().ShowDeath(gameObject.transform.position).Forget();
