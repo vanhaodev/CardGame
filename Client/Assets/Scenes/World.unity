@@ -631,23 +631,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imageFrame: {fileID: 0}
-  Positions:
-  - Index: 0
+  _positions:
+  - Index: 1
     OriginalPosition: {x: -1081.25, y: 478.125}
     Card: {fileID: 1946196183}
-  - Index: 1
+  - Index: 2
     OriginalPosition: {x: -815.625, y: 478.125}
     Card: {fileID: 125282522}
-  - Index: 2
+  - Index: 3
     OriginalPosition: {x: -543.75, y: 478.125}
     Card: {fileID: 1464321927}
-  - Index: 3
+  - Index: 4
     OriginalPosition: {x: -265.625, y: 478.125}
     Card: {fileID: 500334449}
-  - Index: 4
+  - Index: 5
     OriginalPosition: {x: 12.5, y: 478.125}
     Card: {fileID: 1197907017}
-  - Index: 5
+  - Index: 6
     OriginalPosition: {x: 281.25, y: 478.125}
     Card: {fileID: 415827250}
 --- !u!1 &340065612
@@ -1532,6 +1532,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fca3ecacb824afdb53c85b25a6779aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionTurn:
+    Orders: []
+    CurrentTurn:
+      FactionIndex: 0
+      ActorIndex: 0
+      AttackSpeed: 0
   _camera: {fileID: 435712580}
   _transFormCameraCenterPoint: {fileID: 102170918}
   _board: {fileID: 514438749}
@@ -3163,7 +3169,7 @@ GameObject:
   - component: {fileID: 1493736216}
   - component: {fileID: 1493736217}
   m_Layer: 5
-  m_Name: Faction1Bttom
+  m_Name: Faction1Bttom (Me)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3208,23 +3214,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imageFrame: {fileID: 0}
-  Positions:
-  - Index: 0
+  _positions:
+  - Index: 1
     OriginalPosition: {x: -1081.25, y: -465.625}
     Card: {fileID: 1023329334}
-  - Index: 1
+  - Index: 2
     OriginalPosition: {x: -812.5, y: -465.625}
     Card: {fileID: 2055478611}
-  - Index: 2
+  - Index: 3
     OriginalPosition: {x: -543.75, y: -465.625}
     Card: {fileID: 1495325206}
-  - Index: 3
+  - Index: 4
     OriginalPosition: {x: -271.875, y: -465.625}
     Card: {fileID: 1840854368}
-  - Index: 4
+  - Index: 5
     OriginalPosition: {x: 0, y: -465.625}
     Card: {fileID: 304775889}
-  - Index: 5
+  - Index: 6
     OriginalPosition: {x: 268.75, y: -465.625}
     Card: {fileID: 2010815404}
 --- !u!1001 &1495325204
@@ -4195,6 +4201,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4911826330980191417, guid: e0ea850a1e6bfd84c8c0bf3bec4ce05d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7399964407546159580, guid: e0ea850a1e6bfd84c8c0bf3bec4ce05d, type: 3}
+      propertyPath: _characterModel.CardCollection.Cards.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8968459769934658236, guid: e0ea850a1e6bfd84c8c0bf3bec4ce05d, type: 3}

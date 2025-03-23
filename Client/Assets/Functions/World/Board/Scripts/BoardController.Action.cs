@@ -6,53 +6,59 @@ using DG.Tweening;
 using FloatingEffect;
 using Globals;
 using UnityEngine;
+using World.Card;
 
 namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
+        [SerializeField] ActionTurnModel _actionTurn;
+
         public async Task<BoardEndResultModel> PlayAction()
         {
             //========================[Setup Action]===============\
-            var testAction = new CardActionModel
-            {
-                ActorFaction = Random.Range(1, 3),
-            };
+            var turn = _actionTurn.GetNextTurn();
+    
+            // Nếu không có ai có thể hành động, kiểm tra bên nào thắng
+            bool faction1Dead = _board.GetFaction(1).IsAllDead();
+            bool faction2Dead = _board.GetFaction(2).IsAllDead();
 
-            int hitCount = 1;
-            var actorFaction = _board.GetFaction(testAction.ActorFaction);
-            var actorIndex = GetActorIndex(actorFaction);
-            if (actorIndex == 0)
+            if (faction1Dead && faction2Dead)
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
+            if (faction1Dead)
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 2 }; // Phe 2 thắng
+            if (faction2Dead)
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 1 }; // Phe 1 thắng
+
+            var actorFaction = _board.GetFaction(turn.FactionIndex);
+            var actor = actorFaction.GetPosition(turn.ActorIndex);
+            if (actor.Card.Battle.IsDead) return null;
+            //========================[Select Targets]===============\
+            var targetFaction = _board.GetFaction(turn.FactionIndex == 1 ? 2 : 1);
+            List<int> targetIndex  = GetTargets(targetFaction);
+
+            if (targetIndex.Count == 0)
             {
-                return new BoardEndResultModel()
-                {
-                    IsEnd = true, WinFactionIndex = testAction.ActorFaction == 1 ? 2 : 1
-                };
+                return null;
             }
 
-            testAction.ActorIndex = GetActorIndex(actorFaction);
-            var actor = actorFaction.GetPosition(testAction.ActorIndex);
-
-
-            //========================[Select Targets]===============\
-            var targetFaction = _board.GetFaction(testAction.ActorFaction == 1 ? 2 : 1);
-            testAction.TargetIndex = GetTargets(targetFaction);
-
             //========================[Perform Attacks]===============\
+            Debug.Log($"<color=yellow>{turn.FactionIndex}: {actor.Card.CardModel.CalculatedAttributes.Find(i=>i.Type== AttributeType.AttackSpeed)?.Value ?? 0}</color>");
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor,
-                    testAction.TargetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
+                    targetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
             }
             else
             {
-                await Melee(actor, testAction.TargetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
+                await Melee(actor, targetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
             }
 
             //========================[Camera Reset]===============\
-            await PerformCameraReset();
+            await UniTask.Yield();
             return null;
         }
+
 
         public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets)
         {

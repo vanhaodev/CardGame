@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using World.Card;
 
 namespace World.Player.Character
 {
@@ -14,7 +15,7 @@ namespace World.Player.Character
         public DateTime Birthday;
         public string Bio;
         public List<CurrencyModel> Currencies;
-
+        public CardCollectionModel CardCollection;
         public void SetDefault()
         {
             Id = "74ehvdrv784gerg45098";
@@ -37,6 +38,7 @@ namespace World.Player.Character
                     Amount = 0
                 }
             };
+            CardCollection = new CardCollectionModel();
         }
     }
 }

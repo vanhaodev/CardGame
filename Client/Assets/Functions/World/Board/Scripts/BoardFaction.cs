@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World.Card;
 using Random = UnityEngine.Random;
@@ -12,11 +14,11 @@ namespace World.Board
     public class BoardFaction : MonoBehaviour
     {
         [SerializeField] private Image _imageFrame; //skin just apply for owner faction
-        [SerializeField] private List<BoardFactionPosition> Positions;
+        [SerializeField] private List<BoardFactionPosition> _positions;
 
         private void Start()
         {
-            foreach (var position in Positions)
+            foreach (var position in _positions)
             {
                 var testModel = new CardModel();
                 testModel.TemplateId = (ushort)Random.Range(1, 3);
@@ -34,15 +36,17 @@ namespace World.Board
             }
         }
 
+        public List<BoardFactionPosition> GetPositions() => _positions;
+
         public BoardFactionPosition GetPosition(int index)
         {
-            return Positions[index - 1];
+            return _positions[index - 1];
         }
 
         [Button]
         private void InitOriginalPosition()
         {
-            foreach (var p in Positions)
+            foreach (var p in _positions)
             {
                 var rect = p.Card.GetComponent<RectTransform>();
                 p.OriginalPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y);
@@ -52,11 +56,15 @@ namespace World.Board
         [Button]
         private void ResetToOriginalPosition()
         {
-            foreach (var p in Positions)
+            foreach (var p in _positions)
             {
                 var rect = p.Card.GetComponent<RectTransform>();
                 rect.anchoredPosition = p.OriginalPosition;
             }
+        }
+        public bool IsAllDead()
+        {
+            return _positions.All(i => i.Card.Battle.IsDead); // Tất cả đều chết thì trả về true
         }
     }
 }

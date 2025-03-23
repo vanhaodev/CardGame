@@ -36,7 +36,8 @@ namespace World.Board
         private Tween _tweenAction;
         private CancellationTokenSource _ctsTestLoop;
 
-        void OnGUI()
+        public
+            void OnGUI()
         {
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50
             if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
@@ -64,6 +65,7 @@ namespace World.Board
                 battler.Card.Battle.SetupBattle(battler.Card);
             }
 
+            _actionTurn.SetupOrders(_board.GetFactions());
             while (!_ctsTestLoop.IsCancellationRequested)
             {
                 var result = await PlayAction();
@@ -72,9 +74,9 @@ namespace World.Board
                     Debug.Log(JsonConvert.SerializeObject(result));
                     break;
                 }
-
-                await Task.Delay(200);
             }
+
+            PerformCameraReset().Forget();
         }
 
 
@@ -105,22 +107,6 @@ namespace World.Board
                 int j = Random.Range(0, i + 1);
                 (list[i], list[j]) = (list[j], list[i]);
             }
-        }
-
-        private int GetActorIndex(BoardFaction actorFaction)
-        {
-            List<int> validIndexes = new List<int>();
-
-            for (int i = 0; i < 6; i++)
-            {
-                var theTarget = actorFaction.GetPosition(i + 1);
-                if (!theTarget.Card.Battle.IsDead)
-                {
-                    validIndexes.Add(i + 1);
-                }
-            }
-
-            return validIndexes.Count > 0 ? validIndexes[UnityEngine.Random.Range(0, validIndexes.Count)] : 0;
         }
 
         private float GetVerticalRotationAngle(Vector3 from, Vector3 to)
