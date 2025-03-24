@@ -10,6 +10,10 @@
         Defense,
         AttackSpeed,
         CritChance,
-        CritDamage
+        CritDamage,
+        DodgeChance,
+        DodgeDamage,
+        ArmorPenetrationChance,
+        ArmorPenetrationDamage,
     }
 }

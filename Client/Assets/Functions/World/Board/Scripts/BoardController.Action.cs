@@ -5,7 +5,10 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using FloatingEffect;
 using Globals;
+using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using World.Card;
 
 namespace World.Board
@@ -13,13 +16,30 @@ namespace World.Board
     public partial class BoardController : MonoBehaviour
     {
         [SerializeField] ActionTurnModel _actionTurn;
+        [SerializeField] private TextMeshProUGUI _txRound;
+
+        [FormerlySerializedAs("_txTurnCountdown")] [SerializeField]
+        private TextMeshProUGUI _txTurnTimeCountdown;
 
         public async Task<BoardEndResultModel> PlayAction()
         {
+            //========================[Check round]===============\
+            if (_actionTurn.IsRoundOver())
+            {
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
+            }
+
             //========================[Setup Action]===============\
             var turn = _actionTurn.GetNextTurn();
-    
-            // Nếu không có ai có thể hành động, kiểm tra bên nào thắng
+            if (turn == null)
+            {
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
+            }
+
+            //========================[Set round UI]===============\
+            _txRound.text = $"{_actionTurn.CurrentRoundCount}/{_actionTurn.MaxRoundCount}";
+
+            //========================[Check winner and loser]===============\
             bool faction1Dead = _board.GetFaction(1).IsAllDead();
             bool faction2Dead = _board.GetFaction(2).IsAllDead();
 
@@ -30,12 +50,14 @@ namespace World.Board
             if (faction2Dead)
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 1 }; // Phe 1 thắng
 
+
+            //===========================[Get actor]===================================\
             var actorFaction = _board.GetFaction(turn.FactionIndex);
             var actor = actorFaction.GetPosition(turn.ActorIndex);
             if (actor.Card.Battle.IsDead) return null;
             //========================[Select Targets]===============\
             var targetFaction = _board.GetFaction(turn.FactionIndex == 1 ? 2 : 1);
-            List<int> targetIndex  = GetTargets(targetFaction);
+            List<int> targetIndex = GetTargets(targetFaction);
 
             if (targetIndex.Count == 0)
             {
@@ -43,7 +65,8 @@ namespace World.Board
             }
 
             //========================[Perform Attacks]===============\
-            Debug.Log($"<color=yellow>{turn.FactionIndex}: {actor.Card.CardModel.CalculatedAttributes.Find(i=>i.Type== AttributeType.AttackSpeed)?.Value ?? 0}</color>");
+            Debug.Log(
+                $"<color=yellow>{turn.FactionIndex}: {actor.Card.CardModel.CalculatedAttributes.Find(i => i.Type == AttributeType.AttackSpeed)?.Value ?? 0}</color>");
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor,
@@ -73,13 +96,19 @@ namespace World.Board
 
             //========================[Hide vital bar]===============\
             actor.Card.Battle.Vital.Show(false);
-
+            //========================[Cal attacker]======================\\
+            var attackerResult = actor.Card.Battle.GetDamage();
+            Debug.Log("Attacker: " + JsonConvert.SerializeObject(attackerResult));
             foreach (var target in targets)
             {
                 //========================[Setup Attack]===============\
                 var targetCard = target.Card.transform;
                 Vector3 targetPosition = targetCard.position;
                 Vector3 actorPosition = actor.Card.transform.position;
+
+                //========================[Cal victim]===================================\\
+                var victimResult = target.Card.Battle.OnTakeDamage(attackerResult.damage, actor.Card);
+                Debug.Log("Victim:" + JsonConvert.SerializeObject(victimResult));
 
                 //========================[Set parent]===============\
                 var originalTargetParent = targetCard.parent;
@@ -100,10 +129,12 @@ namespace World.Board
                     {
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)
                         {
-                            int damage = Random.Range(0, 100);
-                            target.Card.Battle.OnTakeDamage(damage);
-                            Global.Instance.Get<FloatingEffectManager>().ShowDamage(damage, targetPosition);
+                            Global.Instance.Get<FloatingEffectManager>()
+                                .ShowDamage(victimResult.aDamage, targetPosition);
+                            Global.Instance.Get<FloatingEffectManager>()
+                                .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
+                            target.Card.Battle.OnTakeDamageLate();
                             isShowFloatingEffect = true;
 
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
@@ -149,13 +180,19 @@ namespace World.Board
 
             //========================[Hide vital bar]===============\
             actor.Card.Battle.Vital.Show(false);
-
+            //========================[Cal attacker]======================\\
+            var attackerResult = actor.Card.Battle.GetDamage();
+            Debug.Log("Attacker: " + JsonConvert.SerializeObject(attackerResult));
             foreach (var target in targets)
             {
                 //========================[Setup Attack]===============\
                 var targetCard = target.Card.transform;
                 Vector3 targetPosition = targetCard.position;
                 Vector3 actorPosition = actor.Card.transform.position;
+
+                //========================[Cal victim]===================================\\
+                var victimResult = target.Card.Battle.OnTakeDamage(attackerResult.damage, actor.Card);
+                Debug.Log("Victim:" + JsonConvert.SerializeObject(victimResult));
 
                 //========================[Set parent]===============\
                 var originalTargetParent = targetCard.parent;
@@ -199,12 +236,14 @@ namespace World.Board
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)
                         {
                             isShowFloatingEffect = true;
-                            int damage = Random.Range(0, 100);
+
                             PerformCameraReset().Forget();
                             await Global.Instance.Get<FloatingEffectManager>()
                                 .ShowBullet(actorPosition, targetPosition);
-                            target.Card.Battle.OnTakeDamage(damage);
-                            Global.Instance.Get<FloatingEffectManager>().ShowDamage(damage, targetPosition);
+                            Global.Instance.Get<FloatingEffectManager>()
+                                .ShowDamage(victimResult.aDamage, targetPosition);
+                            Global.Instance.Get<FloatingEffectManager>()
+                                .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
 
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
@@ -244,8 +283,6 @@ namespace World.Board
 
         private async UniTask PerformCameraFocus(Transform target, float zoom)
         {
-            // _camera.Follow = target;
-            // _cinemachineConfiner.InvalidateBoundingShapeCache();
             await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, zoom, 0.5f)
                 .OnPlay(() => { _camera.Follow = target; })
                 .SetEase(Ease.InOutSine)

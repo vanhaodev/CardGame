@@ -21,8 +21,14 @@ namespace World.Board
     public class ActionTurnModel
     {
         public List<ActionTurnActorModel> Orders = new List<ActionTurnActorModel>();
+        public int MaxRoundCount;
+        public int CurrentRoundCount;
         public ActionTurnActorModel CurrentTurn;
 
+        public ActionTurnModel()
+        {
+            CurrentRoundCount = 1;
+        }
         public void SetupOrders(List<BoardFaction> factions)
         {
             Orders = new List<ActionTurnActorModel>();
@@ -62,10 +68,17 @@ namespace World.Board
                 if (Orders[nextIndex].IsAvailable())
                 {
                     CurrentTurn = Orders[nextIndex];
+                    CurrentRoundCount++;
                     return CurrentTurn;
                 }
             }
+
             return null; // Không có ai có thể hành động
+        }
+
+        public bool IsRoundOver()
+        {
+            return CurrentRoundCount >= MaxRoundCount;
         }
     }
 }

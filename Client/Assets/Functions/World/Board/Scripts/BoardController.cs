@@ -36,8 +36,13 @@ namespace World.Board
         private Tween _tweenAction;
         private CancellationTokenSource _ctsTestLoop;
 
-        public
-            void OnGUI()
+        private void Start()
+        {
+            _txRound.text = String.Empty;
+            _txTurnTimeCountdown.text = String.Empty;
+        }
+
+        public void OnGUI()
         {
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50
             if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
@@ -66,6 +71,7 @@ namespace World.Board
             }
 
             _actionTurn.SetupOrders(_board.GetFactions());
+            _actionTurn.MaxRoundCount = 99;
             while (!_ctsTestLoop.IsCancellationRequested)
             {
                 var result = await PlayAction();

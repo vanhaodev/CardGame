@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Utils;
+using World.Card;
 
 namespace FloatingEffect
 {
@@ -40,7 +41,8 @@ namespace FloatingEffect
 
             // Sử dụng DOJump để tạo hiệu ứng nhảy với chuyển động ngẫu nhiên sang trái hoặc phải
             Vector3 randomPosition =
-                new Vector3(position.x + randomX, position.y + bonusYPos, position.z); // Tính toán vị trí ngẫu nhiên mới
+                new Vector3(position.x + randomX, position.y + bonusYPos,
+                    position.z); // Tính toán vị trí ngẫu nhiên mới
             await effectTransform.DOJump(randomPosition, jumpPower, 1, duration)
                 .AsyncWaitForCompletion(); // Chờ đến khi hiệu ứng hoàn tất
 
@@ -51,19 +53,58 @@ namespace FloatingEffect
                 ReleaseEffect(effect); // Nếu bạn sử dụng hệ thống pool để quản lý lại đối tượng này
             });
         }
- [Button]
+
+        public async void ShowDamageLog(List<DamageLogType> logs, Vector3 position)
+        {
+            string prefabAddress = "FloatingEffect/FloatingEffectDamage.prefab"; // Địa chỉ prefab cho Damage
+
+            // Chạy song song tất cả hiệu ứng bằng UniTask
+            await UniTask.WhenAll(logs.Select(async log =>
+            {
+                FloatingEffect effect = await GetEffectFromPoolOrCreate(prefabAddress);
+
+                // Set text theo từng loại DamageLogType
+                effect.SetText($"<color=yellow>{log.ToString().Substring(0, 3)}</color>");
+
+                // Lấy Transform của hiệu ứng để thay đổi vị trí
+                Transform effectTransform = effect.transform;
+                float bonusYPos = Random.Range(0.5f, 1f);
+                float randomX = Random.Range(-0.5f, 0.5f);
+                Vector3 spawnPosition = new Vector3(position.x + randomX, position.y + bonusYPos, position.z);
+                effectTransform.position = spawnPosition;
+
+                // Hiển thị với alpha = 1
+                effect.GetCanvasGroup().alpha = 1;
+
+                // Cài đặt hiệu ứng di chuyển
+                float duration = 1.0f;
+                float jumpPower = 0.75f;
+                Vector3 randomPosition =
+                    new Vector3(spawnPosition.x + randomX, spawnPosition.y + bonusYPos, spawnPosition.z);
+
+                // Tạo hiệu ứng nhảy
+                await effectTransform.DOJump(randomPosition, jumpPower, 1, duration).ToUniTask();
+
+                // Làm mờ hiệu ứng rồi trả về pool
+                await effect.GetCanvasGroup().DOFade(0f, duration).SetEase(Ease.Linear).ToUniTask();
+                ReleaseEffect(effect);
+            }));
+        }
+
+        [Button]
         public async void ShowSlash(Vector3 position)
         {
             string prefabAddress = "FloatingEffect/FloatingEffectSlash.prefab"; // Địa chỉ prefab cho Damage
 
             // Lấy hiệu ứng từ pool hoặc tạo mới nếu không có
             FloatingEffectParticle effect = await GetEffectFromPoolOrCreate(prefabAddress) as FloatingEffectParticle;
-            
+
             Transform effectTransform = effect.transform;
             effectTransform.position = new Vector3(position.x, position.y, position.z);
             await effect.Play();
             ReleaseEffect(effect);
         }
+
         public async UniTask ShowBullet(Vector3 actorPos, Vector3 targetPosition)
         {
             string prefabAddress = "FloatingEffect/FloatingEffectBullet.prefab";
@@ -83,15 +124,16 @@ namespace FloatingEffect
 
             // Lấy hiệu ứng từ pool hoặc tạo mới nếu không có
             FloatingEffectParticle effect = await GetEffectFromPoolOrCreate(prefabAddress) as FloatingEffectParticle;
-            
+
             Transform effectTransform = effect.transform;
             effectTransform.position = new Vector3(position.x, position.y, position.z);
             await effect.Play();
             ReleaseEffect(effect);
         }
+
         public UniTask Init()
         {
-            return UniTask.CompletedTask;  
+            return UniTask.CompletedTask;
         }
     }
 

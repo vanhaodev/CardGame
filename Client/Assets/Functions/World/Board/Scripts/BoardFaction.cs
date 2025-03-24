@@ -25,11 +25,22 @@ namespace World.Board
                 testModel.Rank = (byte)Random.Range(1, 6);
                 foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
                 {
-                    testModel.CalculatedAttributes.Add(new AttributeModel
+                    if ((int)type < 7)
                     {
-                        Type = type,
-                        Value = Random.Range(1, 500)
-                    });
+                        testModel.CalculatedAttributes.Add(new AttributeModel
+                        {
+                            Type = type,
+                            Value = Random.Range(1, 500)
+                        });
+                    }
+                    else //chance 
+                    {
+                        testModel.CalculatedAttributes.Add(new AttributeModel
+                        {
+                            Type = type,
+                            Value = Random.Range(1000, 10000)
+                        });
+                    }
                 }
 
                 position.Card.CardModel = testModel;
