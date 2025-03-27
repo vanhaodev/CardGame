@@ -8,19 +8,4 @@ namespace World.Card
         public byte UpgradeLevel;
         public SkillBattleModel Battle;
     }
-
-    public class SkillBattleModel
-    {
-        public byte CooldownRoundRemaining;
-
-        public List<SkillTemplateRequirementType> CheckRequirement()
-        {
-            return new List<SkillTemplateRequirementType>();
-        }
-
-        public bool IsReady()
-        {
-            return CooldownRoundRemaining <= 0 && new List<SkillTemplateRequirementType>().Count == 0;
-        }
-    }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
     public class ItemSlotUI : MonoBehaviour
     {

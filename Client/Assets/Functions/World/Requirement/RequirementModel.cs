@@ -4,9 +4,9 @@ using Unity.Jobs.LowLevel.Unsafe;
 using World.Card;
 using World.Player.Character;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
-  [Serializable]
+    [Serializable]
     public class RequirementModel
     {
         //json
@@ -53,18 +53,32 @@ namespace World.Player.Inventory
          */
         // public List<JobType> Jobs;
         public List<LevelRequirementModel> Levels;
-        public CurrencyModel Currency;
+        public List<AttributeRequirementModel> Attributes;
+        /// <summary>
+        /// sẽ bị lấy đi khi nếu là hành động trao đổi (học, nâng cấp...)
+        /// </summary>
+        public List<CurrencyModel> Currencies;
+        /// <summary>
+        /// sẽ bị lấy đi khi nếu là hành động trao đổi (học, nâng cấp...)
+        /// </summary>
         public List<ItemRequirementModel> Items;
-        public List<ushort> CompletedQuestIds;
     }
-[Serializable]
+    [Serializable]
+    public struct AttributeRequirementModel
+    {
+      public AttributeType Type;
+      public ushort Min;
+      public ushort Max;
+    }
+    [Serializable]
     public struct LevelRequirementModel
     {
         public LevelType Type;
         public ushort Min;
         public ushort Max;
     }
-[Serializable]
+
+    [Serializable]
     public struct ItemRequirementModel
     {
         public ushort ItemTemplateId;

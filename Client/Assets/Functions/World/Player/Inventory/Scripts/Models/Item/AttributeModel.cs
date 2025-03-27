@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using World.Card;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
     public class ItemAttributeModel
     {

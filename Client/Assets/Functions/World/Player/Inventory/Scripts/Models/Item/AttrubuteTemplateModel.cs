@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using World.Card;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
     [Serializable]
     public class AttributeTemplateModel

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using World.Requirement;
 
 namespace World.Card
 {
@@ -8,10 +9,6 @@ namespace World.Card
         public string Name;
         public string Description;
         public SkillTriggerType TriggerType;
-        /// <summary>
-        /// Cấp của card, không phải cấp sao nha
-        /// </summary>
-        public SkillTemplateRequirementModel LevelRequirement;
         /// <summary>
         /// max 5 stars
         /// </summary>

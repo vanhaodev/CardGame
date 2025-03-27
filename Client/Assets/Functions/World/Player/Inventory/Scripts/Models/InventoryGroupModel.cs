@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
     public class InventoryGroupModel
     {

@@ -1,4 +1,4 @@
-﻿namespace World.Player.Inventory
+﻿namespace World.Requirement
 {
     public enum ItemType
     {
