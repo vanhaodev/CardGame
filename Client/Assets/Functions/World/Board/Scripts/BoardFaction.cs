@@ -22,7 +22,7 @@ namespace World.Board
             {
                 var testModel = new CardModel();
                 testModel.TemplateId = (ushort)Random.Range(1, 3);
-                testModel.Rank = (byte)Random.Range(1, 6);
+                testModel.Star = (byte)Random.Range(1, 6);
                 foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
                 {
                     if ((int)type < 7)

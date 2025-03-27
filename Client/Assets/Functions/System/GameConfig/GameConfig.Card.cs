@@ -63,7 +63,7 @@ namespace GameConfig
         public async UniTask<Sprite> GetCardSprite(CardModel cardModel)
         {
             var cardTemplateId = cardModel.TemplateId;
-            var key = $"{cardTemplateId}_{cardModel.Rank}";
+            var key = $"{cardTemplateId}_{cardModel.Star}";
 
             // Đảm bảo ConcurrentDictionary con tồn tại
             var value = _loadedCardSprites.GetOrAdd(cardTemplateId, _ => new ConcurrentDictionary<string, Sprite>());

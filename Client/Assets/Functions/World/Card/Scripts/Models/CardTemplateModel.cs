@@ -17,5 +17,6 @@ namespace World.Card
         /// Starter pack attribute when summoned
         /// </summary>
         public List<AttributeModel> Attributes;
+        public List<SkillTemplateModel> Skills;
     }
 }

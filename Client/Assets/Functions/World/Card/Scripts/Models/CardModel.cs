@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace World.Card
 {
@@ -8,7 +9,13 @@ namespace World.Card
     public class CardModel
     {
         public ushort TemplateId;
-        public byte Rank;
+        /// <summary>
+        /// Bậc sao của card, bậc càng cao, ảnh càng đẹp
+        /// </summary>
+        public byte Star;
+        /// <summary>
+        /// Cấp của card
+        /// </summary>
         public int Exp;
         /// <summary>
         /// Base is default stats and star, level, enchantic stats...
@@ -18,6 +25,6 @@ namespace World.Card
         /// Calculated = equipments + base
         /// </summary>
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
-        
+        public List<SkillModel> Skills = new List<SkillModel>();
     } 
 }
