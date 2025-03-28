@@ -60,14 +60,14 @@ namespace World.Board
 
             for (int i = 0; i < 6; i++)
             {
-                var battler = _board.GetFaction(1).GetPosition(i + 1);
-                battler.Card.Battle.SetupBattle(battler.Card);
+                var pos = _board.GetFaction(1).GetPosition(i + 1);
+                pos.Card.Battle.SetupBattle(pos.Card, 1, i + 1);
             }
 
             for (int i = 0; i < 6; i++)
             {
-                var battler = _board.GetFaction(2).GetPosition(i + 1);
-                battler.Card.Battle.SetupBattle(battler.Card);
+                var pos = _board.GetFaction(2).GetPosition(i + 1);
+                pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1);
             }
 
             _actionTurn.SetupOrders(_board.GetFactions());

@@ -145,7 +145,7 @@ namespace FloatingEffect
             new Dictionary<string, DynamicObjectPool<FloatingEffect>>();
 
         // Hàm lấy hiệu ứng từ pool hoặc tạo mới nếu chưa có
-        private async UniTask<FloatingEffect> GetEffectFromPoolOrCreate(string prefabAddress)
+        public async UniTask<FloatingEffect> GetEffectFromPoolOrCreate(string prefabAddress)
         {
             // Kiểm tra nếu hiệu ứng đã được tải và có trong pool rồi
             if (effectPools.TryGetValue(prefabAddress, out var pool))

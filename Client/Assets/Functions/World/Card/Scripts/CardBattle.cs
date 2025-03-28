@@ -10,16 +10,19 @@ namespace World.Card
     public partial class CardBattle : MonoBehaviour
     {
         [SerializeField] private bool _isDead;
+        public int FactionInBoard;
+        public int IndexInBoard;
         public bool IsDead => _isDead;
-
         [SerializeField] private SerializedDictionary<AttributeType, int> _attributes;
         [SerializeField] private CardVital _vital;
         public CardVital Vital => _vital;
         [SerializeField] CardEffect _effect;
         public Dictionary<AttributeType, int> Attributes => _attributes;
 
-        public void SetupBattle(Card card)
+        public void SetupBattle(Card card, int factionInBoard, int indexInBoard)
         {
+            FactionInBoard = factionInBoard;
+            IndexInBoard = indexInBoard;
             _isDead = false;
             // Xóa dữ liệu cũ để tránh lỗi trùng key
             _attributes.Clear();

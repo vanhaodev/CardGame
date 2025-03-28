@@ -32,7 +32,7 @@ namespace World.Card
         private async void Init()
         {
             _spriteCharacter.sprite = await Global.Instance.Get<GameConfig.GameConfig>().GetCardSprite(_cardModel);
-            _battle.SetupBattle(this);
+            // _battle.SetupBattle(this);
         }
 
         /// <summary>

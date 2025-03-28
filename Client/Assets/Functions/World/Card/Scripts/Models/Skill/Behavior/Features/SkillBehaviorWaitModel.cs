@@ -6,7 +6,7 @@ namespace World.Card
     public class SkillBehaviorWaitModel: SkillBehaviorActionModel
     {
         public float TimeSecond;
-        public override async UniTask Execute(Card actor, List<Card> targets)
+        public override async UniTask Execute(Card actor, Card target)
         {
             await UniTask.WaitForSeconds(TimeSecond);
         }
