@@ -25,12 +25,12 @@ namespace World.Board
                 testModel.Star = (byte)Random.Range(1, 6);
                 foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
                 {
-                    if ((int)type < 7)
+                    if ((int)type < 8)
                     {
                         testModel.CalculatedAttributes.Add(new AttributeModel
                         {
                             Type = type,
-                            Value = Random.Range(1, 500)
+                            Value = Random.Range(200, 500)
                         });
                     }
                     else //chance 

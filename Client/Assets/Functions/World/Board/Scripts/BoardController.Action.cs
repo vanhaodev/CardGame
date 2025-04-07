@@ -15,7 +15,7 @@ namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
-        [SerializeField] ActionTurnModel _actionTurn;
+        [SerializeField] ActionTurnManager _actionTurn;
         [SerializeField] private TextMeshProUGUI _txRound;
 
         [FormerlySerializedAs("_txTurnCountdown")] [SerializeField]
@@ -26,14 +26,14 @@ namespace World.Board
             //========================[Check round]===============\
             if (_actionTurn.IsRoundOver())
             {
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Round over" }; // Hòa
             }
 
             //========================[Setup Action]===============\
             var turn = _actionTurn.GetNextTurn();
             if (turn == null)
             {
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
             }
 
             //========================[Set round UI]===============\
@@ -65,8 +65,16 @@ namespace World.Board
             }
 
             //========================[Perform Attacks]===============\
+            // if (!turn.IsAvailable())
+            // {
+            //     Debug.Log(
+            //         $"<color=red>Không đủ AP => bỏ qua: {turn.ActionPoint}</color>");
+            //     return null;
+            // }
             Debug.Log(
-                $"<color=yellow>{turn.FactionIndex}: {actor.Card.CardModel.CalculatedAttributes.Find(i => i.Type == AttributeType.AttackSpeed)?.Value ?? 0}</color>");
+                $"<color=yellow>Faction: {turn.FactionIndex}" +
+                $"\nSpeed: {turn.AttackSpeed}" +
+                $" | Action Point: {turn.ActionPoint}</color>");
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor,
@@ -76,7 +84,10 @@ namespace World.Board
             {
                 await Melee(actor, targetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
             }
-
+            turn.ResetAP();
+            _actionTurn.UpdateOrderIndex();
+            Debug.Log(
+                $"<color=yellow>Action Point After: {turn.ActionPoint}</color>");
             //========================[Camera Reset]===============\
             await UniTask.Yield();
             return null;
@@ -135,6 +146,7 @@ namespace World.Board
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
                             target.Card.Battle.OnTakeDamageLate();
+                            
                             isShowFloatingEffect = true;
 
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),

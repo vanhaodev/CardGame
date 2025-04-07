@@ -99,7 +99,7 @@ namespace World.Board
                 }
             }
 
-            int targetCount = Random.Range(1, 3); // allow skill target count
+            int targetCount = 1;//Random.Range(1, 3); // allow skill target count
             Shuffle(validIndexes); // Xáo trộn danh sách
 
             return validIndexes.Take(Mathf.Min(targetCount, validIndexes.Count)).ToList();

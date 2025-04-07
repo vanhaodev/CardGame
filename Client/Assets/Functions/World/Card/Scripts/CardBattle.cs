@@ -104,7 +104,7 @@ namespace World.Card
             return (attackerTotalDamage, damageLogs);
         }
 
-        public void OnTakeDamageLate()
+        public bool OnTakeDamageLate()
         {
             if (_attributes[AttributeType.Hp] <= 0)
             {
@@ -113,6 +113,7 @@ namespace World.Card
             }
 
             _vital.UpdateHp(_attributes[AttributeType.Hp], _attributes[AttributeType.HpMax]);
+            return _isDead;
         }
     }
 }
