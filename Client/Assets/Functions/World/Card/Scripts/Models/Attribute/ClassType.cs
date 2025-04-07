@@ -25,19 +25,14 @@
         /// </summary>
         Tactician = 4, 
         /// <summary>
-        /// "Phá Rối" - Gây hiệu ứng bất lợi, vô hiệu hóa kẻ địch (The Nihility) <br/>
-        /// Gây hiệu ứng xấu lên kẻ địch. Effect Hit Rate và Critical Damage sẽ được tăng trưởng mạnh để tối ưu hóa các hiệu ứng trạng thái. Chỉ số Break Damage cũng khá mạnh.
-        /// </summary>
-        Saboteur = 5, 
-        /// <summary>
         /// "Hộ Vệ" - Tanker, tạo khiên bảo vệ đồng đội (The Preservation) <br/>
         /// Tanker, tăng DEF và HP để bảo vệ đồng đội. Chỉ số Speed thấp hơn để không chiếm quá nhiều ưu thế về hành động, nhưng có thể bảo vệ đồng đội tốt.
         /// </summary>
-        Guardian = 6,
+        Guardian = 5,
         /// <summary>
         /// "Bác Sĩ Quân Sự" - Hồi máu, cứu trợ đồng đội (The Abundance) <br/>
         /// Tăng HP và Energy Regeneration cao để hỗ trợ hồi máu cho đồng đội. Outgoing Healing là chỉ số đặc biệt, tăng mạnh để tối ưu hóa khả năng hồi phục.
         /// </summary>
-        Medic = 7 
+        Medic = 6 
     }
 }

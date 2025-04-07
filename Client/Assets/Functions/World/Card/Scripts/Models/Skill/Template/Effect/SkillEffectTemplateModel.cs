@@ -4,10 +4,10 @@ using World.Requirement;
 namespace World.Card.Skill
 {
     /// <summary>
-    /// Lưu trữ trong trận đánh
+    /// Mỗi level của một skill sẽ có option khác biệt mạnh dần
     /// </summary>
-    public class SkillBattleModel
+    public abstract class SkillEffectTemplateModel
     {
-        public byte CooldownRoundRemaining;
+        
     }
 }
