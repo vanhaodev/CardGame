@@ -72,6 +72,7 @@ namespace World.Board
 
             _actionTurn.SetupOrders(_board.GetFactions());
             _actionTurn.MaxRoundCount = 99;
+            int count = 0;
             while (!_ctsTestLoop.IsCancellationRequested)
             {
                 var result = await PlayAction();
@@ -80,6 +81,9 @@ namespace World.Board
                     Debug.Log(JsonConvert.SerializeObject(result));
                     break;
                 }
+
+                if (count >= 999) throw new Exception("loop is too large.");
+                count++;
             }
 
             PerformCameraReset().Forget();
@@ -99,7 +103,7 @@ namespace World.Board
                 }
             }
 
-            int targetCount = 1;//Random.Range(1, 3); // allow skill target count
+            int targetCount = 1; //Random.Range(1, 3); // allow skill target count
             Shuffle(validIndexes); // Xáo trộn danh sách
 
             return validIndexes.Take(Mathf.Min(targetCount, validIndexes.Count)).ToList();

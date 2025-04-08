@@ -29,13 +29,7 @@ namespace World.Board
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Round over" }; // Hòa
             }
 
-            //========================[Setup Action]===============\
-            var turn = _actionTurn.GetNextTurn();
-            if (turn == null)
-            {
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
-            }
-
+           
             //========================[Set round UI]===============\
             _txRound.text = $"{_actionTurn.CurrentRoundCount}/{_actionTurn.MaxRoundCount}";
 
@@ -50,11 +44,24 @@ namespace World.Board
             if (faction2Dead)
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 1 }; // Phe 1 thắng
 
+            //========================[Setup Action]===============\
+            var turn = _actionTurn.GetNextTurn();
+            if (turn == null)
+            {
+                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
+            }
+            //chưa kịp hành động thì đã bị killed
+            if (!turn.IsAvailable())
+            {
+                _actionTurn.UpdateOrderIndex();
+                
+                Debug.Log($"Card f{turn.FactionIndex} a{turn.ActorIndex} is ap:{turn.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
+                return null;
+            }
 
             //===========================[Get actor]===================================\
             var actorFaction = _board.GetFaction(turn.FactionIndex);
             var actor = actorFaction.GetPosition(turn.ActorIndex);
-            if (actor.Card.Battle.IsDead) return null;
             //========================[Select Targets]===============\
             var targetFaction = _board.GetFaction(turn.FactionIndex == 1 ? 2 : 1);
             List<int> targetIndex = GetTargets(targetFaction);
@@ -257,7 +264,7 @@ namespace World.Board
                             Global.Instance.Get<FloatingEffectManager>()
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
-
+                            target.Card.Battle.OnTakeDamageLate();
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
                                 targetPosition.z);
 

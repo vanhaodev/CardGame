@@ -8,33 +8,6 @@ using World.Card;
 namespace World.Board
 {
     [System.Serializable]
-    public class ActionTurnActorModel
-    {
-        public Card.Card Card;
-        public int FactionIndex;
-        public int ActorIndex;
-        public int AttackSpeed;
-        public int ActionPoint;
-
-        public bool IsAvailable()
-        {
-            return ActionPoint >= 1000 && !Card.Battle.IsDead;
-        }
-
-        public void ResetAP() => ActionPoint = 0;
-
-        public void AccumulateAP()
-        {
-            if (AttackSpeed <= 0)
-            {
-                throw new Exception("Speed must be greater than 0");
-            }
-
-            ActionPoint += AttackSpeed;
-        }
-    }
-
-    [System.Serializable]
     public class ActionTurnManager
     {
         public List<ActionTurnActorModel> OriginalOrders = new List<ActionTurnActorModel>();
@@ -81,6 +54,7 @@ namespace World.Board
             if (OriginalOrders.Count == 0) return;
             if (PreviousIndex() != ActionAvailableOrders.Count - 1) return;
             //dùng while để đảm bảo có ít nhất một người được hành đồng trong round
+            int maxWhile = 0;
             while (true)
             {
                 foreach (var order in OriginalOrders)
@@ -92,7 +66,14 @@ namespace World.Board
                 {
                     break;
                 }
+
+                if (maxWhile >= 99)
+                {
+                    throw new IndexOutOfRangeException("The loop is too large.");
+                }
+                maxWhile++;
             }
+            
 
             ActionAvailableOrders = OriginalOrders
                 .Where(i => i.IsAvailable())
@@ -115,7 +96,6 @@ namespace World.Board
             {
                 int nextIndex = (previousIndex + i) % ActionAvailableOrders.Count;
                 CurrentTurn = ActionAvailableOrders[nextIndex];
-                if (!CurrentTurn.IsAvailable()) continue;
                 return CurrentTurn;
             }
 
