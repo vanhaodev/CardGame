@@ -13,11 +13,14 @@ namespace World.Board
 {
     public class BoardFaction : MonoBehaviour
     {
-        [SerializeField] private Image _imageFrame; //skin just apply for owner faction
+        /// <summary>
+        /// các battler của phe
+        /// </summary>
         [SerializeField] private List<BoardFactionPosition> _positions;
 
         private void Start()
         {
+            //test chỉ số
             foreach (var position in _positions)
             {
                 var testModel = new CardModel();
@@ -55,9 +58,9 @@ namespace World.Board
             }
         }
 
-        public List<BoardFactionPosition> GetPositions() => _positions;
+        public List<BoardFactionPosition> GetAllPositions() => _positions;
 
-        public BoardFactionPosition GetPosition(int index)
+        public BoardFactionPosition GetPositionByIndex(int index)
         {
             return _positions[index - 1];
         }
@@ -81,6 +84,10 @@ namespace World.Board
                 rect.anchoredPosition = p.OriginalPosition;
             }
         }
+        /// <summary>
+        /// Đội đã die hết
+        /// </summary>
+        /// <returns></returns>
         public bool IsAllDead()
         {
             return _positions.All(i => i.Card.Battle.IsDead); // Tất cả đều chết thì trả về true

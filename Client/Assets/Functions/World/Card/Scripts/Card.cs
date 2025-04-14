@@ -10,11 +10,10 @@ namespace World.Card
 {
     public class Card : MonoBehaviour
     {
-
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
-       
+
         [SerializeField] CardEffect _effect;
         [SerializeField] CardBattle _battle;
         public CardBattle Battle => _battle;
@@ -28,6 +27,9 @@ namespace World.Card
                 Init();
             }
         }
+
+        public Sprite SpriteCharacter => _spriteCharacter.sprite;
+
 
         private async void Init()
         {

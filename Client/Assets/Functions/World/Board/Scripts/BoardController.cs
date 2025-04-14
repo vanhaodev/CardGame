@@ -18,21 +18,24 @@ namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
-        [SerializeField] CinemachineCamera _camera;
-        [SerializeField] private Transform _transFormCameraCenterPoint;
-        [SerializeField] Board _board;
+        //------------ Comp ---------------\\
+        [SerializeField] [BoxGroup("Main")] CinemachineCamera _camera;
+        [SerializeField] [BoxGroup("Main")] private Transform _transFormCameraCenterPoint;
+        [SerializeField] [BoxGroup("Main")] Board _board;
+        [SerializeField] [BoxGroup("Main")] CinemachineCameraShake _cameraShake;
 
+        //------------ Entity ---------------\\
         /// <summary>
         /// the actor slibing index need to highest in canvas
         /// </summary>
-        [SerializeField] private Transform _cardActingContainer;
+        [SerializeField] [BoxGroup("Main")] private Transform _cardActingContainer;
 
         /// <summary>
         /// the actor slibing index need to highest in canvas but under actor
         /// </summary>
-        [SerializeField] private Transform _cardTargetContainer;
+        [SerializeField] [BoxGroup("Main")] private Transform _cardTargetContainer;
 
-        [SerializeField] CinemachineCameraShake _cameraShake;
+        //----------- Data -------------\\
         private Tween _tweenAction;
         private CancellationTokenSource _ctsTestLoop;
 
@@ -60,17 +63,17 @@ namespace World.Board
 
             for (int i = 0; i < 6; i++)
             {
-                var pos = _board.GetFaction(1).GetPosition(i + 1);
+                var pos = _board.GetFactionByIndex(1).GetPositionByIndex(i + 1);
                 pos.Card.Battle.SetupBattle(pos.Card, 1, i + 1);
             }
 
             for (int i = 0; i < 6; i++)
             {
-                var pos = _board.GetFaction(2).GetPosition(i + 1);
+                var pos = _board.GetFactionByIndex(2).GetPositionByIndex(i + 1);
                 pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1);
             }
 
-            _actionTurn.SetupOrders(_board.GetFactions());
+            _actionTurn.SetupOrders(_board.GetAllFactions());
             _actionTurn.MaxRoundCount = 99;
             int count = 0;
             while (!_ctsTestLoop.IsCancellationRequested)
@@ -96,7 +99,7 @@ namespace World.Board
 
             for (int i = 0; i < 6; i++)
             {
-                var theTarget = targetFaction.GetPosition(i + 1);
+                var theTarget = targetFaction.GetPositionByIndex(i + 1);
                 if (!theTarget.Card.Battle.IsDead)
                 {
                     validIndexes.Add(i + 1);

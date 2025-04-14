@@ -6,6 +6,7 @@ using DG.Tweening;
 using FloatingEffect;
 using Globals;
 using Newtonsoft.Json;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,11 +16,11 @@ namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
-        [SerializeField] ActionTurnManager _actionTurn;
-        [SerializeField] private TextMeshProUGUI _txRound;
-
-        [FormerlySerializedAs("_txTurnCountdown")] [SerializeField]
-        private TextMeshProUGUI _txTurnTimeCountdown;
+        //------------------ Display --------------\\
+        [SerializeField] [BoxGroup("Action")] private TextMeshProUGUI _txRound;
+        [SerializeField] [BoxGroup("Action")]private TextMeshProUGUI _txTurnTimeCountdown;
+        //------------------ Comp ------------------\\
+        [SerializeField] [BoxGroup("Action")]ActionTurnManager _actionTurn;
 
         public async Task<BoardEndResultModel> PlayAction()
         {
@@ -28,14 +29,12 @@ namespace World.Board
             {
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Round over" }; // Hòa
             }
-
-           
             //========================[Set round UI]===============\
             _txRound.text = $"{_actionTurn.CurrentRoundCount}/{_actionTurn.MaxRoundCount}";
 
             //========================[Check winner and loser]===============\
-            bool faction1Dead = _board.GetFaction(1).IsAllDead();
-            bool faction2Dead = _board.GetFaction(2).IsAllDead();
+            bool faction1Dead = _board.GetFactionByIndex(1).IsAllDead();
+            bool faction2Dead = _board.GetFactionByIndex(2).IsAllDead();
 
             if (faction1Dead && faction2Dead)
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
@@ -55,15 +54,15 @@ namespace World.Board
             {
                 _actionTurn.UpdateOrderIndex();
                 
-                Debug.Log($"Card f{turn.FactionIndex} a{turn.ActorIndex} is ap:{turn.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
+                Debug.Log($"Card f{turn.FactionIndex} a{turn.MemberIndex} is ap:{turn.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
                 return null;
             }
 
             //===========================[Get actor]===================================\
-            var actorFaction = _board.GetFaction(turn.FactionIndex);
-            var actor = actorFaction.GetPosition(turn.ActorIndex);
+            var actorFaction = _board.GetFactionByIndex(turn.FactionIndex);
+            var actor = actorFaction.GetPositionByIndex(turn.MemberIndex);
             //========================[Select Targets]===============\
-            var targetFaction = _board.GetFaction(turn.FactionIndex == 1 ? 2 : 1);
+            var targetFaction = _board.GetFactionByIndex(turn.FactionIndex == 1 ? 2 : 1);
             List<int> targetIndex = GetTargets(targetFaction);
 
             if (targetIndex.Count == 0)
@@ -85,11 +84,11 @@ namespace World.Board
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor,
-                    targetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
+                    targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList());
             }
             else
             {
-                await Melee(actor, targetIndex.Select(target => targetFaction.GetPosition(target)).ToList());
+                await Melee(actor, targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList());
             }
             turn.ResetAP();
             _actionTurn.UpdateOrderIndex();
