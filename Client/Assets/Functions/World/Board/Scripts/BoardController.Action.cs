@@ -61,6 +61,7 @@ namespace World.Board
             //===========================[Get actor]===================================\
             var actorFaction = _board.GetFactionByIndex(turn.FactionIndex);
             var actor = actorFaction.GetPositionByIndex(turn.MemberIndex);
+            await _actionTurn.SetCurrentActorTurnUI();
             //========================[Select Targets]===============\
             var targetFaction = _board.GetFactionByIndex(turn.FactionIndex == 1 ? 2 : 1);
             List<int> targetIndex = GetTargets(targetFaction);

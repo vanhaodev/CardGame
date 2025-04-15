@@ -1,13 +1,19 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace World.Board
 {
-    public class ActorTurnUI : MonoBehaviour
+    public class ActorTurnOrderItemUI : MonoBehaviour
     {
         //-------------- Comp -------------\\
-        [SerializeField] Image _characterImage;
+        [SerializeField] Image _imageCharacterAvatar;
+
+        /// <summary>
+        /// Phe ta (1) thì màu xanh lá, phe địch (2) màu đỏ
+        /// </summary>
+        [SerializeField] private Image[] _imageFactionTags;
 
         //------------- Data ------------\\
         [SerializeField] int _factionIndex;
@@ -17,14 +23,17 @@ namespace World.Board
         {
             _factionIndex = factionIndex;
             _memberIndex = memberIndex;
-            _characterImage.sprite = image;
+            _imageCharacterAvatar.sprite = image;
+
+            _imageFactionTags[0].gameObject.SetActive(factionIndex == 1);
+            _imageFactionTags[1].gameObject.SetActive(factionIndex == 2);
         }
 
         public void Show(bool isShow = true)
         {
             if (!isShow)
             {
-                _characterImage.sprite = null;
+                _imageCharacterAvatar.sprite = null;
             }
 
             gameObject.SetActive(isShow);

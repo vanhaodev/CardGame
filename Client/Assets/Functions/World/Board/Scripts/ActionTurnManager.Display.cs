@@ -13,7 +13,7 @@ namespace World.Board
         /// <summary>
         /// mặc định có 12 phần tử, ẩn phần tử không có
         /// </summary>
-        [SerializeField] [BoxGroup("Display")] private List<ActorTurnUI> _actorTurnUIs;
+        [SerializeField] [BoxGroup("Display")] private List<ActorTurnOrderItemUI> _actorTurnUIs;
 
         [SerializeField] [BoxGroup("Display")] private GameObject _objActorTurnUICurrentBorder;
         private CancellationTokenSource _ctsTurnUICurrentBorder;
@@ -34,7 +34,7 @@ namespace World.Board
             }
         }
 
-        public void SetCurrentActorTurnUI()
+        public async UniTask SetCurrentActorTurnUI()
         {
             var index = _actorTurnUIs.FindIndex(i => i.IsCurrent(CurrentTurn != null ? CurrentTurn.FactionIndex : 0,
                 CurrentTurn != null ? CurrentTurn.MemberIndex : 0));
@@ -45,8 +45,14 @@ namespace World.Board
             }
 
             var currentUI = _actorTurnUIs[index];
-            _objActorTurnUICurrentBorder.transform.DOMove(currentUI.transform.position, 2f)
-                .WithCancellation(cancellationToken: _ctsTurnUICurrentBorder.Token);
+            _ctsTurnUICurrentBorder = new CancellationTokenSource();
+            var worldTargetPos = currentUI.transform.position;
+            var parent = _objActorTurnUICurrentBorder.transform.parent;
+            var localTargetPos = parent.InverseTransformPoint(worldTargetPos);
+
+            await _objActorTurnUICurrentBorder.transform
+                .DOLocalMove(localTargetPos, 0.5f)
+                .WithCancellation(cancellationToken: _ctsTurnUICurrentBorder.Token).AsAsyncUnitUniTask();
         }
 
         public void Dispose()

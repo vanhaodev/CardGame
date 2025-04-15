@@ -33,7 +33,7 @@ namespace World.Board
                         testModel.CalculatedAttributes.Add(new AttributeModel
                         {
                             Type = type,
-                            Value = 10
+                            Value = 1000
                         });
                     }
                     else if ((int)type < 8)
@@ -62,6 +62,7 @@ namespace World.Board
 
         public BoardFactionPosition GetPositionByIndex(int index)
         {
+            Debug.Log($"GetPositionByIndex: {index}");
             return _positions[index - 1];
         }
 

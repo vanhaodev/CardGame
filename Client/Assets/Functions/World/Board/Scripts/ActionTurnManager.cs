@@ -106,6 +106,7 @@ namespace World.Board
                 .OrderByDescending(i => i.ActionPoint)
                 .ToList();
             CurrentRoundCount++;
+            UpdateNewRoundActorTurnUI();
             Debug.Log($"Round: {CurrentRoundCount}\n" +
                       $"Available: {ActionAvailableOrders.Count}");
         }
