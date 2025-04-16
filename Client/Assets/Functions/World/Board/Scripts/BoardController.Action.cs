@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -11,16 +12,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using World.Card;
+using Random = UnityEngine.Random;
 
 namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
         //------------------ Display --------------\\
-        [SerializeField] [BoxGroup("Action")] private TextMeshProUGUI _txRound;
-        [SerializeField] [BoxGroup("Action")]private TextMeshProUGUI _txTurnTimeCountdown;
+
         //------------------ Comp ------------------\\
-        [SerializeField] [BoxGroup("Action")]ActionTurnManager _actionTurn;
+        [SerializeField] [BoxGroup("Action")] ActionTurnManager _actionTurn;
 
         public async Task<BoardEndResultModel> PlayAction()
         {
@@ -29,8 +30,9 @@ namespace World.Board
             {
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Round over" }; // Hòa
             }
+
             //========================[Set round UI]===============\
-            _txRound.text = $"{_actionTurn.CurrentRoundCount}/{_actionTurn.MaxRoundCount}";
+            _board.SetRound(_actionTurn.CurrentRoundCount, _actionTurn.MaxRoundCount);
 
             //========================[Check winner and loser]===============\
             bool faction1Dead = _board.GetFactionByIndex(1).IsAllDead();
@@ -49,21 +51,23 @@ namespace World.Board
             {
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
             }
+
             //chưa kịp hành động thì đã bị killed
             if (!turn.IsAvailable())
             {
                 _actionTurn.UpdateOrderIndex();
-                
-                Debug.Log($"Card f{turn.FactionIndex} a{turn.MemberIndex} is ap:{turn.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
+
+                Debug.Log(
+                    $"Card f{turn.Card.Battle.FactionIndex} a{turn.Card.Battle.MemberIndex} is ap:{turn.Card.Battle.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
                 return null;
             }
 
             //===========================[Get actor]===================================\
-            var actorFaction = _board.GetFactionByIndex(turn.FactionIndex);
-            var actor = actorFaction.GetPositionByIndex(turn.MemberIndex);
+            var actorFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex);
+            var actor = actorFaction.GetPositionByIndex(turn.Card.Battle.MemberIndex);
             await _actionTurn.SetCurrentActorTurnUI();
             //========================[Select Targets]===============\
-            var targetFaction = _board.GetFactionByIndex(turn.FactionIndex == 1 ? 2 : 1);
+            var targetFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex == 1 ? 2 : 1);
             List<int> targetIndex = GetTargets(targetFaction);
 
             if (targetIndex.Count == 0)
@@ -79,9 +83,9 @@ namespace World.Board
             //     return null;
             // }
             Debug.Log(
-                $"<color=yellow>Faction: {turn.FactionIndex}" +
-                $"\nSpeed: {turn.AttackSpeed}" +
-                $" | Action Point: {turn.ActionPoint}</color>");
+                $"<color=yellow>Faction: {turn.Card.Battle.FactionIndex}" +
+                $"\nSpeed: {turn.Card.Battle.Attributes[AttributeType.AttackSpeed]}" +
+                $" | Action Point: {turn.Card.Battle.ActionPoint}</color>");
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor,
@@ -91,10 +95,11 @@ namespace World.Board
             {
                 await Melee(actor, targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList());
             }
+
             turn.ResetAP();
             _actionTurn.UpdateOrderIndex();
             Debug.Log(
-                $"<color=yellow>Action Point After: {turn.ActionPoint}</color>");
+                $"<color=yellow>Action Point After: {turn.Card.Battle.ActionPoint}</color>");
             //========================[Camera Reset]===============\
             await UniTask.Yield();
             return null;
@@ -104,7 +109,7 @@ namespace World.Board
         public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets)
         {
             //========================[Camera Focus]===============\
-            await PerformCameraFocus(actor.Card.transform, 5.2f);
+            await PerformCameraFocus(actor.Card.transform, 7f);
             //========================[Prepare Melee Attack]===============\
             Vector3 originalPosition = actor.Card.transform.position;
 
@@ -152,8 +157,13 @@ namespace World.Board
                             Global.Instance.Get<FloatingEffectManager>()
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
-                            target.Card.Battle.OnTakeDamageLate();
-                            
+                            var isDead = target.Card.Battle.OnTakeDamageLate();
+                            if (isDead)
+                            {
+                                _actionTurn.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
+                                    target.Card.Battle.MemberIndex);
+                            }
+
                             isShowFloatingEffect = true;
 
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
@@ -243,7 +253,7 @@ namespace World.Board
                 }
 
                 Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
-                await PerformCameraFocus(actor.Card.transform, 5.2f);
+                await PerformCameraFocus(actor.Card.transform, 7f);
                 await actor.Card.transform.DORotateQuaternion(targetRotation, 0.5f).SetEase(Ease.OutQuad)
                     .AsyncWaitForCompletion();
                 //
@@ -265,6 +275,13 @@ namespace World.Board
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
                             target.Card.Battle.OnTakeDamageLate();
+                            var isDead = target.Card.Battle.OnTakeDamageLate();
+                            if (isDead)
+                            {
+                                _actionTurn.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
+                                    target.Card.Battle.MemberIndex);
+                            }
+
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
                                 targetPosition.z);
 
@@ -310,7 +327,7 @@ namespace World.Board
 
         private async UniTask PerformCameraReset()
         {
-            await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 7.2f, 0.5f)
+            await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 10f, 0.5f)
                 .OnPlay(() => { _camera.Follow = _transFormCameraCenterPoint; })
                 .SetEase(Ease.InOutSine)
                 .AsyncWaitForCompletion();

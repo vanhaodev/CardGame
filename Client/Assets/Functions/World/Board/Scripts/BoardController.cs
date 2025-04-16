@@ -10,6 +10,7 @@ using FloatingEffect;
 using Globals;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
+using TMPro;
 using Unity.Cinemachine;
 using Utils;
 using Random = UnityEngine.Random;
@@ -23,7 +24,6 @@ namespace World.Board
         [SerializeField] [BoxGroup("Main")] private Transform _transFormCameraCenterPoint;
         [SerializeField] [BoxGroup("Main")] Board _board;
         [SerializeField] [BoxGroup("Main")] CinemachineCameraShake _cameraShake;
-
         //------------ Entity ---------------\\
         /// <summary>
         /// the actor slibing index need to highest in canvas
@@ -41,10 +41,16 @@ namespace World.Board
 
         private void Start()
         {
-            _txRound.text = String.Empty;
-            _txTurnTimeCountdown.text = String.Empty;
-        }
 
+        }
+        private void FixedUpdate()
+        {
+            if (_actionTurn != null)
+            {
+                var currentTurnCountDownTimeSecond = _actionTurn.UpdateTimeCountdown();
+                _board.SetTurnCountDown(currentTurnCountDownTimeSecond);
+            }
+        }
         public void OnGUI()
         {
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50

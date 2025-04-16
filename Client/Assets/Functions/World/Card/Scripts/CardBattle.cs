@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using World.Card;
 using Random = UnityEngine.Random;
 
@@ -9,20 +11,43 @@ namespace World.Card
 {
     public partial class CardBattle : MonoBehaviour
     {
-        [SerializeField] private bool _isDead;
-        public int FactionInBoard;
-        public int IndexInBoard;
-        public bool IsDead => _isDead;
-        [SerializeField] private SerializedDictionary<AttributeType, int> _attributes;
         [SerializeField] private CardVital _vital;
         public CardVital Vital => _vital;
         [SerializeField] CardEffect _effect;
+        //----------------------Data-------------------------\\
+        [FormerlySerializedAs("_factionIndexInBoard")] [SerializeField] int factionIndex;
+        [FormerlySerializedAs("_memberIndexInBoard")] [SerializeField] int memberIndex;
+        [SerializeField] private SerializedDictionary<AttributeType, int> _attributes;
+        /// <summary>
+        /// điểm hành động, thứ tự trong round xếp theo AP cao đến thấp và phải lớn hơn AP_NEED
+        /// </summary>
+        [SerializeField] private int _actionPoint;
+        /// <summary>
+        /// điểm kỹ năng cuối
+        /// </summary>
+        [SerializeField] private int _ultimatePoint;
+        [SerializeField] private bool _isDead;
+        public int FactionIndex => factionIndex;
+        public int MemberIndex => memberIndex;
         public Dictionary<AttributeType, int> Attributes => _attributes;
-
-        public void SetupBattle(Card card, int factionInBoard, int indexInBoard)
+        public int ActionPoint => _actionPoint;
+        public int UltimatePoint => _ultimatePoint;
+        public bool IsDead => _isDead;
+        public void ResetAP() => _actionPoint = 0;
+        public void AccumulateAP()
         {
-            FactionInBoard = factionInBoard;
-            IndexInBoard = indexInBoard;
+            if(IsDead) return;
+            if (Attributes[AttributeType.AttackSpeed] <= 0)
+            {
+                throw new Exception("Speed must be greater than 0");
+            }
+
+            _actionPoint += Attributes[AttributeType.AttackSpeed];
+        }
+        public void SetupBattle(Card card, int factionIndexInBoard, int memberIndexInBoard)
+        {
+            factionIndex = factionIndexInBoard;
+            memberIndex = memberIndexInBoard;
             _isDead = false;
             // Xóa dữ liệu cũ để tránh lỗi trùng key
             _attributes.Clear();

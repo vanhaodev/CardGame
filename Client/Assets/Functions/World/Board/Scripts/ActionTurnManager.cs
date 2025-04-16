@@ -11,6 +11,7 @@ namespace World.Board
     [System.Serializable]
     public partial class ActionTurnManager
     {
+        private const float LIMIT_TURN_TIME_SECOND = 30;
         /// <summary>
         /// Lưu trữ tất cả battler đã đăng ký trận này
         /// </summary>
@@ -29,12 +30,30 @@ namespace World.Board
         [BoxGroup("Main")] public int CurrentRoundCount;
 
         [BoxGroup("Main")] public ActionTurnActorModel CurrentTurn;
+        /// <summary>
+        /// time đếm ngược giới hạn thời gian suy nghĩ của turner
+        /// </summary>
+        private float _timeCountdownSecond;
 
         public ActionTurnManager()
         {
             CurrentRoundCount = 0;
         }
 
+        public void ResetTimeCountdown()
+        {
+            _timeCountdownSecond = LIMIT_TURN_TIME_SECOND;
+        }
+        public float UpdateTimeCountdown()
+        {
+            _timeCountdownSecond -= Time.deltaTime;
+            return _timeCountdownSecond;
+        }
+
+        public bool IsTimeCountdownEnded()
+        {
+            return _timeCountdownSecond <= 0;
+        }
         /// <summary>
         /// Đưa tất cả battler vào danh sách turn để chuẩn bị cho trận chiến
         /// </summary>
@@ -53,11 +72,7 @@ namespace World.Board
 
                     OriginalOrders.Add(new ActionTurnActorModel()
                     {
-                        Card = pos.Card,
-                        FactionIndex = factionIndex, // factionIndex đúng giá trị
-                        MemberIndex = memberIndex,
-                        AttackSpeed = cardModel.CalculatedAttributes
-                            .Find(i => i.Type == AttributeType.AttackSpeed)?.Value ?? 0
+                        Card = pos.Card
                     });
                 }
 
@@ -103,7 +118,7 @@ namespace World.Board
 
             ActionAvailableOrders = OriginalOrders
                 .Where(i => i.IsAvailable())
-                .OrderByDescending(i => i.ActionPoint)
+                .OrderByDescending(i => i.Card.Battle.ActionPoint)
                 .ToList();
             CurrentRoundCount++;
             UpdateNewRoundActorTurnUI();
@@ -132,6 +147,7 @@ namespace World.Board
             {
                 int nextIndex = (previousIndex + i) % ActionAvailableOrders.Count;
                 CurrentTurn = ActionAvailableOrders[nextIndex];
+                ResetTimeCountdown();
                 return CurrentTurn;
             }
 

@@ -33,7 +33,7 @@ namespace World.Board
                         testModel.CalculatedAttributes.Add(new AttributeModel
                         {
                             Type = type,
-                            Value = 1000
+                            Value = 200
                         });
                     }
                     else if ((int)type < 8)
