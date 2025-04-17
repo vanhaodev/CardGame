@@ -10,6 +10,6 @@
         /// Loại attribute muốn thay đổi
         /// </summary>
         public AttributeType ModifyAttributeType;
-        public string Formular;
+        public string Formula;
     }
 }

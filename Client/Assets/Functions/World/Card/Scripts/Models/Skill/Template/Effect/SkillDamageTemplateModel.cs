@@ -4,6 +4,6 @@ namespace World.Card.Skill
 {
     public class SkillDamageTemplateModel: SkillEffectTemplateModel
     {
-        public string Formular;
+        public string Formula;
     }
 }

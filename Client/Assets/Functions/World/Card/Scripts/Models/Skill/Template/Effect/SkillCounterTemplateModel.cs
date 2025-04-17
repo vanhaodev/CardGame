@@ -6,6 +6,6 @@
         /// <summary>
         /// Nếu rate success thì damage counter sẽ tính từ công thức ra
         /// </summary>
-        public string Formular;
+        public string Formula;
     }
 }

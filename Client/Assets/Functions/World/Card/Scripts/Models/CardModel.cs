@@ -27,5 +27,10 @@ namespace World.Card
         /// </summary>
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
         public List<SkillModel> Skills = new List<SkillModel>();
+
+        public short GetLevel()
+        {
+            return (short)(Exp / 100);
+        }
     } 
 }
