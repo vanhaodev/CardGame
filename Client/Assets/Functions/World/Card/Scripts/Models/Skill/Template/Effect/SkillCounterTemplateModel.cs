@@ -4,8 +4,8 @@
     {
         public short Rate;
         /// <summary>
-        /// Trả lại số sát thương bằng x% mình nhận được
+        /// Nếu rate success thì damage counter sẽ tính từ công thức ra
         /// </summary>
-        public short DamagePercent;
+        public string Formular;
     }
 }

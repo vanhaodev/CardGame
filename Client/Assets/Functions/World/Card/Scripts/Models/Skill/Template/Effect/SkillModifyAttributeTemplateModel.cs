@@ -1,0 +1,15 @@
+﻿namespace World.Card.Skill
+{
+    public class SkillModifyAttributeTemplateModel: SkillEffectTemplateModel
+    {
+        /// <summary>
+        /// Số round ảnh hưởng
+        /// </summary>
+        public byte Round;
+        /// <summary>
+        /// Loại attribute muốn thay đổi
+        /// </summary>
+        public AttributeType ModifyAttributeType;
+        public string Formular;
+    }
+}

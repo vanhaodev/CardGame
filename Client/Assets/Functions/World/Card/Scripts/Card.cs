@@ -43,11 +43,6 @@ namespace World.Card
         /// </summary>
         public void OnTouch()
         {
-            if (Global.Instance.Get<BoardCommander>().IsSelectingTarget())
-            {
-                return;
-            }
-
             _effect.PlayTouchEffect();
             Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
         }
