@@ -30,8 +30,8 @@ namespace World.Card
         /// <summary>
         /// Gán giá trị cho các tham số, bao gồm cả Level và xử lý các chỉ số có tỉ lệ (Chance).
         /// </summary>
-        public void SetParamValue(Dictionary<string, int> parameters, short aLevel, short vLevel,
-            Dictionary<AttributeType, int> aAttributes, Dictionary<AttributeType, int> vAttributes)
+        public void SetParamValue(Dictionary<string, int> parameters, ushort senderLevel, ushort receiverLevel,
+            Dictionary<AttributeType, int> senderAttributes, Dictionary<AttributeType, int> receiverAttributes)
         {
             // Các cặp tham số có Chance
             var chancePairs = new Dictionary<string, string>
@@ -43,25 +43,25 @@ namespace World.Card
 
             foreach (var key in parameters.Keys.ToList())
             {
-                // Nếu là A_Level hoặc V_Level thì xử lý riêng
-                if (key == "A_Level")
+                // Nếu là S_Level hoặc R_Level thì xử lý riêng
+                if (key == "S_Level")
                 {
-                    parameters[key] = aLevel;
+                    parameters[key] = senderLevel;
                     continue;
                 }
-                else if (key == "V_Level")
+                else if (key == "R_Level")
                 {
-                    parameters[key] = vLevel;
+                    parameters[key] = receiverLevel;
                     continue;
                 }
 
                 // Xử lý các thuộc tính khác
-                string rawName = key.StartsWith("A_") || key.StartsWith("V_") ? key.Substring(2) : key;
-                var prefix = key.Substring(0, 2); // "A_" hoặc "V_"
+                string rawName = key.StartsWith("S_") || key.StartsWith("R_") ? key.Substring(2) : key;
+                var prefix = key.Substring(0, 2); // "S_" hoặc "R_"
 
                 Dictionary<AttributeType, int> sourceAttributes = null;
-                if (prefix == "A_") sourceAttributes = aAttributes;
-                else if (prefix == "V_") sourceAttributes = vAttributes;
+                if (prefix == "S_") sourceAttributes = senderAttributes;
+                else if (prefix == "R_") sourceAttributes = receiverAttributes;
 
                 if (sourceAttributes != null && Enum.TryParse(rawName, true, out AttributeType attrType))
                 {
@@ -92,7 +92,7 @@ namespace World.Card
         /// <summary>
         /// Tính tổng sát thương từ attacker gây lên victim, dựa trên danh sách effect công thức.
         /// </summary>
-        public int CalDamage(Card attacker, Card victim, List<SkillDamageTemplateModel> effects)
+        public int CalDamage(Card sender, Card receiver, List<SkillDamageTemplateModel> effects)
         {
             int totalDamage = 0;
 
@@ -106,8 +106,8 @@ namespace World.Card
                     paramValues[name] = 0;
 
                 // Gán giá trị tương ứng
-                SetParamValue(paramValues, attacker.CardModel.GetLevel(), victim.CardModel.GetLevel(),
-                    attacker.Battle.Attributes, victim.Battle.Attributes);
+                SetParamValue(paramValues, sender.CardModel.Level.GetLevel(), receiver.CardModel.Level.GetLevel(),
+                    sender.Battle.Attributes, receiver.Battle.Attributes);
 
                 // Tính toán kết quả
                 var expr = new Expression(effect.Formula);
@@ -134,7 +134,7 @@ namespace World.Card
                     paramValues[name] = 0;
 
                 // Gán giá trị tương ứng
-                SetParamValue(paramValues, sender.CardModel.GetLevel(), reciever.CardModel.GetLevel(),
+                SetParamValue(paramValues, sender.CardModel.Level.GetLevel(), reciever.CardModel.Level.GetLevel(),
                     sender.Battle.Attributes, reciever.Battle.Attributes);
 
                 // Tính toán kết quả

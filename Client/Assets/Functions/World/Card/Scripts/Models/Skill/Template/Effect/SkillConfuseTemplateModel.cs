@@ -1,5 +1,10 @@
-﻿namespace World.Card.Skill
+﻿using UnityEngine;
+
+namespace World.Card.Skill
 {
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "SkillConfuse", menuName = "Data/Skill/Effect/SkillConfuse")]
+
     public class SkillConfuseTemplateModel : SkillEffectTemplateModel
     {
         /// <summary>

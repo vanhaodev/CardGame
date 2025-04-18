@@ -1,5 +1,10 @@
-﻿namespace World.Card.Skill
+﻿using UnityEngine;
+
+namespace World.Card.Skill
 {
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "SkillDamageOverTime", menuName = "Data/Skill/Effect/SkillDamageOverTime")]
+
     public class SkillDamageOverTimeTemplateModel: SkillDamageTemplateModel
     {
         /// <summary>

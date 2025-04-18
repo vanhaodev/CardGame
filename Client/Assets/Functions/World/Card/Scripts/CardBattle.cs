@@ -59,9 +59,7 @@ namespace World.Card
             }
 
             SetupHpMp(AttributeType.Hp, AttributeType.HpMax);
-            SetupHpMp(AttributeType.Mp, AttributeType.MpMax);
             _vital.UpdateHp(_attributes[AttributeType.Hp], _attributes[AttributeType.HpMax]);
-            _vital.UpdateMp(_attributes[AttributeType.Mp], _attributes[AttributeType.MpMax]);
             _effect.PlaySpawn();
         }
 

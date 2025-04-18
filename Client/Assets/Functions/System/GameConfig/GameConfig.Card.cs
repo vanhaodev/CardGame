@@ -8,11 +8,12 @@ using UnityEngine;
 using Utils;
 using World.Card;
 
-namespace GameConfig
+namespace GameConfigs
 {
     public partial class GameConfig : MonoBehaviour, IGlobal
     {
         public IReadOnlyDictionary<ushort, uint> LevelExps { get; private set; }
+
         public async UniTask InitCard()
         {
             var paths = new[]
@@ -39,6 +40,7 @@ namespace GameConfig
             Debug.Log($"Loaded\n" +
                       $"\n{LevelExps.Count} level exps");
         }
+
         private ConcurrentDictionary<ushort, CardTemplateModel> _cardTemplates = new();
 
         public async UniTask<CardTemplateModel> GetCardTemplate(ushort cardTemplateId)
@@ -84,5 +86,34 @@ namespace GameConfig
             return newSprite;
         }
 
+        public (ushort level, float progressPercent, uint expNext) GetLevelProgressAndNextExp(uint exp)
+        {
+            if (LevelExps == null || LevelExps.Count == 0)
+                return (0, 0f, 0);
+
+            var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
+
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                ushort level = ordered[i].Key;
+                uint requiredExp = ordered[i].Value;
+
+                if (exp < requiredExp)
+                {
+                    ushort prevLevel = ordered[i - 1].Key;
+                    uint prevExp = ordered[i - 1].Value;
+
+                    uint range = requiredExp - prevExp;
+                    uint currentProgress = exp - prevExp;
+
+                    float progress = range > 0 ? (float)currentProgress / range * 100f : 0f;
+                    return (prevLevel, progress, range);
+                }
+            }
+
+            // Nếu exp >= max mốc
+            ushort maxLevel = ordered.Last().Key;
+            return (maxLevel, 100f, 0);
+        }
     }
 }

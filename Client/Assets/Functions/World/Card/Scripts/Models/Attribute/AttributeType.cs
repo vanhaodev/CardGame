@@ -4,8 +4,6 @@
     {
         HpMax,
         Hp,
-        MpMax,
-        Mp,
         /// <summary>
         /// 100/100 can use Ultimate
         /// </summary>

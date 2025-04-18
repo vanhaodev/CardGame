@@ -8,16 +8,24 @@ using World.Card.Skill;
 namespace World.Card
 {
     [Serializable]
-    public class CardTemplateModel
+    [CreateAssetMenu(fileName = "CardTemplateModel", menuName = "Data/CardTemplateModel", order = 1)]
+    public class CardTemplateModel : ScriptableObject
     {
         public ushort Id;
         public string Name;
         public string History;
         public ClassType Class;
+
         /// <summary>
         /// Starter pack attribute when summoned
         /// </summary>
         public List<AttributeModel> Attributes;
-        public List<SkillTemplateModel> Skills;
+
+        // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
+        public SkillTemplateModel PassiveSkill;
+        public SkillTemplateModel PassiveSkill2;
+        public SkillTemplateModel BasicSkill;
+        public SkillTemplateModel AdvancedSkill;
+        public SkillTemplateModel UltimateSkill;
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace World.Card.Skill
 {
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "SkillRemoveStatus", menuName = "Data/Skill/Effect/SkillRemoveStatus")]
     public class SkillRemoveStatusTemplateModel: SkillEffectTemplateModel
     {
         public short Rate;

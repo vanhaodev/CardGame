@@ -9,7 +9,7 @@ using Utils;
 using World.Card;
 using World.Requirement;
 
-namespace GameConfig
+namespace GameConfigs
 {
     public partial class GameConfig : MonoBehaviour, IGlobal
     {
