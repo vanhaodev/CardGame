@@ -31,7 +31,12 @@ namespace World.Card
         /// Calculated = equipments + base
         /// </summary>
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
-
-        public List<SkillModel> Skills = new List<SkillModel>();
+        
+        // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
+        public SkillModel PassiveSkill;
+        public SkillModel PassiveSkill2;
+        public SkillModel BasicSkill;
+        public SkillModel AdvancedSkill;
+        public SkillModel UltimateSkill;
     }
 }

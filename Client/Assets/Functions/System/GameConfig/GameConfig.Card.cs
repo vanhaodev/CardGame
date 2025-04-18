@@ -50,11 +50,10 @@ namespace GameConfigs
                 return value;
             }
 
-            var textSO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<TextSO>("CardTemplates/" + cardTemplateId + ".asset");
-            var newCard = JsonConvert.DeserializeObject<CardTemplateModel>(textSO.Content);
-            _cardTemplates.TryAdd(cardTemplateId, newCard);
-            return newCard;
+            var cardSO = await Global.Instance.Get<AddressableLoader>()
+                .LoadAssetAsync<CardTemplateModel>("CardTemplates/" + cardTemplateId + ".asset");
+            _cardTemplates.TryAdd(cardTemplateId, cardSO);
+            return cardSO;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
-using FloatingEffect;
+using Effects;
 using Globals;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;

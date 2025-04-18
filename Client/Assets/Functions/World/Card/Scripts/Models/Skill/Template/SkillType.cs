@@ -12,17 +12,10 @@
         /// bị động, tự kích hoạt
         /// </summary>
         Passive,
+
         /// <summary>
-        /// kịch hoạt cho bản thân
+        /// Chủ động cần kích hoạt thủ công
         /// </summary>
-        Self,
-        /// <summary>
-        /// kịch hoạt lên đội
-        /// </summary>
-        Team,
-        /// <summary>
-        /// kích hoạt lên địch
-        /// </summary>
-        Enemy
+        Active
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using FloatingEffect;
+using Effects;
 using Globals;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
@@ -152,11 +152,11 @@ namespace World.Board
                     {
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)
                         {
-                            Global.Instance.Get<FloatingEffectManager>()
+                            Global.Instance.Get<EffectManager>()
                                 .ShowDamage(victimResult.aDamage, targetPosition);
-                            Global.Instance.Get<FloatingEffectManager>()
+                            Global.Instance.Get<EffectManager>()
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
-                            Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
+                            Global.Instance.Get<EffectManager>().ShowSlash(targetPosition);
                             var isDead = target.Card.Battle.OnTakeDamageLate();
                             if (isDead)
                             {
@@ -267,13 +267,13 @@ namespace World.Board
                             isShowFloatingEffect = true;
 
                             PerformCameraReset().Forget();
-                            await Global.Instance.Get<FloatingEffectManager>()
+                            await Global.Instance.Get<EffectManager>()
                                 .ShowBullet(actorPosition, targetPosition);
-                            Global.Instance.Get<FloatingEffectManager>()
+                            Global.Instance.Get<EffectManager>()
                                 .ShowDamage(victimResult.aDamage, targetPosition);
-                            Global.Instance.Get<FloatingEffectManager>()
+                            Global.Instance.Get<EffectManager>()
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
-                            Global.Instance.Get<FloatingEffectManager>().ShowSlash(targetPosition);
+                            Global.Instance.Get<EffectManager>().ShowSlash(targetPosition);
                             target.Card.Battle.OnTakeDamageLate();
                             var isDead = target.Card.Battle.OnTakeDamageLate();
                             if (isDead)

@@ -3,7 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
-using FloatingEffect;
+using Effects;
 using Globals;
 
 namespace World.Card
@@ -50,14 +50,14 @@ namespace World.Card
 
         public async void PlaySpawn()
         {
-            Global.Instance.Get<FloatingEffectManager>().ShowDeath(gameObject.transform.position).Forget();
+            Global.Instance.Get<EffectManager>().ShowDeath(gameObject.transform.position).Forget();
             await _canvasGroup.DOFade(1, 1f)
                 // .OnPlay()
                 .AsyncWaitForCompletion();
         }
         public async void PlayDie()
         {
-            Global.Instance.Get<FloatingEffectManager>().ShowDeath(gameObject.transform.position).Forget();
+            Global.Instance.Get<EffectManager>().ShowDeath(gameObject.transform.position).Forget();
             await _canvasGroup.DOFade(0, 1f)
                 // .OnPlay()
                 .AsyncWaitForCompletion();
