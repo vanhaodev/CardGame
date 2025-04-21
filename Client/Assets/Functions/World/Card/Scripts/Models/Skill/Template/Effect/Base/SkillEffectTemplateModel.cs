@@ -14,7 +14,7 @@ namespace World.Card.Skill
         /// <summary>
         /// Effect chỉ kích hoạt nếu caster tác động lên đúng loại mục tiêu
         /// </summary>
-        public SkillEffectActiveTriggerModel ActiveTrigger;
+        public SkillEffectTriggerModel Trigger;
         /// <summary>
         /// ví dụ main target đang đứng ở card số 4 từ trái sang, nếu AOEToLeftCount là 2 thì card số 2 và 3 từ trái sang sẽ ảnh hưởng theo
         /// </summary>

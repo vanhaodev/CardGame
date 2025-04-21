@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: SkillRemoveStatus
   m_EditorClassIdentifier: 
   Trigger:
-    TriggerTargetType: 0
-    AOEToLeftCount: 0
-    AOEToRightCount: 0
+    Triggers:
+    - Type: 0
+      IntValue: 0
+      StringValue: 
+  AOEToLeftTargetCount: 0
+  AOEToRightTargetCount: 0
   Rate: 0
   IsRemoveBuff: 0
   IsRemoveDebuff: 0
