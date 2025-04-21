@@ -35,18 +35,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c729e39f6abe8142848c1b49944fb65
+    m_Address: Audios
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5955f1f900937564b9ed8223e70d55c8
     m_Address: ItemTemplates
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7287365a225d94542ab7230879493b3a
-    m_Address: SoundLibrarySO.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8caaa63e20a08a44984ce227369eb712
-    m_Address: Assets/Functions/System/Sound/Audios/popup.wav
+    m_Address: Audios/SoundLibrarySO.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -57,11 +57,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a05bd73c5337b2459febd0b6a0590e6
     m_Address: ItemTemplates/LevelExpsSO.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ad4b0a6424f6cef498f49a3fb424ec98
-    m_Address: Assets/Functions/System/Sound/Audios/NieN - The Ruined City.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -80,16 +75,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db848221788907541b579e741e2347da
-    m_Address: Assets/Functions/System/Sound/Audios/touch.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e0e334f65785bb542af06e2811fee1ff
-    m_Address: Assets/Functions/System/Sound/Audios/Cosmograph - Quiet Terror.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e291849f141654c4588bd9b3a2272e44
     m_Address: ItemTemplates/ItemTypeGroupsSO.asset
     m_ReadOnly: 0
@@ -102,11 +87,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f90390736fe4ae54caf6ad251d69aeea
     m_Address: Effect/EffectSlash.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa1b2571f6a55864290466389a17a5b1
-    m_Address: Assets/Functions/System/Sound/Audios/attack.ogg
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -147,7 +147,7 @@ namespace World.Board
 
                 //========================[Perform Melee Attack Animation]===============\
                 _tweenAction = actor.Card.transform.DORotate(new Vector3(0, 0, offsetY < 0 ? 80 : -80), 0.2f)
-                    .SetEase(Ease.InQuad).OnPlay(() => Global.Instance.Get<SoundManager>().PlaySoundOneShot("2"))
+                    .SetEase(Ease.InQuad).OnPlay(() => Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack.ogg"))
                     .OnUpdate(async () =>
                     {
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)
@@ -259,7 +259,7 @@ namespace World.Board
                 //
 
                 _tweenAction = actor.Card.transform.DOMoveY(originalPosition.y + (offsetY / 3), 0.1f)
-                    .SetEase(Ease.InQuad).OnPlay(() => Global.Instance.Get<SoundManager>().PlaySoundOneShot("2"))
+                    .SetEase(Ease.InQuad).OnPlay(() => Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack.ogg"))
                     .OnUpdate(async () =>
                     {
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)

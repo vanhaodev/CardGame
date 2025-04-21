@@ -30,7 +30,7 @@ namespace World.Card
 
             try
             {
-                Global.Instance.Get<SoundManager>().PlaySoundOneShot("3");
+                Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Touch.wav");
                 // Phóng to và thu nhỏ với hiệu ứng bubble
                 await _transform.DOScale(_realScale * 1.2f, 0.2f) // Phóng to 1.2 lần kích thước thực tế trong 0.2s
                     // .SetEase(Ease.OutBack)  // Ease OutBack để tạo cảm giác bật lại

@@ -27,7 +27,7 @@ public class SoundLibrarySO : ScriptableObject
         }
 
         // Nếu âm thanh chưa có trong cache, tải từ Addressable
-        var handle = Addressables.LoadAssetAsync<AudioClip>(path);
+        var handle = Addressables.LoadAssetAsync<AudioClip>("Audios/" + path);
         var audioClip = await handle.ToUniTask();
 
         // Lưu âm thanh đã tải vào cache
