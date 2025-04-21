@@ -20,7 +20,7 @@ namespace Popup
             var pop = await GetPopup(nameof(PopupCard)) as PopupCard;
             pop.gameObject.SetActive(true);
             pop.Setup(cardModel);
-            Global.Instance.Get<SoundManager>().PlaySoundOneShot(4);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot("4");
         }
         public UniTask Init()
         {
@@ -71,7 +71,7 @@ namespace Popup
             }
 
             string popupTypeName = popup.GetType().Name; // Lấy tên class làm key
-            Global.Instance.Get<SoundManager>().PlaySoundOneShot(4);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot("4");
             if (_popupPools.TryGetValue(popupTypeName, out var pool))
             {
                 Debug.Log("Put");

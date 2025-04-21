@@ -8,44 +8,55 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
 [CreateAssetMenu(fileName = "SoundLibrarySO", menuName = "SoundLibrarySO")]
 public class SoundLibrarySO : ScriptableObject
 {
-    public List<SoundLibrary> Sounds = new List<SoundLibrary>();
-    private Dictionary<ushort, SoundLibrary> _sounds = new Dictionary<ushort, SoundLibrary>();
+    private Dictionary<string, SoundLibraryModel> _sounds = new();
+
     public void Init()
     {
-        foreach (var sound in Sounds)
-        {
-            if (!_sounds.ContainsKey(sound.Id))
-            {
-                _sounds.Add(sound.Id, sound);
-            }
-        }
     }
-    public SoundLibrary GetSound(ushort type)
+
+    public async UniTask<SoundLibraryModel> GetSound(string path)
     {
-        if (_sounds.TryGetValue(type, out var sound))
+        // Kiểm tra xem âm thanh đã được tải và lưu trong cache chưa
+        if (_sounds.TryGetValue(path, out var sound))
         {
-            return sound;
+            return sound; // Nếu có sẵn, trả về âm thanh từ cache
         }
-        return default;
+
+        // Nếu âm thanh chưa có trong cache, tải từ Addressable
+        var handle = Addressables.LoadAssetAsync<AudioClip>(path);
+        var audioClip = await handle.ToUniTask();
+
+        // Lưu âm thanh đã tải vào cache
+        var newSound = new SoundLibraryModel
+        {
+            Type = (SoundType)Enum.Parse(typeof(SoundType), audioClip.name.Split('_')[0]),
+            AudioClip = audioClip
+        };
+        _sounds[path] = newSound;
+
+        return newSound;
     }
-    public void Clear() 
-    { 
-        _sounds.Clear(); 
+
+    public void Clear()
+    {
+        _sounds.Clear();
     }
 }
+
 public enum SoundType
 {
-    BackgroundMusic,
-    Enviroment,
-    Effect
+    BGM,
+    ENV,
+    FX
 }
+
 [Serializable]
-public struct SoundLibrary
+public class SoundLibraryModel
 {
     public SoundType Type;
-    public ushort Id;
-    public AudioClip AudioClip;
+    public AudioClip AudioClip; // Lưu AudioClip sau khi tải từ Addressable
 }

@@ -14,12 +14,12 @@ namespace Globals
             Application.targetFrameRate = 60;
 #endif
 #if UNITY_EDITOR
-            Application.targetFrameRate = -1;
+            Application.targetFrameRate = 120;
 #endif
             await UniTask.WaitUntil(() => Global.Instance != null);
             await Global.Instance.Init();
             await Global.Instance.WaitForInit<SoundManager>();
-            Global.Instance.Get<SoundManager>().PlaySoundLoop(5, 1);
+            Global.Instance.Get<SoundManager>().PlaySoundLoop("5", 1);
             await FinishStartup();
         }
     }

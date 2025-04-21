@@ -12,8 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d0e0c203c964d1a924ecf8b1380bb08, type: 3}
   m_Name: Skill
   m_EditorClassIdentifier: 
-  Id: 0
   Name: 
   Description: 
-  SkillTypes: 00000000
-  Levels: []
+  SkillType: 0
+  Levels:
+  - SkillAttributeBonus: []
+    SkillEffects: []
+    SkillVisualEffects:
+    - Type: 0
+      VfxPrefab:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0

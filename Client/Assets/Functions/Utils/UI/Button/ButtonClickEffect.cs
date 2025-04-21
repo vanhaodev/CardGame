@@ -49,7 +49,7 @@ namespace Utils
         {
             CreateEffect(); // Tạo hoặc lấy tween đã có
             _tween.Restart();
-            Global.Instance.Get<SoundManager>().PlaySoundOneShot( 3);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot( "3");
         }
 
         private void OnDisable()

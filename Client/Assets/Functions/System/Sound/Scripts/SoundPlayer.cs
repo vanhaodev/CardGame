@@ -6,7 +6,7 @@ using Utils;
 public class SoundPlayer : MonoBehaviour
 {
     [SerializeField] AudioSource _audioSource;
-    public int Id;
+    public string Id;
     public SoundType Type;
     public AudioSource AudioSource { get => _audioSource; set => _audioSource = value; }
 

@@ -38,9 +38,9 @@ public class SoundManager : MonoBehaviour, IGlobal
             //Debug.LogError(" _volumes = new");
             _volumes = new Dictionary<SoundType, float>()
             {
-                { SoundType.BackgroundMusic, 1 },
-                { SoundType.Enviroment, 1 },
-                { SoundType.Effect, 1 },
+                { SoundType.BGM, 1 },
+                { SoundType.ENV, 1 },
+                { SoundType.FX, 1 },
             };
         }
 
@@ -49,9 +49,9 @@ public class SoundManager : MonoBehaviour, IGlobal
             //Debug.LogError("_spawnedSounds = new");
             _spawnedSounds = new Dictionary<SoundType, List<SoundPlayer>>()
             {
-                { SoundType.BackgroundMusic, new List<SoundPlayer>() },
-                { SoundType.Enviroment, new List<SoundPlayer>() },
-                { SoundType.Effect, new List<SoundPlayer>() }
+                { SoundType.BGM, new List<SoundPlayer>() },
+                { SoundType.ENV, new List<SoundPlayer>() },
+                { SoundType.FX, new List<SoundPlayer>() }
             };
         }
 
@@ -77,9 +77,9 @@ public class SoundManager : MonoBehaviour, IGlobal
         Debug.Log("Loading sound data");
         var sound = await save.Load<SaveSettingSoundModel>();
         
-        SetVolumeAll(SoundType.BackgroundMusic, sound.MusicVolume);
-        SetVolumeAll(SoundType.Enviroment, sound.EnviromentVolume);
-        SetVolumeAll(SoundType.Effect, sound.EffectVolume);
+        SetVolumeAll(SoundType.BGM, sound.MusicVolume);
+        SetVolumeAll(SoundType.ENV, sound.EnviromentVolume);
+        SetVolumeAll(SoundType.FX, sound.EffectVolume);
     }
 
     [Button]
@@ -111,11 +111,11 @@ public class SoundManager : MonoBehaviour, IGlobal
     /// Multiple and oneshot
     /// </summary>
     /// <param name="id"></param>
-    public void PlaySoundOneShot(ushort id)
+    public async void PlaySoundOneShot(string id)
     {
         SoundPlayer player = _pool.Get();
         player.gameObject.SetActive(true);
-        var lib = _soundLibrarySO.GetSound(id);
+        var lib = await _soundLibrarySO.GetSound(id);
         player.AudioSource.clip = lib.AudioClip;
         player.AudioSource.loop = false;
         player.Id = id;
@@ -132,7 +132,7 @@ public class SoundManager : MonoBehaviour, IGlobal
     /// Single and loop
     /// </summary>
     /// <param name="id"></param>
-    public void PlaySoundLoop(ushort id, byte uniqueKey, bool isRestartIfPlaying = false)
+    public async void PlaySoundLoop(string id, byte uniqueKey, bool isRestartIfPlaying = false)
     {
         SoundPlayer player = null;
         if (_playingLoopSounds.TryGetValue(uniqueKey, out var sound))
@@ -146,7 +146,7 @@ public class SoundManager : MonoBehaviour, IGlobal
             _playingLoopSounds.Add(uniqueKey, player);
         }
 
-        var lib = _soundLibrarySO.GetSound(id);
+        var lib = await _soundLibrarySO.GetSound(id);
         player.AudioSource.clip = lib.AudioClip;
         player.AudioSource.loop = true;
         player.Id = id;

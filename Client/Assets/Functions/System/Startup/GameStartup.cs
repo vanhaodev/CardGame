@@ -18,7 +18,7 @@ namespace Startup
             AddTask(FinishStartup);
             AddTask(async () =>
             {
-                Global.Instance.Get<SoundManager>().PlaySoundLoop(1, 1);
+                Global.Instance.Get<SoundManager>().PlaySoundLoop("1", 1);
             });
             Debug.Log("Initialized Game Startup");
         }
