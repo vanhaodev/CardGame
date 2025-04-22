@@ -8,14 +8,21 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Utils;
 
 [CreateAssetMenu(fileName = "SoundLibrarySO", menuName = "SoundLibrarySO")]
 public class SoundLibrarySO : ScriptableObject
 {
+    [SerializeField] AssetReferenceWithPath<AudioClip> _testRef;
     private Dictionary<string, SoundLibraryModel> _sounds = new();
     private Dictionary<string, AsyncOperationHandle<AudioClip>> _handles = new(); // Thêm dòng này
     public void Init()
     {
+      
+    }
+    public string GetAddressPath(AssetReferenceT<AudioClip> reference)
+    {
+        return reference.RuntimeKey.ToString();
     }
 
     public async UniTask<SoundLibraryModel> GetSound(string path)
@@ -26,6 +33,7 @@ public class SoundLibrarySO : ScriptableObject
         }
 
         var handle = Addressables.LoadAssetAsync<AudioClip>("Audios/" + path);
+        Debug.Log("Load sound: " + handle.DebugName);
         var audioClip = await handle.ToUniTask();
 
         var newSound = new SoundLibraryModel
