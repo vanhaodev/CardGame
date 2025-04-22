@@ -13,36 +13,40 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class SoundLibrarySO : ScriptableObject
 {
     private Dictionary<string, SoundLibraryModel> _sounds = new();
-
+    private Dictionary<string, AsyncOperationHandle<AudioClip>> _handles = new(); // Thêm dòng này
     public void Init()
     {
     }
 
     public async UniTask<SoundLibraryModel> GetSound(string path)
     {
-        // Kiểm tra xem âm thanh đã được tải và lưu trong cache chưa
         if (_sounds.TryGetValue(path, out var sound))
         {
-            return sound; // Nếu có sẵn, trả về âm thanh từ cache
+            return sound;
         }
 
-        // Nếu âm thanh chưa có trong cache, tải từ Addressable
         var handle = Addressables.LoadAssetAsync<AudioClip>("Audios/" + path);
         var audioClip = await handle.ToUniTask();
 
-        // Lưu âm thanh đã tải vào cache
         var newSound = new SoundLibraryModel
         {
             Type = (SoundType)Enum.Parse(typeof(SoundType), audioClip.name.Split('_')[0]),
             AudioClip = audioClip
         };
+
         _sounds[path] = newSound;
+        _handles[path] = handle; // Lưu handle để sau này release
 
         return newSound;
     }
-
-    public void Clear()
+    public void ReleaseAll()
     {
+        foreach (var handle in _handles.Values)
+        {
+            Addressables.Release(handle);
+        }
+
+        _handles.Clear();
         _sounds.Clear();
     }
 }
