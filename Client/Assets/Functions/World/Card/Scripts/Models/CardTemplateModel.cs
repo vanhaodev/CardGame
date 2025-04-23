@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+using AYellowpaper.SerializedCollections;
 using Globals;
 using UnityEngine;
 using World.Card.Skill;
@@ -22,10 +22,6 @@ namespace World.Card
         public List<AttributeModel> Attributes;
 
         // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
-        public SkillTemplateModel PassiveSkill;
-        public SkillTemplateModel PassiveSkill2;
-        public SkillTemplateModel BasicSkill;
-        public SkillTemplateModel AdvancedSkill;
-        public SkillTemplateModel UltimateSkill;
+        [SerializeReference] public Dictionary<CardSkillSlotType, SkillTemplateModel> Skills;
     }
 }

@@ -15,23 +15,8 @@ MonoBehaviour:
   m_GroupName: Game
   m_GUID: 34776c83da527e74ab4c5ecd9ac57adc
   m_SerializeEntries:
-  - m_GUID: 1c8e7e14ea993a34aaddf0fec344e114
-    m_Address: CardTemplates/2.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3881038c02a131b48b91efa9b76935ed
     m_Address: ItemTemplates/ItemTypesSO.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 428815636188b7c49b61841608fb35e8
-    m_Address: CardSprites
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 48573d07d3b843a4daa1bd6ab59bf3df
-    m_Address: CardTemplates/1.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

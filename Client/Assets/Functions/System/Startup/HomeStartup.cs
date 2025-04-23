@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utils;
+using World.Card;
 
 namespace Globals
 {
     public class HomeStartup : StartupBase
     {
+        [SerializeReference] CardTemplateModel _testCardTemplate;
         protected override async void Awake()
         {
             base.Awake();

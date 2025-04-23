@@ -51,7 +51,7 @@ namespace GameConfigs
             }
 
             var cardSO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<CardTemplateModel>("CardTemplates/" + cardTemplateId + ".asset");
+                .LoadAssetAsync<CardTemplateModel>("CardTemplateModels/" + cardTemplateId + ".asset");
             _cardTemplates.TryAdd(cardTemplateId, cardSO);
             return cardSO;
         }
@@ -61,10 +61,10 @@ namespace GameConfigs
         /// </summary>
         private ConcurrentDictionary<ushort, ConcurrentDictionary<string, Sprite>> _loadedCardSprites = new();
 
-        public async UniTask<Sprite> GetCardSprite(CardModel cardModel)
+        public async UniTask<Sprite> GetCardSprite(CardModel cardModel, string skinName = "" /*default is null*/)
         {
             var cardTemplateId = cardModel.TemplateId;
-            var key = $"{cardTemplateId}_{cardModel.Star}";
+            var key = $"{cardModel.Star}";
 
             // Đảm bảo ConcurrentDictionary con tồn tại
             var value = _loadedCardSprites.GetOrAdd(cardTemplateId, _ => new ConcurrentDictionary<string, Sprite>());
@@ -77,8 +77,8 @@ namespace GameConfigs
 
             // Tải sprite mới
             var newSprite = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<Sprite>("CardSprites/" + key + ".png");
-
+                .LoadAssetAsync<Sprite>(
+                    $"CardSprites/{cardTemplateId}{(skinName.Length > 0 ? $"/{skinName}" : "")}/{key}.png");
             // Thêm vào dictionary nếu chưa tồn tại (tránh lỗi "key exists")
             value.TryAdd(key, newSprite);
 

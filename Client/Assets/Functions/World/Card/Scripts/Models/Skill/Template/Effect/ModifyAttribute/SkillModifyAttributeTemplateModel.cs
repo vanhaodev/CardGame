@@ -3,7 +3,6 @@
 namespace World.Card.Skill
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "SkillModifyAttribute", menuName = "Data/Skill/Effect/SkillModifyAttribute")]
     public class SkillModifyAttributeTemplateModel: SkillEffectTemplateModel
     {
         /// <summary>

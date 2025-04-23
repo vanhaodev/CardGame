@@ -9,7 +9,7 @@ namespace World.Card.Skill
     /// <summary>
     /// Mỗi level của một skill sẽ có option khác biệt mạnh dần
     /// </summary>
-    public abstract class SkillEffectTemplateModel : ScriptableObject
+    public abstract class SkillEffectTemplateModel
     {
         /// <summary>
         /// Effect chỉ kích hoạt nếu caster tác động lên đúng loại mục tiêu

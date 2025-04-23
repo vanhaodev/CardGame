@@ -5,8 +5,8 @@ using World.Requirement;
 
 namespace World.Card.Skill
 {
-    [CreateAssetMenu(fileName = "Skill", menuName = "Data/Skill/Skill")]
-    public class SkillTemplateModel : ScriptableObject
+    [System.Serializable]
+    public class SkillTemplateModel
     {
         public string Name;
         public string Description;

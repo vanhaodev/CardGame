@@ -3,7 +3,7 @@
 namespace World.Card.Skill
 {
     [System.Serializable]
-    public abstract class RemoveStatusOptionModel : ScriptableObject
+    public abstract class RemoveStatusOptionModel
     {
     }
 }

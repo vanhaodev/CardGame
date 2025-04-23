@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace World.Card.Skill
 {
@@ -12,7 +13,7 @@ namespace World.Card.Skill
         /// <summary>
         /// Hiệu ứng kỹ năng
         /// </summary>
-        public List<SkillEffectTemplateModel> SkillEffects;
+        [SerializeReference] public List<SkillEffectTemplateModel> SkillEffects;
         /// <summary>
         /// Hiệu ứng hình ảnh
         /// </summary>
