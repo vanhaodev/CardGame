@@ -7,6 +7,10 @@ namespace World.Card.Skill
     public class SkillOptionTemplateModel
     {
         /// <summary>
+        /// cần round để hồi nếu kích hoạt xong
+        /// </summary>
+        public int CooldownRound;
+        /// <summary>
         /// Khi sở hữu skill sẽ được tăng vĩnh viễn các chỉ số
         /// </summary>
         public List<SkillAttributeBonusModel> SkillAttributeBonus;

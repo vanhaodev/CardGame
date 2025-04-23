@@ -22,6 +22,6 @@ namespace World.Card
         public List<AttributeModel> Attributes;
 
         // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
-        [SerializeReference] public Dictionary<CardSkillSlotType, SkillTemplateModel> Skills;
+        public List<CardSkillSlotModel> Skills;
     }
 }
