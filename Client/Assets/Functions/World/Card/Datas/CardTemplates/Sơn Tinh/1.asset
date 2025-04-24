@@ -33,7 +33,7 @@ MonoBehaviour:
       - CooldownRound: 0
         SkillAttributeBonus: []
         SkillEffects:
-        - rid: 6999195782831931950
+        - rid: 6999195808088981504
         SkillVisualEffects:
         - Type: 0
           VfxPrefab:
@@ -69,28 +69,20 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6999195782831931950
-      type: {class: SkillConfuseTemplateModel, ns: World.Card.Skill, asm: Assembly-CSharp}
+    - rid: 6999195808088981504
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
       data:
         Triggers:
-        - rid: 6999195782831931966
-        - rid: 6999195782831931969
+        - rid: 6999195808088981505
         AOEToLeftTargetCount: 0
         AOEToRightTargetCount: 0
-        Rate: 0
-        IsConfuseTargetFaction: 0
-    - rid: 6999195782831931966
-      type: {class: SkillAttributeTriggerModel, ns: World.Card.Skill, asm: Assembly-CSharp}
+        Formula: 
+    - rid: 6999195808088981505
+      type: {class: SkillAttributeTriggerModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
       data:
         CheckType: 0
+        CompareType: 4
         Attributes:
-        - Type: 4
-          Value: 0
-        AttributePercents:
-        - Type: 0
-          Value: 0
-    - rid: 6999195782831931969
-      type: {class: SkillElementTriggerModel, ns: World.Card.Skill, asm: Assembly-CSharp}
-      data:
-        CheckType: 0
-        ElementTypes: 02000000
+        - Type: 2
+          Value: 10
+        HpPercent: -1
