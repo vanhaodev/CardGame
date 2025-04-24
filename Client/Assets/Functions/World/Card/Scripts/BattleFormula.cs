@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NCalc;
 using UnityEngine;
-using World.Card.Skill;
+using World.TheCard.Skill;
 
-namespace World.Card
+namespace World.TheCard
 {
     public class BattleFormula
     {

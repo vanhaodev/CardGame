@@ -2,7 +2,7 @@
 using Globals;
 using TMPro;
 using UnityEngine;
-using World.Card;
+using World.TheCard;
 
 namespace Popup
 {

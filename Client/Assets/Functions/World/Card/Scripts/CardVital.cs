@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace World.Card
+namespace World.TheCard
 {
     public class CardVital : MonoBehaviour
     {

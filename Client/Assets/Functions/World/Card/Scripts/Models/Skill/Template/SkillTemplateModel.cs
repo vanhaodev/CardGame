@@ -3,7 +3,7 @@ using NUnit.Framework;
 using UnityEngine;
 using World.Requirement;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     [System.Serializable]
     public class SkillTemplateModel

@@ -1,7 +1,7 @@
 ﻿using GameConfigs;
 using Globals;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     public class CardLevelModel
     {

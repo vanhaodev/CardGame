@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Unity.Jobs.LowLevel.Unsafe;
-using World.Card;
+using World.TheCard;
 using World.Player.Character;
 
 namespace World.Requirement

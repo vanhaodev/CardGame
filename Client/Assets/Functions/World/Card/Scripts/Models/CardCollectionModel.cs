@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Save;
 
-namespace World.Card
+namespace World.TheCard
 {
     [Serializable]
     public class CardCollectionModel

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using World.Card;
+using World.TheCard;
 
 namespace World.Requirement
 {

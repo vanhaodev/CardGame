@@ -1920,7 +1920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &514438748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2380,6 +2380,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 616477607}
+  - component: {fileID: 616477609}
+  - component: {fileID: 616477608}
   m_Layer: 5
   m_Name: Battle
   m_TagString: Untagged
@@ -2407,6 +2409,42 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &616477608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616477606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6607fb9e7648c3be067386357e91c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Board: {fileID: 514438749}
+  ActionTurnManager:
+    OriginalOrders: []
+    ActionAvailableOrders: []
+    MaxRoundCount: 0
+    CurrentRoundCount: 0
+    CurrentTurn:
+      Card: {fileID: 0}
+    _actorTurnUIs: []
+    _sizeFitterActorTurnLayoutGroup: {fileID: 0}
+    _objActorTurnUICurrentBorder: {fileID: 0}
+--- !u!114 &616477609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616477606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c0d054879a6f740baf054751c1b193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objBoard: {fileID: 514438747}
 --- !u!1 &684937072
 GameObject:
   m_ObjectHideFlags: 0
@@ -6175,10 +6213,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4911826330980191417, guid: e0ea850a1e6bfd84c8c0bf3bec4ce05d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7399964407546159580, guid: e0ea850a1e6bfd84c8c0bf3bec4ce05d, type: 3}
-      propertyPath: _characterModel.CardCollection.Cards.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8968459769934658236, guid: e0ea850a1e6bfd84c8c0bf3bec4ce05d, type: 3}

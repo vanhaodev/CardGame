@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -11,7 +12,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
-using World.Card;
+using World.TheCard;
 using Random = UnityEngine.Random;
 
 namespace World.Board
@@ -21,18 +22,19 @@ namespace World.Board
         //------------------ Display --------------\\
 
         //------------------ Comp ------------------\\
-        [SerializeField] [BoxGroup("Action")] ActionTurnManager _actionTurn;
+        [FormerlySerializedAs("_actionTurn")] [SerializeField] [BoxGroup("Action")]
+        ActionTurnManager _actionTurnManager;
 
-        public async Task<BoardEndResultModel> PlayAction()
+        public async Task<BoardEndResultModel> PlayAction(CancellationTokenSource cts)
         {
             //========================[Check round]===============\
-            if (_actionTurn.IsRoundOver())
+            if (_actionTurnManager.IsRoundOver())
             {
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Round over" }; // Hòa
             }
 
             //========================[Set round UI]===============\
-            _board.SetRound(_actionTurn.CurrentRoundCount, _actionTurn.MaxRoundCount);
+            _board.SetRound(_actionTurnManager.CurrentRoundCount, _actionTurnManager.MaxRoundCount);
 
             //========================[Check winner and loser]===============\
             bool faction1Dead = _board.GetFactionByIndex(1).IsAllDead();
@@ -46,7 +48,7 @@ namespace World.Board
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 1 }; // Phe 1 thắng
 
             //========================[Setup Action]===============\
-            var turn = _actionTurn.GetNextTurn();
+            var turn = _actionTurnManager.GetNextTurn();
             if (turn == null)
             {
                 return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
@@ -55,7 +57,7 @@ namespace World.Board
             //chưa kịp hành động thì đã bị killed
             if (!turn.IsAvailable())
             {
-                _actionTurn.UpdateOrderIndex();
+                _actionTurnManager.UpdateOrderIndex();
 
                 Debug.Log(
                     $"Card f{turn.Card.Battle.FactionIndex} a{turn.Card.Battle.MemberIndex} is ap:{turn.Card.Battle.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
@@ -65,7 +67,7 @@ namespace World.Board
             //===========================[Get actor]===================================\
             var actorFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex);
             var actor = actorFaction.GetPositionByIndex(turn.Card.Battle.MemberIndex);
-            await _actionTurn.SetCurrentActorTurnUI();
+            await _actionTurnManager.SetCurrentActorTurnUI(cts);
             //========================[Select Targets]===============\
             var targetFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex == 1 ? 2 : 1);
             List<int> targetIndex = GetTargets(targetFaction);
@@ -89,15 +91,16 @@ namespace World.Board
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor,
-                    targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList());
+                    targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList(), cts);
             }
             else
             {
-                await Melee(actor, targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList());
+                await Melee(actor, targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList(),
+                    cts);
             }
 
             turn.ResetAP();
-            _actionTurn.UpdateOrderIndex();
+            _actionTurnManager.UpdateOrderIndex();
             Debug.Log(
                 $"<color=yellow>Action Point After: {turn.Card.Battle.ActionPoint}</color>");
             //========================[Camera Reset]===============\
@@ -106,10 +109,11 @@ namespace World.Board
         }
 
 
-        public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets)
+        public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets,
+            CancellationTokenSource cts)
         {
             //========================[Camera Focus]===============\
-            await PerformCameraFocus(actor.Card.transform, 7f);
+            await PerformCameraFocus(actor.Card.transform, 7f, cts);
             //========================[Prepare Melee Attack]===============\
             Vector3 originalPosition = actor.Card.transform.position;
 
@@ -140,14 +144,16 @@ namespace World.Board
                 //========================[Move to target]===============\
                 float offsetY = actorPosition.y > targetPosition.y ? 1.0f : -1.0f;
                 Vector3 attackPosition = new Vector3(targetPosition.x, targetPosition.y + offsetY, targetPosition.z);
-                await actor.Card.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad).AsyncWaitForCompletion();
+                await actor.Card.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad)
+                    .WithCancellation(cancellationToken: cts.Token);
 
                 bool isActingDone = false;
                 bool isShowFloatingEffect = false;
 
                 //========================[Perform Melee Attack Animation]===============\
                 _tweenAction = actor.Card.transform.DORotate(new Vector3(0, 0, offsetY < 0 ? 80 : -80), 0.2f)
-                    .SetEase(Ease.InQuad).OnPlay(() => Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack.ogg"))
+                    .SetEase(Ease.InQuad).OnPlay(() =>
+                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack.ogg"))
                     .OnUpdate(async () =>
                     {
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)
@@ -160,7 +166,7 @@ namespace World.Board
                             var isDead = target.Card.Battle.OnTakeDamageLate();
                             if (isDead)
                             {
-                                _actionTurn.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
+                                _actionTurnManager.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
                                     target.Card.Battle.MemberIndex);
                             }
 
@@ -172,33 +178,36 @@ namespace World.Board
                             //========================[Target act receive hit]===============\
                             await targetCard.transform.DOMove(takeHitPos, 0.3f)
                                 .OnPlay(() => _cameraShake.Shake(2f, 3f, 0.2f))
-                                .AsyncWaitForCompletion();
+                                .WithCancellation(cancellationToken: cts.Token);
 
                             isActingDone = true;
                         }
                     });
 
-                await _tweenAction.AsyncWaitForCompletion();
-                await UniTask.WaitUntil(() => isActingDone);
+                await _tweenAction.WithCancellation(cancellationToken:cts.Token);
+                await UniTask.WaitUntil(() => isActingDone, cancellationToken: cts.Token);
 
                 //========================[Reset Rotation]===============\
-                await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad).AsyncWaitForCompletion();
+                await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
+                    .WithCancellation(cancellationToken: cts.Token);
                 //========================[Return to Position]===============\
-                await targetCard.transform.DOMove(targetPosition, 0.3f).AsyncWaitForCompletion();
+                await targetCard.transform.DOMove(targetPosition, 0.3f).WithCancellation(cancellationToken: cts.Token);
 
                 //========================[Set parent]===============\
                 targetCard.transform.SetParent(originalTargetParent, false);
             }
 
             //========================[Return to Position]===============\
-            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
+            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad)
+                .WithCancellation(cancellationToken: cts.Token);
             //========================[Set parent]===============\
             actor.Card.transform.SetParent(originalActorParent, false);
             //========================[Show vital bar]===============\
             actor.Card.Battle.Vital.Show();
         }
 
-        public async UniTask Ranged(BoardFactionPosition actor, List<BoardFactionPosition> targets)
+        public async UniTask Ranged(BoardFactionPosition actor, List<BoardFactionPosition> targets,
+            CancellationTokenSource cts)
         {
             //========================[Prepare Melee Attack]===============\
             Vector3 originalPosition = actor.Card.transform.position;
@@ -253,20 +262,21 @@ namespace World.Board
                 }
 
                 Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
-                await PerformCameraFocus(actor.Card.transform, 7f);
+                await PerformCameraFocus(actor.Card.transform, 7f, cts);
                 await actor.Card.transform.DORotateQuaternion(targetRotation, 0.5f).SetEase(Ease.OutQuad)
-                    .AsyncWaitForCompletion();
+                    .WithCancellation(cancellationToken: cts.Token);
                 //
 
                 _tweenAction = actor.Card.transform.DOMoveY(originalPosition.y + (offsetY / 3), 0.1f)
-                    .SetEase(Ease.InQuad).OnPlay(() => Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack.ogg"))
+                    .SetEase(Ease.InQuad).OnPlay(() =>
+                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack.ogg"))
                     .OnUpdate(async () =>
                     {
                         if (_tweenAction.ElapsedPercentage() >= 0.5f && !isShowFloatingEffect)
                         {
                             isShowFloatingEffect = true;
 
-                            PerformCameraReset().Forget();
+                            PerformCameraReset(cts).Forget();
                             await Global.Instance.Get<EffectManager>()
                                 .ShowBullet(actorPosition, targetPosition);
                             Global.Instance.Get<EffectManager>()
@@ -278,7 +288,7 @@ namespace World.Board
                             var isDead = target.Card.Battle.OnTakeDamageLate();
                             if (isDead)
                             {
-                                _actionTurn.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
+                                _actionTurnManager.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
                                     target.Card.Battle.MemberIndex);
                             }
 
@@ -288,49 +298,51 @@ namespace World.Board
                             //========================[Target act receive hit]===============\
                             await targetCard.transform.DOMove(takeHitPos, 0.3f)
                                 .OnPlay(() => _cameraShake.Shake(2f, 3f, 0.2f))
-                                .AsyncWaitForCompletion();
+                                .WithCancellation(cancellationToken:cts.Token);
 
                             isActingDone = true;
                         }
                     });
 
-                await _tweenAction.AsyncWaitForCompletion();
-                await UniTask.WaitUntil(() => isActingDone);
+                await _tweenAction.WithCancellation(cancellationToken: cts.Token);
+                ;
+                await UniTask.WaitUntil(() => isActingDone, cancellationToken: cts.Token);
 
                 //========================[Reset Move]===============\
                 await actor.Card.transform.DOMoveY(originalPosition.y, 0.2f).SetEase(Ease.OutQuad)
-                    .AsyncWaitForCompletion();
-                await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad).AsyncWaitForCompletion();
+                    .WithCancellation(cancellationToken: cts.Token);
+                await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
+                    .WithCancellation(cancellationToken: cts.Token);
 
                 //========================[Return to Position]===============\
-                await targetCard.transform.DOMove(targetPosition, 0.3f).AsyncWaitForCompletion();
+                await targetCard.transform.DOMove(targetPosition, 0.3f).WithCancellation(cancellationToken:cts.Token);
 
                 //========================[Set parent]===============\
                 targetCard.transform.SetParent(originalTargetParent, false);
             }
 
             //========================[Return to Position]===============\
-            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
+            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad).WithCancellation(cancellationToken:cts.Token);
             //========================[Set parent]===============\
             actor.Card.transform.SetParent(originalActorParent, false);
             //========================[Show vital bar]===============\
             actor.Card.Battle.Vital.Show();
         }
 
-        private async UniTask PerformCameraFocus(Transform target, float zoom)
+        private async UniTask PerformCameraFocus(Transform target, float zoom, CancellationTokenSource cts)
         {
             await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, zoom, 0.5f)
                 .OnPlay(() => { _camera.Follow = target; })
                 .SetEase(Ease.InOutSine)
-                .AsyncWaitForCompletion();
+                .WithCancellation(cancellationToken: cts.Token);
         }
 
-        private async UniTask PerformCameraReset()
+        private async UniTask PerformCameraReset(CancellationTokenSource cts)
         {
             await DOTween.To(() => _camera.Lens.OrthographicSize, x => _camera.Lens.OrthographicSize = x, 10f, 0.5f)
                 .OnPlay(() => { _camera.Follow = _transFormCameraCenterPoint; })
                 .SetEase(Ease.InOutSine)
-                .AsyncWaitForCompletion();
+                .WithCancellation(cancellationToken: cts.Token);
         }
     }
 }

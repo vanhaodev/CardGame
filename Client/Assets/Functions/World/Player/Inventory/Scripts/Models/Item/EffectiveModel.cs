@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using World.Card;
+using World.TheCard;
 
 namespace World.Requirement
 {

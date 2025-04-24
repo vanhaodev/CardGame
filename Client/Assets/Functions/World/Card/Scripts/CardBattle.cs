@@ -4,10 +4,10 @@ using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.Serialization;
-using World.Card;
+using World.TheCard;
 using Random = UnityEngine.Random;
 
-namespace World.Card
+namespace World.TheCard
 {
     public partial class CardBattle : MonoBehaviour
     {

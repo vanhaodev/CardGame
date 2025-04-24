@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Utils;
-using World.Card;
+using World.TheCard;
 
 namespace Effects
 {

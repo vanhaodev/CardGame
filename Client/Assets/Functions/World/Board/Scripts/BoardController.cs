@@ -41,13 +41,13 @@ namespace World.Board
 
         private void Start()
         {
-
+            Global.Instance.Get<BattleData>().ActionTurnManager = _actionTurnManager;
         }
         private void FixedUpdate()
         {
-            if (_actionTurn != null)
+            if (_actionTurnManager != null)
             {
-                var currentTurnCountDownTimeSecond = _actionTurn.UpdateTimeCountdown();
+                var currentTurnCountDownTimeSecond = _actionTurnManager.UpdateTimeCountdown();
                 _board.SetTurnCountDown(currentTurnCountDownTimeSecond);
             }
         }
@@ -78,13 +78,14 @@ namespace World.Board
                 var pos = _board.GetFactionByIndex(2).GetPositionByIndex(i + 1);
                 pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1);
             }
-
-            _actionTurn.SetupOrders(_board.GetAllFactions());
-            _actionTurn.MaxRoundCount = 99;
+            _board.GetFactionByIndex(1).ResetToOriginalPosition();
+            _board.GetFactionByIndex(2).ResetToOriginalPosition();
+            _actionTurnManager.SetupOrders(_board.GetAllFactions());
+            _actionTurnManager.MaxRoundCount = 99;
             int count = 0;
             while (!_ctsTestLoop.IsCancellationRequested)
             {
-                var result = await PlayAction();
+                var result = await PlayAction(_ctsTestLoop);
                 if (result != null)
                 {
                     Debug.Log(JsonConvert.SerializeObject(result));
@@ -95,7 +96,7 @@ namespace World.Board
                 count++;
             }
 
-            PerformCameraReset().Forget();
+            PerformCameraReset(_ctsTestLoop).Forget();
         }
 
 
@@ -135,10 +136,10 @@ namespace World.Board
         }
 
 
-        public async void Freeze(float duration, float slowFactor = 0.05f)
+        public async void Freeze(float duration, CancellationTokenSource cts, float slowFactor = 0.05f)
         {
             Time.timeScale = slowFactor; // Làm chậm toàn bộ game
-            await Task.Delay((int)(duration * 1000)); // Chờ theo thời gian thực
+            await Task.Delay((int)(duration * 1000), cancellationToken: cts.Token); // Chờ theo thời gian thực
             Time.timeScale = 1f; // Khôi phục tốc độ bình thường
         }
     }

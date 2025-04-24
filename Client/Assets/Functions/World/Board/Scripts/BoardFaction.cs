@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using World.Card;
+using World.TheCard;
 using Random = UnityEngine.Random;
 
 namespace World.Board
@@ -77,14 +77,16 @@ namespace World.Board
         }
 
         [Button]
-        private void ResetToOriginalPosition()
+        public void ResetToOriginalPosition()
         {
             foreach (var p in _positions)
             {
                 var rect = p.Card.GetComponent<RectTransform>();
                 rect.anchoredPosition = p.OriginalPosition;
+                rect.localRotation = Quaternion.identity;
             }
         }
+
         /// <summary>
         /// Đội đã die hết
         /// </summary>

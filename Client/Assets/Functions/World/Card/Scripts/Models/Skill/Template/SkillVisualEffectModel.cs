@@ -1,6 +1,6 @@
 ﻿using UnityEngine.AddressableAssets;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     [System.Serializable]
     public class SkillVisualEffectModel

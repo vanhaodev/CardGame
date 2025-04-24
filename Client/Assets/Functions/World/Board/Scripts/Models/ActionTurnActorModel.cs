@@ -14,7 +14,7 @@ namespace World.Board
         /// <summary>
         /// battle ref
         /// </summary>
-        public Card.Card Card;
+        public TheCard.Card Card;
 
         public bool IsAvailable()
         {

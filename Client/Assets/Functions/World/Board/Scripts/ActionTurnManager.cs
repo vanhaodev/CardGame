@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Globals;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
-using World.Card;
+using World.TheCard;
 
 namespace World.Board
 {

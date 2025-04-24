@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using World.Card.Skill;
+using World.TheCard.Skill;
 using World.Requirement;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     [System.Serializable]
     /// <summary>

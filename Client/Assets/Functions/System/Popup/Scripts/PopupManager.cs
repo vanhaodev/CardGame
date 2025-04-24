@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Utils;
-using World.Card;
+using World.TheCard;
 
 namespace Popup
 {

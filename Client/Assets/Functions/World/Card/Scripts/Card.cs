@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using World.Board;
 using Random = UnityEngine.Random;
 
-namespace World.Card
+namespace World.TheCard
 {
     public class Card : MonoBehaviour
     {

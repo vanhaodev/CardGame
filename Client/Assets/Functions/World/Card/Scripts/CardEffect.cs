@@ -6,7 +6,7 @@ using DG.Tweening;
 using Effects;
 using Globals;
 
-namespace World.Card
+namespace World.TheCard
 {
     public class CardEffect : MonoBehaviour
     {

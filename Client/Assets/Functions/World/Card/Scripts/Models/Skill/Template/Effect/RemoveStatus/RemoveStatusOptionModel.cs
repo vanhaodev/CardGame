@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     [System.Serializable]
     public abstract class RemoveStatusOptionModel

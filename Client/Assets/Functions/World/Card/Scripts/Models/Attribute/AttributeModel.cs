@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace World.Card
+namespace World.TheCard
 {
     [Serializable]
     public class AttributeModel

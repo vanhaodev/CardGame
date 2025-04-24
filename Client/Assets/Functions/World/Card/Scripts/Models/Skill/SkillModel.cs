@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     public class SkillModel
     {

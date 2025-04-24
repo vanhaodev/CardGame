@@ -1,4 +1,4 @@
-﻿namespace World.Card.Skill
+﻿namespace World.TheCard.Skill
 {
     /// <summary>
     /// Skilltype quyết định các mà skill đó hoạt động <br/>

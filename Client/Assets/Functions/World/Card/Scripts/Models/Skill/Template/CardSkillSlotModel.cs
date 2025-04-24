@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     [Serializable]
     public class CardSkillSlotModel

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Serialization;
 
-namespace World.Card.Skill
+namespace World.TheCard.Skill
 {
     [System.Serializable]
     public abstract class SkillEffectTriggerModel
@@ -45,6 +45,6 @@ namespace World.Card.Skill
         }
 
         public SkillEffectTriggerCheckType CheckType;
-        public abstract bool IsSatisfied(Card target);
+        public abstract bool IsSatisfied(Card sender, Card receiver);
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Serialization;
-using World.Card.Skill;
+using World.TheCard.Skill;
 
-namespace World.Card
+namespace World.TheCard
 {
     [Serializable]
     public class CardModel

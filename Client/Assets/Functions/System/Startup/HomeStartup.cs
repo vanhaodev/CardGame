@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utils;
-using World.Card;
+using World.TheCard;
 
 namespace Globals
 {

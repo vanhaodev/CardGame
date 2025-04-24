@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Globals;
 using UnityEngine;
-using World.Card.Skill;
+using World.TheCard.Skill;
 
-namespace World.Card
+namespace World.TheCard
 {
     [Serializable]
     [CreateAssetMenu(fileName = "CardTemplateModel", menuName = "Data/CardTemplateModel", order = 1)]

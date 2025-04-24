@@ -56,6 +56,32 @@ namespace Globals
             UpdateImportedLogs();
         }
 
+        public async UniTask AddComponent(IGlobal comp)
+        {
+            var type = comp.GetType();
+            if (_instances.ContainsKey(type))
+            {
+                return;
+            }
+
+            _instances[type] = comp; // Thêm vào dictionary nếu chưa có
+            await comp.Init();
+            _initialed.Add(type.Name);
+            UpdateImportedLogs();
+        }
+
+        public void RemoveComponent(IGlobal comp)
+        {
+            var type = comp.GetType();
+            if (!_instances.ContainsKey(type))
+            {
+                return;
+            }
+
+            _instances[type] = null;
+            UpdateImportedLogs();
+        }
+
         public async UniTask WaitForInit<T>() where T : IGlobal
         {
             Debug.LogWarning("GlobalBase: WaitForInit " + typeof(T).Name);

@@ -6,7 +6,7 @@ using Globals;
 using Newtonsoft.Json;
 using UnityEngine;
 using Utils;
-using World.Card;
+using World.TheCard;
 
 namespace GameConfigs
 {

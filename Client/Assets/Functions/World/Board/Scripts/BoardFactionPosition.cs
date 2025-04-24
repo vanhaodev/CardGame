@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
-using World.Card;
+using World.TheCard;
 namespace World.Board
 {
     [System.Serializable]
@@ -17,6 +17,6 @@ namespace World.Board
         /// <summary>
         /// ref
         /// </summary>
-        public Card.Card Card;
+        public TheCard.Card Card;
     }
 }

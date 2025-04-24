@@ -1,4 +1,4 @@
-﻿namespace World.Card
+﻿namespace World.TheCard
 {
     public enum ClassType : byte
     {
