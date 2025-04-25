@@ -23,7 +23,9 @@ namespace World.Board
         [SerializeField] [BoxGroup("Main")] CinemachineCamera _camera;
         [SerializeField] [BoxGroup("Main")] private Transform _transFormCameraCenterPoint;
         [SerializeField] [BoxGroup("Main")] Board _board;
+
         [SerializeField] [BoxGroup("Main")] CinemachineCameraShake _cameraShake;
+
         //------------ Entity ---------------\\
         /// <summary>
         /// the actor slibing index need to highest in canvas
@@ -43,6 +45,7 @@ namespace World.Board
         {
             Global.Instance.Get<BattleData>().ActionTurnManager = _actionTurnManager;
         }
+
         private void FixedUpdate()
         {
             if (_actionTurnManager != null)
@@ -51,6 +54,7 @@ namespace World.Board
                 _board.SetTurnCountDown(currentTurnCountDownTimeSecond);
             }
         }
+
         public void OnGUI()
         {
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50
@@ -67,17 +71,20 @@ namespace World.Board
             _ctsTestLoop?.Cancel();
             _ctsTestLoop = new CancellationTokenSource();
 
+            var cardInitTasks = new List<UniTask>();
             for (int i = 0; i < 6; i++)
             {
                 var pos = _board.GetFactionByIndex(1).GetPositionByIndex(i + 1);
-                pos.Card.Battle.SetupBattle(pos.Card, 1, i + 1);
+                cardInitTasks.Add(pos.Card.Battle.SetupBattle(pos.Card, 1, i + 1));
             }
 
             for (int i = 0; i < 6; i++)
             {
                 var pos = _board.GetFactionByIndex(2).GetPositionByIndex(i + 1);
-                pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1);
+                cardInitTasks.Add(pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1));
             }
+            await UniTask.WhenAll(cardInitTasks);
+
             _board.GetFactionByIndex(1).ResetToOriginalPosition();
             _board.GetFactionByIndex(2).ResetToOriginalPosition();
             _actionTurnManager.SetupOrders(_board.GetAllFactions());

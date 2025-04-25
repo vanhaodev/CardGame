@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
+using Cysharp.Threading.Tasks;
+using GameConfigs;
+using Globals;
 using UnityEngine;
 using UnityEngine.Serialization;
 using World.TheCard;
@@ -17,6 +20,7 @@ namespace World.TheCard
         //----------------------Data-------------------------\\
         [FormerlySerializedAs("_factionIndexInBoard")] [SerializeField] int factionIndex;
         [FormerlySerializedAs("_memberIndexInBoard")] [SerializeField] int memberIndex;
+        [SerializeField] private ElementType _elementType;
         [SerializeField] private SerializedDictionary<AttributeType, int> _attributes;
         /// <summary>
         /// điểm hành động, thứ tự trong round xếp theo AP cao đến thấp và phải lớn hơn AP_NEED
@@ -29,6 +33,7 @@ namespace World.TheCard
         [SerializeField] private bool _isDead;
         public int FactionIndex => factionIndex;
         public int MemberIndex => memberIndex;
+        public ElementType ElementType => _elementType;
         public Dictionary<AttributeType, int> Attributes => _attributes;
         public int ActionPoint => _actionPoint;
         public int UltimatePoint => _ultimatePoint;
@@ -44,15 +49,18 @@ namespace World.TheCard
 
             _actionPoint += Attributes[AttributeType.AttackSpeed];
         }
-        public void SetupBattle(Card card, int factionIndexInBoard, int memberIndexInBoard)
+        public async UniTask SetupBattle(Card card, int factionIndexInBoard, int memberIndexInBoard)
         {
             factionIndex = factionIndexInBoard;
             memberIndex = memberIndexInBoard;
             _isDead = false;
-            // Xóa dữ liệu cũ để tránh lỗi trùng key
+            
+            //element
+            var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(card.CardModel.TemplateId);
+            _elementType = cardTemplate.Element;
+      
+            //attribute
             _attributes.Clear();
-
-            // Chuyển List thành Dictionary thủ công
             foreach (var attr in card.CardModel.CalculatedAttributes)
             {
                 _attributes[attr.Type] = attr.Value;

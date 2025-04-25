@@ -15,7 +15,7 @@ namespace World.TheCard
         public string Name;
         public string History;
         public ClassType Class;
-
+        public ElementType Element;
         /// <summary>
         /// Starter pack attribute when summoned
         /// </summary>

@@ -6,10 +6,6 @@ namespace World.TheCard.Skill
     public class SkillModifyAttributeTemplateModel: SkillEffectTemplateModel
     {
         /// <summary>
-        /// Số round ảnh hưởng
-        /// </summary>
-        public byte Round;
-        /// <summary>
         /// Loại attribute muốn thay đổi
         /// </summary>
         public AttributeType ModifyAttributeType;

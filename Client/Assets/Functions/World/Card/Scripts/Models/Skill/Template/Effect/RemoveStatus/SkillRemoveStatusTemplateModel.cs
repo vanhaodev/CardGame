@@ -7,7 +7,6 @@ namespace World.TheCard.Skill
     [System.Serializable]
     public class SkillRemoveStatusTemplateModel: SkillEffectTemplateModel
     {
-        public short Rate;
         /// <summary>
         /// xoá trạng thái tốt
         /// </summary>

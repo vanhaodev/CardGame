@@ -40,4 +40,36 @@ namespace Utils
         }
 #endif
     }
+    
+    //no rule
+    [System.Serializable]
+    public class AssetReferenceWithPath
+    {
+        [SerializeField] private AssetReference _assetRef;
+
+        [SerializeField] private string _addressPath;
+
+        public AssetReference AssetRef => _assetRef;
+        public string AddressPath => _addressPath;
+
+#if UNITY_EDITOR
+        [Button]
+        public void SetPath()
+        {
+            if (_assetRef == null || string.IsNullOrEmpty(_assetRef.AssetGUID))
+                return;
+
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            if (settings == null)
+                return;
+
+            var entry = settings.FindAssetEntry(_assetRef.AssetGUID);
+            if (entry != null)
+            {
+                _addressPath = entry.address;
+                Debug.Log($"New AddressPath: {_addressPath}");
+            }
+        }
+#endif
+    }
 }

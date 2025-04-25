@@ -6,6 +6,6 @@ namespace World.TheCard.Skill
 
     public class SkillDelayRoundTemplateModel: SkillEffectTemplateModel
     {
-        public byte Round;
+        
     }
 }

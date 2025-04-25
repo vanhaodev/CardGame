@@ -10,9 +10,5 @@ namespace World.TheCard.Skill
         /// damage chia cho số round
         /// </summary>
         public bool DamageDividedByRound;
-        /// <summary>
-        /// số round ảnh hưởng
-        /// </summary>
-        public byte Round;
     }
 }

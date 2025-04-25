@@ -18,9 +18,9 @@ namespace World.TheCard.Skill
         /// Hiệu ứng kỹ năng
         /// </summary>
         [SerializeReference] public List<SkillEffectTemplateModel> SkillEffects;
-        /// <summary>
-        /// Hiệu ứng hình ảnh
-        /// </summary>
-        public List<SkillVisualEffectModel> SkillVisualEffects;
+        // /// <summary>
+        // /// Hiệu ứng hình ảnh
+        // /// </summary>
+        // public List<SkillVisualEffectModel> SkillVisualEffects;
     }
 }

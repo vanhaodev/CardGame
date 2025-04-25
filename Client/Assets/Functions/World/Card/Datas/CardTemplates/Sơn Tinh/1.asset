@@ -16,6 +16,7 @@ MonoBehaviour:
   Name: "S\u01A1n Tinh"
   History: 
   Class: 1
+  Element: 0
   Attributes:
   - Type: 0
     Value: 50
@@ -33,15 +34,7 @@ MonoBehaviour:
       - CooldownRound: 0
         SkillAttributeBonus: []
         SkillEffects:
-        - rid: 6999195808088981504
-        SkillVisualEffects:
-        - Type: 0
-          VfxPrefab:
-            m_AssetGUID: 
-            m_SubObjectName: 
-            m_SubObjectGUID: 
-            m_SubObjectType: 
-            m_EditorAssetChanged: 0
+        - rid: 6999195823577235575
   - SlotType: 1
     Skill:
       Name: 
@@ -69,20 +62,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6999195808088981504
+    - rid: 6999195823577235575
       type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
       data:
-        Triggers:
-        - rid: 6999195808088981505
+        Triggers: []
         AOEToLeftTargetCount: 0
         AOEToRightTargetCount: 0
+        ImpactRound: 1
+        SuccessRate: 10000
         Formula: 
-    - rid: 6999195808088981505
-      type: {class: SkillAttributeTriggerModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
-      data:
-        CheckType: 0
-        CompareType: 4
-        Attributes:
-        - Type: 2
-          Value: 10
-        HpPercent: -1

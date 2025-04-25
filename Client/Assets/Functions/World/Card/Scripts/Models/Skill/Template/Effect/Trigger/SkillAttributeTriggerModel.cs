@@ -3,19 +3,40 @@ using UnityEngine;
 
 namespace World.TheCard.Skill
 {
+    /// <summary>
+    /// Kiểm tra mục tiêu muốn check có attribute phù hợp sẽ kích hoạt
+    /// </summary>
     public class SkillAttributeTriggerModel : SkillEffectTriggerModel
     {
         public enum SkillAttributeTriggerCompareType
         {
+            /// <summary>
+            /// Nhỏ hơn
+            /// </summary>
             LessThan,
+            /// <summary>
+            /// Bằng
+            /// </summary>
             EqualTo,
+            /// <summary>
+            /// Lớn hơn
+            /// </summary>
             GreaterThan,
+            /// <summary>
+            /// Lớn hơn hoặc bằng
+            /// </summary>
             GreaterThanOrEqualTo,
+            /// <summary>
+            /// Nhỏ hơn hoặc bằng
+            /// </summary>
             LessThanOrEqualTo,
         }
 
         public SkillAttributeTriggerCompareType CompareType;
         public List<AttributeModel> Attributes;
+        /// <summary>
+        /// theo hệ % 100.0f = 100%
+        /// </summary>
         public float HpPercent = -1;
 
         public override bool IsSatisfied(Card sender, Card receiver)
