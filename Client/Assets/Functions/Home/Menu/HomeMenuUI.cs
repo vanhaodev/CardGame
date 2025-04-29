@@ -23,7 +23,7 @@ public class HomeMenuUI : MonoBehaviour
 
     public void TapTopPlay()
     {
-        var isNewbie = PlayerPrefs.GetInt("IsNewbie") == 0;
+        var isNewbie = PlayerPrefs.GetInt("IsNewbie") == 1;
         _btnContinue.SetActive(!isNewbie);
 
         if (_tweenPlayMenu.tween == null) _tweenPlayMenu.CreateTween();
@@ -48,10 +48,12 @@ public class HomeMenuUI : MonoBehaviour
     public void ContinueGame()
     {
         // Global.Instance.Get<SceneLoader>().LoadScene(1, () => GameStartup.Instance.GetTasks());
+        Application.OpenURL("https://www.youtube.com/@vanhaodev2001");
     }
 
     public void GameInfo()
     {
+        Application.OpenURL("https://www.youtube.com/@vanhaodev2001");
     }
 
     public void Setting()

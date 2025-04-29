@@ -19,18 +19,20 @@ namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
+        //------------------ Overview ------------\\
+        //Flow: Start -> Xếp timeline order -> Chờ battler ra lệnh -> thực hiện lệnh -> d
         //------------------ Display --------------\\
 
         //------------------ Comp ------------------\\
         [FormerlySerializedAs("_actionTurn")] [SerializeField] [BoxGroup("Action")]
         ActionTurnManager _actionTurnManager;
 
-        public async Task<BoardEndResultModel> PlayAction(CancellationTokenSource cts)
+        public async Task<RoundResultModel> PlayAction(CancellationTokenSource cts)
         {
             //========================[Check round]===============\
             if (_actionTurnManager.IsRoundOver())
             {
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Round over" }; // Hòa
+                return new RoundResultModel { WinFactionIndex = 0, Debug = "Round over" }; // Hòa
             }
 
             //========================[Set round UI]===============\
@@ -41,17 +43,17 @@ namespace World.Board
             bool faction2Dead = _board.GetFactionByIndex(2).IsAllDead();
 
             if (faction1Dead && faction2Dead)
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0 }; // Hòa
+                return new RoundResultModel { WinFactionIndex = 0 }; // Hòa
             if (faction1Dead)
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 2 }; // Phe 2 thắng
+                return new RoundResultModel { WinFactionIndex = 2 }; // Phe 2 thắng
             if (faction2Dead)
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 1 }; // Phe 1 thắng
+                return new RoundResultModel { WinFactionIndex = 1 }; // Phe 1 thắng
 
             //========================[Setup Action]===============\
             var turn = _actionTurnManager.GetNextTurn();
             if (turn == null)
             {
-                return new BoardEndResultModel { IsEnd = true, WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
+                return new RoundResultModel { WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
             }
 
             //chưa kịp hành động thì đã bị killed

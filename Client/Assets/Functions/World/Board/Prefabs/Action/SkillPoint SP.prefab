@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1514666653548888507}
   - component: {fileID: 7102054846454077102}
   - component: {fileID: 4637111359505431490}
+  - component: {fileID: 3934482122152513630}
   m_Layer: 5
   m_Name: SkillPoint SP
   m_TagString: Untagged
@@ -129,6 +130,24 @@ MonoBehaviour:
     m_ColorSpace: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+--- !u!114 &3934482122152513630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077649683704443496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0abfaf2d76047efb614ef9d8630cb2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objSkillPoints:
+  - {fileID: 1616662349926430264}
+  - {fileID: 6331781854677264115}
+  - {fileID: 9022496109160581472}
+  - {fileID: 5429091094689671534}
+  - {fileID: 7527543407520696196}
 --- !u!1 &1616662349926430264
 GameObject:
   m_ObjectHideFlags: 0

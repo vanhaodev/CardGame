@@ -1,12 +1,12 @@
 ﻿namespace World.Board
 {
-    public class BoardEndResultModel
+    public class RoundResultModel
     {
-        public bool IsEnd;
         /// <summary>
         /// 1: phe 1 (ở bottom là player) thắng <br/>
         /// 2: phe 2 (top của NPC) thắng <br/>
-        /// 0: hòa
+        /// 3: hòa <br/>
+        /// 0: chưa có gì 
         /// </summary>
         public int WinFactionIndex;
         public string Debug;

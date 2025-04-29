@@ -13,6 +13,7 @@ namespace World.Board
     public partial class ActionTurnManager
     {
         private const float LIMIT_TURN_TIME_SECOND = 30;
+
         /// <summary>
         /// Lưu trữ tất cả battler đã đăng ký trận này
         /// </summary>
@@ -31,6 +32,7 @@ namespace World.Board
         [BoxGroup("Main")] public int CurrentRoundCount;
 
         [BoxGroup("Main")] public ActionTurnActorModel CurrentTurn;
+
         /// <summary>
         /// time đếm ngược giới hạn thời gian suy nghĩ của turner
         /// </summary>
@@ -45,6 +47,7 @@ namespace World.Board
         {
             _timeCountdownSecond = LIMIT_TURN_TIME_SECOND;
         }
+
         public float UpdateTimeCountdown()
         {
             _timeCountdownSecond -= Time.deltaTime;
@@ -55,6 +58,7 @@ namespace World.Board
         {
             return _timeCountdownSecond <= 0;
         }
+
         /// <summary>
         /// Đưa tất cả battler vào danh sách turn để chuẩn bị cho trận chiến
         /// </summary>
@@ -91,7 +95,7 @@ namespace World.Board
         public void UpdateOrderIndex()
         {
             if (OriginalOrders.Count == 0) return;
-            if (PreviousIndex() != ActionAvailableOrders.Count - 1) return;
+            if (!IsLastTurn()) return;
             //dùng while để đảm bảo có ít nhất một người được hành đồng trong round
             //trong trường hợp chưa có ít nhất 1 battler đủ action point thì cứ cộng tiếp cho đến khi đủ thì mới bắt đầu round
             //thằng design nên tính toán speed để tránh việc while quá lâu nhé
@@ -165,5 +169,11 @@ namespace World.Board
         {
             return CurrentRoundCount >= MaxRoundCount;
         }
+
+        /// <summary>
+        /// Check turn cuối avaiable
+        /// </summary>
+        /// <returns></returns>
+        public bool IsLastTurn() => PreviousIndex() == ActionAvailableOrders.Count - 1;
     }
 }

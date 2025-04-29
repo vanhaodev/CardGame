@@ -21,6 +21,10 @@ namespace World.Board
 
         [SerializeField] private TextMeshProUGUI _txTurnTimeCountdown;
 
+        [SerializeField] private SkillButton _btnBasicAttack;
+        [SerializeField] private SkillButton _btnAdvancedSkill;
+        [SerializeField] private SkillButton _btnUltimateSkill;
+        [FormerlySerializedAs("_skillPointUI")] [SerializeField] private SkillPointUI skillPointUIUI;
         //----------------- Entity ----------------\\
         [SerializeField] GameObject _prefabCard;
         [SerializeField] List<BoardFaction> _factions;
