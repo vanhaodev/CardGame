@@ -24,92 +24,53 @@ namespace World.Board
         //------------------ Display --------------\\
 
         //------------------ Comp ------------------\\
-        [FormerlySerializedAs("_actionTurn")] [SerializeField] [BoxGroup("Action")]
-        ActionTurnManager _actionTurnManager;
+        [SerializeField] [BoxGroup("Action")] ActionTurnManager _actionTurnManager;
 
         public async Task<RoundResultModel> PlayAction(CancellationTokenSource cts)
         {
-            //========================[Check round]===============\
-            if (_actionTurnManager.IsRoundOver())
+            //========================[1. Kiểm tra điều kiện bắt đầu round]========================
+            if (!SetupRound())
             {
-                return new RoundResultModel { WinFactionIndex = 0, Debug = "Round over" }; // Hòa
+                return new RoundResultModel { WinFactionIndex = 0, Debug = "Round over" }; // Trận hòa
             }
 
-            //========================[Set round UI]===============\
-            _board.SetRound(_actionTurnManager.CurrentRoundCount, _actionTurnManager.MaxRoundCount);
-
-            //========================[Check winner and loser]===============\
-            bool faction1Dead = _board.GetFactionByIndex(1).IsAllDead();
-            bool faction2Dead = _board.GetFactionByIndex(2).IsAllDead();
-
-            if (faction1Dead && faction2Dead)
-                return new RoundResultModel { WinFactionIndex = 0 }; // Hòa
-            if (faction1Dead)
-                return new RoundResultModel { WinFactionIndex = 2 }; // Phe 2 thắng
-            if (faction2Dead)
-                return new RoundResultModel { WinFactionIndex = 1 }; // Phe 1 thắng
-
-            //========================[Setup Action]===============\
-            var turn = _actionTurnManager.GetNextTurn();
-            if (turn == null)
+            //========================[2. Kiểm tra phe thắng/thua]========================
+            var roundResult = GetRoundResult();
+            if (roundResult.WinFactionIndex != 0)
             {
-                return new RoundResultModel { WinFactionIndex = 0, Debug = "Turn null" }; // Hòa
+                return roundResult; // Trả kết quả nếu đã có phe thắng
             }
 
-            //chưa kịp hành động thì đã bị killed
-            if (!turn.IsAvailable())
-            {
-                _actionTurnManager.UpdateOrderIndex();
+            //========================[3. Lấy lượt hành động của nhân vật]========================
+            var battler = await TakeBattlerOfCurrentTurn(cts);
 
-                Debug.Log(
-                    $"Card f{turn.Card.Battle.FactionIndex} a{turn.Card.Battle.MemberIndex} is ap:{turn.Card.Battle.ActionPoint} dead:{turn.Card.Battle.IsDead}, next pos");
-                return null;
+            //========================[4. Chọn mục tiêu ngẫu nhiên]========================
+            var targets = GetRandomTargets(battler.actionTurnActorModel);
+            if (targets.Count == 0)
+            {
+                return null; // Không có mục tiêu → bỏ lượt
             }
 
-            //===========================[Get actor]===================================\
-            var actorFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex);
-            var actor = actorFaction.GetPositionByIndex(turn.Card.Battle.MemberIndex);
-            await _actionTurnManager.SetCurrentActorTurnUI(cts);
-            //========================[Select Targets]===============\
-            var targetFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex == 1 ? 2 : 1);
-            List<int> targetIndex = GetTargets(targetFaction);
-
-            if (targetIndex.Count == 0)
-            {
-                return null;
-            }
-
-            //========================[Perform Attacks]===============\
-            // if (!turn.IsAvailable())
-            // {
-            //     Debug.Log(
-            //         $"<color=red>Không đủ AP => bỏ qua: {turn.ActionPoint}</color>");
-            //     return null;
-            // }
+            //========================[5. Thực hiện hành động tấn công]========================
             Debug.Log(
-                $"<color=yellow>Faction: {turn.Card.Battle.FactionIndex}" +
-                $"\nSpeed: {turn.Card.Battle.Attributes[AttributeType.AttackSpeed]}" +
-                $" | Action Point: {turn.Card.Battle.ActionPoint}</color>");
-            if (Random.Range(0, 2) == 1)
-            {
-                await Ranged(actor,
-                    targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList(), cts);
-            }
-            else
-            {
-                await Melee(actor, targetIndex.Select(target => targetFaction.GetPositionByIndex(target)).ToList(),
-                    cts);
-            }
+                $"<color=yellow>Faction: {battler.actionTurnActorModel.Card.Battle.FactionIndex}" +
+                $"\nSpeed: {battler.actionTurnActorModel.Card.Battle.Attributes[AttributeType.AttackSpeed]}" +
+                $" | Action Point: {battler.actionTurnActorModel.Card.Battle.ActionPoint}</color>");
 
-            turn.ResetAP();
-            _actionTurnManager.UpdateOrderIndex();
+            await HandleBattlerAction(
+                battler.actionTurnActorModel,
+                battler.boardFactionPosition,
+                targets,
+                cts
+            );
+
             Debug.Log(
-                $"<color=yellow>Action Point After: {turn.Card.Battle.ActionPoint}</color>");
-            //========================[Camera Reset]===============\
+                $"<color=yellow>Action Point After: {battler.boardFactionPosition.Card.Battle.ActionPoint}</color>");
+
+            //========================[6. Kết thúc hành động]========================
             await UniTask.Yield();
             return null;
         }
-
 
         public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets,
             CancellationTokenSource cts)
@@ -186,7 +147,7 @@ namespace World.Board
                         }
                     });
 
-                await _tweenAction.WithCancellation(cancellationToken:cts.Token);
+                await _tweenAction.WithCancellation(cancellationToken: cts.Token);
                 await UniTask.WaitUntil(() => isActingDone, cancellationToken: cts.Token);
 
                 //========================[Reset Rotation]===============\
@@ -300,7 +261,7 @@ namespace World.Board
                             //========================[Target act receive hit]===============\
                             await targetCard.transform.DOMove(takeHitPos, 0.3f)
                                 .OnPlay(() => _cameraShake.Shake(2f, 3f, 0.2f))
-                                .WithCancellation(cancellationToken:cts.Token);
+                                .WithCancellation(cancellationToken: cts.Token);
 
                             isActingDone = true;
                         }
@@ -317,14 +278,15 @@ namespace World.Board
                     .WithCancellation(cancellationToken: cts.Token);
 
                 //========================[Return to Position]===============\
-                await targetCard.transform.DOMove(targetPosition, 0.3f).WithCancellation(cancellationToken:cts.Token);
+                await targetCard.transform.DOMove(targetPosition, 0.3f).WithCancellation(cancellationToken: cts.Token);
 
                 //========================[Set parent]===============\
                 targetCard.transform.SetParent(originalTargetParent, false);
             }
 
             //========================[Return to Position]===============\
-            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad).WithCancellation(cancellationToken:cts.Token);
+            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad)
+                .WithCancellation(cancellationToken: cts.Token);
             //========================[Set parent]===============\
             actor.Card.transform.SetParent(originalActorParent, false);
             //========================[Show vital bar]===============\

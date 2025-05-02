@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Effects
 {
-    public class VisualEffect : MonoBehaviour
+    public class VFX : MonoBehaviour
     {
 
     }

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
+using World.TheCard;
 
 namespace World.Board
 {
@@ -24,7 +27,10 @@ namespace World.Board
         [SerializeField] private SkillButton _btnBasicAttack;
         [SerializeField] private SkillButton _btnAdvancedSkill;
         [SerializeField] private SkillButton _btnUltimateSkill;
-        [FormerlySerializedAs("_skillPointUI")] [SerializeField] private SkillPointUI skillPointUIUI;
+        [SerializeField] private SkillPointUI _skillPointUI;
+
+        [SerializeField] private DOTweenAnimation _tweenPlayerInputButtons;
+
         //----------------- Entity ----------------\\
         [SerializeField] GameObject _prefabCard;
         [SerializeField] List<BoardFaction> _factions;
@@ -45,6 +51,37 @@ namespace World.Board
         public void SetTurnCountDown(float turnCountDown)
         {
             _txTurnTimeCountdown.text = turnCountDown.ToString("0");
+        }
+
+        [Button]
+        public void SetPlayerInput(bool isShow, Card currentTurnCard)
+        {
+            // Nếu tween null hoặc đã bị Kill, thì tạo lại
+            if (_tweenPlayerInputButtons.tween == null || !_tweenPlayerInputButtons.tween.IsActive())
+            {
+                _tweenPlayerInputButtons.CreateTween();
+            }
+
+            _tweenPlayerInputButtons.tween.OnComplete(() =>
+            {
+                _btnBasicAttack.Button.enabled = isShow;
+                _btnAdvancedSkill.Button.enabled = isShow;
+                _btnUltimateSkill.Button.enabled = isShow;
+            });
+            if (isShow)
+            {
+                _tweenPlayerInputButtons.tween.PlayForward();
+            }
+            else
+            {
+                _tweenPlayerInputButtons.tween.PlayBackwards();
+            }
+        }
+
+        private void OnDisable()
+        {
+            _tweenPlayerInputButtons.tween.Kill();
+            _tweenPlayerInputButtons.tween = null; // Optional
         }
     }
 }

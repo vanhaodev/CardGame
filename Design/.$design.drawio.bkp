@@ -1,9 +1,132 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
-  <diagram name="Page-1" id="5RjiF-gqPsOrZVrjTt_A">
+  <diagram name="Battle flow" id="5RjiF-gqPsOrZVrjTt_A">
     <mxGraphModel dx="1434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-1" target="PBph9VG3b_zRDIqlC5HQ-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry y="200" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-2" target="PBph9VG3b_zRDIqlC5HQ-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-2" value="Setup round&lt;div&gt;(Take battler who have &amp;gt;= 1000 AP and Arrange order)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-4" target="PBph9VG3b_zRDIqlC5HQ-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-4" value="Take battler in his turn" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-6" target="PBph9VG3b_zRDIqlC5HQ-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-6" target="PBph9VG3b_zRDIqlC5HQ-14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="425" />
+              <mxPoint x="700" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-6" value="Wait battler&amp;nbsp;&lt;div&gt;input&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="445" y="370" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-9" value="Timeout" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="600" y="400" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-10" target="PBph9VG3b_zRDIqlC5HQ-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-10" value="Handle action&lt;br&gt;(Attack, buff...)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="560" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-14" target="PBph9VG3b_zRDIqlC5HQ-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="160" />
+              <mxPoint x="220" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-14" target="PBph9VG3b_zRDIqlC5HQ-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-14" value="Check is last turn" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="270" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-18" value="Is the last turn" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="130" width="125" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-20" value="Still have turn" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="555" y="210" width="125" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-21" target="PBph9VG3b_zRDIqlC5HQ-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="375" />
+              <mxPoint x="320" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-21" target="PBph9VG3b_zRDIqlC5HQ-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-21" value="Round is litmit" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="165" y="320" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-24" value="Round still" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="330" y="210" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-25" target="PBph9VG3b_zRDIqlC5HQ-27">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-25" value="Handle draw game" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-27" value="End" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="360" y="840" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-29" value="Round is max count" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="180" y="545" width="115" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-30" target="PBph9VG3b_zRDIqlC5HQ-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-30" target="PBph9VG3b_zRDIqlC5HQ-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-30" value="Check game battlers&#39; faction dead" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="535" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-33" value="Not have dead faction yet" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="470" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PBph9VG3b_zRDIqlC5HQ-34" target="PBph9VG3b_zRDIqlC5HQ-27">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="715" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-34" value="Handle lose/win game" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="655" y="680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="PBph9VG3b_zRDIqlC5HQ-37" value="Have dead faction" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="700" y="645" width="140" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

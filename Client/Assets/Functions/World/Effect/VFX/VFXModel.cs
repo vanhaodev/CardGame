@@ -1,6 +1,6 @@
 ﻿namespace Effects
 {
-    public class VisualEffectModel
+    public class VFXModel
     {
     }
 }
