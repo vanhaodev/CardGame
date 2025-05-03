@@ -41,7 +41,6 @@ namespace Utils
             _resetAction?.Invoke(obj);
             _pool.Enqueue(obj);
         }
-
         public void Clear()
         {
             while (_pool.TryDequeue(out _))

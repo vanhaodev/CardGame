@@ -1,6 +1,7 @@
 using System;
 using Globals;
 using Popup;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using World.Board;
@@ -16,6 +17,9 @@ namespace World.TheCard
 
         [SerializeField] CardEffect _effect;
         [SerializeField] CardBattle _battle;
+        
+        public readonly Subject<Card> EventOnTouch = new Subject<Card>();
+        public void InvokeEventOnTouch() => EventOnTouch.OnNext(this);
         public CardBattle Battle => _battle;
 
         public CardModel CardModel
@@ -44,7 +48,8 @@ namespace World.TheCard
         public void OnTouch()
         {
             _effect.PlayTouchEffect();
-            Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
+            // Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
+            InvokeEventOnTouch();
         }
     }
 }

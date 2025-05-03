@@ -63,7 +63,7 @@ namespace World.Board
                 targets,
                 cts
             );
-
+            
             Debug.Log(
                 $"<color=yellow>Action Point After: {battler.boardFactionPosition.Card.Battle.ActionPoint}</color>");
 

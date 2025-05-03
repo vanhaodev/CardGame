@@ -23,7 +23,7 @@ namespace World.Board
         [SerializeField] [BoxGroup("Main")] CinemachineCamera _camera;
         [SerializeField] [BoxGroup("Main")] private Transform _transFormCameraCenterPoint;
         [SerializeField] [BoxGroup("Main")] Board _board;
-
+        [SerializeField] [BoxGroup("Main")] TargetSelectorController _targetSelectorController;
         [SerializeField] [BoxGroup("Main")] CinemachineCameraShake _cameraShake;
 
         //------------ Entity ---------------\\
@@ -44,6 +44,7 @@ namespace World.Board
         private void Start()
         {
             Global.Instance.Get<BattleData>().ActionTurnManager = _actionTurnManager;
+            _targetSelectorController.InitTargets(_board);
         }
 
         private void FixedUpdate()
@@ -66,11 +67,8 @@ namespace World.Board
         }
 
         [Button]
-        public async void TestLoop()
+        public async UniTask SetupBoardCards()
         {
-            _ctsTestLoop?.Cancel();
-            _ctsTestLoop = new CancellationTokenSource();
-
             var cardInitTasks = new List<UniTask>();
             for (int i = 0; i < 6; i++)
             {
@@ -83,7 +81,17 @@ namespace World.Board
                 var pos = _board.GetFactionByIndex(2).GetPositionByIndex(i + 1);
                 cardInitTasks.Add(pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1));
             }
+
             await UniTask.WhenAll(cardInitTasks);
+        }
+
+        [Button]
+        public async void TestLoop()
+        {
+            _ctsTestLoop?.Cancel();
+            _ctsTestLoop = new CancellationTokenSource();
+
+            await SetupBoardCards();
 
             _board.GetFactionByIndex(1).ResetToOriginalPosition();
             _board.GetFactionByIndex(2).ResetToOriginalPosition();
