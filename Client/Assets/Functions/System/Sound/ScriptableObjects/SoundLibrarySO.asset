@@ -12,19 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac82e3fe2e80e4d42b3d83a88bf85b9e, type: 3}
   m_Name: SoundLibrarySO
   m_EditorClassIdentifier: 
-  Sounds:
-  - Type: 0
-    Id: 1
-    AudioClip: {fileID: 8300000, guid: ad4b0a6424f6cef498f49a3fb424ec98, type: 3}
-  - Type: 2
-    Id: 2
-    AudioClip: {fileID: 8300000, guid: fa1b2571f6a55864290466389a17a5b1, type: 3}
-  - Type: 2
-    Id: 3
-    AudioClip: {fileID: 8300000, guid: db848221788907541b579e741e2347da, type: 3}
-  - Type: 2
-    Id: 4
-    AudioClip: {fileID: 8300000, guid: 8caaa63e20a08a44984ce227369eb712, type: 3}
-  - Type: 0
-    Id: 5
-    AudioClip: {fileID: 8300000, guid: e0e334f65785bb542af06e2811fee1ff, type: 3}
+  _testRef:
+    _assetRef:
+      m_AssetGUID: fa1b2571f6a55864290466389a17a5b1
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 1
+    _addressPath: Audios/FX_Attack.ogg

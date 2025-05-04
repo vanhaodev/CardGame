@@ -3,10 +3,10 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
-using FloatingEffect;
+using Effects;
 using Globals;
 
-namespace World.Card
+namespace World.TheCard
 {
     public class CardEffect : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace World.Card
 
             try
             {
-                Global.Instance.Get<SoundManager>().PlaySoundOneShot(3);
+                Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Touch.wav");
                 // Phóng to và thu nhỏ với hiệu ứng bubble
                 await _transform.DOScale(_realScale * 1.2f, 0.2f) // Phóng to 1.2 lần kích thước thực tế trong 0.2s
                     // .SetEase(Ease.OutBack)  // Ease OutBack để tạo cảm giác bật lại
@@ -48,9 +48,16 @@ namespace World.Card
             }
         }
 
+        public async void PlaySpawn()
+        {
+            Global.Instance.Get<EffectManager>().ShowDeath(gameObject.transform.position).Forget();
+            await _canvasGroup.DOFade(1, 1f)
+                // .OnPlay()
+                .AsyncWaitForCompletion();
+        }
         public async void PlayDie()
         {
-            Global.Instance.Get<FloatingEffectManager>().ShowDeath(gameObject.transform.position).Forget();
+            Global.Instance.Get<EffectManager>().ShowDeath(gameObject.transform.position).Forget();
             await _canvasGroup.DOFade(0, 1f)
                 // .OnPlay()
                 .AsyncWaitForCompletion();

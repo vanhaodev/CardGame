@@ -1,12 +1,22 @@
 ﻿using UnityEngine;
-using World.Card;
+using UnityEngine.Serialization;
+using World.TheCard;
 namespace World.Board
 {
     [System.Serializable]
     public class BoardFactionPosition
     {
-        public int Index; // Đổi từ byte sang int
+        /// <summary>
+        /// Index bắt đầu từ 1 (get từ mảng cần -1), xếp theo bàn từ trái sang phải
+        /// </summary>
+        public int MemberIndex;
+        /// <summary>
+        /// vị trí trên canvas
+        /// </summary>
         public Vector2 OriginalPosition;
-        public Card.Card Card;
+        /// <summary>
+        /// ref
+        /// </summary>
+        public TheCard.Card Card;
     }
 }

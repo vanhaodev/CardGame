@@ -1,4 +1,4 @@
-﻿namespace World.Card
+﻿namespace World.TheCard
 {
     /// <summary>
     /// Actor will play effect of sender and target will player effect of receiver

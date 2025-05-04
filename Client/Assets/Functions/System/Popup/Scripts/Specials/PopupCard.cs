@@ -2,7 +2,7 @@
 using Globals;
 using TMPro;
 using UnityEngine;
-using World.Card;
+using World.TheCard;
 
 namespace Popup
 {
@@ -18,7 +18,7 @@ namespace Popup
 
         public async void OpenInfo()
         {
-            var temp = await Global.Instance.Get<GameConfig.GameConfig>().GetCardTemplate(_card.CardModel.TemplateId);
+            var temp = await Global.Instance.Get<GameConfigs.GameConfig>().GetCardTemplate(_card.CardModel.TemplateId);
             _txInfo.text = $"{temp.Name}\n" +
                            $"{temp.History}\n" +
                            $"{string.Join("\n", _card.CardModel.CalculatedAttributes.Select(a => $"{a.Type}: {a.Value}"))}";

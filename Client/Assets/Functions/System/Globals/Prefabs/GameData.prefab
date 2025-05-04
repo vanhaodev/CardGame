@@ -52,3 +52,5 @@ MonoBehaviour:
     Gender: 0
     Bio: 
     Currencies: []
+    CardCollection:
+      Cards: []

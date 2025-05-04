@@ -20,23 +20,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 428815636188b7c49b61841608fb35e8
-    m_Address: CardSprites
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5955f1f900937564b9ed8223e70d55c8
     m_Address: ItemTemplates
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 604f327995294534ebcd373222d7a992
-    m_Address: CardTemplates
+  - m_GUID: 68e6db2ebdc24f95958faec2be5558d6
+    m_Address: Assets/TextMesh Pro/Shaders/TMP_SDF.shader
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7287365a225d94542ab7230879493b3a
-    m_Address: SoundLibrarySO.asset
+    m_Address: Audios/SoundLibrarySO.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -50,13 +45,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a7f187f335714e44883b0bdb05e20a4
+    m_Address: Assets/Statics/Fonts/ProtestGuerrilla-Regular SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b897d7ba218a8f842a80c8a7afd7c74d
-    m_Address: FloatingEffect/FloatingEffectDamage.prefab
+    m_Address: Effect/EffectDamage.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb989056171e61240bfcd87d567dc298
-    m_Address: FloatingEffect/FloatingEffectDeath.prefab
+    m_Address: Effect/EffectDeath.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -76,7 +76,17 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f90390736fe4ae54caf6ad251d69aeea
-    m_Address: FloatingEffect/FloatingEffectSlash.prefab
+    m_Address: Effect/EffectSlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb2d63aaefec98f48bfed877eca171e8
+    m_Address: Effect/EffectBullet.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe393ace9b354375a9cb14cdbbc28be4
+    m_Address: Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

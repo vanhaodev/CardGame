@@ -6,13 +6,14 @@ using Globals;
 using Newtonsoft.Json;
 using UnityEngine;
 using Utils;
-using World.Card;
+using World.TheCard;
 
-namespace GameConfig
+namespace GameConfigs
 {
     public partial class GameConfig : MonoBehaviour, IGlobal
     {
         public IReadOnlyDictionary<ushort, uint> LevelExps { get; private set; }
+
         public async UniTask InitCard()
         {
             var paths = new[]
@@ -39,6 +40,7 @@ namespace GameConfig
             Debug.Log($"Loaded\n" +
                       $"\n{LevelExps.Count} level exps");
         }
+
         private ConcurrentDictionary<ushort, CardTemplateModel> _cardTemplates = new();
 
         public async UniTask<CardTemplateModel> GetCardTemplate(ushort cardTemplateId)
@@ -48,11 +50,10 @@ namespace GameConfig
                 return value;
             }
 
-            var textSO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<TextSO>("CardTemplates/" + cardTemplateId + ".asset");
-            var newCard = JsonConvert.DeserializeObject<CardTemplateModel>(textSO.Content);
-            _cardTemplates.TryAdd(cardTemplateId, newCard);
-            return newCard;
+            var cardSO = await Global.Instance.Get<AddressableLoader>()
+                .LoadAssetAsync<CardTemplateModel>("CardTemplateModels/" + cardTemplateId + ".asset");
+            _cardTemplates.TryAdd(cardTemplateId, cardSO);
+            return cardSO;
         }
 
         /// <summary>
@@ -60,10 +61,10 @@ namespace GameConfig
         /// </summary>
         private ConcurrentDictionary<ushort, ConcurrentDictionary<string, Sprite>> _loadedCardSprites = new();
 
-        public async UniTask<Sprite> GetCardSprite(CardModel cardModel)
+        public async UniTask<Sprite> GetCardSprite(CardModel cardModel, string skinName = "" /*default is null*/)
         {
             var cardTemplateId = cardModel.TemplateId;
-            var key = $"{cardTemplateId}_{cardModel.Rank}";
+            var key = $"{cardModel.Star}";
 
             // Đảm bảo ConcurrentDictionary con tồn tại
             var value = _loadedCardSprites.GetOrAdd(cardTemplateId, _ => new ConcurrentDictionary<string, Sprite>());
@@ -76,13 +77,42 @@ namespace GameConfig
 
             // Tải sprite mới
             var newSprite = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<Sprite>("CardSprites/" + key + ".png");
-
+                .LoadAssetAsync<Sprite>(
+                    $"CardSprites/{cardTemplateId}{(skinName.Length > 0 ? $"/{skinName}" : "")}/{key}.png");
             // Thêm vào dictionary nếu chưa tồn tại (tránh lỗi "key exists")
             value.TryAdd(key, newSprite);
 
             return newSprite;
         }
 
+        public (ushort level, float progressPercent, uint expNext) GetLevelProgressAndNextExp(uint exp)
+        {
+            if (LevelExps == null || LevelExps.Count == 0)
+                return (0, 0f, 0);
+
+            var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
+
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                ushort level = ordered[i].Key;
+                uint requiredExp = ordered[i].Value;
+
+                if (exp < requiredExp)
+                {
+                    ushort prevLevel = ordered[i - 1].Key;
+                    uint prevExp = ordered[i - 1].Value;
+
+                    uint range = requiredExp - prevExp;
+                    uint currentProgress = exp - prevExp;
+
+                    float progress = range > 0 ? (float)currentProgress / range * 100f : 0f;
+                    return (prevLevel, progress, range);
+                }
+            }
+
+            // Nếu exp >= max mốc
+            ushort maxLevel = ordered.Last().Key;
+            return (maxLevel, 100f, 0);
+        }
     }
 }

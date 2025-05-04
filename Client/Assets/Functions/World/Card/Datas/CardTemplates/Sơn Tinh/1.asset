@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3722ea1030224df4b582c9145e6ab73a, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  Id: 1
+  Name: "S\u01A1n Tinh"
+  History: 
+  Class: 1
+  Element: 0
+  Attributes:
+  - Type: 0
+    Value: 50
+  - Type: 3
+    Value: 10
+  - Type: 4
+    Value: 10
+  Skills:
+  - SlotType: 0
+    Skill:
+      Name: 
+      Description: 
+      SkillType: 0
+      Levels:
+      - CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 6999195823577235575
+  - SlotType: 1
+    Skill:
+      Name: 
+      Description: 
+      SkillType: 0
+      Levels: []
+  - SlotType: 2
+    Skill:
+      Name: 
+      Description: 
+      SkillType: 0
+      Levels: []
+  - SlotType: 3
+    Skill:
+      Name: 
+      Description: 
+      SkillType: 0
+      Levels: []
+  - SlotType: 4
+    Skill:
+      Name: 
+      Description: 
+      SkillType: 0
+      Levels: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6999195823577235575
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        AOEToLeftTargetCount: 0
+        AOEToRightTargetCount: 0
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: 

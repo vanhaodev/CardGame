@@ -6,10 +6,10 @@ using Globals;
 using Newtonsoft.Json;
 using UnityEngine;
 using Utils;
-using World.Card;
-using World.Player.Inventory;
+using World.TheCard;
+using World.Requirement;
 
-namespace GameConfig
+namespace GameConfigs
 {
     public partial class GameConfig : MonoBehaviour, IGlobal
     {

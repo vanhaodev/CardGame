@@ -8,44 +8,61 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Utils;
+
 [CreateAssetMenu(fileName = "SoundLibrarySO", menuName = "SoundLibrarySO")]
 public class SoundLibrarySO : ScriptableObject
 {
-    public List<SoundLibrary> Sounds = new List<SoundLibrary>();
-    private Dictionary<ushort, SoundLibrary> _sounds = new Dictionary<ushort, SoundLibrary>();
+    private Dictionary<string, SoundLibraryModel> _sounds = new();
+    private Dictionary<string, AsyncOperationHandle<AudioClip>> _handles = new(); // Thêm dòng này
     public void Init()
     {
-        foreach (var sound in Sounds)
-        {
-            if (!_sounds.ContainsKey(sound.Id))
-            {
-                _sounds.Add(sound.Id, sound);
-            }
-        }
+      
     }
-    public SoundLibrary GetSound(ushort type)
+    public async UniTask<SoundLibraryModel> GetSound(string path)
     {
-        if (_sounds.TryGetValue(type, out var sound))
+        if (_sounds.TryGetValue(path, out var sound))
         {
             return sound;
         }
-        return default;
+
+        var handle = Addressables.LoadAssetAsync<AudioClip>("Audios/" + path);
+        Debug.Log("Load sound: " + handle.DebugName);
+        var audioClip = await handle.ToUniTask();
+
+        var newSound = new SoundLibraryModel
+        {
+            Type = (SoundType)Enum.Parse(typeof(SoundType), audioClip.name.Split('_')[0]),
+            AudioClip = audioClip
+        };
+
+        _sounds[path] = newSound;
+        _handles[path] = handle; // Lưu handle để sau này release
+
+        return newSound;
     }
-    public void Clear() 
-    { 
-        _sounds.Clear(); 
+    public void ReleaseAll()
+    {
+        foreach (var handle in _handles.Values)
+        {
+            Addressables.Release(handle);
+        }
+
+        _handles.Clear();
+        _sounds.Clear();
     }
 }
+
 public enum SoundType
 {
-    BackgroundMusic,
-    Enviroment,
-    Effect
+    BGM,
+    ENV,
+    FX
 }
+
 [Serializable]
-public struct SoundLibrary
+public class SoundLibraryModel
 {
     public SoundType Type;
-    public ushort Id;
-    public AudioClip AudioClip;
+    public AudioClip AudioClip; // Lưu AudioClip sau khi tải từ Addressable
 }

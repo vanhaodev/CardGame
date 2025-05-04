@@ -467,7 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardModel:
     TemplateId: 0
-    Rank: 0
+    Star: 0
     Exp: 0
     BaseAttributes: []
     CalculatedAttributes: []
@@ -502,6 +502,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isDead: 0
+  FactionInBoard: 0
+  IndexInBoard: 0
   _attributes:
     _serializedList: []
   _vital: {fileID: 1304804567044967383}

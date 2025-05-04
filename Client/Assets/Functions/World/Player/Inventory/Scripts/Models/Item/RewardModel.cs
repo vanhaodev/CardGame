@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using World.Card;
+using World.TheCard;
 using World.Player.Character;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
     [Serializable]
     public class RewardModel

@@ -1,22 +1,25 @@
 using System;
 using Globals;
 using Popup;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using World.Board;
 using Random = UnityEngine.Random;
 
-namespace World.Card
+namespace World.TheCard
 {
     public class Card : MonoBehaviour
     {
-
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
-       
+
         [SerializeField] CardEffect _effect;
         [SerializeField] CardBattle _battle;
+        
+        public readonly Subject<Card> EventOnTouch = new Subject<Card>();
+        public void InvokeEventOnTouch() => EventOnTouch.OnNext(this);
         public CardBattle Battle => _battle;
 
         public CardModel CardModel
@@ -29,10 +32,13 @@ namespace World.Card
             }
         }
 
+        public Sprite SpriteCharacter => _spriteCharacter.sprite;
+
+
         private async void Init()
         {
-            _spriteCharacter.sprite = await Global.Instance.Get<GameConfig.GameConfig>().GetCardSprite(_cardModel);
-            _battle.SetupBattle(this);
+            _spriteCharacter.sprite = await Global.Instance.Get<GameConfigs.GameConfig>().GetCardSprite(_cardModel);
+            // _battle.SetupBattle(this);
         }
 
         /// <summary>
@@ -41,13 +47,9 @@ namespace World.Card
         /// </summary>
         public void OnTouch()
         {
-            if (Global.Instance.Get<BoardCommander>().IsSelectingTarget())
-            {
-                return;
-            }
-
+            InvokeEventOnTouch();
             _effect.PlayTouchEffect();
-            Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
+            // Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
         }
     }
 }

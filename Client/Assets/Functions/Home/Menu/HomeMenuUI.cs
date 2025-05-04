@@ -17,23 +17,41 @@ public class HomeMenuUI : MonoBehaviour
 
     private void Start()
     {
-        if (_tweenTapToPlay.tween == null) _tweenTapToPlay.CreateTween();
-        _tweenTapToPlay.DOPlay();
+        if (_tweenTapToPlay.tween == null)
+        {
+            _tweenTapToPlay.CreateTween();
+        }
+
+        _tweenTapToPlay.DOPlayForward();
     }
 
     public void TapTopPlay()
     {
-        var isNewbie = PlayerPrefs.GetInt("IsNewbie") == 0;
+        var isNewbie = PlayerPrefs.GetInt("IsNewbie") == 1;
         _btnContinue.SetActive(!isNewbie);
 
-        if (_tweenPlayMenu.tween == null) _tweenPlayMenu.CreateTween();
+        if (_tweenTapToPlay.tween == null)
+        {
+            _tweenTapToPlay.CreateTween();
+            _tweenTapToPlay.tween.OnComplete(() =>
+            {
+                _tweenTapToPlay.tween.Kill();
+                _tweenTapToPlay.tween = null;
+            });
+        }
+
+        if (_tweenPlayMenu.tween == null)
+        {
+            _tweenPlayMenu.CreateTween();
+            _tweenPlayMenu.tween.OnComplete(() =>
+            {
+                _tweenPlayMenu.tween.Kill();
+                _tweenPlayMenu.tween = null;
+            });
+        }
+
         _tweenTapToPlay.DOPlayBackwards();
         _tweenPlayMenu.DOPlay();
-
-        _tweenTapToPlay.tween.OnComplete(() => { _tweenTapToPlay.tween.Kill(); });
-        _tweenPlayMenu.tween.OnComplete(() => { _tweenPlayMenu.tween.Kill(); });
-        // _tweenTapToPlay.tween.Kill();
-        // _tweenPlayMenu.tween.Kill();
     }
 
     public void NewGame()
@@ -48,10 +66,12 @@ public class HomeMenuUI : MonoBehaviour
     public void ContinueGame()
     {
         // Global.Instance.Get<SceneLoader>().LoadScene(1, () => GameStartup.Instance.GetTasks());
+        Application.OpenURL("https://www.youtube.com/@vanhaodev2001");
     }
 
     public void GameInfo()
     {
+        Application.OpenURL("https://www.youtube.com/@vanhaodev2001");
     }
 
     public void Setting()

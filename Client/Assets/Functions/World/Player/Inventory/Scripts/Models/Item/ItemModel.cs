@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Utils;
 
-namespace World.Player.Inventory
+namespace World.Requirement
 {
     public class ItemModel
     {
