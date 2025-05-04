@@ -6673,9 +6673,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f10c50967f1444ac92fb933a86d2b93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AOEToLeftTargetCount: 0
-  AOEToRightTargetCount: 0
+  AOEToLeftTargetCount: 1
+  AOEToRightTargetCount: 1
   _prefabTargetPointer: {fileID: 6535874003394647217, guid: 697031093a04de74cbf4319ea2c9a149, type: 3}
+  _instantiatedPointers: []
 --- !u!1 &1954469603
 GameObject:
   m_ObjectHideFlags: 0

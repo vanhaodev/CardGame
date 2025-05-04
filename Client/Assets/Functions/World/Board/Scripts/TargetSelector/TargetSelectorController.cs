@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Globals;
 using UniRx;
 using UnityEngine;
 using Utils;
@@ -23,10 +27,8 @@ namespace World.Board
                 createFunc: () =>
                 {
                     var pointer = Instantiate(_prefabTargetPointer, transform);
-                    if (!_instantiatedPointers.Contains(pointer))
-                    {
-                        _instantiatedPointers.Add(pointer);
-                    }
+                    pointer.SetActive(false);
+                    _instantiatedPointers.Add(pointer);
 
                     return pointer;
                 },
@@ -48,16 +50,114 @@ namespace World.Board
             }
         }
 
-        public void OnTouch(Card card)
+        private CancellationTokenSource _ctsOnTouch;
+
+        public async void OnTouch(Card card)
         {
-            foreach (var p in _instantiatedPointers)
+            if (card.Battle.IsDead) return;
+            _ctsOnTouch?.Cancel();
+            _ctsOnTouch = new CancellationTokenSource();
+            foreach (var instantiatedPointer in _instantiatedPointers)
             {
-                _pointerPool.Put(p);
+                instantiatedPointer.gameObject.SetActive(false);
+            }
+            //
+            // Lấy danh sách các card của faction và sắp xếp theo MemberIndex
+            var factionCards = _board.GetFactionByIndex(card.Battle.FactionIndex).GetAllPositions()
+                .OrderBy(c => c.MemberIndex)
+                .ToList();
+
+            // Tìm index của card center trong danh sách
+            int centerIndex = factionCards.FindIndex(c => c.MemberIndex == card.Battle.MemberIndex);
+
+            if (centerIndex == -1)
+            {
+                Debug.LogWarning("Card not found in faction.");
+                return;
             }
 
-            Debug.Log(card.Battle.FactionIndex + " | " + card.Battle.MemberIndex);
-            var poiner = _pointerPool.Get();
-            poiner.transform.position = card.transform.position;
+            Debug.Log("FactionIndex "+card.Battle.FactionIndex + " | MemberIndex " + card.Battle.MemberIndex + " | Center = " + centerIndex);
+
+            // Xác định các card mục tiêu (card center sẽ luôn được chọn)
+            List<Card> targetCards = new();
+
+            // Thêm card center vào đúng giữa
+            targetCards.Add(factionCards[centerIndex].Card);
+            Debug.Log("Add center index " + centerIndex);
+            // Lan ra dần đều hai bên
+            for (int i = 1; i <= Mathf.Max(AOEToLeftTargetCount, AOEToRightTargetCount); i++)
+            {
+                // Bên trái
+                int leftIndex = centerIndex - i;
+                if (i <= AOEToLeftTargetCount && leftIndex >= 0)
+                {
+                    if (!factionCards[leftIndex].Card.Battle.IsDead)
+                        targetCards.Add(factionCards[leftIndex].Card);
+                }
+
+                // Bên phải
+                int rightIndex = centerIndex + i;
+                if (i <= AOEToRightTargetCount && rightIndex < factionCards.Count)
+                {
+                    if (!factionCards[rightIndex].Card.Battle.IsDead)
+                        targetCards.Add(factionCards[rightIndex].Card);
+                }
+            }
+            Debug.Log("Target count " + targetCards.Count);
+            // Đảm bảo đủ pointer
+            while (_instantiatedPointers.Count < targetCards.Count)
+            {
+                var newPointer = _pointerPool.Get();
+            }
+
+            // Lưu danh sách instance id của các pointer đã được hiển thị
+            HashSet<int> activePointers = new();
+            // Cập nhật vị trí pointer và trạng thái hiển thị
+            for (int i = 0; i < targetCards.Count; i++)
+            {
+                var pointer = _instantiatedPointers[i];
+                pointer.name = $"Pointer {targetCards[i].Battle.FactionIndex} | {targetCards[i].Battle.MemberIndex}";
+                // Lưu instance id của pointer đã được hiển thị
+                activePointers.Add(pointer.GetInstanceID());
+
+                // Cập nhật vị trí pointer
+                pointer.transform.position = targetCards[i].transform.position;
+                // Hiển thị pointer nếu mục tiêu có trong danh sách
+                pointer.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+                pointer.gameObject.SetActive(true);
+
+                if (i == 0)
+                {
+                    Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_TargetSelect");
+                    await pointer.transform.DOScale(0.7f, 0.2f).WithCancellation(cancellationToken: _ctsOnTouch.Token);
+                }
+                else
+                {
+                    if (targetCards[i].Battle.MemberIndex < card.Battle.MemberIndex)
+                    {
+                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_TargetSelectLeft");
+                    }
+                    else
+                    {
+                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_TargetSelectRight");
+                    }
+
+                    await pointer.transform.DOScale(0.45f, 0.2f).WithCancellation(cancellationToken: _ctsOnTouch.Token);
+                    //await UniTask.WaitForSeconds(0.15f, cancellationToken: _ctsOnTouch.Token);
+                }
+            }
+
+            // Ẩn các pointer thừa (nếu có) và loại trừ các pointer đã được hiển thị
+            for (int i = 0; i < _instantiatedPointers.Count; i++)
+            {
+                var pointer = _instantiatedPointers[i];
+
+                // Nếu pointer chưa được hiển thị (instance id không có trong activePointers), ẩn nó
+                if (!activePointers.Contains(pointer.GetInstanceID()))
+                {
+                    pointer.gameObject.SetActive(false);
+                }
+            }
         }
     }
 }

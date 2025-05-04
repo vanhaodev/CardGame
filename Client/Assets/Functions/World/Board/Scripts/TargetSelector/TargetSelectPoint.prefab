@@ -971,6 +971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7490138858630629107}
   - component: {fileID: 8754850867564843064}
+  - component: {fileID: 8673655963793891670}
   m_Layer: 5
   m_Name: TargetSelectPoint
   m_TagString: Untagged
@@ -1009,6 +1010,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6535874003394647217}
   m_CullTransparentMesh: 1
+--- !u!225 &8673655963793891670
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6535874003394647217}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6740043806060158474
 GameObject:
   m_ObjectHideFlags: 0

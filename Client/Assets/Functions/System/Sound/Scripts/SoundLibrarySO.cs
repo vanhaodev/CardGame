@@ -13,18 +13,12 @@ using Utils;
 [CreateAssetMenu(fileName = "SoundLibrarySO", menuName = "SoundLibrarySO")]
 public class SoundLibrarySO : ScriptableObject
 {
-    [SerializeField] AssetReferenceWithPath<AudioClip> _testRef;
     private Dictionary<string, SoundLibraryModel> _sounds = new();
     private Dictionary<string, AsyncOperationHandle<AudioClip>> _handles = new(); // Thêm dòng này
     public void Init()
     {
       
     }
-    public string GetAddressPath(AssetReferenceT<AudioClip> reference)
-    {
-        return reference.RuntimeKey.ToString();
-    }
-
     public async UniTask<SoundLibraryModel> GetSound(string path)
     {
         if (_sounds.TryGetValue(path, out var sound))

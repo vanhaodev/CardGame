@@ -47,9 +47,9 @@ namespace World.TheCard
         /// </summary>
         public void OnTouch()
         {
+            InvokeEventOnTouch();
             _effect.PlayTouchEffect();
             // Global.Instance.Get<PopupManager>().ShowCard(_cardModel);
-            InvokeEventOnTouch();
         }
     }
 }
