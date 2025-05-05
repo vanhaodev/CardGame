@@ -61,6 +61,7 @@ namespace World.Board
             {
                 instantiatedPointer.gameObject.SetActive(false);
             }
+
             //
             // Lấy danh sách các card của faction và sắp xếp theo MemberIndex
             var factionCards = _board.GetFactionByIndex(card.Battle.FactionIndex).GetAllPositions()
@@ -76,11 +77,11 @@ namespace World.Board
                 return;
             }
 
-            Debug.Log("FactionIndex "+card.Battle.FactionIndex + " | MemberIndex " + card.Battle.MemberIndex + " | Center = " + centerIndex);
+            Debug.Log("FactionIndex " + card.Battle.FactionIndex + " | MemberIndex " + card.Battle.MemberIndex +
+                      " | Center = " + centerIndex);
 
             // Xác định các card mục tiêu (card center sẽ luôn được chọn)
             List<Card> targetCards = new();
-
             // Thêm card center vào đúng giữa
             targetCards.Add(factionCards[centerIndex].Card);
             Debug.Log("Add center index " + centerIndex);
@@ -103,6 +104,7 @@ namespace World.Board
                         targetCards.Add(factionCards[rightIndex].Card);
                 }
             }
+
             Debug.Log("Target count " + targetCards.Count);
             // Đảm bảo đủ pointer
             while (_instantiatedPointers.Count < targetCards.Count)
@@ -112,6 +114,7 @@ namespace World.Board
 
             // Lưu danh sách instance id của các pointer đã được hiển thị
             HashSet<int> activePointers = new();
+            // List<UniTask> tasks = new();
             // Cập nhật vị trí pointer và trạng thái hiển thị
             for (int i = 0; i < targetCards.Count; i++)
             {
