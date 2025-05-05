@@ -136,8 +136,12 @@ namespace World.Board
         /// không lấy turn hiện tại -1 vì không thể biết turn hiện tại là null thì sẽ lỗi
         /// </summary>
         /// <returns></returns>
-        public int PreviousIndex() => (CurrentTurn == null) ? 0 : ActionAvailableOrders.IndexOf(CurrentTurn);
+        public int CurrentIndex() => (CurrentTurn == null) ? 0 : ActionAvailableOrders.IndexOf(CurrentTurn);
 
+        public ActionTurnActorModel GetCurrentTurn()
+        {
+            return ActionAvailableOrders[CurrentIndex()];
+        }
         /// <summary>
         /// Lấy battler của turn tiếp theo, trả về null khi không tìm được ai
         /// </summary>
@@ -145,7 +149,7 @@ namespace World.Board
         public ActionTurnActorModel GetNextTurn()
         {
             if (ActionAvailableOrders.Count == 0) return null;
-            int previousIndex = PreviousIndex();
+            int previousIndex = CurrentIndex();
 
             // Duyệt qua danh sách để tìm nhân vật có thể hành động
             for (int i = 1; i <= ActionAvailableOrders.Count; i++)
@@ -174,6 +178,6 @@ namespace World.Board
         /// Check turn cuối avaiable
         /// </summary>
         /// <returns></returns>
-        public bool IsLastTurn() => PreviousIndex() == ActionAvailableOrders.Count - 1;
+        public bool IsLastTurn() => CurrentIndex() == ActionAvailableOrders.Count - 1;
     }
 }

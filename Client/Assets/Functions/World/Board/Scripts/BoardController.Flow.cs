@@ -11,28 +11,78 @@ namespace World.Board
 {
     public partial class BoardController : MonoBehaviour
     {
+        private CancellationTokenSource _ctsBattleFlow;
+
         [Button]
-        /// <summary>
-        /// Bắt đầu một trận đấu tại đây, sẽ thiết lập lần đầu những thứ cần thiết
-        /// </summary>
-        public async UniTask StartBattle()
+        public async void SetupBattleFlow()
         {
-            SetupRound();
+            await SetupBoardCards();
+
+            _board.GetFactionByIndex(1).ResetToOriginalPosition();
+            _board.GetFactionByIndex(2).ResetToOriginalPosition();
+            _actionTurnManager.SetupOrders(_board.GetAllFactions());
+            _actionTurnManager.MaxRoundCount = 99;
+
+            _ctsBattleFlow?.Cancel();
+            _ctsBattleFlow = new CancellationTokenSource();
+            StartTurn();
         }
 
         /// <summary>
-        /// Mỗi round sẽ cần kiểm tra xem trạng thái tận đấu như thế nào, có khả dụng để sang round tiếp không hay phải kết thúc và thông báo kết quả
+        /// Bắt đầu một trận đấu tại đây, sẽ thiết lập lần đầu những thứ cần thiết
         /// </summary>
-        public bool SetupRound()
+        public async UniTask StartTurn()
         {
-            if (RoundIsLimit())
+            _board.SetRound(_actionTurnManager.CurrentRoundCount, _actionTurnManager.MaxRoundCount);
+            var battler = await TakeBattlerOfCurrentTurn(_ctsBattleFlow);
+            if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
             {
-                HandleGameDraw();
-                return false;
+                //show player turn UI
+                ShowPlayerInput(battler.boardFactionPosition.Card);
+            }
+            else //AI
+            {
+                //========================[Chọn mục tiêu ngẫu nhiên]========================
+                var targets = GetRandomTargets(battler.actionTurnActorModel.Card);
+                if (targets.Count > 0)
+                {
+                    await HandleBattlerAction(
+                        battler.actionTurnActorModel,
+                        battler.boardFactionPosition,
+                        targets,
+                        _ctsBattleFlow
+                    );
+                    StartTurn();
+                }
+            }
+        }
+
+        public async void ShowPlayerInput(Card currentTurnCard)
+        {
+            //will load skill to input
+            Debug.Log("ShowPlayerInput");
+            _board.SetPlayerInput(true, currentTurnCard);
+        }
+
+        [Button]
+        public async void OnPlayerInput()
+        {
+            var currentTurnBattler = _actionTurnManager.GetCurrentTurn();
+            if (currentTurnBattler.Card.Battle.FactionIndex != 1) return;
+            var targets = GetRandomTargets(currentTurnBattler.Card);
+            _board.SetPlayerInput(false, null);
+            if (targets.Count > 0)
+            {
+                await HandleBattlerAction(
+                    currentTurnBattler,
+                    _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex)
+                        .GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex),
+                    targets,
+                    _ctsBattleFlow
+                );
             }
 
-            _board.SetRound(_actionTurnManager.CurrentRoundCount, _actionTurnManager.MaxRoundCount);
-            return true;
+            StartTurn();
         }
 
         /// <summary>
@@ -57,7 +107,6 @@ namespace World.Board
                 {
                     //Get actor
                     var actorFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex);
-                    _board.SetPlayerInput(turn.Card.Battle.FactionIndex == 1, turn.Card);
                     actor = actorFaction.GetPositionByIndex(turn.Card.Battle.MemberIndex);
                 }
 
@@ -68,10 +117,10 @@ namespace World.Board
             return (turn, actor);
         }
 
-        public List<BoardFactionPosition> GetRandomTargets(ActionTurnActorModel actionTurnActorModel, int count = 1)
+        public List<BoardFactionPosition> GetRandomTargets(Card card, int count = 1)
         {
             var targetFaction =
-                _board.GetFactionByIndex(actionTurnActorModel.Card.Battle.FactionIndex == 1 ? 2 : 1);
+                _board.GetFactionByIndex(card.Battle.FactionIndex == 1 ? 2 : 1);
             var validTargetIndexes = GetTargets(targetFaction);
 
             if (validTargetIndexes.Count == 0)
@@ -86,7 +135,7 @@ namespace World.Board
                 .Select(index => targetFaction.GetPositionByIndex(index))
                 .ToList();
         }
-        
+
         /// <summary>
         /// Xử lý hành động mà batter input, attack, buff....
         /// </summary>
@@ -103,18 +152,43 @@ namespace World.Board
                 await Melee(actor, targets, cts);
             }
 
+            await PerformCameraReset(_ctsBattleFlow);
+            await UniTask.Yield(cancellationToken: _ctsBattleFlow.Token);
             actionTurnActorModel.ResetAP();
             _actionTurnManager.UpdateOrderIndex();
+
+            var roundResult = GetRoundResult();
+            if (roundResult.WinFactionIndex == 1)
+            {
+                HandleGameWin();
+                return;
+            }
+            else if (roundResult.WinFactionIndex == 2)
+            {
+                HandleGameLose();
+                return;
+            }
+            else if (roundResult.WinFactionIndex == 3)
+            {
+                HandleGameDraw();
+                return;
+            }
+
+            if (_actionTurnManager.IsRoundOver())
+            {
+                HandleGameDraw();
+                return;
+            }
         }
 
-        public void HandleGameWin(RoundResultModel result)
+        public void HandleGameWin()
         {
-            Debug.Log(JsonConvert.SerializeObject(result));
+            Debug.Log("WIN");
         }
 
-        public void HandleGameLose(RoundResultModel result)
+        public void HandleGameLose()
         {
-            Debug.Log(JsonConvert.SerializeObject(result));
+            Debug.Log("LOSE");
         }
 
         public void HandleGameDraw()
@@ -139,24 +213,6 @@ namespace World.Board
                 return new RoundResultModel { WinFactionIndex = 1 }; // Phe 1 thắng
 
             return new RoundResultModel { WinFactionIndex = 0 }; // Nothing;
-        }
-
-        /// <summary>
-        /// Kiểm tra round đã hết
-        /// </summary>
-        /// <returns></returns>
-        public bool RoundIsLimit()
-        {
-            return _actionTurnManager.IsRoundOver();
-        }
-
-        /// <summary>
-        /// Kiểm tra có phải là lượt cuối không, nếu có sẽ chuyển round mới
-        /// </summary>
-        /// <returns></returns>
-        public bool IsLastTurn()
-        {
-            return _actionTurnManager.IsLastTurn();
         }
     }
 }

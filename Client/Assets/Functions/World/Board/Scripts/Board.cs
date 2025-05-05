@@ -77,7 +77,6 @@ namespace World.Board
                 _tweenPlayerInputButtons.tween.PlayBackwards();
             }
         }
-
         private void OnDisable()
         {
             _tweenPlayerInputButtons.tween.Kill();

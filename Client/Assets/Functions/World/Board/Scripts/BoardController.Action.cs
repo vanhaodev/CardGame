@@ -26,51 +26,51 @@ namespace World.Board
         //------------------ Comp ------------------\\
         [SerializeField] [BoxGroup("Action")] ActionTurnManager _actionTurnManager;
 
-        public async Task<RoundResultModel> PlayAction(CancellationTokenSource cts)
-        {
-            //========================[1. Kiểm tra điều kiện bắt đầu round]========================
-            if (!SetupRound())
-            {
-                return new RoundResultModel { WinFactionIndex = 0, Debug = "Round over" }; // Trận hòa
-            }
-
-            //========================[2. Kiểm tra phe thắng/thua]========================
-            var roundResult = GetRoundResult();
-            if (roundResult.WinFactionIndex != 0)
-            {
-                return roundResult; // Trả kết quả nếu đã có phe thắng
-            }
-
-            //========================[3. Lấy lượt hành động của nhân vật]========================
-            var battler = await TakeBattlerOfCurrentTurn(cts);
-
-            //========================[4. Chọn mục tiêu ngẫu nhiên]========================
-            var targets = GetRandomTargets(battler.actionTurnActorModel);
-            if (targets.Count == 0)
-            {
-                return null; // Không có mục tiêu → bỏ lượt
-            }
-
-            //========================[5. Thực hiện hành động tấn công]========================
-            Debug.Log(
-                $"<color=yellow>Faction: {battler.actionTurnActorModel.Card.Battle.FactionIndex}" +
-                $"\nSpeed: {battler.actionTurnActorModel.Card.Battle.Attributes[AttributeType.AttackSpeed]}" +
-                $" | Action Point: {battler.actionTurnActorModel.Card.Battle.ActionPoint}</color>");
-
-            await HandleBattlerAction(
-                battler.actionTurnActorModel,
-                battler.boardFactionPosition,
-                targets,
-                cts
-            );
-            
-            Debug.Log(
-                $"<color=yellow>Action Point After: {battler.boardFactionPosition.Card.Battle.ActionPoint}</color>");
-
-            //========================[6. Kết thúc hành động]========================
-            await UniTask.Yield();
-            return null;
-        }
+        // public async Task<RoundResultModel> PlayAction(CancellationTokenSource cts)
+        // {
+        //     //========================[1. Kiểm tra điều kiện bắt đầu round]========================
+        //     if (!SetupRound())
+        //     {
+        //         return new RoundResultModel { WinFactionIndex = 0, Debug = "Round over" }; // Trận hòa
+        //     }
+        //
+        //     //========================[2. Kiểm tra phe thắng/thua]========================
+        //     var roundResult = GetRoundResult();
+        //     if (roundResult.WinFactionIndex != 0)
+        //     {
+        //         return roundResult; // Trả kết quả nếu đã có phe thắng
+        //     }
+        //
+        //     //========================[3. Lấy lượt hành động của nhân vật]========================
+        //     var battler = await TakeBattlerOfCurrentTurn(cts);
+        //
+        //     //========================[4. Chọn mục tiêu ngẫu nhiên]========================
+        //     var targets = GetRandomTargets(battler.actionTurnActorModel);
+        //     if (targets.Count == 0)
+        //     {
+        //         return null; // Không có mục tiêu → bỏ lượt
+        //     }
+        //
+        //     //========================[5. Thực hiện hành động tấn công]========================
+        //     Debug.Log(
+        //         $"<color=yellow>Faction: {battler.actionTurnActorModel.Card.Battle.FactionIndex}" +
+        //         $"\nSpeed: {battler.actionTurnActorModel.Card.Battle.Attributes[AttributeType.AttackSpeed]}" +
+        //         $" | Action Point: {battler.actionTurnActorModel.Card.Battle.ActionPoint}</color>");
+        //
+        //     await HandleBattlerAction(
+        //         battler.actionTurnActorModel,
+        //         battler.boardFactionPosition,
+        //         targets,
+        //         cts
+        //     );
+        //     
+        //     Debug.Log(
+        //         $"<color=yellow>Action Point After: {battler.boardFactionPosition.Card.Battle.ActionPoint}</color>");
+        //
+        //     //========================[6. Kết thúc hành động]========================
+        //     await UniTask.Yield();
+        //     return null;
+        // }
 
         public async UniTask Melee(BoardFactionPosition actor, List<BoardFactionPosition> targets,
             CancellationTokenSource cts)

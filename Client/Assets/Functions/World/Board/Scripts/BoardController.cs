@@ -97,19 +97,19 @@ namespace World.Board
             _board.GetFactionByIndex(2).ResetToOriginalPosition();
             _actionTurnManager.SetupOrders(_board.GetAllFactions());
             _actionTurnManager.MaxRoundCount = 99;
-            int count = 0;
-            while (!_ctsTestLoop.IsCancellationRequested)
-            {
-                var result = await PlayAction(_ctsTestLoop);
-                if (result != null)
-                {
-                    Debug.Log(JsonConvert.SerializeObject(result));
-                    break;
-                }
-
-                if (count >= 999) throw new Exception("loop is too large.");
-                count++;
-            }
+            // int count = 0;
+            // while (!_ctsTestLoop.IsCancellationRequested)
+            // {
+            //     var result = await PlayAction(_ctsTestLoop);
+            //     if (result != null)
+            //     {
+            //         Debug.Log(JsonConvert.SerializeObject(result));
+            //         break;
+            //     }
+            //
+            //     if (count >= 999) throw new Exception("loop is too large.");
+            //     count++;
+            // }
 
             PerformCameraReset(_ctsTestLoop).Forget();
         }
