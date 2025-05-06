@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 113.8772}
+  m_AnchoredPosition: {x: 0, y: 122.5022}
   m_SizeDelta: {x: -160, y: 67.1275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2150900334715368561
@@ -203,11 +203,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpFill:
-    _spriteFill: {fileID: 135985983119353832}
     _spriteEchoFill: {fileID: 360635200601043527}
+    _spriteFill: {fileID: 135985983119353832}
   _upFill:
-    _spriteFill: {fileID: 4343106890967398173}
     _spriteEchoFill: {fileID: 5825835748998224258}
+    _spriteFill: {fileID: 4343106890967398173}
 --- !u!1 &3190662364913643055
 GameObject:
   m_ObjectHideFlags: 0

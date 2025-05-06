@@ -22,9 +22,10 @@ namespace World.Board
 
             _board.GetFactionByIndex(1).ResetToOriginalPosition();
             _board.GetFactionByIndex(2).ResetToOriginalPosition();
+            _board.SetSkill(null,
+                _board.GetFactionByIndex(1).FactionAttributes[FactionAttributeType.SkillPoint]);
             _actionTurnManager.SetupOrders(_board.GetAllFactions());
             _actionTurnManager.MaxRoundCount = 99;
-
             _ctsBattleFlow?.Cancel();
             _ctsBattleFlow = new CancellationTokenSource();
             StartTurn();
@@ -39,8 +40,10 @@ namespace World.Board
             var battler = await TakeBattlerOfCurrentTurn(_ctsBattleFlow);
             if (battler.boardFactionPosition == null)
             {
-                throw new Exception("Battler is null");
+                StartTurn();
+                return;
             }
+
             if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
             {
                 //show player turn UI
@@ -67,7 +70,8 @@ namespace World.Board
         {
             //will load skill to input
             Debug.Log("ShowPlayerInput");
-            _board.SetSkill(currentTurnCard, _board.GetFactionByIndex(1).SkillPoint);
+            _board.SetSkill(currentTurnCard,
+                _board.GetFactionByIndex(1).FactionAttributes[FactionAttributeType.SkillPoint]);
             _board.SetPlayerInput(true, currentTurnCard);
         }
 
@@ -79,7 +83,8 @@ namespace World.Board
         {
             var currentTurnBattler = _actionTurnManager.GetCurrentTurn();
             if (currentTurnBattler.Card.Battle.FactionIndex != 1) return;
-            var targets = GetRandomTargets(currentTurnBattler.Card);
+            var targets = _targetSelectorController.GetSelectingFactions();
+            
             var faction = _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex);
             var actor = faction.GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex);
             _board.SetPlayerInput(false, null);
@@ -105,6 +110,8 @@ namespace World.Board
             {
                 actor.Card.Battle.AddUltimatePoint(-100);
             }
+
+            _board.SetSkill(actor.Card, faction.FactionAttributes[FactionAttributeType.SkillPoint]);
             StartTurn();
         }
 

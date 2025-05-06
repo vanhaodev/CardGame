@@ -89,7 +89,9 @@ namespace World.Board
             _skillPointUI.SetPoint(skillPoint);
             _btnBasicAttack.SetSkillUsable(100);
             _btnAdvancedSkill.SetSkillUsable(skillPoint > 0 ? 100 : 0);
-            _btnUltimateSkill.SetSkillUsable(card.Battle.UltimatePoint);
+            _btnUltimateSkill.SetSkillUsable(card == null
+                ? 0
+                : card.Battle.BattleAttributes[BattleAttributeType.UltimatePoint]);
         }
 
         private void OnDisable()

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine.Serialization;
+using World.TheCard;
 
 namespace World.Board
 {
@@ -18,7 +19,8 @@ namespace World.Board
 
         public bool IsAvailable()
         {
-            return Card.Battle.ActionPoint >= AP_REQUIRED_TO_ACTION && !Card.Battle.IsDead;
+            return Card.Battle.BattleAttributes[BattleAttributeType.ActionPoint] >= AP_REQUIRED_TO_ACTION &&
+                   !Card.Battle.IsDead;
         }
 
         public void ResetAP() => Card.Battle.ResetAP();

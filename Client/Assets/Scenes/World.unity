@@ -1082,7 +1082,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660b7f612f794f7fa7d50ffa25cc6e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkillPoint: 0
   _positions:
   - MemberIndex: 1
     OriginalPosition: {x: -675, y: 478.125}
@@ -1102,6 +1101,8 @@ MonoBehaviour:
   - MemberIndex: 6
     OriginalPosition: {x: 687.5, y: 478.125}
     Card: {fileID: 415827250}
+  _factionAttributes:
+    _serializedList: []
 --- !u!1001 &339434298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5423,7 +5424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660b7f612f794f7fa7d50ffa25cc6e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkillPoint: 0
   _positions:
   - MemberIndex: 1
     OriginalPosition: {x: -671.875, y: -465.625}
@@ -5443,6 +5443,8 @@ MonoBehaviour:
   - MemberIndex: 6
     OriginalPosition: {x: 678.125, y: -465.625}
     Card: {fileID: 2010815404}
+  _factionAttributes:
+    _serializedList: []
 --- !u!1001 &1495325204
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6822,8 +6824,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f10c50967f1444ac92fb933a86d2b93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AOEToLeftTargetCount: 1
-  AOEToRightTargetCount: 1
+  AOEToLeftTargetCount: 0
+  AOEToRightTargetCount: 0
   _prefabTargetPointer: {fileID: 6535874003394647217, guid: 697031093a04de74cbf4319ea2c9a149, type: 3}
   _instantiatedPointers: []
 --- !u!1 &1954469603

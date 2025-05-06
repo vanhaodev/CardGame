@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace World.TheCard.Skill
 {
@@ -12,6 +13,6 @@ namespace World.TheCard.Skill
         /// <summary>
         /// Có khả năng chệch phe, ví dụ attack có thể tấn công dính đồng đội, nếu buff có thể chệch sang địch
         /// </summary>
-        public short WrongFactionRate;
+        public short SwapFactionRate;
     }
 }

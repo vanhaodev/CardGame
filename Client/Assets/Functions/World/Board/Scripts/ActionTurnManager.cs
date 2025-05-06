@@ -123,7 +123,7 @@ namespace World.Board
 
             ActionAvailableOrders = OriginalOrders
                 .Where(i => i.IsAvailable())
-                .OrderByDescending(i => i.Card.Battle.ActionPoint)
+                .OrderByDescending(i => i.Card.Battle.BattleAttributes[BattleAttributeType.ActionPoint])
                 .ToList();
             CurrentRoundCount++;
             UpdateNewRoundActorTurnUI();
@@ -142,6 +142,7 @@ namespace World.Board
         {
             return ActionAvailableOrders[CurrentIndex()];
         }
+
         /// <summary>
         /// Lấy battler của turn tiếp theo, trả về null khi không tìm được ai
         /// </summary>
