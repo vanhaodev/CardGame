@@ -13,6 +13,8 @@ namespace World.Board
 {
     public class BoardFaction : MonoBehaviour
     {
+        public int SkillPoint;
+
         /// <summary>
         /// các battler của phe
         /// </summary>
@@ -84,6 +86,20 @@ namespace World.Board
                 var rect = p.Card.GetComponent<RectTransform>();
                 rect.anchoredPosition = p.OriginalPosition;
                 rect.localRotation = Quaternion.identity;
+            }
+        }
+
+        public void AddSkillPoint(int point = 1)
+        {
+            SkillPoint += point;
+            if (SkillPoint > 5)
+            {
+                SkillPoint = 5;
+            }
+
+            if (SkillPoint < 0)
+            {
+                SkillPoint = 0;
             }
         }
 

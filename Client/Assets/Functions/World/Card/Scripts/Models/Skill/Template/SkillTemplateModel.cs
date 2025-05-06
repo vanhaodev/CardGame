@@ -10,10 +10,7 @@ namespace World.TheCard.Skill
     {
         public string Name;
         public string Description;
-        /// <summary>
-        /// 
-        /// </summary>
-        public SkillType SkillType;
+        public SkillTargetType TargetType;
         /// <summary>
         /// max 5 stars
         /// </summary>

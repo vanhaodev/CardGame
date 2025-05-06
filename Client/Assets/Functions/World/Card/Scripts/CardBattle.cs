@@ -16,20 +16,29 @@ namespace World.TheCard
     {
         [SerializeField] private CardVital _vital;
         public CardVital Vital => _vital;
+
         [SerializeField] CardEffect _effect;
+
         //----------------------Data-------------------------\\
-        [FormerlySerializedAs("_factionIndexInBoard")] [SerializeField] int factionIndex;
-        [FormerlySerializedAs("_memberIndexInBoard")] [SerializeField] int memberIndex;
+        [FormerlySerializedAs("_factionIndexInBoard")] [SerializeField]
+        int factionIndex;
+
+        [FormerlySerializedAs("_memberIndexInBoard")] [SerializeField]
+        int memberIndex;
+
         [SerializeField] private ElementType _elementType;
         [SerializeField] private SerializedDictionary<AttributeType, int> _attributes;
+
         /// <summary>
         /// điểm hành động, thứ tự trong round xếp theo AP cao đến thấp và phải lớn hơn AP_NEED
         /// </summary>
         [SerializeField] private int _actionPoint;
+
         /// <summary>
         /// điểm kỹ năng cuối
         /// </summary>
         [SerializeField] private int _ultimatePoint;
+
         [SerializeField] private bool _isDead;
         public int FactionIndex => factionIndex;
         public int MemberIndex => memberIndex;
@@ -39,9 +48,10 @@ namespace World.TheCard
         public int UltimatePoint => _ultimatePoint;
         public bool IsDead => _isDead;
         public void ResetAP() => _actionPoint = 0;
+
         public void AccumulateAP()
         {
-            if(IsDead) return;
+            if (IsDead) return;
             if (Attributes[AttributeType.AttackSpeed] <= 0)
             {
                 throw new Exception("Speed must be greater than 0");
@@ -49,16 +59,17 @@ namespace World.TheCard
 
             _actionPoint += Attributes[AttributeType.AttackSpeed];
         }
+
         public async UniTask SetupBattle(Card card, int factionIndexInBoard, int memberIndexInBoard)
         {
             factionIndex = factionIndexInBoard;
             memberIndex = memberIndexInBoard;
             _isDead = false;
-            
+
             //element
             var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(card.CardModel.TemplateId);
             _elementType = cardTemplate.Element;
-      
+
             //attribute
             _attributes.Clear();
             foreach (var attr in card.CardModel.CalculatedAttributes)
@@ -66,12 +77,13 @@ namespace World.TheCard
                 _attributes[attr.Type] = attr.Value;
             }
 
-            SetupHpMp(AttributeType.Hp, AttributeType.HpMax);
+            SetupHp(AttributeType.Hp, AttributeType.HpMax);
             _vital.UpdateHp(_attributes[AttributeType.Hp], _attributes[AttributeType.HpMax]);
+            _vital.UpdateUp(0);
             _effect.PlaySpawn();
         }
 
-        private void SetupHpMp(AttributeType current, AttributeType max)
+        private void SetupHp(AttributeType current, AttributeType max)
         {
             if (_attributes.TryGetValue(max, out var maxAttr))
             {
@@ -84,6 +96,21 @@ namespace World.TheCard
                     _attributes[current] = maxAttr; // Thêm mới
                 }
             }
+        }
+
+        public void AddUltimatePoint(int point = 1)
+        {
+            _ultimatePoint += point;
+            if (_ultimatePoint > 100)
+            {
+                _ultimatePoint = 100;
+            }
+
+            if (_ultimatePoint < 0)
+            {
+                _ultimatePoint = 0;
+            }
+            _vital.UpdateUp(_ultimatePoint);
         }
 
         public (int damage, List<DamageLogType> logs) GetDamage()
@@ -104,7 +131,7 @@ namespace World.TheCard
             return (totalDamage, damageLogs);
         }
 
-        public  (int aDamage, List<DamageLogType> logs) OnTakeDamage(int attackerTotalDamage, Card attacker)
+        public (int aDamage, List<DamageLogType> logs) OnTakeDamage(int attackerTotalDamage, Card attacker)
         {
             var damageLogs = new List<DamageLogType>();
             if (_isDead) return (0, damageLogs);
@@ -132,7 +159,14 @@ namespace World.TheCard
 
             //======================[HP]===========================\\
             _attributes[AttributeType.Hp] -= attackerTotalDamage;
+            AddUltimatePoint((int)(GetHpLostPercentFromMax(attackerTotalDamage) * 2.25f));
             return (attackerTotalDamage, damageLogs);
+        }
+        private int GetHpLostPercentFromMax(float damageTaken)
+        {
+            float maxHp = _attributes[AttributeType.HpMax];
+            if (maxHp <= 0f) return 0;
+            return Mathf.FloorToInt(damageTaken / maxHp * 100f);
         }
 
         public bool OnTakeDamageLate()

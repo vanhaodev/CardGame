@@ -28,8 +28,10 @@ namespace World.Board
         [SerializeField] private SkillButton _btnAdvancedSkill;
         [SerializeField] private SkillButton _btnUltimateSkill;
         [SerializeField] private SkillPointUI _skillPointUI;
-
-        [SerializeField] private DOTweenAnimation _tweenPlayerInputButtons;
+        public Button.ButtonClickedEvent BtnBasicAttackOnClick => _btnBasicAttack.Button.onClick;
+        public Button.ButtonClickedEvent BtnAdvancedSkillOnClick => _btnAdvancedSkill.Button.onClick;
+        public Button.ButtonClickedEvent BtnUltimateSkillOnClick => _btnUltimateSkill.Button.onClick;
+        [SerializeField] private DOTweenAnimation[] _tweenPlayerInputUIs;
 
         //----------------- Entity ----------------\\
         [SerializeField] GameObject _prefabCard;
@@ -56,31 +58,50 @@ namespace World.Board
         [Button]
         public void SetPlayerInput(bool isShow, Card currentTurnCard)
         {
-            // Nếu tween null hoặc đã bị Kill, thì tạo lại
-            if (_tweenPlayerInputButtons.tween == null || !_tweenPlayerInputButtons.tween.IsActive())
+            for (int i = 0; i < _tweenPlayerInputUIs.Length; i++)
             {
-                _tweenPlayerInputButtons.CreateTween();
-            }
+                if (_tweenPlayerInputUIs[i].tween == null || !_tweenPlayerInputUIs[i].tween.IsActive())
+                {
+                    _tweenPlayerInputUIs[i].CreateTween();
+                }
 
-            _tweenPlayerInputButtons.tween.OnComplete(() =>
-            {
-                _btnBasicAttack.Button.enabled = isShow;
-                _btnAdvancedSkill.Button.enabled = isShow;
-                _btnUltimateSkill.Button.enabled = isShow;
-            });
-            if (isShow)
-            {
-                _tweenPlayerInputButtons.tween.PlayForward();
-            }
-            else
-            {
-                _tweenPlayerInputButtons.tween.PlayBackwards();
+                // Gán lại hành vi khi tween hoàn tất
+                _tweenPlayerInputUIs[i].tween.OnComplete(() =>
+                {
+                    _btnBasicAttack.Button.enabled = isShow;
+                    _btnAdvancedSkill.Button.enabled = isShow;
+                    _btnUltimateSkill.Button.enabled = isShow;
+                });
+
+                if (isShow)
+                {
+                    _tweenPlayerInputUIs[i].tween.PlayForward();
+                }
+                else
+                {
+                    _tweenPlayerInputUIs[i].tween.PlayBackwards();
+                }
             }
         }
+
+        public void SetSkill(Card card, int skillPoint)
+        {
+            _skillPointUI.SetPoint(skillPoint);
+            _btnBasicAttack.SetSkillUsable(100);
+            _btnAdvancedSkill.SetSkillUsable(skillPoint > 0 ? 100 : 0);
+            _btnUltimateSkill.SetSkillUsable(card.Battle.UltimatePoint);
+        }
+
         private void OnDisable()
         {
-            _tweenPlayerInputButtons.tween.Kill();
-            _tweenPlayerInputButtons.tween = null; // Optional
+            for (int i = 0; i < _tweenPlayerInputUIs.Length; i++)
+            {
+                if (_tweenPlayerInputUIs[i].tween != null)
+                {
+                    _tweenPlayerInputUIs[i].tween.Kill();
+                    _tweenPlayerInputUIs[i].tween = null; // Optional
+                }
+            }
         }
     }
 }

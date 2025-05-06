@@ -41,6 +41,20 @@ namespace World.Board
         private Tween _tweenAction;
         private CancellationTokenSource _ctsTestLoop;
 
+        private void Awake()
+        {
+            _board.BtnBasicAttackOnClick.AddListener(OnPlayerBasicAttack);
+            _board.BtnAdvancedSkillOnClick.AddListener(OnPlayerAdvancedSkill);
+            _board.BtnUltimateSkillOnClick.AddListener(OnPlayerUltimateSkill);
+        }
+
+        private void OnDisable()
+        {
+            _board.BtnBasicAttackOnClick.RemoveListener(OnPlayerBasicAttack);
+            _board.BtnAdvancedSkillOnClick.RemoveListener(OnPlayerAdvancedSkill);
+            _board.BtnUltimateSkillOnClick.RemoveListener(OnPlayerUltimateSkill);
+        }
+
         private void Start()
         {
             Global.Instance.Get<BattleData>().ActionTurnManager = _actionTurnManager;

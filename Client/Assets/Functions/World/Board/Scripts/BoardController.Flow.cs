@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -6,6 +7,7 @@ using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using World.TheCard;
+using Random = UnityEngine.Random;
 
 namespace World.Board
 {
@@ -35,6 +37,10 @@ namespace World.Board
         {
             _board.SetRound(_actionTurnManager.CurrentRoundCount, _actionTurnManager.MaxRoundCount);
             var battler = await TakeBattlerOfCurrentTurn(_ctsBattleFlow);
+            if (battler.boardFactionPosition == null)
+            {
+                throw new Exception("Battler is null");
+            }
             if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
             {
                 //show player turn UI
@@ -61,28 +67,60 @@ namespace World.Board
         {
             //will load skill to input
             Debug.Log("ShowPlayerInput");
+            _board.SetSkill(currentTurnCard, _board.GetFactionByIndex(1).SkillPoint);
             _board.SetPlayerInput(true, currentTurnCard);
         }
 
-        [Button]
-        public async void OnPlayerInput()
+        /// <summary>
+        /// 1: basic | 2: advanced | 3: ultimate
+        /// </summary>
+        /// <param name="skillSlotIndex"></param>
+        private async void OnPlayerSkill(int skillSlotIndex)
         {
             var currentTurnBattler = _actionTurnManager.GetCurrentTurn();
             if (currentTurnBattler.Card.Battle.FactionIndex != 1) return;
             var targets = GetRandomTargets(currentTurnBattler.Card);
+            var faction = _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex);
+            var actor = faction.GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex);
             _board.SetPlayerInput(false, null);
             if (targets.Count > 0)
             {
                 await HandleBattlerAction(
                     currentTurnBattler,
-                    _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex)
-                        .GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex),
+                    actor,
                     targets,
                     _ctsBattleFlow
                 );
             }
 
+            if (skillSlotIndex == 1)
+            {
+                faction.AddSkillPoint(1);
+            }
+            else if (skillSlotIndex == 2)
+            {
+                faction.AddSkillPoint(-1);
+            }
+            else if (skillSlotIndex == 3)
+            {
+                actor.Card.Battle.AddUltimatePoint(-100);
+            }
             StartTurn();
+        }
+
+        private void OnPlayerBasicAttack()
+        {
+            OnPlayerSkill(1);
+        }
+
+        private void OnPlayerAdvancedSkill()
+        {
+            OnPlayerSkill(2);
+        }
+
+        private void OnPlayerUltimateSkill()
+        {
+            OnPlayerSkill(3);
         }
 
         /// <summary>

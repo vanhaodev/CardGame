@@ -468,7 +468,6 @@ MonoBehaviour:
   _cardModel:
     TemplateId: 0
     Star: 0
-    Exp: 0
     BaseAttributes: []
     CalculatedAttributes: []
   _spriteFrame: {fileID: 6741755396499725753}
@@ -501,13 +500,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b384c4bedacd54048bec469c33005f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDead: 0
-  FactionInBoard: 0
-  IndexInBoard: 0
-  _attributes:
-    _serializedList: []
   _vital: {fileID: 1304804567044967383}
   _effect: {fileID: 970274594430278124}
+  factionIndex: 0
+  memberIndex: 0
+  _elementType: 0
+  _attributes:
+    _serializedList: []
+  _actionPoint: 0
+  _ultimatePoint: 0
+  _isDead: 0
 --- !u!225 &7140587159036775647
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -528,25 +530,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1028221354766613283}
     m_Modifications:
-    - target: {fileID: 135985983119353832, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 135985983119353832, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
-      propertyPath: m_FillMethod
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1606990944120587348, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
       propertyPath: m_Name
       value: Vital
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343106890967398173, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4343106890967398173, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
-      propertyPath: m_FillMethod
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6661575122181621318, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
       propertyPath: m_Pivot.x
@@ -627,14 +613,6 @@ PrefabInstance:
     - target: {fileID: 6661575122181621318, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7041441950939992686, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 113.8772
-      objectReference: {fileID: 0}
-    - target: {fileID: 7497002308689156177, guid: a05b1f5586766a14289a0c5dae60e884, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 181
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

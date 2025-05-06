@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace World.Board
@@ -23,7 +24,7 @@ namespace World.Board
 
         public void SetSkillUsable(float progress)
         {
-            _imgUnableCoverBlock.fillAmount = progress;
+            _imgUnableCoverBlock.fillAmount = 1f - (progress / 100f);
             _objUseableContainer.SetActive(progress >= 100);
             _objRaycast.SetActive(progress >= 100);
         }

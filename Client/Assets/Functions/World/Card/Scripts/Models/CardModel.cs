@@ -7,6 +7,9 @@ using World.TheCard.Skill;
 
 namespace World.TheCard
 {
+    /// <summary>
+    /// chứa thông tin unique của 1 card
+    /// </summary>
     [Serializable]
     public class CardModel
     {
