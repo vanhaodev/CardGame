@@ -28,6 +28,8 @@ namespace World.Board
             _actionTurnManager.MaxRoundCount = 99;
             _ctsBattleFlow?.Cancel();
             _ctsBattleFlow = new CancellationTokenSource();
+
+            _targetSelectorController.Show(false);
             StartTurn();
         }
 
@@ -44,15 +46,17 @@ namespace World.Board
                 return;
             }
 
+            var targets = GetRandomTargets(battler.actionTurnActorModel.Card);
             if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
             {
                 //show player turn UI
                 ShowPlayerInput(battler.boardFactionPosition.Card);
+                _targetSelectorController.Show();
+                _targetSelectorController.OnTouch(targets[0].Card);
             }
             else //AI
             {
                 //========================[Chọn mục tiêu ngẫu nhiên]========================
-                var targets = GetRandomTargets(battler.actionTurnActorModel.Card);
                 if (targets.Count > 0)
                 {
                     await HandleBattlerAction(
@@ -71,7 +75,8 @@ namespace World.Board
             //will load skill to input
             Debug.Log("ShowPlayerInput");
             _board.SetSkill(currentTurnCard,
-                _board.GetFactionByIndex(1).FactionAttributes[FactionAttributeType.SkillPoint]);
+                _board.GetFactionByIndex(currentTurnCard.Battle.FactionIndex)
+                    .FactionAttributes[FactionAttributeType.SkillPoint]);
             _board.SetPlayerInput(true, currentTurnCard);
         }
 
@@ -81,10 +86,11 @@ namespace World.Board
         /// <param name="skillSlotIndex"></param>
         private async void OnPlayerSkill(int skillSlotIndex)
         {
+            _targetSelectorController.Show(false);
             var currentTurnBattler = _actionTurnManager.GetCurrentTurn();
             if (currentTurnBattler.Card.Battle.FactionIndex != 1) return;
             var targets = _targetSelectorController.GetSelectingFactions();
-            
+
             var faction = _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex);
             var actor = faction.GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex);
             _board.SetPlayerInput(false, null);
@@ -158,6 +164,7 @@ namespace World.Board
                 isFound = true;
             }
 
+            _actionTurnManager.ShowTurnerMark(turn.Card);
             await _actionTurnManager.SetCurrentActorTurnUI(cts);
             return (turn, actor);
         }
@@ -188,6 +195,7 @@ namespace World.Board
             List<BoardFactionPosition> targets,
             CancellationTokenSource cts)
         {
+            _actionTurnManager.ShowTurnerMark(null);
             if (Random.Range(0, 2) == 1)
             {
                 await Ranged(actor, targets, cts);

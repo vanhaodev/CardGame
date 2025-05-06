@@ -25,7 +25,6 @@ namespace World.Board
         [SerializeField] [BoxGroup("Main")] Board _board;
         [SerializeField] [BoxGroup("Main")] TargetSelectorController _targetSelectorController;
         [SerializeField] [BoxGroup("Main")] CinemachineCameraShake _cameraShake;
-
         //------------ Entity ---------------\\
         /// <summary>
         /// the actor slibing index need to highest in canvas

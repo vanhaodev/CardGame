@@ -6,6 +6,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Utils;
+using World.TheCard;
 
 namespace World.Board
 {
@@ -19,6 +20,9 @@ namespace World.Board
         [SerializeField] [BoxGroup("Display")] private ContentSizeFitter2 _sizeFitterActorTurnLayoutGroup;
         [SerializeField] [BoxGroup("Display")] private GameObject _objActorTurnUICurrentBorder;
 
+        [SerializeField] [BoxGroup("Display")]
+        private GameObject _objTurnerMark; //hiện chỗ turner để dễ thấy lượt của ai
+
         /// <summary>
         /// cập nhật danh sách battler được hành động ở round này theo thứ tự AP từ trái qua phải
         /// </summary>
@@ -28,7 +32,8 @@ namespace World.Board
             for (; i < ActionAvailableOrders.Count; i++)
             {
                 var actor = ActionAvailableOrders[i];
-                _actorTurnUIs[i].Setup(actor.Card.Battle.FactionIndex, actor.Card.Battle.MemberIndex, actor.Card.SpriteCharacter);
+                _actorTurnUIs[i].Setup(actor.Card.Battle.FactionIndex, actor.Card.Battle.MemberIndex,
+                    actor.Card.SpriteCharacter);
                 _actorTurnUIs[i].Show();
             }
 
@@ -36,6 +41,7 @@ namespace World.Board
             {
                 _actorTurnUIs[i].Show(false);
             }
+
             _sizeFitterActorTurnLayoutGroup.UpdateSizeAnimation().Forget();
         }
 
@@ -44,8 +50,9 @@ namespace World.Board
         /// </summary>
         public async UniTask SetCurrentActorTurnUI(CancellationTokenSource cts)
         {
-            var index = _actorTurnUIs.FindIndex(i => i.IsCurrent(CurrentTurn != null ? CurrentTurn.Card.Battle.FactionIndex : 0,
-                CurrentTurn != null ? CurrentTurn.Card.Battle.MemberIndex : 0));
+            var index = _actorTurnUIs.FindIndex(i =>
+                i.IsCurrent(CurrentTurn != null ? CurrentTurn.Card.Battle.FactionIndex : 0,
+                    CurrentTurn != null ? CurrentTurn.Card.Battle.MemberIndex : 0));
             _objActorTurnUICurrentBorder.SetActive(index != -1);
             if (index == -1)
             {
@@ -112,9 +119,22 @@ namespace World.Board
             actor.SetDieMask(false);
         }
 
+        public void ShowTurnerMark(Card card)
+        {
+            if (card == null)
+            {
+                _objTurnerMark.SetActive(false);
+                return;
+            }
+
+            _objTurnerMark.SetActive(true);
+            _objTurnerMark.transform.position = new Vector3(card.transform.position.x,
+                card.Battle.FactionIndex == 1 ? (float)(card.transform.position.y + 2) : (float)(card.transform.position.y - 2),
+                card.transform.position.z);
+        }
+
         public void Dispose()
         {
-
         }
     }
 }

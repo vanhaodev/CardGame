@@ -22,6 +22,7 @@ namespace World.Board
         private Board _board;
         [SerializeField] List<GameObject> _instantiatedPointers;
         [SerializeField] List<Card> _selectingCards;
+        private CancellationTokenSource _ctsOnTouch;
 
         private void Start()
         {
@@ -38,6 +39,10 @@ namespace World.Board
             );
         }
 
+        public void Show(bool isShow = true)
+        {
+            gameObject.SetActive(isShow);
+        }
         public void InitTargets(Board board)
         {
             _board = board;
@@ -52,14 +57,13 @@ namespace World.Board
             }
         }
 
-        private CancellationTokenSource _ctsOnTouch;
 
-        public void SelectRandom()
-        {
-            
-        }
         public async void OnTouch(Card card)
         {
+            if (!gameObject.activeSelf)
+            {
+                return;
+            }
             if (card.Battle.IsDead) return;
             _ctsOnTouch?.Cancel();
             _ctsOnTouch = new CancellationTokenSource();
