@@ -45,7 +45,7 @@ namespace World.Board
                 StartTurn();
                 return;
             }
-
+            _actionTurnManager.ShowTurnerMark(battler.boardFactionPosition.Card);
             var targets = GetRandomTargets(battler.actionTurnActorModel.Card);
             if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
             {
@@ -56,6 +56,7 @@ namespace World.Board
             }
             else //AI
             {
+                await UniTask.WaitForSeconds(1, cancellationToken: _ctsBattleFlow.Token); //tránh diễn ra quá nhanh
                 //========================[Chọn mục tiêu ngẫu nhiên]========================
                 if (targets.Count > 0)
                 {
@@ -164,7 +165,7 @@ namespace World.Board
                 isFound = true;
             }
 
-            _actionTurnManager.ShowTurnerMark(turn.Card);
+          
             await _actionTurnManager.SetCurrentActorTurnUI(cts);
             return (turn, actor);
         }

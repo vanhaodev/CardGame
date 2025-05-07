@@ -23,6 +23,8 @@ namespace World.Board
         [SerializeField] [BoxGroup("Display")]
         private GameObject _objTurnerMark; //hiện chỗ turner để dễ thấy lượt của ai
 
+        private CancellationTokenSource _ctsTunerMark;
+
         /// <summary>
         /// cập nhật danh sách battler được hành động ở round này theo thứ tự AP từ trái qua phải
         /// </summary>
@@ -127,14 +129,24 @@ namespace World.Board
                 return;
             }
 
+            _ctsTunerMark?.Cancel();
+            _ctsTunerMark = new CancellationTokenSource();
+
+            _objTurnerMark.transform.localScale = new Vector3(2, 2, 2);
             _objTurnerMark.SetActive(true);
             _objTurnerMark.transform.position = new Vector3(card.transform.position.x,
-                card.Battle.FactionIndex == 1 ? (float)(card.transform.position.y + 2) : (float)(card.transform.position.y - 2),
+                card.Battle.FactionIndex == 1
+                    ? card.transform.position.y + 2
+                    : card.transform.position.y - 2,
                 card.transform.position.z);
+            _objTurnerMark.transform.DOScale(new Vector3(1, 1, 1), 0.3f).SetEase(Ease.OutBack)
+                .WithCancellation(cancellationToken: _ctsTunerMark.Token).Forget();
         }
 
         public void Dispose()
         {
+            _ctsTunerMark?.Cancel();
+            _ctsTunerMark = null;
         }
     }
 }
