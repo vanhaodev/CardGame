@@ -52,6 +52,7 @@ namespace World.Board
                 //show player turn UI
                 ShowPlayerInput(battler.boardFactionPosition.Card);
                 _targetSelectorController.Show();
+                //chọn giúp player trước, họ thể attack luôn cũng được
                 _targetSelectorController.OnTouch(targets[0].Card);
             }
             else //AI
