@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GameConfigs;
+using Globals;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -45,6 +47,7 @@ namespace World.Board
                 StartTurn();
                 return;
             }
+
             _actionTurnManager.ShowTurnerMark(battler.boardFactionPosition.Card);
             var targets = GetRandomTargets(battler.actionTurnActorModel.Card);
             if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
@@ -85,16 +88,34 @@ namespace World.Board
         /// <summary>
         /// 1: basic | 2: advanced | 3: ultimate
         /// </summary>
-        /// <param name="skillSlotIndex"></param>
-        private async void OnPlayerSkill(int skillSlotIndex)
+        /// <param name="skillSlotType"></param>
+        private async void OnPlayerSkill(CardSkillSlotType skillSlotType)
         {
-            _targetSelectorController.Show(false);
+            //===============[Battler data]==============\\
             var currentTurnBattler = _actionTurnManager.GetCurrentTurn();
             if (currentTurnBattler.Card.Battle.FactionIndex != 1) return;
             var targets = _targetSelectorController.GetSelectingFactions();
-
             var faction = _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex);
             var actor = faction.GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex);
+            var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(actor.Card.CardModel.TemplateId);
+
+            //===============[Skill data]==============\\
+            var skillTemplate = cardTemplate.Skills.Find(i => i.SlotType == skillSlotType).Skill;
+            // var skill = actor.Card.CardModel.Skills[skillSlotType];
+
+            if (!skillTemplate.IsValidTarget(
+                    actor.Card.Battle.FactionIndex,
+                    targets[0].Card.Battle.FactionIndex,
+                    actor.Card.Battle.MemberIndex,
+                    targets[0].Card.Battle.MemberIndex
+                ))
+            {
+                Debug.Log($"Wrong target, need {skillTemplate.TargetType}");
+                return;
+            }
+
+
+            _targetSelectorController.Show(false);
             _board.SetPlayerInput(false, null);
             if (targets.Count > 0)
             {
@@ -106,36 +127,39 @@ namespace World.Board
                 );
             }
 
-            if (skillSlotIndex == 1)
+            if (skillSlotType == CardSkillSlotType.Basic)
             {
                 faction.AddSkillPoint(1);
             }
-            else if (skillSlotIndex == 2)
+            else if (skillSlotType == CardSkillSlotType.Advanced)
             {
                 faction.AddSkillPoint(-1);
             }
-            else if (skillSlotIndex == 3)
+            else if (skillSlotType == CardSkillSlotType.Ultimate)
             {
                 actor.Card.Battle.AddUltimatePoint(-100);
+            }
+            else if (skillSlotType == CardSkillSlotType.Passive || skillSlotType == CardSkillSlotType.Passive2)
+            {
             }
 
             _board.SetSkill(actor.Card, faction.FactionAttributes[FactionAttributeType.SkillPoint]);
             StartTurn();
         }
 
-        private void OnPlayerBasicAttack()
+        private async void OnPlayerBasicAttack()
         {
-            OnPlayerSkill(1);
+            OnPlayerSkill(CardSkillSlotType.Basic);
         }
 
         private void OnPlayerAdvancedSkill()
         {
-            OnPlayerSkill(2);
+            OnPlayerSkill(CardSkillSlotType.Advanced);
         }
 
         private void OnPlayerUltimateSkill()
         {
-            OnPlayerSkill(3);
+            OnPlayerSkill(CardSkillSlotType.Ultimate);
         }
 
         /// <summary>
@@ -166,7 +190,7 @@ namespace World.Board
                 isFound = true;
             }
 
-          
+
             await _actionTurnManager.SetCurrentActorTurnUI(cts);
             return (turn, actor);
         }

@@ -48,7 +48,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b1318d8c949e54bb5ef09338a9eb88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _addressablePathByType:
-    _serializedList:
-    - Key: PopupCard
-      Value: Popup/PopupCard.prefab
+  _prefabPopups:
+  - {fileID: 4336830880829882504, guid: 902c8f94553060f4db49a3541cf802d7, type: 3}

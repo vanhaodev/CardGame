@@ -10,9 +10,6 @@ namespace Utils
     public class ButtonClickEffect : MonoBehaviour
     {
         [SerializeField] private Button _button;
-        
-        
-        
         /// <summary>
         /// Nếu button hay spam thì sẽ có cách xử lý tối ưu cho spam (không kill liên tục) <br/>
         /// không thay đổi trong runtime

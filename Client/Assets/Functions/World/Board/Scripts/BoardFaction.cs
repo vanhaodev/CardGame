@@ -63,7 +63,7 @@ namespace World.Board
                         });
                     }
                 }
-
+                // testModel.Skills =
                 position.Card.CardModel = testModel;
             }
         }

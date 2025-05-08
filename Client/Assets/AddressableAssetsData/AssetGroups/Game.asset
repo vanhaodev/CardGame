@@ -35,11 +35,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 902c8f94553060f4db49a3541cf802d7
-    m_Address: Popup/PopupCard.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a05bd73c5337b2459febd0b6a0590e6
     m_Address: ItemTemplates/LevelExpsSO.asset
     m_ReadOnly: 0
