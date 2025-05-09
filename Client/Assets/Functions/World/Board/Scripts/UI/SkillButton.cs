@@ -24,9 +24,20 @@ namespace World.Board
 
         public void SetSkillUsable(float progress)
         {
-            _imgUnableCoverBlock.fillAmount = 1f - (progress / 100f);
-            _objUseableContainer.SetActive(progress >= 100);
-            _objRaycast.SetActive(progress >= 100);
+            /*
+            // Scale lại progress để khi 99% thì vẫn chỉ hiển thị như ~80%
+            // vì viền UI bị che nên tiến độ ở 99 như 100
+            float visualProgress = Mathf.Pow(progress / 100f, 0.35f); // Exponent < 1 sẽ làm tăng tốc độ ban đầu và chậm dần về cuối (càng nhỏ thì càng chậm)
+
+            _imgUnableCoverBlock.fillAmount = 1f - visualProgress;
+            bool isReady = progress >= 100f;
+            _objUseableContainer.SetActive(isReady);
+            _objRaycast.SetActive(isReady);
+            */
+            _imgUnableCoverBlock.fillAmount = progress >= 100f ? 0f : 1;
+            bool isReady = progress >= 100f;
+            _objUseableContainer.SetActive(isReady);
+            _objRaycast.SetActive(isReady);
         }
     }
 }
