@@ -14,6 +14,15 @@ namespace Popup
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [Button]
+        public async void ShowSetting()
+        {
+            var pop = GetPopup<PopupSetting>() as PopupSetting;
+            await pop.SetupData();
+            pop.gameObject.SetActive(true);
+            pop.Show(1).Forget();
+        }
+
+        [Button]
         public async void ShowCard(CardModel cardModel)
         {
             var pop = GetPopup<PopupCard>() as PopupCard;

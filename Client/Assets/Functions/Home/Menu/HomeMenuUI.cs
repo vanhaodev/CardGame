@@ -5,6 +5,7 @@ using System.SceneLoader;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Globals;
+using Popup;
 using Save;
 using Startup;
 using UnityEngine;
@@ -76,6 +77,7 @@ public class HomeMenuUI : MonoBehaviour
 
     public void Setting()
     {
+        Global.Instance.Get<PopupManager>().ShowSetting();
     }
 
     public void Exit()

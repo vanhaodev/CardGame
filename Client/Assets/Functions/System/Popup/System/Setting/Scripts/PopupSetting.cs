@@ -1,8 +1,11 @@
+using System.SceneLoader;
 using Cysharp.Threading.Tasks;
 using Globals;
 using Save;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils;
 
@@ -10,6 +13,13 @@ namespace Popup
 {
     public class PopupSetting : Popup
     {
+        private string _titleMusic = "Music: {0}%";
+        private string _titleEffect = "Effect: {0}%";
+        private string _titleEnviroment = "Enviroment: {0}%";
+        private string _titleFPS = "FPS: {0}";
+
+        private string _titleOtherPlayerEnableAround = "Player: {0}";
+
         //side 1
         [SerializeField] Slider _sliderMusicVolume;
         [SerializeField] TextMeshProUGUI _txMusicVolume;
@@ -19,14 +29,16 @@ namespace Popup
         [SerializeField] TextMeshProUGUI _txEffectVolume;
         [SerializeField] StepSlider _sliderFPS;
         [SerializeField] TextMeshProUGUI _txFPS;
-        [SerializeField] StepSlider _sliderOtherPlayerEnableAround;
-        [SerializeField] TextMeshProUGUI _txOtherPlayerEnableAround;
+        // [SerializeField] StepSlider _sliderOtherPlayerEnableAround;
+        // [SerializeField] TextMeshProUGUI _txOtherPlayerEnableAround;
 
         //side 2
-        [SerializeField] Toggle _toggleHideOtherPlayerTextures;
-        [SerializeField] Toggle _toggleHideSkillEffects;
-        [SerializeField] Toggle _toggleHideEnviromentEffects;
+        // [SerializeField] Toggle _toggleHideOtherPlayerTextures;
+        // [SerializeField] Toggle _toggleHideSkillEffects;
+        // [SerializeField] Toggle _toggleHideEnviromentEffects;
 
+        //bot button
+        [SerializeField] Button _btnGoToHomeScene;
         //
         SettingController _controller;
 
@@ -34,41 +46,46 @@ namespace Popup
         {
             _sliderMusicVolume.onValueChanged.AddListener((value) =>
             {
-                _txMusicVolume.text = $"{value * 100:F0}%";
+                _txMusicVolume.text = string.Format(_titleMusic, $"{value * 100:F0}");
                 Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BGM, value);
             });
             _sliderEnviromentVolume.onValueChanged.AddListener((value) =>
             {
-                _txEnviromentVolume.text = $"{value * 100:F0}%";
+                _txEnviromentVolume.text = string.Format(_titleEnviroment, $"{value * 100:F0}");
                 Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.ENV, value);
             });
             _sliderEffectVolume.onValueChanged.AddListener((value) =>
             {
-                _txEffectVolume.text = $"{value * 100:F0}%";
+                _txEffectVolume.text = string.Format(_titleEffect, $"{value * 100:F0}");
                 Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.FX, value);
             });
             _sliderFPS.AddListener((value) =>
             {
                 if (value == -1)
                 {
-                    _txFPS.text = $"Không giới hạn";
+                    _txFPS.text = string.Format(_titleFPS, "Unlimited");
                 }
                 else
                 {
-                    _txFPS.text = $"{value:F0} FPS";
+                    _txFPS.text = string.Format(_titleFPS, value);
                 }
             });
-            _sliderOtherPlayerEnableAround.AddListener((value) =>
+            // _sliderOtherPlayerEnableAround?.AddListener((value) =>
+            // {
+            //     if (value == -1)
+            //     {
+            //         _txOtherPlayerEnableAround.text = string.Format(_titleOtherPlayerEnableAround, "Unlimited");
+            //     }
+            //     else
+            //     {
+            //         _txOtherPlayerEnableAround.text = string.Format(_titleOtherPlayerEnableAround, $"{value:F0}");
+            //     }
+            // });
+
+            if (SceneManager.GetActiveScene().buildIndex == 0) //không hiện ở home
             {
-                if (value == -1)
-                {
-                    _txOtherPlayerEnableAround.text = $"Không giới hạn";
-                }
-                else
-                {
-                    _txOtherPlayerEnableAround.text = $"{value:F0}";
-                }
-            });
+                _btnGoToHomeScene.gameObject.SetActive(false);
+            }
         }
 
         private void OnDisable()
@@ -77,7 +94,7 @@ namespace Popup
             _sliderEnviromentVolume.onValueChanged.RemoveAllListeners();
             _sliderEffectVolume.onValueChanged.RemoveAllListeners();
             _sliderFPS.RemoveAllListeners();
-            _sliderOtherPlayerEnableAround.RemoveAllListeners();
+            // _sliderOtherPlayerEnableAround?.RemoveAllListeners();
         }
 
         private async void Start()
@@ -100,16 +117,16 @@ namespace Popup
             _sliderEffectVolume.onValueChanged?.Invoke(sound.EffectVolume);
 
             _sliderFPS.SetStepValue(graphic.Fps);
-            _sliderOtherPlayerEnableAround.SetStepValue(graphic.OtherPlayerEnableAround);
+            // _sliderOtherPlayerEnableAround.SetStepValue(graphic.OtherPlayerEnableAround);
 
-            _toggleHideOtherPlayerTextures.isOn = graphic.IsHideOtherPlayerTextures;
-            _toggleHideOtherPlayerTextures.onValueChanged?.Invoke(graphic.IsHideOtherPlayerTextures);
-
-            _toggleHideSkillEffects.isOn = graphic.IsHideSkillEffects;
-            _toggleHideSkillEffects.onValueChanged?.Invoke(graphic.IsHideSkillEffects);
-
-            _toggleHideEnviromentEffects.isOn = graphic.IsHideEnviromentEffects;
-            _toggleHideEnviromentEffects.onValueChanged?.Invoke(graphic.IsHideEnviromentEffects);
+            // _toggleHideOtherPlayerTextures.isOn = graphic.IsHideOtherPlayerTextures;
+            // _toggleHideOtherPlayerTextures.onValueChanged?.Invoke(graphic.IsHideOtherPlayerTextures);
+            //
+            // _toggleHideSkillEffects.isOn = graphic.IsHideSkillEffects;
+            // _toggleHideSkillEffects.onValueChanged?.Invoke(graphic.IsHideSkillEffects);
+            //
+            // _toggleHideEnviromentEffects.isOn = graphic.IsHideEnviromentEffects;
+            // _toggleHideEnviromentEffects.onValueChanged?.Invoke(graphic.IsHideEnviromentEffects);
         }
 
         public async UniTask Save()
@@ -123,10 +140,10 @@ namespace Popup
             var graphic = new SaveSettingGraphicModel()
             {
                 Fps = (short)_sliderFPS.GetStepValue(),
-                OtherPlayerEnableAround = (short)_sliderOtherPlayerEnableAround.GetStepValue(),
-                IsHideOtherPlayerTextures = _toggleHideOtherPlayerTextures.isOn,
-                IsHideSkillEffects = _toggleHideSkillEffects.isOn,
-                IsHideEnviromentEffects = _toggleHideEnviromentEffects.isOn,
+                // OtherPlayerEnableAround = (short)_sliderOtherPlayerEnableAround.GetStepValue(),
+                // IsHideOtherPlayerTextures = _toggleHideOtherPlayerTextures.isOn,
+                // IsHideSkillEffects = _toggleHideSkillEffects.isOn,
+                // IsHideEnviromentEffects = _toggleHideEnviromentEffects.isOn,
             };
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.BGM, sound.MusicVolume);
             Global.Instance.Get<SoundManager>().SetVolumeAll(SoundType.ENV, sound.EnviromentVolume);
@@ -145,7 +162,12 @@ namespace Popup
         public override async void Close(float fadeDuration = 1)
         {
             await Save();
-            base.Close(0);
+            base.Close(fadeDuration);
+        }
+
+        public void GoToHomeScene()
+        {
+            Global.Instance.Get<SceneLoader>().LoadScene(0, null);
         }
     }
 }
