@@ -15,8 +15,13 @@ MonoBehaviour:
   m_GroupName: Sounds
   m_GUID: 29ec927d24930ff46a9f30dd75f94eb2
   m_SerializeEntries:
-  - m_GUID: 4c729e39f6abe8142848c1b49944fb65
-    m_Address: Audios
+  - m_GUID: 4f580ef11053a93408ca997b5042fa66
+    m_Address: Audios/FX_Attack
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81d8a4a527b96e44da2ddfb6ad190525
+    m_Address: Audios/FX_Error
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -30,8 +35,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a93223c002332964eb441189409f8af5
+    m_Address: Audios/FX_Popup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad4b0a6424f6cef498f49a3fb424ec98
+    m_Address: Audios/BGM_Lobby
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9c17e0a9a1a8df45911d466a0d47b90
+    m_Address: Audios/FX_Touch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc43f636864c53d469449e8c84f58aa1
     m_Address: Audios/FX_TargetSelectRight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0e334f65785bb542af06e2811fee1ff
+    m_Address: Audios/BGM_Home
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

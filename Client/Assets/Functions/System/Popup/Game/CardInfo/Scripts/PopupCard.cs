@@ -11,7 +11,7 @@ namespace Popup
         [SerializeField] Card _card;
         [SerializeField] private GameObject _objInfo;
         [SerializeField] private TextMeshProUGUI _txInfo;
-        public void Setup(CardModel cardModel)
+        public void SetupCard(CardModel cardModel)
         {
             _card.CardModel = cardModel;
         }

@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using GameConfigs;
 using Globals;
 using Newtonsoft.Json;
+using Popup;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using World.TheCard;
@@ -110,7 +111,7 @@ namespace World.Board
                     targets[0].Card.Battle.MemberIndex
                 ))
             {
-                Debug.Log($"Wrong target, need {skillTemplate.TargetType}");
+                Global.Instance.Get<PopupManager>().ShowToast($"Wrong target, need {skillTemplate.TargetType}", PopupToastSoundType.Error);
                 return;
             }
 

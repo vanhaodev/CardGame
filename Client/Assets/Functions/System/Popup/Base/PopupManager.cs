@@ -14,11 +14,32 @@ namespace Popup
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [Button]
-        public void ShowCard(CardModel cardModel)
+        public async void ShowCard(CardModel cardModel)
         {
             var pop = GetPopup<PopupCard>() as PopupCard;
+            pop.SetupCard(cardModel);
+            await pop.SetupData();
             pop.gameObject.SetActive(true);
-            pop.Setup(cardModel);
+            pop.Show(1).Forget();
+        }
+
+        private HashSet<string> _toastContents = new HashSet<string>();
+
+        [Button]
+        public async void ShowToast(string content, PopupToastSoundType soundType = PopupToastSoundType.None)
+        {
+            if (soundType != PopupToastSoundType.None)
+            {
+                Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_" + soundType.ToString());
+            }
+
+            if (!_toastContents.Add(content)) return;
+            var pop = GetPopup<PopupToast>() as PopupToast;
+            pop.OnHide = () => _toastContents.Remove(content);
+            pop.SetContent(content);
+            await pop.SetupData();
+            pop.gameObject.SetActive(true);
+            pop.Show(0.3f).Forget();
         }
     }
 

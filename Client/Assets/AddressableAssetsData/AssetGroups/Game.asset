@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Game
   m_GUID: 34776c83da527e74ab4c5ecd9ac57adc
   m_SerializeEntries:
+  - m_GUID: 18ed7ea1abd6b1b488c918fc3d880ebb
+    m_Address: Audios/FX_Money
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3881038c02a131b48b91efa9b76935ed
     m_Address: ItemTemplates/ItemTypesSO.asset
     m_ReadOnly: 0
@@ -42,6 +47,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a7f187f335714e44883b0bdb05e20a4
     m_Address: Assets/Statics/Fonts/ProtestGuerrilla-Regular SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b38e630cfc202df40a8b7e9299f314b1
+    m_Address: Audios/FX_Success
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

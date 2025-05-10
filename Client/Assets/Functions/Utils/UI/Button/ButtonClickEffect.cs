@@ -46,7 +46,7 @@ namespace Utils
         {
             CreateEffect(); // Tạo hoặc lấy tween đã có
             _tween.Restart();
-            Global.Instance.Get<SoundManager>().PlaySoundOneShot( "FX_Touch.wav");
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot( "FX_Touch");
         }
 
         private void OnDisable()

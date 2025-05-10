@@ -72,11 +72,12 @@ public class SoundManager : MonoBehaviour, IGlobal
                 .LoadAssetAsync<SoundLibrarySO>("Audios/SoundLibrarySO.asset");
             _soundLibrarySO.Init();
         }
+
         var save = new SaveManager();
         //set volume
         Debug.Log("Loading sound data");
         var sound = await save.Load<SaveSettingSoundModel>();
-        
+
         SetVolumeAll(SoundType.BGM, sound.MusicVolume);
         SetVolumeAll(SoundType.ENV, sound.EnviromentVolume);
         SetVolumeAll(SoundType.FX, sound.EffectVolume);
@@ -113,6 +114,15 @@ public class SoundManager : MonoBehaviour, IGlobal
     /// <param name="id"></param>
     public async void PlaySoundOneShot(string id)
     {
+        //Số lượng âm thanh phát cùng lúc không vượt quá 18 (2 là bgm và env), để tránh quá tải và phasing
+        if (_spawnedSounds[SoundType.FX]?.Count > 16)
+        {
+            Debug.LogWarning("Sound player count is over 18, remove first");
+            var firstFx = _spawnedSounds[SoundType.FX][0];
+            _spawnedSounds[SoundType.FX].Remove(firstFx);
+            _pool.Put(firstFx);
+        }
+
         SoundPlayer player = _pool.Get();
         player.gameObject.SetActive(true);
         var lib = await _soundLibrarySO.GetSound(id);

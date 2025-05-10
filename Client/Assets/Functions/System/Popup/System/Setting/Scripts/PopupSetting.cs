@@ -142,10 +142,10 @@ namespace Popup
             Init(sound, graphic);
         }
 
-        public override async void Close()
+        public override async void Close(float fadeDuration = 1)
         {
             await Save();
-            base.Close();
+            base.Close(0);
         }
     }
 }
