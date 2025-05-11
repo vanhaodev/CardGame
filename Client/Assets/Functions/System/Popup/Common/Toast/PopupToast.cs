@@ -22,7 +22,7 @@ namespace Popup
             _sizeFitterToast.UpdateSize();
         }
 
-        public override async UniTask Show(float fadeDuration = 1)
+        public override async UniTask Show(float fadeDuration = 0.3f)
         {
             await base.Show(fadeDuration);
             await UniTask.WaitForSeconds(1, cancellationToken: destroyCancellationToken);

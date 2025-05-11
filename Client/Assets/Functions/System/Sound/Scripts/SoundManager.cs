@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour, IGlobal
 {
     //spawner
     [SerializeField] private SoundPlayer soundPlayerPrefab;
-    SoundLibrarySO _soundLibrarySO; //NO REF, JUST ADDRESSABLE
+    SoundLoader _soundLoader; //NO REF, JUST ADDRESSABLE
     private DynamicObjectPool<SoundPlayer> _pool;
 
     /// <summary>
@@ -33,6 +33,7 @@ public class SoundManager : MonoBehaviour, IGlobal
 
     public async UniTask Init()
     {
+        _soundLoader = new SoundLoader();
         if (_volumes == null)
         {
             //Debug.LogError(" _volumes = new");
@@ -62,15 +63,6 @@ public class SoundManager : MonoBehaviour, IGlobal
                 createFunc: CreateSoundPlayer,
                 resetAction: ResetSoundPlayer
             );
-        }
-
-        if (_soundLibrarySO == null)
-        {
-            //Debug.LogError("_soundLibrarySO = await");
-            // Sử dụng AddressableLoader để tải ScriptableObject
-            _soundLibrarySO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<SoundLibrarySO>("Audios/SoundLibrarySO.asset");
-            _soundLibrarySO.Init();
         }
 
         var save = new SaveManager();
@@ -125,7 +117,7 @@ public class SoundManager : MonoBehaviour, IGlobal
 
         SoundPlayer player = _pool.Get();
         player.gameObject.SetActive(true);
-        var lib = await _soundLibrarySO.GetSound(id);
+        var lib = await _soundLoader.GetSound(id);
         player.AudioSource.clip = lib.AudioClip;
         player.AudioSource.loop = false;
         player.Id = id;
@@ -156,7 +148,7 @@ public class SoundManager : MonoBehaviour, IGlobal
             _playingLoopSounds.Add(uniqueKey, player);
         }
 
-        var lib = await _soundLibrarySO.GetSound(id);
+        var lib = await _soundLoader.GetSound(id);
         player.AudioSource.clip = lib.AudioClip;
         player.AudioSource.loop = true;
         player.Id = id;

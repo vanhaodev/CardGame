@@ -3,7 +3,6 @@
     <type fullname="Effects.Effect" preserve="all" />
     <type fullname="Effects.EffectParticle" preserve="all" />
     <type fullname="SelfDestruct" preserve="all" />
-    <type fullname="SoundLibrarySO" preserve="all" />
     <type fullname="Utils.TextSO" preserve="all" />
     <type fullname="World.TheCard.CardTemplateModel" preserve="all" />
     <type fullname="World.TheCard.Skill.CardSkillTemplateModel" preserve="nothing" serialized="true" />

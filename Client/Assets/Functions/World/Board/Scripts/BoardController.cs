@@ -60,21 +60,12 @@ namespace World.Board
             _targetSelectorController.InitTargets(_board);
         }
 
-        private void FixedUpdate()
-        {
-            if (_actionTurnManager != null)
-            {
-                var currentTurnCountDownTimeSecond = _actionTurnManager.UpdateTimeCountdown();
-                _board.SetTurnCountDown(currentTurnCountDownTimeSecond);
-            }
-        }
-
         public void OnGUI()
         {
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50
             if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
             {
-                TestLoop();
+                SetupBattleFlow();
                 Event.current.Use(); // Chặn sự kiện chuột
             }
         }
@@ -97,36 +88,6 @@ namespace World.Board
 
             await UniTask.WhenAll(cardInitTasks);
         }
-
-        [Button]
-        public async void TestLoop()
-        {
-            _ctsTestLoop?.Cancel();
-            _ctsTestLoop = new CancellationTokenSource();
-
-            await SetupBoardCards();
-
-            _board.GetFactionByIndex(1).ResetToOriginalPosition();
-            _board.GetFactionByIndex(2).ResetToOriginalPosition();
-            _actionTurnManager.SetupOrders(_board.GetAllFactions());
-            _actionTurnManager.MaxRoundCount = 99;
-            // int count = 0;
-            // while (!_ctsTestLoop.IsCancellationRequested)
-            // {
-            //     var result = await PlayAction(_ctsTestLoop);
-            //     if (result != null)
-            //     {
-            //         Debug.Log(JsonConvert.SerializeObject(result));
-            //         break;
-            //     }
-            //
-            //     if (count >= 999) throw new Exception("loop is too large.");
-            //     count++;
-            // }
-
-            PerformCameraReset(_ctsTestLoop).Forget();
-        }
-
 
         private List<int> GetTargets(BoardFaction targetFaction)
         {

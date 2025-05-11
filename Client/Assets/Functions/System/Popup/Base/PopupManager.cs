@@ -19,7 +19,7 @@ namespace Popup
             var pop = GetPopup<PopupSetting>() as PopupSetting;
             await pop.SetupData();
             pop.gameObject.SetActive(true);
-            pop.Show(1).Forget();
+            pop.Show().Forget();
         }
 
         [Button]
@@ -29,7 +29,7 @@ namespace Popup
             pop.SetupCard(cardModel);
             await pop.SetupData();
             pop.gameObject.SetActive(true);
-            pop.Show(1).Forget();
+            pop.Show().Forget();
         }
 
         private HashSet<string> _toastContents = new HashSet<string>();
@@ -48,7 +48,7 @@ namespace Popup
             pop.SetContent(content);
             await pop.SetupData();
             pop.gameObject.SetActive(true);
-            pop.Show(0.3f).Forget();
+            pop.Show(0.2f).Forget();
         }
     }
 

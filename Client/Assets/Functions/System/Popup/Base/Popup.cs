@@ -11,6 +11,7 @@ namespace Popup
     public class Popup : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private GameObject _objBlockInput;
         public UnityAction OnShow;
         public UnityAction OnHide;
 
@@ -25,14 +26,16 @@ namespace Popup
             gameObject.transform.SetAsLastSibling();
         }
 
-        public virtual async UniTask Show(float fadeDuration = 1)
+        public virtual async UniTask Show(float fadeDuration = 0.3f)
         {
             await _canvasGroup.DOFade(1, fadeDuration).WithCancellation(cancellationToken: destroyCancellationToken);
             OnShow?.Invoke();
+            if (_objBlockInput) _objBlockInput.SetActive(false);
         }
 
-        public virtual void Close(float fadeDuration = 1)
+        public virtual void Close(float fadeDuration = 0.3f)
         {
+            if (_objBlockInput) _objBlockInput?.SetActive(true);
             _canvasGroup.DOFade(0, fadeDuration).OnComplete(() =>
                 {
                     Global.Instance.Get<PopupManager>().ClosePopup(this);

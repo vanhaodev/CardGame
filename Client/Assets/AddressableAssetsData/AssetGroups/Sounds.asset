@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Sounds
   m_GUID: 29ec927d24930ff46a9f30dd75f94eb2
   m_SerializeEntries:
+  - m_GUID: 18ed7ea1abd6b1b488c918fc3d880ebb
+    m_Address: Audios/FX_Money
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f580ef11053a93408ca997b5042fa66
     m_Address: Audios/FX_Attack
     m_ReadOnly: 0
@@ -45,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b38e630cfc202df40a8b7e9299f314b1
+    m_Address: Audios/FX_Success
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b9c17e0a9a1a8df45911d466a0d47b90
     m_Address: Audios/FX_Touch
     m_ReadOnly: 0
@@ -63,4 +73,5 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 2700156480cc2364fbbf9e624c5f03e0, type: 2}
   m_SchemaSet:
-    m_Schemas: []
+    m_Schemas:
+    - {fileID: 11400000, guid: bda8246455cfa2e40a7beeaeb899f127, type: 2}

@@ -22,8 +22,6 @@ namespace World.Board
 
         [SerializeField] private TextMeshProUGUI _txRound;
 
-        [SerializeField] private TextMeshProUGUI _txTurnTimeCountdown;
-
         [SerializeField] private SkillButton _btnBasicAttack;
         [SerializeField] private SkillButton _btnAdvancedSkill;
         [SerializeField] private SkillButton _btnUltimateSkill;
@@ -42,17 +40,11 @@ namespace World.Board
         private void Start()
         {
             _txRound.text = String.Empty;
-            _txTurnTimeCountdown.text = String.Empty;
         }
 
         public void SetRound(int currentRoundCount, int maxRoundCount)
         {
             _txRound.text = $"{currentRoundCount}/{maxRoundCount}";
-        }
-
-        public void SetTurnCountDown(float turnCountDown)
-        {
-            _txTurnTimeCountdown.text = turnCountDown.ToString("0");
         }
 
         [Button]
