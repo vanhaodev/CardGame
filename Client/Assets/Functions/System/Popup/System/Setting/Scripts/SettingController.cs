@@ -2,7 +2,7 @@
 using Save;
 using UnityEngine;
 
-namespace Popup
+namespace Popups
 {
     public class SettingController : MonoBehaviour
     {

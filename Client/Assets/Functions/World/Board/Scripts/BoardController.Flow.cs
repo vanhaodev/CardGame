@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using GameConfigs;
 using Globals;
 using Newtonsoft.Json;
-using Popup;
+using Popups;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using World.TheCard;

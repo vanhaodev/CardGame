@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils;
 
-namespace Popup
+namespace Popups
 {
     public class PopupSetting : Popup
     {

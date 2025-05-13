@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Popup.Commons
+namespace Popups.Commons
 {
     public class PopupChoice:  MonoBehaviour
     {

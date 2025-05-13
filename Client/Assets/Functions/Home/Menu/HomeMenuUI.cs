@@ -5,7 +5,7 @@ using System.SceneLoader;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Globals;
-using Popup;
+using Popups;
 using Save;
 using Startup;
 using UnityEngine;

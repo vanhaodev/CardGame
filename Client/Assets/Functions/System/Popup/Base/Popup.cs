@@ -5,7 +5,7 @@ using Globals;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Popup
+namespace Popups
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class Popup : MonoBehaviour

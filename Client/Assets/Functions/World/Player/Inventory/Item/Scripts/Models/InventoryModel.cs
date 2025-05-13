@@ -8,7 +8,7 @@ namespace World.Requirement
         public byte MaxBagSlot = 20;
 
         // Nhóm theo ItemTemplateId
-        public Dictionary<ushort, InventoryGroupModel> BagItems = new Dictionary<ushort, InventoryGroupModel>();
+        public Dictionary<ushort /*ItemTemplateId*/, InventoryGroupModel> Items = new Dictionary<ushort, InventoryGroupModel>();
 
         // Cache tổng số slot đã dùng
         public int CurrentBagSlotCount;

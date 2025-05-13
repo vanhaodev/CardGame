@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Save;
+using World.TheCard;
 
-namespace World.TheCard
+namespace World.Player.Character
 {
     [Serializable]
     public class CardCollectionModel

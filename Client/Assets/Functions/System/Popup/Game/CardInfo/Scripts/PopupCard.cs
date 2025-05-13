@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using World.TheCard;
 
-namespace Popup
+namespace Popups
 {
     public class PopupCard : Popup
     {

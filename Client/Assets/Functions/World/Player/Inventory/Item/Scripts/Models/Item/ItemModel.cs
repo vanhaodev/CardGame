@@ -15,7 +15,7 @@ namespace World.Requirement
         public DateTime UpdatedAt;
 
         /// <summary>
-        /// Search index in inventory
+        /// Search index in inventory, khi một item đc add vào inventory thì sẽ có một id riêng định nghĩa dành riêng cho inv đó thôi
         /// </summary>
         public int InventoryUniqueId;
 

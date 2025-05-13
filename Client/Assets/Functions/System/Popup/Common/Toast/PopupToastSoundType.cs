@@ -1,4 +1,4 @@
-﻿namespace Popup
+﻿namespace Popups
 {
     public enum PopupToastSoundType
     {

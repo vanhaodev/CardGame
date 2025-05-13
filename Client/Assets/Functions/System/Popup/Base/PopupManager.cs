@@ -9,7 +9,7 @@ using UnityEngine;
 using Utils;
 using World.TheCard;
 
-namespace Popup
+namespace Popups
 {
     public partial class PopupManager : MonoBehaviour, IGlobal
     {

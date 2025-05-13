@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using Utils;
 
-namespace Popup
+namespace Popups
 {
     public class PopupToast : Popup
     {
