@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Functions.World.Player.PopupCharacter;
 using Globals;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -13,6 +14,14 @@ namespace Popups
 {
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
+        [Button]
+        public async void ShowCharacter()
+        {
+            var pop = GetPopup<PopupCharacter>() as PopupCharacter;
+            await pop.SetupData();
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+        }
         [Button]
         public async void ShowSetting()
         {

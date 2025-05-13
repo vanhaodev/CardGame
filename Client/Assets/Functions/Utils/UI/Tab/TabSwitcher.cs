@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils.UI.DOTween;
 
 namespace Utils.Tab
 {
@@ -10,8 +13,10 @@ namespace Utils.Tab
         public List<TabSwitcherModel> Tabs = new List<TabSwitcherModel>();
         [SerializeField] TabSwitcherButton _prefabTabButton;
         [SerializeField] Transform _parentTabButton;
+        [SerializeField] private TextMeshProUGUI _txWindowTitle;
         public int DefaultIndex;
         public int CurrentIndex;
+        DOTweenTextFadeSmooth _textTweener = new DOTweenTextFadeSmooth();
 
         public void Init()
         {
@@ -41,8 +46,11 @@ namespace Utils.Tab
         {
             for (int i = 0; i < Tabs.Count; i++)
             {
-                Tabs[i].ObjWindow.SetActive(i == index);
-                Tabs[i].TabSwitcherButton.Select(i == index);
+                Tabs[i].Set(i == index);
+                if (_txWindowTitle && i == index)
+                {
+                    _textTweener.AnimateTextChangeAsync(_txWindowTitle, Tabs[i].TabButtonName, 0.01f);
+                }
             }
 
             CurrentIndex = index;

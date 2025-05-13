@@ -7,10 +7,12 @@ namespace Utils.Tab
 {
     public class TabSwitcherButton : MonoBehaviour
     {
+
         [SerializeField] private TextMeshProUGUI _txBtnName;
         [SerializeField] private Image _imgIcon;
         [SerializeField] private Button _btn;
         [SerializeField] private GameObject _objSelectingCover;
+        public GameObject ObjSelectingCover => _objSelectingCover;
         public void Set(string btnName, Sprite icon, UnityAction onClick)
         {
             _txBtnName.text = btnName;
@@ -26,6 +28,7 @@ namespace Utils.Tab
             }
             _btn.onClick.RemoveAllListeners();
             _btn.onClick.AddListener(onClick);
+            Select(false);
         }
 
         public void Select(bool isSelected)
