@@ -13,7 +13,7 @@ namespace Utils.Tab
         public int DefaultIndex;
         public int CurrentIndex;
 
-        public void Start()
+        public void Init()
         {
             if (Tabs.Count == 0)
             {
