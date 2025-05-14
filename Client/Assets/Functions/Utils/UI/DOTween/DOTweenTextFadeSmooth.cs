@@ -1,14 +1,17 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+
 namespace Utils.UI.DOTween
 {
-    public class DOTweenTextFadeSmooth 
+    public class DOTweenTextFadeSmooth
     {
         // Bảng chữ cái + số + khoảng trắng (có thể thêm ký tự đặc biệt tùy ý)
         private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
 
-        public async UniTask AnimateTextChangeAsync(TextMeshProUGUI textMesh, string newText, float charDelay = 0.02f)
+        public async UniTask AnimateTextChangeAsync(TextMeshProUGUI textMesh, string newText, float charDelay = 0.02f,
+            CancellationTokenSource cts = null)
         {
             string current = textMesh.text;
             int maxLength = Mathf.Max(current.Length, newText.Length);
@@ -26,10 +29,23 @@ namespace Utils.UI.DOTween
                 tasks[i] = AnimateCharacter(index, currentChars, targetChars, textMesh, charDelay);
             }
 
-            await UniTask.WhenAll(tasks);
+            if (cts != null)
+            {
+                await UniTask.WhenAll(tasks).AttachExternalCancellation(cts.Token);
+            }
+            else
+            {
+                await UniTask.WhenAll(tasks);
+            }
         }
 
-        private async UniTask AnimateCharacter(int index, char[] current, char[] target, TMP_Text textMesh, float delay)
+        private async UniTask AnimateCharacter(
+            int index,
+            char[] current,
+            char[] target,
+            TMP_Text textMesh,
+            float delay,
+            CancellationTokenSource cts = null)
         {
             char curChar = char.ToUpper(current[index]);
             char targetChar = char.ToUpper(target[index]);
@@ -42,12 +58,22 @@ namespace Utils.UI.DOTween
 
             while (curIdx != targetIdx)
             {
+                // Nếu có CTS, kiểm tra huỷ
+                if (cts != null && cts.Token.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 curIdx = (curIdx + 1) % Alphabet.Length;
                 current[index] = Alphabet[curIdx];
                 textMesh.text = new string(current);
-                await UniTask.Delay((int)(delay * 1000));
+
+                // Nếu có token thì truyền vào delay
+                if (cts != null)
+                    await UniTask.Delay((int)(delay * 1000), cancellationToken: cts.Token);
+                else
+                    await UniTask.Delay((int)(delay * 1000));
             }
         }
     }
-
 }

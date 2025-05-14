@@ -1,4 +1,6 @@
-﻿using DG.Tweening;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +13,12 @@ namespace Utils.Tab
         public string TabButtonName;
         public Sprite SpriteTabButtonIcon;
         [HideInInspector] public TabSwitcherButton TabSwitcherButton;
+        CancellationTokenSource _ctsSelectingBorderAnim;
 
         public void Set(bool isSelected)
         {
+            _ctsSelectingBorderAnim?.Cancel();
+            _ctsSelectingBorderAnim = new CancellationTokenSource();
             if (isSelected)
             {
                 // Đặt scale ban đầu là 0.2 rồi mới bật đối tượng
@@ -23,7 +28,8 @@ namespace Utils.Tab
                 ObjWindow.SetActive(true); // Bật đối tượng
 
                 // Thực hiện tween scale từ 0.2 lên 1 trong 0.3s
-                TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one, 0.3f);
+                TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one, 0.3f)
+                    .WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token);
             }
             else
             {
@@ -34,7 +40,7 @@ namespace Utils.Tab
                     TabSwitcherButton.ObjSelectingCover.transform.localScale =
                         Vector3.one; // Đảm bảo set lại scale về 1
                     TabSwitcherButton.Select(false);
-                });
+                }).WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token);
             }
         }
     }

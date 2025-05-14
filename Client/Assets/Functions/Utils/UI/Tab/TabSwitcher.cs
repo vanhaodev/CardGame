@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Utils.Tab
         public int DefaultIndex;
         public int CurrentIndex;
         DOTweenTextFadeSmooth _textTweener = new DOTweenTextFadeSmooth();
+        CancellationTokenSource _ctsCurrentTabTitleTextAnim;
 
         public void Init()
         {
@@ -49,7 +51,10 @@ namespace Utils.Tab
                 Tabs[i].Set(i == index);
                 if (_txWindowTitle && i == index)
                 {
-                    _textTweener.AnimateTextChangeAsync(_txWindowTitle, Tabs[i].TabButtonName, 0.01f);
+                    _ctsCurrentTabTitleTextAnim?.Cancel();
+                    _ctsCurrentTabTitleTextAnim = new CancellationTokenSource();
+                    _textTweener.AnimateTextChangeAsync(_txWindowTitle, Tabs[i].TabButtonName, 0.01f,
+                        _ctsCurrentTabTitleTextAnim);
                 }
             }
 
