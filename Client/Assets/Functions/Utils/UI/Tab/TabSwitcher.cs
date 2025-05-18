@@ -4,6 +4,7 @@ using System.Threading;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utils.UI.DOTween;
 
@@ -12,9 +13,14 @@ namespace Utils.Tab
     public class TabSwitcher : MonoBehaviour
     {
         public List<TabSwitcherModel> Tabs = new List<TabSwitcherModel>();
+        public UnityEvent<int> OnTabSwitched;
         [SerializeField] TabSwitcherButton _prefabTabButton;
         [SerializeField] Transform _parentTabButton;
         [SerializeField] private TextMeshProUGUI _txWindowTitle;
+        /// <summary>
+        /// sinh tab button or dùng tab có sẵn
+        /// </summary>
+        [SerializeField] private bool _isInstantiateTabButton;
         public int DefaultIndex;
         public int CurrentIndex;
         DOTweenTextFadeSmooth _textTweener = new DOTweenTextFadeSmooth();
@@ -27,18 +33,30 @@ namespace Utils.Tab
                 return;
             }
 
-            for (int i = 0; i < _parentTabButton.childCount; i++)
+            if (_isInstantiateTabButton)
             {
-                Transform child = _parentTabButton.GetChild(i);
-                Destroy(child.gameObject);
+                for (int i = 0; i < _parentTabButton.childCount; i++)
+                {
+                    Transform child = _parentTabButton.GetChild(i);
+                    Destroy(child.gameObject);
+                }
             }
 
             for (int i = 0; i < Tabs.Count; i++)
             {
                 int index = i;
-                var tabBtn = Instantiate(_prefabTabButton, _parentTabButton);
+                TabSwitcherButton tabBtn = null;
+                if (Tabs[i].TabSwitcherButton != null)
+                {
+                    tabBtn = Tabs[i].TabSwitcherButton;
+                }
+                else
+                {
+                    tabBtn = Instantiate(_prefabTabButton, _parentTabButton);
+                }
+
                 Tabs[i].TabSwitcherButton = tabBtn;
-                tabBtn.Set(Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index));
+                tabBtn.Set( Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index));
             }
 
             SwitchTab(DefaultIndex);
@@ -46,6 +64,7 @@ namespace Utils.Tab
 
         public void SwitchTab(int index)
         {
+            OnTabSwitched?.Invoke(index);
             for (int i = 0; i < Tabs.Count; i++)
             {
                 Tabs[i].Set(i == index);

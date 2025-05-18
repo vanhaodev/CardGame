@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Functions.World.Player.PopupCharacter.Tabs
+namespace World.Player.PopupCharacter
 {
     public class PopupCharacterProfile : MonoBehaviour
     {

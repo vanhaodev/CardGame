@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Utils.Tab
@@ -12,7 +13,11 @@ namespace Utils.Tab
         public GameObject ObjWindow;
         public string TabButtonName;
         public Sprite SpriteTabButtonIcon;
-        [HideInInspector] public TabSwitcherButton TabSwitcherButton;
+        /// <summary>
+        /// Nếu null thì hệ thống sẽ sinh ra từ prefab ở TabSwicher <br/>
+        /// muốn tab đứng ở các vị trí đặc biệt mà hệ thống scrollview hay grid không làm được thì có thể set sẵn rồi kéo vào để ko pải instantiate
+        /// </summary>
+        public TabSwitcherButton TabSwitcherButton;
         CancellationTokenSource _ctsSelectingBorderAnim;
 
         public void Set(bool isSelected)
@@ -25,7 +30,7 @@ namespace Utils.Tab
                 TabSwitcherButton.ObjSelectingCover.transform.localScale =
                     Vector3.one * 0.2f; // Đặt scale ban đầu là 0.2
                 TabSwitcherButton.Select(true);
-                ObjWindow.SetActive(true); // Bật đối tượng
+                ShowWindow(true); // Bật đối tượng
 
                 // Thực hiện tween scale từ 0.2 lên 1 trong 0.3s
                 TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one, 0.3f)
@@ -33,7 +38,7 @@ namespace Utils.Tab
             }
             else
             {
-                ObjWindow.SetActive(false); // Tắt đối tượng sau khi tween hoàn tất
+                ShowWindow(false); // Tắt đối tượng sau khi tween hoàn tất
                 // Scale ngược lại từ 1 về 0.2 rồi tắt đối tượng
                 TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one * 0.2f, 0.3f).OnComplete(() =>
                 {
@@ -41,6 +46,14 @@ namespace Utils.Tab
                         Vector3.one; // Đảm bảo set lại scale về 1
                     TabSwitcherButton.Select(false);
                 }).WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token);
+            }
+        }
+
+        public void ShowWindow(bool isShow = true)
+        {
+            if (ObjWindow)
+            {
+                ObjWindow.SetActive(isShow); // Bật đối tượng
             }
         }
     }

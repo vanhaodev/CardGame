@@ -3,7 +3,7 @@ using Popups;
 using UnityEngine;
 using Utils.Tab;
 
-namespace Functions.World.Player.PopupCharacter
+namespace World.Player.PopupCharacter
 {
     public class PopupCharacter : Popup
     {

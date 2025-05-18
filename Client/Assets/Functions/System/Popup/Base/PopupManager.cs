@@ -3,11 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Functions.World.Player.PopupCharacter;
 using Globals;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Utils;
+using World.Player.PopupCharacter;
 using World.TheCard;
 
 namespace Popups
