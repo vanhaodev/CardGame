@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 namespace Utils.Tab
 {
     [System.Serializable]
-    public class TabSwitcherModel
+    public class TabSwitcherModel : IDisposable
     {
         public GameObject ObjWindow;
         public string TabButtonName;
@@ -19,7 +20,6 @@ namespace Utils.Tab
         /// </summary>
         public TabSwitcherButton TabSwitcherButton;
         CancellationTokenSource _ctsSelectingBorderAnim;
-
         public void Set(bool isSelected)
         {
             _ctsSelectingBorderAnim?.Cancel();
@@ -28,24 +28,24 @@ namespace Utils.Tab
             {
                 // Đặt scale ban đầu là 0.2 rồi mới bật đối tượng
                 TabSwitcherButton.ObjSelectingCover.transform.localScale =
-                    Vector3.one * 0.2f; // Đặt scale ban đầu là 0.2
+                    Vector3.zero; // Đặt scale ban đầu là 0.2
                 TabSwitcherButton.Select(true);
                 ShowWindow(true); // Bật đối tượng
 
                 // Thực hiện tween scale từ 0.2 lên 1 trong 0.3s
                 TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one, 0.3f)
-                    .WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token);
+                    .WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token).Forget();
             }
             else
             {
                 ShowWindow(false); // Tắt đối tượng sau khi tween hoàn tất
                 // Scale ngược lại từ 1 về 0.2 rồi tắt đối tượng
-                TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one * 0.2f, 0.3f).OnComplete(() =>
+                TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() =>
                 {
                     TabSwitcherButton.ObjSelectingCover.transform.localScale =
                         Vector3.one; // Đảm bảo set lại scale về 1
                     TabSwitcherButton.Select(false);
-                }).WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token);
+                }).WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token).Forget();
             }
         }
 
@@ -55,6 +55,11 @@ namespace Utils.Tab
             {
                 ObjWindow.SetActive(isShow); // Bật đối tượng
             }
+        }
+
+        public void Dispose()
+        {
+            _ctsSelectingBorderAnim?.Cancel();
         }
     }
 }

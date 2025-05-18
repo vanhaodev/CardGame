@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Globals;
@@ -14,7 +15,7 @@ namespace Popups
         [SerializeField] private GameObject _objBlockInput;
         public UnityAction OnShow;
         public UnityAction OnHide;
-
+        private CancellationTokenSource _ctsAnimation;
         protected virtual void OnValidate()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
@@ -28,7 +29,9 @@ namespace Popups
 
         public virtual async UniTask Show(float fadeDuration = 0.3f)
         {
-            await _canvasGroup.DOFade(1, fadeDuration).WithCancellation(cancellationToken: destroyCancellationToken);
+            _ctsAnimation?.Cancel();
+            _ctsAnimation = new CancellationTokenSource();
+            await _canvasGroup.DOFade(1, fadeDuration).WithCancellation(cancellationToken: _ctsAnimation.Token);
             OnShow?.Invoke();
             if (_objBlockInput) _objBlockInput.SetActive(false);
         }
@@ -36,6 +39,8 @@ namespace Popups
         public virtual void Close(float fadeDuration = 0.3f)
         {
             if (_objBlockInput) _objBlockInput?.SetActive(true);
+            _ctsAnimation?.Cancel();
+            _ctsAnimation = new CancellationTokenSource();
             _canvasGroup.DOFade(0, fadeDuration).OnComplete(() =>
                 {
                     Global.Instance.Get<PopupManager>().ClosePopup(this);
@@ -43,7 +48,7 @@ namespace Popups
                     OnShow = null;
                     OnHide = null;
                 })
-                .WithCancellation(cancellationToken: destroyCancellationToken);
+                .WithCancellation(cancellationToken: _ctsAnimation.Token);
         }
     }
 }

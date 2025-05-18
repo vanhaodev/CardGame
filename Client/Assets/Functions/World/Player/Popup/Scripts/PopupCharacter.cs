@@ -11,7 +11,13 @@ namespace World.Player.PopupCharacter
         public override async UniTask SetupData()
         {
             await base.SetupData();
+        }
+
+        public override async UniTask Show(float fadeDuration = 0.3f)
+        {
+            await base.Show(fadeDuration);
             _tabSwitcher.Init();
         }
+        
     }
 }

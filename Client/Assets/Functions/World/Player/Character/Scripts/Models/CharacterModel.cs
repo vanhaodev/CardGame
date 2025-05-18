@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Functions.World.Player;
+using UnityEngine.Serialization;
 using World.Requirement;
 using World.TheCard;
 
@@ -23,6 +24,10 @@ namespace World.Player.Character
         /// </summary>
         public CardCollectionModel CardCollection;
 
+        /// <summary>
+        /// Số team có thể setup trước, hiện tối đa 4
+        /// </summary>
+        [FormerlySerializedAs("MaxLineupTeam")] public byte MaxLineupTeamCount;
         /// <summary>
         /// có the setup trước lineup cho nhiều đội hình giúp khắc chế tốt hơn, nhưng sẽ tốn tiền để mở thêm slot lineup :))
         /// </summary>
@@ -52,6 +57,7 @@ namespace World.Player.Character
             };
             Inventory = new InventoryModel();
             CardCollection = new CardCollectionModel();
+            MaxLineupTeamCount = 1;
             CardLineups = new List<CardLineupModel>();
         }
     }

@@ -7,36 +7,31 @@ namespace Utils.UI.DOTween
 {
     public class DOTweenTextFadeSmooth
     {
-        // Bảng chữ cái + số + khoảng trắng (có thể thêm ký tự đặc biệt tùy ý)
         private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
 
-        public async UniTask AnimateTextChangeAsync(TextMeshProUGUI textMesh, string newText, float charDelay = 0.02f,
-            CancellationTokenSource cts = null)
+        public async UniTask AnimateTextChangeAsync(TextMeshProUGUI textMesh, string newText, float charDelay,
+            CancellationTokenSource cts)
         {
+            if (cts == null)
+                throw new System.ArgumentNullException(nameof(cts), "CancellationTokenSource must not be null.");
+            if (textMesh == null)
+                throw new System.ArgumentNullException(nameof(textMesh), "TextMeshProUGUI must not be null.");
+            await UniTask.WaitForEndOfFrame(cancellationToken: cts.Token);
             string current = textMesh.text;
             int maxLength = Mathf.Max(current.Length, newText.Length);
 
-            // Đảm bảo cả 2 chuỗi có cùng độ dài
             char[] currentChars = current.PadRight(maxLength).ToCharArray();
             char[] targetChars = newText.PadRight(maxLength).ToCharArray();
 
-            // Tạo danh sách task
             UniTask[] tasks = new UniTask[maxLength];
 
             for (int i = 0; i < maxLength; i++)
             {
                 int index = i;
-                tasks[i] = AnimateCharacter(index, currentChars, targetChars, textMesh, charDelay);
+                tasks[i] = AnimateCharacter(index, currentChars, targetChars, textMesh, charDelay, cts.Token);
             }
 
-            if (cts != null)
-            {
-                await UniTask.WhenAll(tasks).AttachExternalCancellation(cts.Token);
-            }
-            else
-            {
-                await UniTask.WhenAll(tasks);
-            }
+            await UniTask.WhenAll(tasks).AttachExternalCancellation(cts.Token);
         }
 
         private async UniTask AnimateCharacter(
@@ -45,7 +40,7 @@ namespace Utils.UI.DOTween
             char[] target,
             TMP_Text textMesh,
             float delay,
-            CancellationTokenSource cts = null)
+            CancellationToken token)
         {
             char curChar = char.ToUpper(current[index]);
             char targetChar = char.ToUpper(target[index]);
@@ -58,21 +53,16 @@ namespace Utils.UI.DOTween
 
             while (curIdx != targetIdx)
             {
-                // Nếu có CTS, kiểm tra huỷ
-                if (cts != null && cts.Token.IsCancellationRequested)
-                {
-                    return;
-                }
+                token.ThrowIfCancellationRequested();
 
                 curIdx = (curIdx + 1) % Alphabet.Length;
                 current[index] = Alphabet[curIdx];
-                textMesh.text = new string(current);
 
-                // Nếu có token thì truyền vào delay
-                if (cts != null)
-                    await UniTask.Delay((int)(delay * 1000), cancellationToken: cts.Token);
-                else
-                    await UniTask.Delay((int)(delay * 1000));
+                if (textMesh != null)
+                    textMesh.text =
+                        new string(current); // vẫn sẽ có flicker nhẹ, chỉ có thể gom chung lại nếu muốn smooth hơn.
+
+                await UniTask.Delay((int)(delay * 1000), cancellationToken: token);
             }
         }
     }
