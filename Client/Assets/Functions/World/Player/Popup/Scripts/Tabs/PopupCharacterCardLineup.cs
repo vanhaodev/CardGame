@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Globals;
 using UnityEngine;
 using Utils.Tab;
@@ -9,11 +10,13 @@ namespace World.Player.PopupCharacter
     public class PopupCharacterCardLineup : MonoBehaviour
     {
         [SerializeField] private TabSwitcher _tabSwitcherTeam;
+        [SerializeField] private List<LineupCard> _lineupCards;
 
         private void OnEnable()
         {
             _tabSwitcherTeam.Init();
             InitLineupTeamTab();
+            InitCards(1);
         }
 
         private void Start()
@@ -23,7 +26,7 @@ namespace World.Player.PopupCharacter
 
         private void InitLineupTeamTab()
         {
-            var maxLineupTeamCount = 2; //Global.Instance.Get<CharacterData>().CharacterModel.MaxLineupTeamCount;
+            var maxLineupTeamCount = Global.Instance.Get<CharacterData>().CharacterModel.MaxLineupTeamCount;
 
             for (int i = 0; i < _tabSwitcherTeam.Tabs.Count; i++)
             {
@@ -35,14 +38,26 @@ namespace World.Player.PopupCharacter
             }
         }
 
+        private void InitCards(int teamLineupIndex)
+        {
+            Debug.Log("Init lineup " + teamLineupIndex);
+            for (int i = 0; i < _lineupCards.Count; i++)
+            {
+                _lineupCards[i].Setup((byte)(i + 1), teamLineupIndex);
+            }
+        }
+
         public void OnSwitchLineupTeam(int index)
         {
-            var maxLineupTeamCount = 2;
+            var maxLineupTeamCount = Global.Instance.Get<CharacterData>().CharacterModel.MaxLineupTeamCount;
             if (index + 1 > maxLineupTeamCount)
             {
                 Debug.Log($"Slot is lock so return to {index - 1}");
                 _tabSwitcherTeam.SwitchTab(index - 1);
+                return;
             }
+
+            InitCards(index + 1);
         }
 
         private void OnDestroy()

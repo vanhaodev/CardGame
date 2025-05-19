@@ -8,6 +8,6 @@ namespace Functions.World.Player
     /// </summary>
     public class CardLineupModel
     {
-        public List<CardModel> Cards;
+        public Dictionary<byte /*slot index*/, CardModel> Cards;
     }
 }

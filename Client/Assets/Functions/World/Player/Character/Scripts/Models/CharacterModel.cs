@@ -57,7 +57,7 @@ namespace World.Player.Character
             };
             Inventory = new InventoryModel();
             CardCollection = new CardCollectionModel();
-            MaxLineupTeamCount = 1;
+            MaxLineupTeamCount = 3;
             CardLineups = new List<CardLineupModel>();
         }
     }
