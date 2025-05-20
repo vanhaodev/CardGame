@@ -13,6 +13,10 @@ namespace Utils.Tab
         [SerializeField] protected GameObject _objSelectingCover;
         public GameObject ObjSelectingCover => _objSelectingCover;
 
+        public void SetButtonActive(bool active)
+        {
+            _btn.interactable = active;
+        }
         public void Set(string btnName, Sprite icon, UnityAction onClick)
         {
             _txBtnName.text = btnName;
