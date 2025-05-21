@@ -23,7 +23,7 @@ namespace World.Player.PopupCharacter
         {
             _tabSwitcherTeam.Init();
             InitLineupTeamTab();
-            
+
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
             Vector2 pos = _layoutTransformLineupCards.anchoredPosition;
             pos.y = _layoutTransformLineupCards.rect.height + 50; // targetY là giá trị mới mày muốn đặt
@@ -66,6 +66,7 @@ namespace World.Player.PopupCharacter
                 await Spacing(-169.54f);
                 await Move(_layoutTransformLineupCards.rect.height + 50);
             }
+
             async UniTask Move(float targetY)
             {
                 // Tính target Y dựa trên chiều cao layout
@@ -74,7 +75,7 @@ namespace World.Player.PopupCharacter
 
                 try
                 {
-                    await _layoutTransformLineupCards.DOAnchorPosY(targetY, 0.4f)
+                    await _layoutTransformLineupCards.DOAnchorPosY(targetY, 0.2f)
                         .SetEase(Ease.OutQuad)
                         .WithCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
                 }
@@ -91,7 +92,7 @@ namespace World.Player.PopupCharacter
                 try
                 {
                     await DOTween.To(() => _layoutGroupLineupCards.spacing,
-                            x => { _layoutGroupLineupCards.spacing = x; }, targetSpacing, 0.4f)
+                            x => { _layoutGroupLineupCards.spacing = x; }, targetSpacing, 0.2f)
                         .SetEase(Ease.OutCubic)
                         .WithCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
                 }
@@ -110,6 +111,7 @@ namespace World.Player.PopupCharacter
             {
                 _lineupCards[i].Setup((byte)(i + 1), teamLineupIndex);
             }
+
             await PlayLayoutGroupLineupCardsSpearAnimation(true);
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
         }

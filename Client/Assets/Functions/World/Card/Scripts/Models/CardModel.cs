@@ -13,6 +13,7 @@ namespace World.TheCard
     [Serializable]
     public class CardModel
     {
+        public int Id;
         public ushort TemplateId;
 
         /// <summary>

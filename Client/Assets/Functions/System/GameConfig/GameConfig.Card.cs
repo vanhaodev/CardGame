@@ -63,6 +63,7 @@ namespace GameConfigs
 
         public async UniTask<Sprite> GetCardSprite(CardModel cardModel, string skinName = "" /*default is null*/)
         {
+            if(cardModel.Star < 1) throw new System.Exception("Card star must be >= 1");
             var cardTemplateId = cardModel.TemplateId;
             var key = $"{cardModel.Star}";
 

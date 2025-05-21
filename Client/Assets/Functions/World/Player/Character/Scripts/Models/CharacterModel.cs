@@ -27,7 +27,7 @@ namespace World.Player.Character
         /// <summary>
         /// Số team có thể setup trước, hiện tối đa 4
         /// </summary>
-        [FormerlySerializedAs("MaxLineupTeam")] public byte MaxLineupTeamCount;
+        public byte MaxLineupTeamCount;
         /// <summary>
         /// có the setup trước lineup cho nhiều đội hình giúp khắc chế tốt hơn, nhưng sẽ tốn tiền để mở thêm slot lineup :))
         /// </summary>

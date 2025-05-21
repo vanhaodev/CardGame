@@ -1,4 +1,5 @@
-﻿using UnityEngine.Serialization;
+﻿using Functions.World.Data;
+using UnityEngine.Serialization;
 using World.Player.Character;
 
 namespace Save
@@ -7,12 +8,15 @@ namespace Save
     public class SavePlayerModel : SaveModel
     {
         public CharacterModel CharacterModel;
-
+        public UniqueIdentityModel UniqueIdentityModel;
         public override void SetDefault()
         {
             base.SetDefault();
             CharacterModel = new CharacterModel();
             CharacterModel.SetDefault();
+            
+            UniqueIdentityModel = new UniqueIdentityModel();
+            UniqueIdentityModel.SetDefault();
         }
     }
 }

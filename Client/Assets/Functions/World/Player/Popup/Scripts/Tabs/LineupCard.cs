@@ -22,26 +22,38 @@ namespace World.Player.PopupCharacter
 
         public async UniTask Setup(byte slotIndex, int lineupIndex)
         {
+            var found = false;
+            var charData = Global.Instance.Get<CharacterData>();
             _slotIndex = slotIndex;
             _txSlotIndex.text = slotIndex.ToString();
-            var cardLineups = Global.Instance.Get<CharacterData>().CharacterModel.CardLineups;
+            var cardLineups = charData.CharacterModel.CardLineups;
             if (lineupIndex - 1 >= 0 &&
                 lineupIndex - 1 < cardLineups.Count &&
                 cardLineups[lineupIndex - 1] is { Cards: not null } lineup &&
-                lineup.Cards.TryGetValue(_slotIndex, out var lineupCard))
+                lineup.Cards.TryGetValue(_slotIndex, out var cardId))
             {
-                var cardTemp = await Global.Instance.Get<GameConfig>().GetCardTemplate(lineupCard.TemplateId);
-                _objEmpty.SetActive(false);
-                _card.gameObject.SetActive(true);
-                _txCardName.text = cardTemp.Name;
+                var cardData = charData.CharacterModel.CardCollection.GetCard(cardId);
+                if (cardData == null)
+                {
+                    found = false;
+                }
+                else
+                {
+                    found = true;
+                    var cardTemp = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardData.TemplateId);
+                    _objEmpty.SetActive(false);
+                    _card.CardModel = cardData;
+                    _card.gameObject.SetActive(true);
+                    _txCardName.text = cardTemp.Name;
+                }
             }
-            else
+
+            if (found == false)
             {
                 _objEmpty.SetActive(true);
                 _card.gameObject.SetActive(false);
                 _txCardName.text = "";
             }
         }
-        
     }
 }
