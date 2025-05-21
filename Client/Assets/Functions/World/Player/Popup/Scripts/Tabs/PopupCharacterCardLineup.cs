@@ -55,11 +55,14 @@ namespace World.Player.PopupCharacter
             _ctsLayoutGrLineUpCardSpearAnimation?.Cancel();
             _ctsLayoutGrLineUpCardSpearAnimation?.Dispose();
             _ctsLayoutGrLineUpCardSpearAnimation = new CancellationTokenSource();
+
             if (isShow)
             {
-                await Spacing(-169.54f);
-                await Move(0);
-                await Spacing(60);
+                await Spacing(-169.54f, 0);
+                var tasks = new List<UniTask>();
+                tasks.Add(Move(0));
+                tasks.Add(Spacing(60));
+                await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
             }
             else
             {
@@ -67,7 +70,7 @@ namespace World.Player.PopupCharacter
                 await Move(_layoutTransformLineupCards.rect.height + 50);
             }
 
-            async UniTask Move(float targetY)
+            async UniTask Move(float targetY, float duration = 0.4f)
             {
                 // Tính target Y dựa trên chiều cao layout
                 // float height = _layoutTransformLineupCards.rect.height;
@@ -75,7 +78,7 @@ namespace World.Player.PopupCharacter
 
                 try
                 {
-                    await _layoutTransformLineupCards.DOAnchorPosY(targetY, 0.2f)
+                    await _layoutTransformLineupCards.DOAnchorPosY(targetY, duration)
                         .SetEase(Ease.OutQuad)
                         .WithCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
                 }
@@ -84,7 +87,7 @@ namespace World.Player.PopupCharacter
                 }
             }
 
-            async UniTask Spacing(float targetSpacing)
+            async UniTask Spacing(float targetSpacing, float duration = 0.4f)
             {
                 // Spacing tween
                 //float targetSpacing = isShow ? 60f : -169.54f;
@@ -92,7 +95,7 @@ namespace World.Player.PopupCharacter
                 try
                 {
                     await DOTween.To(() => _layoutGroupLineupCards.spacing,
-                            x => { _layoutGroupLineupCards.spacing = x; }, targetSpacing, 0.2f)
+                            x => { _layoutGroupLineupCards.spacing = x; }, targetSpacing, duration)
                         .SetEase(Ease.OutCubic)
                         .WithCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
                 }
