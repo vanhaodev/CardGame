@@ -29,14 +29,22 @@ namespace GameConfigs
 
             var results = await UniTask.WhenAll(tasks);
 
-            // Deserialize từ JSON List<>
+            // Deserialize từ JSON dạng tịnh tiến
             var levelExpsList = JsonConvert.DeserializeObject<List<uint>>(results[0].Content);
 
-            // Chuyển List thành Dictionary
+            // Chuyển List thành Dictionary: key = level, value = required total EXP
             LevelExps = levelExpsList
-                .Select((exp, index) => new { Level = (ushort)(index + 2), Exp = exp }) // Level bắt đầu từ 2
+                .Select((exp, index) => new { Level = (ushort)(index + 1), Exp = exp }) // Index 0 → Level 1
                 .ToDictionary(x => x.Level, x => x.Exp);
 
+            /*
+             📌 Giải thích:
+            Level 1 cần 0 EXP.
+            Level 2 cần 100 EXP.
+            Level 3 cần tổng 210 EXP (tức lên từ 2 → 3 cần thêm 110).
+            ...
+            Level 20 cần tổng 5107 EXP.
+             */
             // Debug.Log($"Loaded\n" +
             //           $"\n{LevelExps.Count} level exps");
         }
@@ -63,7 +71,7 @@ namespace GameConfigs
 
         public async UniTask<Sprite> GetCardSprite(CardModel cardModel, string skinName = "" /*default is null*/)
         {
-            if(cardModel.Star < 1) throw new System.Exception("Card star must be >= 1");
+            if (cardModel.Star < 1) throw new System.Exception("Card star must be >= 1");
             var cardTemplateId = cardModel.TemplateId;
             var key = $"{cardModel.Star}";
 
@@ -86,13 +94,42 @@ namespace GameConfigs
             return newSprite;
         }
 
+        // public (ushort level, float progressPercent, uint expNext) GetLevelProgressAndNextExp(uint exp)
+        // {
+        //     if (LevelExps == null || LevelExps.Count == 0)
+        //         return (0, 0f, 0);
+        //
+        //     var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
+        //
+        //     for (int i = 0; i < ordered.Count; i++)
+        //     {
+        //         ushort level = ordered[i].Key;
+        //         uint requiredExp = ordered[i].Value;
+        //
+        //         if (exp < requiredExp)
+        //         {
+        //             ushort prevLevel = ordered[i - 1].Key;
+        //             uint prevExp = ordered[i - 1].Value;
+        //
+        //             uint range = requiredExp - prevExp;
+        //             uint currentProgress = exp - prevExp;
+        //
+        //             float progress = range > 0 ? (float)currentProgress / range * 100f : 0f;
+        //             return (prevLevel, progress, range);
+        //         }
+        //     }
+        //
+        //     // Nếu exp >= max mốc
+        //     ushort maxLevel = ordered.Last().Key;
+        //     return (maxLevel, 100f, 0);
+        // }
         public (ushort level, float progressPercent, uint expNext) GetLevelProgressAndNextExp(uint exp)
         {
             if (LevelExps == null || LevelExps.Count == 0)
-                return (0, 0f, 0);
+                return (1, 0f, 0); // default level 1 nếu chưa có data
 
             var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
-
+            Debug.Log($"Level exps: {JsonConvert.SerializeObject(ordered)}");
             for (int i = 0; i < ordered.Count; i++)
             {
                 ushort level = ordered[i].Key;
@@ -100,6 +137,12 @@ namespace GameConfigs
 
                 if (exp < requiredExp)
                 {
+                    if (i == 0)
+                    {
+                        // exp thấp hơn mốc đầu tiên => level 1
+                        return (1, 0f, requiredExp);
+                    }
+
                     ushort prevLevel = ordered[i - 1].Key;
                     uint prevExp = ordered[i - 1].Value;
 

@@ -1,8 +1,11 @@
 ﻿using GameConfigs;
 using Globals;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace World.TheCard.Skill
 {
+    [System.Serializable]
     public class CardLevelModel
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace World.TheCard.Skill
         /// <summary>
         /// phần chính, exp
         /// </summary>
-        private uint _exp;
+        [SerializeField] private uint _exp;
 
         /// <summary>
         /// exp của lần cập nhật cuối
@@ -30,9 +33,10 @@ namespace World.TheCard.Skill
         /// </summary>
         private float _progress;
 
+        [Button]
         private void Update()
         {
-            if (_exp == _expOfLastUpdate) return;
+            if (_exp == _expOfLastUpdate && _exp != 0) return;
             var updateData = Global.Instance.Get<GameConfig>().GetLevelProgressAndNextExp(_exp);
             _level = updateData.level;
             _expOfLastUpdate = _exp;

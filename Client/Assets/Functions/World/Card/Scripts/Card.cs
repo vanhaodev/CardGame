@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Globals;
 using Popups;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +16,8 @@ namespace World.TheCard
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
+        [SerializeField] private TextMeshProUGUI _txLevel;
+
         /// <summary>
         /// 5stars
         /// </summary>
@@ -21,9 +25,30 @@ namespace World.TheCard
 
         [SerializeField] CardEffect _effect;
         [SerializeField] CardBattle _battle;
-        
-        public readonly Subject<Card> EventOnTouch = new Subject<Card>();
-        public void InvokeEventOnTouch() => EventOnTouch.OnNext(this);
+
+        //============================[EVENT]==============================\\
+        private readonly Subject<Card> _eventOnTouch = new Subject<Card>();
+        public void InvokeEventOnTouch() => _eventOnTouch.OnNext(this);
+        private readonly Dictionary<Action<Card>, IDisposable> _eventListeners = new();
+
+        public void ListenEventOnTouch(Action<Card> action)
+        {
+            if (_eventListeners.ContainsKey(action))
+                return; // tránh đăng ký trùng
+
+            var disposable = _eventOnTouch.Subscribe(action).AddTo(this);
+            _eventListeners[action] = disposable;
+        }
+
+        public void UnListenEventOnTouch(Action<Card> action)
+        {
+            if (_eventListeners.TryGetValue(action, out var disposable))
+            {
+                disposable.Dispose();
+                _eventListeners.Remove(action);
+            }
+        }
+        //============================[]==============================\\
         public CardBattle Battle => _battle;
 
         public CardModel CardModel
@@ -42,8 +67,16 @@ namespace World.TheCard
         private async void Init()
         {
             _spriteCharacter.sprite = await Global.Instance.Get<GameConfigs.GameConfig>().GetCardSprite(_cardModel);
-            _cardStarUI.Set(_cardModel);
-            // _battle.SetupBattle(this);
+
+            if (_cardStarUI.gameObject.activeSelf)
+            {
+                _cardStarUI.Set(_cardModel);
+            }
+
+            if (_txLevel.transform.parent.gameObject.activeSelf)
+            {
+                _txLevel.text = _cardModel.Level.GetLevel().ToString() ?? "1";
+            }
         }
 
         /// <summary>

@@ -53,7 +53,7 @@ namespace World.Board
 
             for (int i = 0; i < battlers.Count; i++)
             {
-                battlers[i].EventOnTouch.Subscribe(OnTouch).AddTo(this);
+                battlers[i].ListenEventOnTouch(OnTouch);
             }
         }
 

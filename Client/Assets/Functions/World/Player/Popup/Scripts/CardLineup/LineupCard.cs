@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Functions.World.Player;
 using GameConfigs;
 using Globals;
+using Popups;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ namespace World.Player.PopupCharacter
         [SerializeField] private GameObject _objEmpty;
         [SerializeField] TextMeshProUGUI _txSlotIndex;
         [SerializeField] TextMeshProUGUI _txCardName;
+
         public async UniTask Setup(byte slotIndex, int lineupIndex)
         {
             var found = false;
@@ -44,6 +46,11 @@ namespace World.Player.PopupCharacter
                     _card.CardModel = cardData;
                     _card.gameObject.SetActive(true);
                     _txCardName.text = cardTemp.Name;
+                    
+                    _card.ListenEventOnTouch((c) =>
+                    {
+                        Global.Instance.Get<PopupManager>().ShowCard(_card.CardModel);
+                    });
                 }
             }
 
