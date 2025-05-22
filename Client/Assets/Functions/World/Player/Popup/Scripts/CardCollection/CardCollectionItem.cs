@@ -16,15 +16,12 @@ namespace World.Player.PopupCharacter
         /// </summary>
         private bool _isLineupSelector;
 
-        private void Awake()
-        {
-            _card.ListenEventOnTouch((c) => { Global.Instance.Get<PopupManager>().ShowCard(_card.CardModel); });
-        }
-
         public async UniTask Set(CardModel cardModel, bool isLineupSelector)
         {
             _card.CardModel = cardModel;
             _isLineupSelector = isLineupSelector;
+            
+            _card.ListenEventOnTouch((c) => { Global.Instance.Get<PopupManager>().ShowCard(_card.CardModel, _isLineupSelector ? PopupCardDisplayType.LineupEquip : PopupCardDisplayType.Collection); });
         }
     }
 }

@@ -3,17 +3,14 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Globals;
 using UnityEngine;
-using Utils.Tab;
 using World.Player.Character;
 
 namespace World.Player.PopupCharacter
 {
-    public class PopupCharacterCardCollection : MonoBehaviour, ITabSwitcherWindow
+    //Có tính năng tương tự base nhưng dành cho việc chọn card vào lineup thay cho collection chỉ có thể xem
+    public class PopupCharacterCardCollectionSelector : PopupCharacterCardCollection
     {
-        [SerializeField] protected CardCollectionItem _prefabCardCollectionItem;
-        [SerializeField] protected Transform _parentCardCollectionItem;
-        protected CancellationTokenSource _ctsInit;
-        public virtual async UniTask Init()
+        public override async UniTask Init()
         {
             _ctsInit?.Cancel();
             _ctsInit = new CancellationTokenSource();
@@ -29,7 +26,7 @@ namespace World.Player.PopupCharacter
             {
                 var cardModel = cardCollection.Cards[i];
                 var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel, false));
+                tasks.Add(cardCollectionItem.Set(cardModel, true)); //thay đổi duy nhất mà override
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);

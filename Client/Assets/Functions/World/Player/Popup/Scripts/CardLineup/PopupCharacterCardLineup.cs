@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Globals;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utils.Tab;
 using World.Player.Character;
@@ -17,8 +18,8 @@ namespace World.Player.PopupCharacter
         [SerializeField] private List<LineupCard> _lineupCards;
         [SerializeField] private HorizontalLayoutGroup _layoutGroupLineupCards;
         [SerializeField] private RectTransform _layoutTransformLineupCards;
+        [SerializeField] PopupCharacterCardCollectionSelector _popupCharacterCardCollectionSelector;
         CancellationTokenSource _ctsLayoutGrLineUpCardSpearAnimation;
-private Action<int> _on
         private void Start()
         {
             _tabSwitcherTeam.OnTabSwitched += OnSwitchLineupTeam;
@@ -114,7 +115,7 @@ private Action<int> _on
             var tasks = new List<UniTask>();
             for (int i = 0; i < _lineupCards.Count; i++)
             {
-                tasks.Add(_lineupCards[i].Setup((byte)(i + 1), teamLineupIndex));
+                tasks.Add(_lineupCards[i].Setup((byte)(i + 1), teamLineupIndex,  ShowSelectorCollection));
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
@@ -139,6 +140,12 @@ private Action<int> _on
         {
             _tabSwitcherTeam.OnTabSwitched -= OnSwitchLineupTeam;
         }
-        
+
+        private async void ShowSelectorCollection(int slotIndex)
+        {
+            Debug.Log(slotIndex);
+            await _popupCharacterCardCollectionSelector.Init();
+            _popupCharacterCardCollectionSelector.gameObject.SetActive(true);
+        }
     }
 }
