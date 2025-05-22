@@ -13,6 +13,10 @@ namespace World.Player.PopupCharacter
         [SerializeField] CardCollectionItem _prefabCardCollectionItem;
         [SerializeField] Transform _parentCardCollectionItem;
         CancellationTokenSource _ctsInit;
+        /// <summary>
+        /// EXCEPTION sẽ hiện thêm nút (thêm vào lineup) nếu là lineup selector, pop này show ở tab lineup và là kế thừa của pop collection
+        /// </summary>
+        [SerializeField] private bool _isLineupSelector;
         public async UniTask Init()
         {
             _ctsInit?.Cancel();
@@ -29,7 +33,7 @@ namespace World.Player.PopupCharacter
             {
                 var cardModel = cardCollection.Cards[i];
                 var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel));
+                tasks.Add(cardCollectionItem.Set(cardModel, _isLineupSelector));
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);

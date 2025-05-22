@@ -18,7 +18,7 @@ namespace World.Player.PopupCharacter
         [SerializeField] private HorizontalLayoutGroup _layoutGroupLineupCards;
         [SerializeField] private RectTransform _layoutTransformLineupCards;
         CancellationTokenSource _ctsLayoutGrLineUpCardSpearAnimation;
-
+private Action<int> _on
         private void Start()
         {
             _tabSwitcherTeam.OnTabSwitched += OnSwitchLineupTeam;
