@@ -20,7 +20,7 @@ namespace Startup
             {
                 Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Lobby", 1);
             });
-            Debug.Log("Initialized Game Startup");
+            // Debug.Log("Initialized Game Startup");
         }
         public async UniTask Init()
         {

@@ -21,7 +21,7 @@ namespace Globals
         protected override void CustomAwake()
         {
             _isLoadedAllComp = false;
-            Debug.Log("GlobalBase: Awake");
+            // Debug.Log("GlobalBase: Awake");
             base.CustomAwake();
             _instances = _instances.Where(pair => pair.Value != null)
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -84,9 +84,9 @@ namespace Globals
 
         public async UniTask WaitForInit<T>() where T : IGlobal
         {
-            Debug.LogWarning("GlobalBase: WaitForInit " + typeof(T).Name);
+            // Debug.LogWarning("GlobalBase: WaitForInit " + typeof(T).Name);
             await UniTask.WaitUntil(() => _initialed.Contains(typeof(T).ToString()));
-            Debug.LogWarning("GlobalBase: WaitForInit done " + typeof(T).Name);
+            // Debug.LogWarning("GlobalBase: WaitForInit done " + typeof(T).Name);
         }
 
         public TComponent Get<TComponent>() where TComponent : class, IGlobal
@@ -96,7 +96,7 @@ namespace Globals
                 return instance as TComponent;
             }
 
-            Debug.LogError($"❌ {typeof(T).Name}: Instance of {typeof(TComponent).Name} not found!");
+            // Debug.LogError($"❌ {typeof(T).Name}: Instance of {typeof(TComponent).Name} not found!");
             return null;
         }
 
@@ -121,7 +121,7 @@ namespace Globals
             await UniTask.WhenAll(initTasks);
             _initialed = _instances.Select(i => i.Value.GetType().ToString()).ToList();
             _isLoadedAllComp = false;
-            Debug.Log("GlobalBase: Init");
+            // Debug.Log("GlobalBase: Init");
         }
     }
 }

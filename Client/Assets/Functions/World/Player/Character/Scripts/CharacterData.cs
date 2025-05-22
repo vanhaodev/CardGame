@@ -39,7 +39,7 @@ namespace World.Player.Character
         public async UniTask Init()
         {
             PlayerPrefs.SetInt("IsNewbie", 1);
-            Debug.Log("Loading playerData data");
+            // Debug.Log("Loading playerData data");
             var save = new SaveManager();
             var playerData = await save.Load<SavePlayerModel>();
             CharacterModel = playerData.CharacterModel;

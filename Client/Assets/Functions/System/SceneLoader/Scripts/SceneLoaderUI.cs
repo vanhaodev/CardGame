@@ -59,7 +59,7 @@ namespace System.SceneLoader
                 .SetUpdate(true);
 
             token.Register(() => tween.Kill()); // Hủy tween khi token bị hủy
-            Debug.Log(_imageLoadingFill.fillAmount);
+            // Debug.Log(_imageLoadingFill.fillAmount);
         }
 
         public async UniTask WaitFillAmountFull()

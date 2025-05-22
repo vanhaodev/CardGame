@@ -67,7 +67,7 @@ public class SoundManager : MonoBehaviour, IGlobal
 
         var save = new SaveManager();
         //set volume
-        Debug.Log("Loading sound data");
+        // Debug.Log("Loading sound data");
         var sound = await save.Load<SaveSettingSoundModel>();
 
         SetVolumeAll(SoundType.BGM, sound.MusicVolume);

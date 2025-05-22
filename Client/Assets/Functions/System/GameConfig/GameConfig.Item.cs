@@ -71,9 +71,9 @@ namespace GameConfigs
             ItemTypeGroups = itemGroupTypesList.ToDictionary(x => x.Type);
             ItemTypes = itemTypesList.ToDictionary(x => x.Type);
 
-            Debug.Log($"Loaded\n" +
-                      $"{ItemTypeGroups.Count} item groups" +
-                      $"\n{ItemTypes.Count} item types");
+            // Debug.Log($"Loaded\n" +
+            //           $"{ItemTypeGroups.Count} item groups" +
+            //           $"\n{ItemTypes.Count} item types");
         }
     }
 }

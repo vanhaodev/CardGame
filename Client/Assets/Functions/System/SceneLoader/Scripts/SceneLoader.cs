@@ -29,7 +29,7 @@ namespace System.SceneLoader
             UnityAction<float> progressCallback = null)
         {
             await _ui.Show(true);
-            Debug.Log("Loading Scene " + buildIndex);
+            // Debug.Log("Loading Scene " + buildIndex);
             // 1️⃣ Load scene async, chiếm 30% tiến trình
             var loadOperation = SceneManager.LoadSceneAsync(buildIndex);
             loadOperation.allowSceneActivation = false;
@@ -55,7 +55,7 @@ namespace System.SceneLoader
             {
                 var tasks = startup.GetTasks();
                 int totalTasks = tasks.Count;
-                Debug.Log($"Total tasks: {totalTasks}");
+                // Debug.Log($"Total tasks: {totalTasks}");
 
                 int i = 0;
                 float baseProgress = 0.3f; // Phần trăm ban đầu của progress
@@ -63,7 +63,7 @@ namespace System.SceneLoader
                 foreach (var loadingTask in tasks)
                 {
                     i++;
-                    Debug.Log($"Executing task {i}/{totalTasks}");
+                    // Debug.Log($"Executing task {i}/{totalTasks}");
 
                     if (loadingTask != null)
                     {
@@ -95,12 +95,12 @@ namespace System.SceneLoader
             }
 
             //==================afterLoadedSceneloadingTaskProvider===============//
-            Debug.Log($"Loading Task scene: {buildIndex}");
+            // Debug.Log($"Loading Task scene: {buildIndex}");
 
             // Kiểm tra null trước khi truy cập Tasks
             if (afterLoadedSceneloadingTaskProvider == null || afterLoadedSceneloadingTaskProvider.Tasks == null || !afterLoadedSceneloadingTaskProvider.Tasks.Any())
             {
-                Debug.LogWarning("No tasks to load.");
+                // Debug.LogWarning("No tasks to load.");
             }
             else
             {
@@ -150,7 +150,7 @@ namespace System.SceneLoader
             //=-----------------------------------------------------=//
 
 
-            Debug.Log("Preparing scene: " + buildIndex);
+            // Debug.Log("Preparing scene: " + buildIndex);
             progressCallback?.Invoke(1);
             _ui.SetProgress(1);
             await _ui.WaitFillAmountFull();

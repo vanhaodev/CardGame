@@ -37,8 +37,8 @@ namespace GameConfigs
                 .Select((exp, index) => new { Level = (ushort)(index + 2), Exp = exp }) // Level bắt đầu từ 2
                 .ToDictionary(x => x.Level, x => x.Exp);
 
-            Debug.Log($"Loaded\n" +
-                      $"\n{LevelExps.Count} level exps");
+            // Debug.Log($"Loaded\n" +
+            //           $"\n{LevelExps.Count} level exps");
         }
 
         private ConcurrentDictionary<ushort, CardTemplateModel> _cardTemplates = new();

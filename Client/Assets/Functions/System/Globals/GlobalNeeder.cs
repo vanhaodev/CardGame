@@ -31,7 +31,7 @@ namespace Globals
                 if (x is IGlobal global)
                 {
                     Global.Instance.RemoveComponent(global);
-                    Debug.Log("Remove " + x.GetType().Name + " from Global");
+                    // Debug.Log("Remove " + x.GetType().Name + " from Global");
                 }
             }
         }

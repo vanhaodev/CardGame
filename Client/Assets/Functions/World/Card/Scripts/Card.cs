@@ -14,6 +14,10 @@ namespace World.TheCard
         [SerializeField] private CardModel _cardModel;
         [SerializeField] private Image _spriteFrame;
         [SerializeField] private Image _spriteCharacter;
+        /// <summary>
+        /// 5stars
+        /// </summary>
+        [SerializeField] private CardStarUI _cardStarUI;
 
         [SerializeField] CardEffect _effect;
         [SerializeField] CardBattle _battle;
@@ -38,6 +42,7 @@ namespace World.TheCard
         private async void Init()
         {
             _spriteCharacter.sprite = await Global.Instance.Get<GameConfigs.GameConfig>().GetCardSprite(_cardModel);
+            _cardStarUI.Set(_cardModel);
             // _battle.SetupBattle(this);
         }
 

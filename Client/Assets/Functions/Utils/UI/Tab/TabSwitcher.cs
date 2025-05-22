@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -55,7 +56,7 @@ namespace Utils.Tab
             {
                 int index = i;
                 TabSwitcherButton tabBtn = null;
-                if (Tabs[i].TabSwitcherButton == null || Tabs[i].TabSwitcherButton.Equals(null))
+                if (Tabs[i].TabSwitcherButton == null)
                 {
                     tabBtn = Instantiate(_prefabTabButton, _parentTabButton);
                 }
@@ -71,13 +72,20 @@ namespace Utils.Tab
             SwitchTab(DefaultIndex);
         }
 
-        public void SwitchTab(int index)
+        public async void SwitchTab(int index)
         {
-
             for (int i = 0; i < Tabs.Count; i++)
             {
-                Tabs[i].Set(i == index);
-                if (_txWindowTitle && i == index)
+                bool isSelect = i == index;
+                if (isSelect && Tabs[i].ObjWindow != null)
+                {
+                    //chỉ chạy khi hệ thống tab có sử dụng window, một vài loại dùng event để check tab thay vì hiện window
+                    var iTab = Tabs[i].ObjWindow?.GetComponent<ITabSwitcherWindow>();
+                    if(iTab != null) await iTab.Init();
+                }
+                Tabs[i].Set(isSelect);
+
+                if (_txWindowTitle && isSelect)
                 {
                     _ctsCurrentTabTitleTextAnim?.Cancel();
                     _ctsCurrentTabTitleTextAnim = new CancellationTokenSource();
@@ -88,7 +96,8 @@ namespace Utils.Tab
                     }
                 }
             }
-            Debug.Log($"SwitchLineupTeam {index}");
+
+            // Debug.Log($"SwitchTab {index}");
             CurrentIndex = index;
             OnTabSwitched?.Invoke(index);
         }

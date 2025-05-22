@@ -19,7 +19,6 @@ namespace World.Player.PopupCharacter
         [SerializeField] private GameObject _objEmpty;
         [SerializeField] TextMeshProUGUI _txSlotIndex;
         [SerializeField] TextMeshProUGUI _txCardName;
-
         public async UniTask Setup(byte slotIndex, int lineupIndex)
         {
             var found = false;

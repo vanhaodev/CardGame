@@ -11,7 +11,7 @@ using World.Player.Character;
 
 namespace World.Player.PopupCharacter
 {
-    public class PopupCharacterCardLineup : MonoBehaviour
+    public class PopupCharacterCardLineup : MonoBehaviour, ITabSwitcherWindow
     {
         [SerializeField] private TabSwitcher _tabSwitcherTeam;
         [SerializeField] private List<LineupCard> _lineupCards;
@@ -19,23 +19,20 @@ namespace World.Player.PopupCharacter
         [SerializeField] private RectTransform _layoutTransformLineupCards;
         CancellationTokenSource _ctsLayoutGrLineUpCardSpearAnimation;
 
-        private void OnEnable()
-        {
-            _tabSwitcherTeam.Init();
-            InitLineupTeamTab();
-
-            _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
-            Vector2 pos = _layoutTransformLineupCards.anchoredPosition;
-            pos.y = _layoutTransformLineupCards.rect.height + 50; // targetY là giá trị mới mày muốn đặt
-            _layoutTransformLineupCards.anchoredPosition = pos;
-            InitCards(1);
-        }
-
         private void Start()
         {
             _tabSwitcherTeam.OnTabSwitched += OnSwitchLineupTeam;
         }
-
+        public async UniTask Init()
+        {
+            Vector2 pos = _layoutTransformLineupCards.anchoredPosition;
+            pos.y = _layoutTransformLineupCards.rect.height + 50; // targetY là giá trị mới mày muốn đặt
+            _layoutTransformLineupCards.anchoredPosition = pos;
+            _tabSwitcherTeam.Init();
+            _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
+            InitLineupTeamTab();
+            InitCards(1).Forget();
+        }
         private void InitLineupTeamTab()
         {
             var maxLineupTeamCount = Global.Instance.Get<CharacterData>().CharacterModel.MaxLineupTeamCount;
@@ -59,10 +56,14 @@ namespace World.Player.PopupCharacter
             if (isShow)
             {
                 await Spacing(-169.54f, 0);
-                var tasks = new List<UniTask>();
-                tasks.Add(Move(0));
-                tasks.Add(Spacing(60));
-                await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
+                // var tasks = new List<UniTask>();
+                // tasks.Add(Move(0));
+                // tasks.Add(UniTask.WaitForSeconds(0.2f, cancellationToken: _ctsLayoutGrLineUpCardSpearAnimation.Token));
+                // tasks.Add(Spacing(60));
+                // await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
+
+                await Move(0);
+                await Spacing(60);
             }
             else
             {
@@ -105,16 +106,18 @@ namespace World.Player.PopupCharacter
             }
         }
 
-        private async void InitCards(int teamLineupIndex)
+        private async UniTask InitCards(int teamLineupIndex)
         {
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(false));
             await PlayLayoutGroupLineupCardsSpearAnimation(false);
             Debug.Log("Init lineup " + teamLineupIndex);
+            var tasks = new List<UniTask>();
             for (int i = 0; i < _lineupCards.Count; i++)
             {
-                _lineupCards[i].Setup((byte)(i + 1), teamLineupIndex);
+                tasks.Add(_lineupCards[i].Setup((byte)(i + 1), teamLineupIndex));
             }
 
+            await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
             await PlayLayoutGroupLineupCardsSpearAnimation(true);
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
         }
@@ -136,5 +139,6 @@ namespace World.Player.PopupCharacter
         {
             _tabSwitcherTeam.OnTabSwitched -= OnSwitchLineupTeam;
         }
+        
     }
 }

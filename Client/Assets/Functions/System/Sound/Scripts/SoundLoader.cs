@@ -22,7 +22,7 @@ public class SoundLoader
         }
 
         var handle = Addressables.LoadAssetAsync<AudioClip>("Audios/" + path);
-        Debug.Log("Load sound: " + handle.DebugName);
+        // Debug.Log("Load sound: " + handle.DebugName);
         var audioClip = await handle.ToUniTask();
 
         var newSound = new SoundLibraryModel
