@@ -29,7 +29,7 @@ namespace World.Player.PopupCharacter
             {
                 var cardModel = cardCollection.Cards[i];
                 var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel, false));
+                tasks.Add(cardCollectionItem.Set(cardModel));
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);

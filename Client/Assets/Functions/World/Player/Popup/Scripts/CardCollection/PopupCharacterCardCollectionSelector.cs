@@ -10,6 +10,8 @@ namespace World.Player.PopupCharacter
     //Có tính năng tương tự base nhưng dành cho việc chọn card vào lineup thay cho collection chỉ có thể xem
     public class PopupCharacterCardCollectionSelector : PopupCharacterCardCollection
     {
+        public byte LineupIndex;
+        public byte SlotIndex;
         public override async UniTask Init()
         {
             _ctsInit?.Cancel();
@@ -26,7 +28,7 @@ namespace World.Player.PopupCharacter
             {
                 var cardModel = cardCollection.Cards[i];
                 var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel, true)); //thay đổi duy nhất mà override
+                tasks.Add(cardCollectionItem.Set(cardModel, true, LineupIndex, SlotIndex)); //thay đổi duy nhất mà override
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);

@@ -32,10 +32,10 @@ namespace Popups
         }
 
         [Button]
-        public async void ShowCard(CardModel cardModel, PopupCardDisplayType cardDisplayType)
+        public async void ShowCard(PopupCardModel model)
         {
             var pop = GetPopup<PopupCard>() as PopupCard;
-            pop.SetupCard(cardModel, cardDisplayType);
+            pop.SetupCard(model);
             await pop.SetupData();
             pop.gameObject.SetActive(true);
             pop.Show().Forget();

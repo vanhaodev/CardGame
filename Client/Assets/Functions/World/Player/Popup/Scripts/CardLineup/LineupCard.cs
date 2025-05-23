@@ -21,7 +21,7 @@ namespace World.Player.PopupCharacter
         [SerializeField] TextMeshProUGUI _txSlotIndex;
         [SerializeField] TextMeshProUGUI _txCardName;
 
-        public async UniTask Setup(byte slotIndex, int lineupIndex, Action<int> onEquipCardClick)
+        public async UniTask Setup(byte slotIndex, byte lineupIndex, Action<byte> onEquipCardClick)
         {
             var found = false;
             var charData = Global.Instance.Get<CharacterData>();
@@ -49,7 +49,12 @@ namespace World.Player.PopupCharacter
 
                     _card.ListenEventOnTouch((c) =>
                     {
-                        Global.Instance.Get<PopupManager>().ShowCard(_card.CardModel, PopupCardDisplayType.LineupUnequip);
+                        Global.Instance.Get<PopupManager>().ShowCard(new PopupCardUnequipModel()
+                        {
+                            CardModel = cardData,
+                            LineupIndex = lineupIndex,
+                            SlotIndex = _slotIndex
+                        });
                     });
                 }
             }

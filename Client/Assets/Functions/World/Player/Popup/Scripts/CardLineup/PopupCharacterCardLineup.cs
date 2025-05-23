@@ -107,7 +107,7 @@ namespace World.Player.PopupCharacter
             }
         }
 
-        private async UniTask InitCards(int teamLineupIndex)
+        private async UniTask InitCards(byte teamLineupIndex)
         {
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(false));
             await PlayLayoutGroupLineupCardsSpearAnimation(false);
@@ -133,7 +133,7 @@ namespace World.Player.PopupCharacter
                 return;
             }
 
-            InitCards(index + 1);
+            InitCards((byte)(index + 1));
         }
 
         private void OnDestroy()
@@ -141,9 +141,11 @@ namespace World.Player.PopupCharacter
             _tabSwitcherTeam.OnTabSwitched -= OnSwitchLineupTeam;
         }
 
-        private async void ShowSelectorCollection(int slotIndex)
+        private async void ShowSelectorCollection(byte slotIndex)
         {
             Debug.Log(slotIndex);
+            _popupCharacterCardCollectionSelector.LineupIndex = (byte)(_tabSwitcherTeam.CurrentIndex + 1);
+            _popupCharacterCardCollectionSelector.SlotIndex = slotIndex;
             await _popupCharacterCardCollectionSelector.Init();
             _popupCharacterCardCollectionSelector.gameObject.SetActive(true);
         }
