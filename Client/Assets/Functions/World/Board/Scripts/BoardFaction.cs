@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AYellowpaper.SerializedCollections;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -18,8 +19,17 @@ namespace World.Board
         /// </summary>
         [SerializeField] private List<BoardFactionPosition> _positions;
 
+        [SerializeField] private SerializedDictionary<FactionAttributeType, int> _factionAttributes;
+        public SerializedDictionary<FactionAttributeType, int> FactionAttributes => _factionAttributes;
+
         private void Start()
         {
+            //pre creat attribute
+            foreach (FactionAttributeType type in Enum.GetValues(typeof(FactionAttributeType)))
+            {
+                _factionAttributes[type] = 0;
+            }
+
             //test chỉ số
             foreach (var position in _positions)
             {
@@ -53,7 +63,7 @@ namespace World.Board
                         });
                     }
                 }
-
+                // testModel.Skills =
                 position.Card.CardModel = testModel;
             }
         }
@@ -84,6 +94,20 @@ namespace World.Board
                 var rect = p.Card.GetComponent<RectTransform>();
                 rect.anchoredPosition = p.OriginalPosition;
                 rect.localRotation = Quaternion.identity;
+            }
+        }
+
+        public void AddSkillPoint(int point = 1)
+        {
+            _factionAttributes[FactionAttributeType.SkillPoint] += point;
+            if (_factionAttributes[FactionAttributeType.SkillPoint] > 5)
+            {
+                _factionAttributes[FactionAttributeType.SkillPoint] = 5;
+            }
+
+            if (_factionAttributes[FactionAttributeType.SkillPoint] < 0)
+            {
+                _factionAttributes[FactionAttributeType.SkillPoint] = 0;
             }
         }
 

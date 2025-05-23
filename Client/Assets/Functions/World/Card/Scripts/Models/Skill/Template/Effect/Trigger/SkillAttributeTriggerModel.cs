@@ -49,7 +49,7 @@ namespace World.TheCard.Skill
 
                 if (HpPercent > -1)
                 {
-                    float percent = (float)attrs[AttributeType.Hp] / attrs[AttributeType.HpMax];
+                    float percent = (float)card.Battle.BattleAttributes[BattleAttributeType.Hp] / attrs[AttributeType.HpMax];
                     if (percent <= HpPercent)
                         return true;
                 }

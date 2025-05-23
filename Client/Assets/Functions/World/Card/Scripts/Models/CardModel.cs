@@ -7,9 +7,13 @@ using World.TheCard.Skill;
 
 namespace World.TheCard
 {
+    /// <summary>
+    /// chứa thông tin unique của 1 card
+    /// </summary>
     [Serializable]
     public class CardModel
     {
+        public int Id;
         public ushort TemplateId;
 
         /// <summary>
@@ -33,10 +37,7 @@ namespace World.TheCard
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
         
         // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
-        public SkillModel PassiveSkill;
-        public SkillModel PassiveSkill2;
-        public SkillModel BasicSkill;
-        public SkillModel AdvancedSkill;
-        public SkillModel UltimateSkill;
+        [SerializeReference]
+        public Dictionary<CardSkillSlotType, SkillModel> Skills = new Dictionary<CardSkillSlotType, SkillModel>();
     }
 }

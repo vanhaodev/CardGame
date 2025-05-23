@@ -224,7 +224,7 @@ namespace Effects
             }
 
             effectPools.Clear();
-            Debug.Log("Released all pooled effects.");
+            // Debug.Log("Released all pooled effects.");
         }
 
         private void OnDisable()

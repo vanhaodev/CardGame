@@ -8,6 +8,5 @@ namespace World.TheCard.Skill
     [System.Serializable]
     public class SkillTauntTemplateModel : SkillEffectTemplateModel
     {
-       
     }
 }

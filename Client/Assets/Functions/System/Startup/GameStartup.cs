@@ -18,9 +18,9 @@ namespace Startup
             AddTask(FinishStartup);
             AddTask(async () =>
             {
-                Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Lobby.mp3", 1);
+                Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Lobby", 1);
             });
-            Debug.Log("Initialized Game Startup");
+            // Debug.Log("Initialized Game Startup");
         }
         public async UniTask Init()
         {

@@ -16,4 +16,66 @@ MonoBehaviour:
   Name: "Th\u1EE7y Tinh"
   History: 
   Class: 2
+  Element: 0
   Attributes: []
+  Skills:
+  - SlotType: 2
+    Skill:
+      Name: "Th\u1ED5 C\xF4ng"
+      Description: 
+      TargetType: 3
+      Levels:
+      - AOEToLeftTargetCount: 0
+        AOEToRightTargetCount: 0
+        CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 2316759153431281746
+  - SlotType: 3
+    Skill:
+      Name: "Th\u1ED5 Th\u1EA7n"
+      Description: 
+      TargetType: 3
+      Levels:
+      - AOEToLeftTargetCount: 1
+        AOEToRightTargetCount: 1
+        CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 2316759153431281747
+  - SlotType: 4
+    Skill:
+      Name: "Th\u1ED5 Th\u1EA7n"
+      Description: 
+      TargetType: 3
+      Levels:
+      - AOEToLeftTargetCount: 10
+        AOEToRightTargetCount: 10
+        CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 2316759153431281748
+  references:
+    version: 2
+    RefIds:
+    - rid: 2316759153431281746
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: (((S_Attack * 1.70) + 255) * S_CritDamage) - R_Defense
+    - rid: 2316759153431281747
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: (((S_Attack * 1.70) + 255) * S_CritDamage) - R_Defense
+    - rid: 2316759153431281748
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: (((S_Attack * 1.70) + 255) * S_CritDamage) - R_Defense

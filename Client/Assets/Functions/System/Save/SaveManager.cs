@@ -8,7 +8,7 @@ namespace Save
 {
     public class SaveManager
     {
-        const string extName = "cpp";
+        private string _extName = "log"; //goddesses' leveling data
         private EncryptionAes encryption;
 
         public SaveManager()
@@ -16,6 +16,16 @@ namespace Save
             encryption = new EncryptionAes();
         }
 
+        private string EncryptFileName(string fileName)
+        {
+            string encrypted = encryption.EncryptString(fileName);
+            // Chuyển thành Base64 safe
+            return encrypted
+                .Replace("/", "_")
+                .Replace("+", "-")
+                .Replace("=", ""); // có thể giữ lại nếu bạn không dùng file extension
+        }
+        
         public async UniTask Save<T>(T data) where T : SaveModel
         {
             try
@@ -26,7 +36,8 @@ namespace Save
                 });
 
                 string encryptedJson = encryption.EncryptString(json);
-                string filePath = GetSaveFilePath(data.DataName + $".{extName}");
+                string encryptedFileName = EncryptFileName(data.DataName);
+                string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
 
                 await File.WriteAllTextAsync(filePath, encryptedJson); // ✅ Ghi file async
 
@@ -43,7 +54,8 @@ namespace Save
             try
             {
                 T temp = new T();
-                string filePath = GetSaveFilePath(temp.DataName + $".{extName}");
+                string encryptedFileName = EncryptFileName(temp.DataName);
+                string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
                 if (File.Exists(filePath))
                 {
                     string encryptedJson = await File.ReadAllTextAsync(filePath); // ✅ Đọc file async
@@ -69,12 +81,14 @@ namespace Save
                 return temp;
             }
         }
+
         public void Delete<T>() where T : SaveModel, new()
         {
             try
             {
                 T temp = new T();
-                string filePath = GetSaveFilePath(temp.DataName + $".{extName}");
+                string encryptedFileName = EncryptFileName(temp.DataName);
+                string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
                 if (!File.Exists(filePath))
                     return;
 

@@ -1,0 +1,1 @@
+﻿Chứa trang bị, nguyên liệu, mảnh card (mảnh DNA)

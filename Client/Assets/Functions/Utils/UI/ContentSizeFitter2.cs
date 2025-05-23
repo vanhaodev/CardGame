@@ -22,16 +22,29 @@ namespace Utils
 
         private RectTransform _rectTransform;
 
+        /// <summary>
+        /// if have child, pls update child content size fitter first
+        /// </summary>
+        [SerializeField] ContentSizeFitter2[] _childContentSizeFitters;
+
         void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
         }
 
         [Button]
-        public async void UpdateSize()
+        public async UniTask UpdateSize()
         {
             if (!_isUpdateWidth && !_isUpdateHeight)
                 throw new Exception("this sizer not select size type yet");
+
+            if (_childContentSizeFitters != null)
+            {
+                foreach (var child in _childContentSizeFitters)
+                {
+                    await child.UpdateSize();
+                }
+            }
 
             await UniTask.NextFrame();
 
@@ -45,6 +58,14 @@ namespace Utils
         {
             if (!_isUpdateWidth && !_isUpdateHeight)
                 throw new Exception("this sizer not select size type yet");
+
+            if (_childContentSizeFitters != null)
+            {
+                foreach (var child in _childContentSizeFitters)
+                {
+                    await child.UpdateSizeAnimation();
+                }
+            }
 
             await UniTask.NextFrame();
 

@@ -36,8 +36,8 @@ namespace World.TheCard
             // Các cặp tham số có Chance
             var chancePairs = new Dictionary<string, string>
             {
-                { AttributeType.CritDamage.ToString(), AttributeType.CritChance.ToString() },
-                { AttributeType.DodgeDamage.ToString(), AttributeType.DodgeChance.ToString() },
+                { AttributeType.CriticalDamage.ToString(), AttributeType.CriticalRate.ToString() },
+                { AttributeType.DodgeDamage.ToString(), AttributeType.DodgeRate.ToString() },
                 { AttributeType.ArmorPenetrationDamage.ToString(), AttributeType.ArmorPenetrationChance.ToString() }
             };
 

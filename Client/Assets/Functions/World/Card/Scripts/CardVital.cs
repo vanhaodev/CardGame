@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+using Utils;
 
 namespace World.TheCard
 {
     public class CardVital : MonoBehaviour
     {
-        [SerializeField] private Image _spriteHpFill;
-        [SerializeField] private Image _spriteMpFill;
-
+        [SerializeField] private SmoothVitalFill _hpFill;
+        [SerializeField] private SmoothVitalFill _upFill;
+        
         public void Show(bool isShow = true)
         {
             gameObject.SetActive(isShow);
@@ -15,12 +19,12 @@ namespace World.TheCard
 
         public void UpdateHp(int hp, int hpMax)
         {
-            _spriteHpFill.fillAmount = (float)hp / hpMax;
+           _hpFill.UpdateFill( hp, hpMax);
         }
 
-        public void UpdateUP(int up)
+        public void UpdateUp(int up)
         {
-            _spriteMpFill.fillAmount = (float)up / 100;
+            _upFill.UpdateFill(up, 100);
         }
     }
 }

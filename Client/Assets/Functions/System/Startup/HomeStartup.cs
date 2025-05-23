@@ -22,7 +22,7 @@ namespace Globals
             await UniTask.WaitUntil(() => Global.Instance != null);
             await Global.Instance.Init();
             await Global.Instance.WaitForInit<SoundManager>();
-            Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Home.mp3", 1);
+            Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Home", 1);
             await FinishStartup();
         }
     }

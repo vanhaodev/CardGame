@@ -25,7 +25,6 @@ namespace World.Board
         [SerializeField] [BoxGroup("Main")] Board _board;
         [SerializeField] [BoxGroup("Main")] TargetSelectorController _targetSelectorController;
         [SerializeField] [BoxGroup("Main")] CinemachineCameraShake _cameraShake;
-
         //------------ Entity ---------------\\
         /// <summary>
         /// the actor slibing index need to highest in canvas
@@ -41,19 +40,24 @@ namespace World.Board
         private Tween _tweenAction;
         private CancellationTokenSource _ctsTestLoop;
 
+        private void Awake()
+        {
+            _board.BtnBasicAttackOnClick.AddListener(OnPlayerBasicAttack);
+            _board.BtnAdvancedSkillOnClick.AddListener(OnPlayerAdvancedSkill);
+            _board.BtnUltimateSkillOnClick.AddListener(OnPlayerUltimateSkill);
+        }
+
+        private void OnDisable()
+        {
+            _board.BtnBasicAttackOnClick.RemoveListener(OnPlayerBasicAttack);
+            _board.BtnAdvancedSkillOnClick.RemoveListener(OnPlayerAdvancedSkill);
+            _board.BtnUltimateSkillOnClick.RemoveListener(OnPlayerUltimateSkill);
+        }
+
         private void Start()
         {
             Global.Instance.Get<BattleData>().ActionTurnManager = _actionTurnManager;
             _targetSelectorController.InitTargets(_board);
-        }
-
-        private void FixedUpdate()
-        {
-            if (_actionTurnManager != null)
-            {
-                var currentTurnCountDownTimeSecond = _actionTurnManager.UpdateTimeCountdown();
-                _board.SetTurnCountDown(currentTurnCountDownTimeSecond);
-            }
         }
 
         public void OnGUI()
@@ -61,7 +65,7 @@ namespace World.Board
             // Tạo một button tại vị trí (100, 100) với kích thước 200x50
             if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
             {
-                TestLoop();
+                SetupBattleFlow();
                 Event.current.Use(); // Chặn sự kiện chuột
             }
         }
@@ -84,36 +88,6 @@ namespace World.Board
 
             await UniTask.WhenAll(cardInitTasks);
         }
-
-        [Button]
-        public async void TestLoop()
-        {
-            _ctsTestLoop?.Cancel();
-            _ctsTestLoop = new CancellationTokenSource();
-
-            await SetupBoardCards();
-
-            _board.GetFactionByIndex(1).ResetToOriginalPosition();
-            _board.GetFactionByIndex(2).ResetToOriginalPosition();
-            _actionTurnManager.SetupOrders(_board.GetAllFactions());
-            _actionTurnManager.MaxRoundCount = 99;
-            int count = 0;
-            while (!_ctsTestLoop.IsCancellationRequested)
-            {
-                var result = await PlayAction(_ctsTestLoop);
-                if (result != null)
-                {
-                    Debug.Log(JsonConvert.SerializeObject(result));
-                    break;
-                }
-
-                if (count >= 999) throw new Exception("loop is too large.");
-                count++;
-            }
-
-            PerformCameraReset(_ctsTestLoop).Forget();
-        }
-
 
         private List<int> GetTargets(BoardFaction targetFaction)
         {

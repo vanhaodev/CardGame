@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour, IGlobal
 {
     //spawner
     [SerializeField] private SoundPlayer soundPlayerPrefab;
-    SoundLibrarySO _soundLibrarySO; //NO REF, JUST ADDRESSABLE
+    SoundLoader _soundLoader; //NO REF, JUST ADDRESSABLE
     private DynamicObjectPool<SoundPlayer> _pool;
 
     /// <summary>
@@ -33,6 +33,7 @@ public class SoundManager : MonoBehaviour, IGlobal
 
     public async UniTask Init()
     {
+        _soundLoader = new SoundLoader();
         if (_volumes == null)
         {
             //Debug.LogError(" _volumes = new");
@@ -64,19 +65,11 @@ public class SoundManager : MonoBehaviour, IGlobal
             );
         }
 
-        if (_soundLibrarySO == null)
-        {
-            //Debug.LogError("_soundLibrarySO = await");
-            // Sử dụng AddressableLoader để tải ScriptableObject
-            _soundLibrarySO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<SoundLibrarySO>("Audios/SoundLibrarySO.asset");
-            _soundLibrarySO.Init();
-        }
         var save = new SaveManager();
         //set volume
-        Debug.Log("Loading sound data");
+        // Debug.Log("Loading sound data");
         var sound = await save.Load<SaveSettingSoundModel>();
-        
+
         SetVolumeAll(SoundType.BGM, sound.MusicVolume);
         SetVolumeAll(SoundType.ENV, sound.EnviromentVolume);
         SetVolumeAll(SoundType.FX, sound.EffectVolume);
@@ -113,9 +106,18 @@ public class SoundManager : MonoBehaviour, IGlobal
     /// <param name="id"></param>
     public async void PlaySoundOneShot(string id)
     {
+        //Số lượng âm thanh phát cùng lúc không vượt quá 18 (2 là bgm và env), để tránh quá tải và phasing
+        if (_spawnedSounds[SoundType.FX]?.Count > 16)
+        {
+            Debug.LogWarning("Sound player count is over 18, remove first");
+            var firstFx = _spawnedSounds[SoundType.FX][0];
+            _spawnedSounds[SoundType.FX].Remove(firstFx);
+            _pool.Put(firstFx);
+        }
+
         SoundPlayer player = _pool.Get();
         player.gameObject.SetActive(true);
-        var lib = await _soundLibrarySO.GetSound(id);
+        var lib = await _soundLoader.GetSound(id);
         player.AudioSource.clip = lib.AudioClip;
         player.AudioSource.loop = false;
         player.Id = id;
@@ -146,7 +148,7 @@ public class SoundManager : MonoBehaviour, IGlobal
             _playingLoopSounds.Add(uniqueKey, player);
         }
 
-        var lib = await _soundLibrarySO.GetSound(id);
+        var lib = await _soundLoader.GetSound(id);
         player.AudioSource.clip = lib.AudioClip;
         player.AudioSource.loop = true;
         player.Id = id;

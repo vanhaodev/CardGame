@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Functions.World.Player;
+using UnityEngine.Serialization;
+using World.Requirement;
 using World.TheCard;
 
 namespace World.Player.Character
@@ -15,10 +18,24 @@ namespace World.Player.Character
         public DateTime Birthday;
         public string Bio;
         public List<CurrencyModel> Currencies;
+        public InventoryModel Inventory;
+        /// <summary>
+        /// Card player đang sở hữu
+        /// </summary>
         public CardCollectionModel CardCollection;
+
+        /// <summary>
+        /// Số team có thể setup trước, hiện tối đa 4
+        /// </summary>
+        public byte MaxLineupTeamCount;
+        /// <summary>
+        /// có the setup trước lineup cho nhiều đội hình giúp khắc chế tốt hơn, nhưng sẽ tốn tiền để mở thêm slot lineup :))
+        /// </summary>
+        public List<CardLineupModel> CardLineups;
+        
         public void SetDefault()
         {
-            Id = "74ehvdrv784gerg45098";
+            Id = Guid.NewGuid().ToString();
             AvatarId = 1;
             AvatarFrameId = 1;
             Name = "Player";
@@ -38,7 +55,10 @@ namespace World.Player.Character
                     Amount = 0
                 }
             };
+            Inventory = new InventoryModel();
             CardCollection = new CardCollectionModel();
+            MaxLineupTeamCount = 3;
+            CardLineups = new List<CardLineupModel>();
         }
     }
 }

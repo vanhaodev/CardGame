@@ -20,18 +20,6 @@ namespace World.TheCard.Skill
         public List<SkillEffectTriggerModel> Triggers;
 
         /// <summary>
-        /// ví dụ main target đang đứng ở card số 4 từ trái sang, nếu AOEToLeftCount là 2 thì card số 2 và 3 từ trái sang sẽ ảnh hưởng theo
-        /// </summary>
-        [BoxGroup("Base")] [GUIColor(1f, 1f, 0f)]
-        public byte AOEToLeftTargetCount;
-
-        /// <summary>
-        /// ví dụ main target đang đứng ở card số 4 từ trái sang, nếu AOEToRightCount là 1 thì card số 5 từ trái sang sẽ ảnh hưởng theo
-        /// </summary>
-        [BoxGroup("Base")] [GUIColor(1f, 1f, 0f)]
-        public byte AOEToRightTargetCount;
-
-        /// <summary>
         /// số round ảnh hưởng
         /// </summary>
         [BoxGroup("Base")] [GUIColor(1f, 1f, 0f)]

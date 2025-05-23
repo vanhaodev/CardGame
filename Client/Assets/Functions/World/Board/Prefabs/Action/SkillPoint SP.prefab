@@ -98,8 +98,8 @@ MonoBehaviour:
   _gradientStyle: 0
   _blend: 0
   _moreVertices: 1
-  _offset: -0.147
-  _scale: 0.25
+  _offset: -0.04
+  _scale: 1.53
   _gradient:
     serializedVersion: 2
     key0: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
@@ -143,11 +143,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objSkillPoints:
-  - {fileID: 1616662349926430264}
-  - {fileID: 6331781854677264115}
-  - {fileID: 9022496109160581472}
-  - {fileID: 5429091094689671534}
-  - {fileID: 7527543407520696196}
+  - {fileID: 5411714606362384954}
+  - {fileID: 6226586067724214119}
+  - {fileID: 7359876639337120532}
+  - {fileID: 5029868824032235167}
+  - {fileID: 6850519937107814627}
 --- !u!1 &1616662349926430264
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8334938911929928937
 RectTransform:
   m_ObjectHideFlags: 0
