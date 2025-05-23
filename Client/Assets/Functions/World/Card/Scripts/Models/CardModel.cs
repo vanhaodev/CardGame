@@ -32,7 +32,9 @@ namespace World.TheCard
         public List<AttributeModel> BaseAttributes = new List<AttributeModel>();
 
         /// <summary>
-        /// Calculated = equipments + base
+        /// Calculated = equipments + base + template base
+        /// <br/>
+        /// Vì sao không cộng luôn tempkate vào base mà phải cộng sau ở final? vì sau này game có thể thay đỏi template attribute, lúc đó card cũ vẫn có thể có chỉ số mới
         /// </summary>
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
         
