@@ -34,5 +34,10 @@ namespace World.Player.PopupCharacter
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);
         }
+
+        public UniTask LateInit()
+        {
+            return UniTask.CompletedTask;
+        }
     }
 }

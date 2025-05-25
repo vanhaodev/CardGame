@@ -34,6 +34,12 @@ namespace World.Player.PopupCharacter
             InitLineupTeamTab();
             InitCards(1).Forget();
         }
+
+        public UniTask LateInit()
+        {
+            return UniTask.CompletedTask;
+        }
+
         private void InitLineupTeamTab()
         {
             var maxLineupTeamCount = Global.Instance.Get<CharacterData>().CharacterModel.MaxLineupTeamCount;

@@ -3,7 +3,9 @@ using GameConfigs;
 using Globals;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utils;
 using Utils.Tab;
 using World.TheCard;
 
@@ -12,18 +14,21 @@ namespace Popups
     public class PopupCardStats : MonoBehaviour, ITabSwitcherWindow
     {
         [SerializeField] Card _card;
-
+        [SerializeField] RectTransform _rectTransformContent;
         [SerializeField] TextMeshProUGUI _txCardName;
 
         //====================[Element & Class]=====================\\
         [SerializeField] private CardElementUI _element;
 
         [SerializeField] private CardClassUI _class;
+
         //====================[Level]=====================\\
         [SerializeField] TextMeshProUGUI _txLevel;
         [SerializeField] private TextMeshProUGUI _txLevelExp;
         [SerializeField] private Image _imgLevelExpFill;
-        // ReSharper disable Unity.PerformanceAnalysis
+
+        [SerializeField] CardAttributeUI _cardAttributeUI;
+
         public async UniTask Init(TabSwitcherWindowModel model = null)
         {
             var theModel = model as PopupCardTabSwitcherWindowModel;
@@ -40,6 +45,14 @@ namespace Popups
                 "<color=black>/</color>" +
                 $"{theModel.CardModel.Level.GetExpNext(false).ToString()}";
             _imgLevelExpFill.fillAmount = theModel.CardModel.Level.GetProgress(false) / 100;
+
+            _cardAttributeUI.Init(theModel.CardModel);
+        }
+
+        public async UniTask LateInit()
+        {
+            await _cardAttributeUI.RefreshUI();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransformContent);
         }
     }
 }

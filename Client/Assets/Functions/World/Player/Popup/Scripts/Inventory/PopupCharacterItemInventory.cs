@@ -10,5 +10,10 @@ namespace World.Player.PopupCharacter
         {
             return UniTask.CompletedTask;
         }
+
+        public UniTask LateInit()
+        {
+            return UniTask.CompletedTask;
+        }
     }
 }

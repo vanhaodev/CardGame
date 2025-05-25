@@ -82,8 +82,13 @@ namespace Utils.Tab
                     //chỉ chạy khi hệ thống tab có sử dụng window, một vài loại dùng event để check tab thay vì hiện window
                     var iTab = Tabs[i].ObjWindow?.GetComponent<ITabSwitcherWindow>();
                     if(iTab != null) await iTab.Init(model);
+                    Tabs[i].Set(true);
+                    if (iTab != null) await iTab.LateInit();
                 }
-                Tabs[i].Set(isSelect);
+                else
+                {
+                    Tabs[i].Set(isSelect);
+                }
 
                 if (_txWindowTitle && isSelect)
                 {
