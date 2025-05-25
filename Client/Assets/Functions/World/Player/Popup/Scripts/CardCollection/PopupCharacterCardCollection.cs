@@ -13,7 +13,7 @@ namespace World.Player.PopupCharacter
         [SerializeField] protected CardCollectionItem _prefabCardCollectionItem;
         [SerializeField] protected Transform _parentCardCollectionItem;
         protected CancellationTokenSource _ctsInit;
-        public virtual async UniTask Init()
+        public virtual async UniTask Init(TabSwitcherWindowModel model = null)
         {
             _ctsInit?.Cancel();
             _ctsInit = new CancellationTokenSource();

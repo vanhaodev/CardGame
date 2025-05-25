@@ -2,6 +2,9 @@
 
 namespace Popups
 {
+    /// <summary>
+    /// xác định popup này mở lên từ đâu và dựa vào đó để Hiện các chức năng cân có, bỏ các chức năng ko nên có
+    /// </summary>
     public abstract class PopupCardModel
     {
         public CardModel CardModel;

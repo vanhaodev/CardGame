@@ -6,7 +6,7 @@ namespace World.Player.PopupCharacter
 {
     public class PopupCharacterItemInventory : MonoBehaviour, ITabSwitcherWindow
     {
-        public UniTask Init()
+        public UniTask Init(TabSwitcherWindowModel model = null)
         {
             return UniTask.CompletedTask;
         }

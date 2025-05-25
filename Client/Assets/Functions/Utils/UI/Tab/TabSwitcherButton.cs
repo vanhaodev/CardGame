@@ -17,9 +17,14 @@ namespace Utils.Tab
         {
             _btn.interactable = active;
         }
+
         public void Set(string btnName, Sprite icon, UnityAction onClick)
         {
-            _txBtnName.text = btnName;
+            if (_txBtnName != null)
+            {
+                _txBtnName.text = btnName;
+            }
+
             if (icon != null)
             {
                 if (_imgIcon != null)

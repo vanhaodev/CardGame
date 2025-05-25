@@ -4,6 +4,6 @@ namespace Utils.Tab
 {
     public interface ITabSwitcherWindow
     {
-        public UniTask Init();
+        public UniTask Init(TabSwitcherWindowModel model = null);
     }
 }

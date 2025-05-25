@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Globals;
 using UnityEngine;
+using Utils.Tab;
 using World.Player.Character;
 
 namespace World.Player.PopupCharacter
@@ -12,7 +13,7 @@ namespace World.Player.PopupCharacter
     {
         public byte LineupIndex;
         public byte SlotIndex;
-        public override async UniTask Init()
+        public override async UniTask Init(TabSwitcherWindowModel model = null)
         {
             _ctsInit?.Cancel();
             _ctsInit = new CancellationTokenSource();

@@ -11,9 +11,9 @@ namespace Utils.Tab
     [System.Serializable]
     public class TabSwitcherModel : IDisposable
     {
-        public GameObject ObjWindow;
-        public string TabButtonName;
-        public Sprite SpriteTabButtonIcon;
+        public GameObject ObjWindow; //nullable có thể không cần window dành cho loại tab như lọc item (chỉ cần respawn)
+        public string TabButtonName; //nullable chủ yếu để set vào title window hoặc title button, nếu không cần title thì cứ để trống
+        public Sprite SpriteTabButtonIcon; //nullable nếu button được tạo sẵn thì không cần, còn dạng spawn động thì có thể ref để nó tự set icon
         /// <summary>
         /// Nếu null thì hệ thống sẽ sinh ra từ prefab ở TabSwicher <br/>
         /// muốn tab đứng ở các vị trí đặc biệt mà hệ thống scrollview hay grid không làm được thì có thể set sẵn rồi kéo vào để ko pải instantiate

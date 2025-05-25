@@ -19,7 +19,6 @@ namespace Utils.Tab
         [SerializeField] TabSwitcherButton _prefabTabButton;
         [SerializeField] Transform _parentTabButton;
         [SerializeField] private TextMeshProUGUI _txWindowTitle;
-
         /// <summary>
         /// sinh tab button or dùng tab có sẵn
         /// </summary>
@@ -30,7 +29,7 @@ namespace Utils.Tab
         DOTweenTextFadeSmooth _textTweener = new DOTweenTextFadeSmooth();
         CancellationTokenSource _ctsCurrentTabTitleTextAnim;
 
-        public void Init()
+        public void Init(TabSwitcherWindowModel model = null)
         {
             if (Tabs.Count == 0)
             {
@@ -66,13 +65,14 @@ namespace Utils.Tab
                 }
 
                 Tabs[i].TabSwitcherButton = tabBtn;
-                tabBtn.Set(Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index));
+                var theModel = model;
+                tabBtn.Set(Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index, theModel));
             }
 
-            SwitchTab(DefaultIndex);
+            SwitchTab(DefaultIndex, model);
         }
 
-        public async void SwitchTab(int index)
+        public async void SwitchTab(int index, TabSwitcherWindowModel model = null)
         {
             for (int i = 0; i < Tabs.Count; i++)
             {
@@ -81,7 +81,7 @@ namespace Utils.Tab
                 {
                     //chỉ chạy khi hệ thống tab có sử dụng window, một vài loại dùng event để check tab thay vì hiện window
                     var iTab = Tabs[i].ObjWindow?.GetComponent<ITabSwitcherWindow>();
-                    if(iTab != null) await iTab.Init();
+                    if(iTab != null) await iTab.Init(model);
                 }
                 Tabs[i].Set(isSelect);
 

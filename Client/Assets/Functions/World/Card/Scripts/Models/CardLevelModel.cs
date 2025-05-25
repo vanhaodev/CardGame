@@ -24,6 +24,10 @@ namespace World.TheCard.Skill
         private uint _expOfLastUpdate;
 
         /// <summary>
+        /// Exp tính từ mốc level hiện tại
+        /// </summary>
+        private uint _expCurrent;
+        /// <summary>
         /// exp để đạt level tiếp theo
         /// </summary>
         private uint _expNext;
@@ -40,31 +44,36 @@ namespace World.TheCard.Skill
             var updateData = Global.Instance.Get<GameConfig>().GetLevelProgressAndNextExp(_exp);
             _level = updateData.level;
             _expOfLastUpdate = _exp;
+            _expCurrent = updateData.expCurrent;
             _expNext = updateData.expNext;
             _progress = updateData.progressPercent;
         }
 
-        public ushort GetLevel()
+        public ushort GetLevel(bool isUpdate = true)
         {
-            Update();
+            if (isUpdate) Update();
             return _level;
         }
 
-        public uint GetExp()
+        public uint GetExp(bool isUpdate = true)
         {
-            Update();
+            if (isUpdate) Update();
             return _exp;
         }
-
-        public uint GetExpNext()
+        public uint GetExpCurrent(bool isUpdate = true)
         {
-            Update();
+            if (isUpdate) Update();
+            return _expCurrent;
+        }
+        public uint GetExpNext(bool isUpdate = true)
+        {
+            if (isUpdate) Update();
             return _expNext;
         }
 
-        public float GetProgress()
+        public float GetProgress(bool isUpdate = true)
         {
-            Update();
+            if (isUpdate) Update();
             return _progress;
         }
     }

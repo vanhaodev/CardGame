@@ -24,7 +24,7 @@ namespace World.Player.PopupCharacter
         {
             _tabSwitcherTeam.OnTabSwitched += OnSwitchLineupTeam;
         }
-        public async UniTask Init()
+        public async UniTask Init(TabSwitcherWindowModel model = null)
         {
             Vector2 pos = _layoutTransformLineupCards.anchoredPosition;
             pos.y = _layoutTransformLineupCards.rect.height + 50; // targetY là giá trị mới mày muốn đặt
@@ -129,7 +129,7 @@ namespace World.Player.PopupCharacter
             if (index + 1 > maxLineupTeamCount)
             {
                 Debug.Log($"Slot is lock so return to {index - 1}");
-                _tabSwitcherTeam.SwitchTab(index - 1);
+                _tabSwitcherTeam.SwitchTab(index - 1, null);
                 return;
             }
 

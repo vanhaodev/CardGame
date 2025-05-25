@@ -123,10 +123,10 @@ namespace GameConfigs
         //     ushort maxLevel = ordered.Last().Key;
         //     return (maxLevel, 100f, 0);
         // }
-        public (ushort level, float progressPercent, uint expNext) GetLevelProgressAndNextExp(uint exp)
+        public (ushort level, float progressPercent, uint expCurrent, uint expNext) GetLevelProgressAndNextExp(uint exp)
         {
             if (LevelExps == null || LevelExps.Count == 0)
-                return (1, 0f, 0); // default level 1 nếu chưa có data
+                return (1, 0f, 0, 0); // default level 1 nếu chưa có data
 
             var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
             Debug.Log($"Level exps: {JsonConvert.SerializeObject(ordered)}");
@@ -140,7 +140,7 @@ namespace GameConfigs
                     if (i == 0)
                     {
                         // exp thấp hơn mốc đầu tiên => level 1
-                        return (1, 0f, requiredExp);
+                        return (1, 0f, exp, requiredExp);
                     }
 
                     ushort prevLevel = ordered[i - 1].Key;
@@ -150,13 +150,13 @@ namespace GameConfigs
                     uint currentProgress = exp - prevExp;
 
                     float progress = range > 0 ? (float)currentProgress / range * 100f : 0f;
-                    return (prevLevel, progress, range);
+                    return (prevLevel, progress, currentProgress, range);
                 }
             }
 
             // Nếu exp >= max mốc
             ushort maxLevel = ordered.Last().Key;
-            return (maxLevel, 100f, 0);
+            return (maxLevel, 100f, 0, 0);
         }
     }
 }

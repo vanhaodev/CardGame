@@ -1,25 +1,13 @@
 fileFormatVersion: 2
-guid: 5c86b0bfade925d46a88d944c879c3e4
+guid: d50f65d5d0fe41b4495cecd84a71f8dd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4815476061570213978
-    second: star_0
+      213: 7201907227059142769
+    second: star_none_0
   - first:
-      213: 3999761062471549324
-    second: star_1
-  - first:
-      213: -3497892727927865473
-    second: star_2
-  - first:
-      213: 6504763747683324272
-    second: star_3
-  - first:
-      213: -4570688628630608616
-    second: star_4
-  - first:
-      213: -2421095534358572595
-    second: star_5
+      213: 2222977601151273698
+    second: star_none_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -128,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: star_0
+      name: star_none_0
       rect:
         serializedVersion: 2
-        x: 20
-        y: 122
-        width: 200
-        height: 212
+        x: 50
+        y: 31
+        width: 413
+        height: 388
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a582a4ae6f104d240800000000000000
-      internalID: 4815476061570213978
+      spriteID: 170cd26377052f360800000000000000
+      internalID: 7201907227059142769
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: star_1
+      name: star_none_1
       rect:
         serializedVersion: 2
-        x: 96
-        y: 256
-        width: 226
-        height: 240
+        x: 228
+        y: 340
+        width: 57
+        height: 141
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,96 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c814e03ae71028730800000000000000
-      internalID: 3999761062471549324
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: star_2
-      rect:
-        serializedVersion: 2
-        x: 189
-        y: 173
-        width: 137
-        height: 142
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f7fff69b81df47fc0800000000000000
-      internalID: -3497892727927865473
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: star_3
-      rect:
-        serializedVersion: 2
-        x: 243
-        y: 214
-        width: 256
-        height: 218
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 071d0803a20954a50800000000000000
-      internalID: 6504763747683324272
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: star_4
-      rect:
-        serializedVersion: 2
-        x: 265
-        y: 40
-        width: 186
-        height: 248
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8152e87a8e6a190c0800000000000000
-      internalID: -4570688628630608616
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: star_5
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 42
-        width: 222
-        height: 162
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dc1d543607a866ed0800000000000000
-      internalID: -2421095534358572595
+      spriteID: 2ea8544b95a99de10800000000000000
+      internalID: 2222977601151273698
       vertices: []
       indices: 
       edges: []
@@ -273,12 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      star_0: 4815476061570213978
-      star_1: 3999761062471549324
-      star_2: -3497892727927865473
-      star_3: 6504763747683324272
-      star_4: -4570688628630608616
-      star_5: -2421095534358572595
+      star_none_0: 7201907227059142769
+      star_none_1: 2222977601151273698
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
