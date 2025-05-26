@@ -55,6 +55,11 @@ namespace World.TheCard.Skill
             return _level;
         }
 
+        public void SetExp(uint exp)
+        {
+            _exp = exp;
+            Update();
+        }
         public uint GetExp(bool isUpdate = true)
         {
             if (isUpdate) Update();

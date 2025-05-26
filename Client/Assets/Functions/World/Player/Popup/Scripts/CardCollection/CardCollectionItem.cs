@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Globals;
 using Popups;
 using UnityEngine;
+using World.Player.Character;
 using World.TheCard;
 
 namespace World.Player.PopupCharacter
@@ -10,6 +12,7 @@ namespace World.Player.PopupCharacter
     public class CardCollectionItem : MonoBehaviour
     {
         [SerializeField] private Card _card;
+        [SerializeField] private GameObject _objIsInLineup;
 
         /// <summary>
         /// sẽ hiện thêm nút (thêm vào lineup) nếu là lineup selector, pop này show ở tab lineup và là kế thừa của pop collection
@@ -21,7 +24,10 @@ namespace World.Player.PopupCharacter
         {
             _card.CardModel = cardModel;
             _isLineupSelector = isLineupSelector;
-
+            bool isInLineUp = Global.Instance.Get<CharacterData>()
+                .CharacterModel.CardLineups
+                .Any(lineup => lineup.Cards.Values.Any(id => id == _card.CardModel.Id));
+            _objIsInLineup.SetActive(isInLineUp);
             _card.ListenEventOnTouch((c) =>
             {
                 PopupCardModel model;
@@ -45,7 +51,7 @@ namespace World.Player.PopupCharacter
 
                 model.OnClose = OnClose;
                 Global.Instance.Get<PopupManager>().ShowCard(
-                   model);
+                    model);
             });
         }
     }

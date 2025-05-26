@@ -33677,13 +33677,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8608025469058818297, guid: 6c892385fbc7f424fb07992c95e0991e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1582893689}
   m_SourcePrefab: {fileID: 100100000, guid: 6c892385fbc7f424fb07992c95e0991e, type: 3}
 --- !u!224 &1582893685 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3499887573320780817, guid: 6c892385fbc7f424fb07992c95e0991e, type: 3}
   m_PrefabInstance: {fileID: 1582893684}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1582893689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101256788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4373e6c3813fa04abe678cb888103c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSpamClick: 0
 --- !u!1 &1583291947
 GameObject:
   m_ObjectHideFlags: 0
@@ -35779,6 +35795,7 @@ GameObject:
   - component: {fileID: 1673810979}
   - component: {fileID: 1673810978}
   - component: {fileID: 1673810977}
+  - component: {fileID: 1673810980}
   m_Layer: 5
   m_Name: BtnWebsite
   m_TagString: Untagged
@@ -35900,6 +35917,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673810975}
   m_CullTransparentMesh: 1
+--- !u!114 &1673810980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673810975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4373e6c3813fa04abe678cb888103c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSpamClick: 0
 --- !u!1 &1674246565
 GameObject:
   m_ObjectHideFlags: 0
@@ -36399,6 +36429,7 @@ GameObject:
   - component: {fileID: 1695581471}
   - component: {fileID: 1695581470}
   - component: {fileID: 1695581469}
+  - component: {fileID: 1695581472}
   m_Layer: 5
   m_Name: BtnExit
   m_TagString: Untagged
@@ -36520,6 +36551,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1695581467}
   m_CullTransparentMesh: 1
+--- !u!114 &1695581472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695581467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4373e6c3813fa04abe678cb888103c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSpamClick: 0
 --- !u!1 &1696253492
 GameObject:
   m_ObjectHideFlags: 0
@@ -37038,6 +37082,7 @@ GameObject:
   - component: {fileID: 1721765582}
   - component: {fileID: 1721765581}
   - component: {fileID: 1721765583}
+  - component: {fileID: 1721765584}
   m_Layer: 5
   m_Name: BtnSetting
   m_TagString: Untagged
@@ -37159,6 +37204,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1721765584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721765578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4373e6c3813fa04abe678cb888103c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSpamClick: 0
 --- !u!1 &1723660692
 GameObject:
   m_ObjectHideFlags: 0

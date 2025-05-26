@@ -13,6 +13,7 @@ namespace World.Player.PopupCharacter
     {
         [SerializeField] protected CardCollectionItem _prefabCardCollectionItem;
         [SerializeField] protected Transform _parentCardCollectionItem;
+        protected List<CardCollectionItem> _items = new List<CardCollectionItem>();
         protected CancellationTokenSource _ctsInit;
         private CompositeDisposable _disposables = new CompositeDisposable();
         private void OnEnable()
@@ -36,23 +37,41 @@ namespace World.Player.PopupCharacter
         {
             _ctsInit?.Cancel();
             _ctsInit = new CancellationTokenSource();
-            foreach (Transform child in _parentCardCollectionItem)
-            {
-                Destroy(child.gameObject);
-            }
 
             var charData = Global.Instance.Get<CharacterData>();
             var cardCollection = charData.CharacterModel.CardCollection;
-            var tasks = new List<UniTask>();
-            for (int i = 0; i < cardCollection.Cards.Count; i++)
+            var cards = cardCollection.Cards;
+
+            // Đảm bảo danh sách đủ số lượng
+            while (_items.Count < cards.Count)
             {
-                var cardModel = cardCollection.Cards[i];
-                var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel));
+                var newItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
+                newItem.gameObject.SetActive(false); // tránh nháy khi chưa Set
+                _items.Add(newItem);
+            }
+
+            var tasks = new List<UniTask>();
+
+            for (int i = 0; i < _items.Count; i++)
+            {
+                if (i < cards.Count)
+                {
+                    var cardModel = cards[i];
+                    var item = _items[i];
+
+                    item.gameObject.SetActive(true);
+                    tasks.Add(item.Set(cardModel));
+                }
+                else
+                {
+                    // Ẩn các item dư
+                    _items[i].gameObject.SetActive(false);
+                }
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);
         }
+
 
         public UniTask LateInit()
         {

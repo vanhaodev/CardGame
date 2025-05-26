@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Globals;
+using Sirenix.Utilities;
 using UnityEngine;
 using Utils.Tab;
 using World.Player.Character;
@@ -17,23 +19,51 @@ namespace World.Player.PopupCharacter
         {
             _ctsInit?.Cancel();
             _ctsInit = new CancellationTokenSource();
-            foreach (Transform child in _parentCardCollectionItem)
-            {
-                Destroy(child.gameObject);
-            }
 
             var charData = Global.Instance.Get<CharacterData>();
-            var cardCollection = charData.CharacterModel.CardCollection;
-            var tasks = new List<UniTask>();
-            for (int i = 0; i < cardCollection.Cards.Count; i++)
+            
+            HashSet<int> idsExistsInCurrentLineup = new HashSet<int>();
+            if (charData.CharacterModel.CardLineups.Count > LineupIndex)
             {
-                var cardModel = cardCollection.Cards[i];
-                var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel, true, LineupIndex, SlotIndex, OnClose: Close));
+                idsExistsInCurrentLineup = new HashSet<int>(charData.CharacterModel.CardLineups[LineupIndex].Cards.Values);
+            }
+
+            var cards = charData.CharacterModel.CardCollection.Cards
+                .Where(i => !idsExistsInCurrentLineup.Contains(i.Id))
+                .ToList();
+
+
+            // Tạo thêm nếu chưa đủ item
+            while (_items.Count < cards.Count)
+            {
+                var newItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
+                newItem.gameObject.SetActive(false);
+                _items.Add(newItem);
+            }
+
+            var tasks = new List<UniTask>();
+
+            for (int i = 0; i < _items.Count; i++)
+            {
+                var cardCollectionItem = _items[i]; // ✅ rõ ràng, không lẫn với _items
+
+                if (i < cards.Count)
+                {
+                    if (!cardCollectionItem.transform.IsChildOf(_parentCardCollectionItem))
+                        cardCollectionItem.transform.SetParent(_parentCardCollectionItem, false);
+
+                    cardCollectionItem.gameObject.SetActive(true);
+                    tasks.Add(cardCollectionItem.Set(cards[i], true, LineupIndex, SlotIndex, OnClose: Close));
+                }
+                else
+                {
+                    cardCollectionItem.gameObject.SetActive(false);
+                }
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);
         }
+
 
         public void Close()
         {

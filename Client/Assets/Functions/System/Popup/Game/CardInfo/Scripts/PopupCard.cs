@@ -26,6 +26,23 @@ namespace Popups
                     model.OnClose?.Invoke();
                 })
             });
+
+            switch (model)
+            {
+                case PopupCardEquipModel equip:
+                case PopupCardUnequipModel unequip:
+                case PopupCardCollectionModel collection:
+                {
+                    _tab.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
+                    break;
+                }
+                case PopupCardBattleModel battle:
+                {
+                    _tab.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(false));
+                    _tab.Tabs[0].TabSwitcherButton.SetButtonActive(true);
+                    break;
+                }
+            }
         }
 
         private void SetupFeatureTabs()
