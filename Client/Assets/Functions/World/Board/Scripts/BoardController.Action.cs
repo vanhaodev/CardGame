@@ -76,28 +76,28 @@ namespace World.Board
             CancellationTokenSource cts)
         {
             //========================[Camera Focus]===============\
-            await PerformCameraFocus(actor.Card.transform, 7f, cts);
+            await PerformCameraFocus(actor.CardBattle.transform, 7f, cts);
             //========================[Prepare Melee Attack]===============\
-            Vector3 originalPosition = actor.Card.transform.position;
+            Vector3 originalPosition = actor.CardBattle.transform.position;
 
             //========================[Set parent]===============\
-            var originalActorParent = actor.Card.transform.parent;
-            actor.Card.transform.SetParent(_cardActingContainer, false);
+            var originalActorParent = actor.CardBattle.transform.parent;
+            actor.CardBattle.transform.SetParent(_cardActingContainer, false);
 
             //========================[Hide vital bar]===============\
-            actor.Card.Battle.Vital.Show(false);
+            actor.CardBattle.Vital.Show(false);
             //========================[Cal attacker]======================\\
-            var attackerResult = actor.Card.Battle.GetDamage();
+            var attackerResult = actor.CardBattle.GetDamage();
             Debug.Log("Attacker: " + JsonConvert.SerializeObject(attackerResult));
             foreach (var target in targets)
             {
                 //========================[Setup Attack]===============\
-                var targetCard = target.Card.transform;
+                var targetCard = target.CardBattle.transform;
                 Vector3 targetPosition = targetCard.position;
-                Vector3 actorPosition = actor.Card.transform.position;
+                Vector3 actorPosition = actor.CardBattle.transform.position;
 
                 //========================[Cal victim]===================================\\
-                var victimResult = target.Card.Battle.OnTakeDamage(attackerResult.damage, actor.Card);
+                var victimResult = target.CardBattle.OnTakeDamage(attackerResult.damage, actor.CardBattle);
                 Debug.Log("Victim:" + JsonConvert.SerializeObject(victimResult));
 
                 //========================[Set parent]===============\
@@ -107,14 +107,14 @@ namespace World.Board
                 //========================[Move to target]===============\
                 float offsetY = actorPosition.y > targetPosition.y ? 1.0f : -1.0f;
                 Vector3 attackPosition = new Vector3(targetPosition.x, targetPosition.y + offsetY, targetPosition.z);
-                await actor.Card.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad)
+                await actor.CardBattle.transform.DOMove(attackPosition, 0.5f).SetEase(Ease.OutQuad)
                     .WithCancellation(cancellationToken: cts.Token);
 
                 bool isActingDone = false;
                 bool isShowFloatingEffect = false;
 
                 //========================[Perform Melee Attack Animation]===============\
-                _tweenAction = actor.Card.transform.DORotate(new Vector3(0, 0, offsetY < 0 ? 80 : -80), 0.2f)
+                _tweenAction = actor.CardBattle.transform.DORotate(new Vector3(0, 0, offsetY < 0 ? 80 : -80), 0.2f)
                     .SetEase(Ease.InQuad).OnPlay(() =>
                         Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack"))
                     .OnUpdate(async () =>
@@ -126,11 +126,11 @@ namespace World.Board
                             Global.Instance.Get<EffectManager>()
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<EffectManager>().ShowSlash(targetPosition);
-                            var isDead = target.Card.Battle.OnTakeDamageLate();
+                            var isDead = target.CardBattle.OnTakeDamageLate();
                             if (isDead)
                             {
-                                _actionTurnManager.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
-                                    target.Card.Battle.MemberIndex);
+                                _actionTurnManager.SetDieActorTurnUI(target.CardBattle.FactionIndex,
+                                    target.CardBattle.MemberIndex);
                             }
 
                             isShowFloatingEffect = true;
@@ -151,7 +151,7 @@ namespace World.Board
                 await UniTask.WaitUntil(() => isActingDone, cancellationToken: cts.Token);
 
                 //========================[Reset Rotation]===============\
-                await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
+                await actor.CardBattle.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
                     .WithCancellation(cancellationToken: cts.Token);
                 //========================[Return to Position]===============\
                 await targetCard.transform.DOMove(targetPosition, 0.3f).WithCancellation(cancellationToken: cts.Token);
@@ -161,38 +161,38 @@ namespace World.Board
             }
 
             //========================[Return to Position]===============\
-            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad)
+            await actor.CardBattle.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad)
                 .WithCancellation(cancellationToken: cts.Token);
             //========================[Set parent]===============\
-            actor.Card.transform.SetParent(originalActorParent, false);
+            actor.CardBattle.transform.SetParent(originalActorParent, false);
             //========================[Show vital bar]===============\
-            actor.Card.Battle.Vital.Show();
+            actor.CardBattle.Vital.Show();
         }
 
         public async UniTask Ranged(BoardFactionPosition actor, List<BoardFactionPosition> targets,
             CancellationTokenSource cts)
         {
             //========================[Prepare Melee Attack]===============\
-            Vector3 originalPosition = actor.Card.transform.position;
+            Vector3 originalPosition = actor.CardBattle.transform.position;
 
             //========================[Set parent]===============\
-            var originalActorParent = actor.Card.transform.parent;
-            actor.Card.transform.SetParent(_cardActingContainer, false);
+            var originalActorParent = actor.CardBattle.transform.parent;
+            actor.CardBattle.transform.SetParent(_cardActingContainer, false);
 
             //========================[Hide vital bar]===============\
-            actor.Card.Battle.Vital.Show(false);
+            actor.CardBattle.Vital.Show(false);
             //========================[Cal attacker]======================\\
-            var attackerResult = actor.Card.Battle.GetDamage();
+            var attackerResult = actor.CardBattle.GetDamage();
             Debug.Log("Attacker: " + JsonConvert.SerializeObject(attackerResult));
             foreach (var target in targets)
             {
                 //========================[Setup Attack]===============\
-                var targetCard = target.Card.transform;
+                var targetCard = target.CardBattle.transform;
                 Vector3 targetPosition = targetCard.position;
-                Vector3 actorPosition = actor.Card.transform.position;
+                Vector3 actorPosition = actor.CardBattle.transform.position;
 
                 //========================[Cal victim]===================================\\
-                var victimResult = target.Card.Battle.OnTakeDamage(attackerResult.damage, actor.Card);
+                var victimResult = target.CardBattle.OnTakeDamage(attackerResult.damage, actor.CardBattle);
                 Debug.Log("Victim:" + JsonConvert.SerializeObject(victimResult));
 
                 //========================[Set parent]===============\
@@ -211,7 +211,7 @@ namespace World.Board
                 //========================[Perform Melee Attack Animation]===============\
 
                 //=======================[Rotate]============================\
-                Vector3 direction = targetCard.transform.position - actor.Card.transform.position;
+                Vector3 direction = targetCard.transform.position - actor.CardBattle.transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
                 // Thêm 90 độ để card quay theo top/bottom thay vì left/right
@@ -225,12 +225,12 @@ namespace World.Board
                 }
 
                 Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
-                await PerformCameraFocus(actor.Card.transform, 7f, cts);
-                await actor.Card.transform.DORotateQuaternion(targetRotation, 0.5f).SetEase(Ease.OutQuad)
+                await PerformCameraFocus(actor.CardBattle.transform, 7f, cts);
+                await actor.CardBattle.transform.DORotateQuaternion(targetRotation, 0.5f).SetEase(Ease.OutQuad)
                     .WithCancellation(cancellationToken: cts.Token);
                 //
 
-                _tweenAction = actor.Card.transform.DOMoveY(originalPosition.y + (offsetY / 3), 0.1f)
+                _tweenAction = actor.CardBattle.transform.DOMoveY(originalPosition.y + (offsetY / 3), 0.1f)
                     .SetEase(Ease.InQuad).OnPlay(() =>
                         Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Attack"))
                     .OnUpdate(async () =>
@@ -247,12 +247,12 @@ namespace World.Board
                             Global.Instance.Get<EffectManager>()
                                 .ShowDamageLog(attackerResult.logs.Concat(victimResult.logs).ToList(), targetPosition);
                             Global.Instance.Get<EffectManager>().ShowSlash(targetPosition);
-                            target.Card.Battle.OnTakeDamageLate();
-                            var isDead = target.Card.Battle.OnTakeDamageLate();
+                            target.CardBattle.OnTakeDamageLate();
+                            var isDead = target.CardBattle.OnTakeDamageLate();
                             if (isDead)
                             {
-                                _actionTurnManager.SetDieActorTurnUI(target.Card.Battle.FactionIndex,
-                                    target.Card.Battle.MemberIndex);
+                                _actionTurnManager.SetDieActorTurnUI(target.CardBattle.FactionIndex,
+                                    target.CardBattle.MemberIndex);
                             }
 
                             Vector3 takeHitPos = new Vector3(targetPosition.x, targetPosition.y - (offsetY / 2),
@@ -272,9 +272,9 @@ namespace World.Board
                 await UniTask.WaitUntil(() => isActingDone, cancellationToken: cts.Token);
 
                 //========================[Reset Move]===============\
-                await actor.Card.transform.DOMoveY(originalPosition.y, 0.2f).SetEase(Ease.OutQuad)
+                await actor.CardBattle.transform.DOMoveY(originalPosition.y, 0.2f).SetEase(Ease.OutQuad)
                     .WithCancellation(cancellationToken: cts.Token);
-                await actor.Card.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
+                await actor.CardBattle.transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad)
                     .WithCancellation(cancellationToken: cts.Token);
 
                 //========================[Return to Position]===============\
@@ -285,12 +285,12 @@ namespace World.Board
             }
 
             //========================[Return to Position]===============\
-            await actor.Card.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad)
+            await actor.CardBattle.transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InQuad)
                 .WithCancellation(cancellationToken: cts.Token);
             //========================[Set parent]===============\
-            actor.Card.transform.SetParent(originalActorParent, false);
+            actor.CardBattle.transform.SetParent(originalActorParent, false);
             //========================[Show vital bar]===============\
-            actor.Card.Battle.Vital.Show();
+            actor.CardBattle.Vital.Show();
         }
 
         private async UniTask PerformCameraFocus(Transform target, float zoom, CancellationTokenSource cts)

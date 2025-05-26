@@ -34,8 +34,8 @@ namespace World.Board
             for (; i < ActionAvailableOrders.Count; i++)
             {
                 var actor = ActionAvailableOrders[i];
-                _actorTurnUIs[i].Setup(actor.Card.Battle.FactionIndex, actor.Card.Battle.MemberIndex,
-                    actor.Card.SpriteCharacter);
+                _actorTurnUIs[i].Setup(actor.CardBattle.FactionIndex, actor.CardBattle.MemberIndex,
+                    actor.CardBattle.Card.SpriteCharacter);
                 _actorTurnUIs[i].Show();
             }
 
@@ -53,8 +53,8 @@ namespace World.Board
         public async UniTask SetCurrentActorTurnUI(CancellationTokenSource cts)
         {
             var index = _actorTurnUIs.FindIndex(i =>
-                i.IsCurrent(CurrentTurn != null ? CurrentTurn.Card.Battle.FactionIndex : 0,
-                    CurrentTurn != null ? CurrentTurn.Card.Battle.MemberIndex : 0));
+                i.IsCurrent(CurrentTurn != null ? CurrentTurn.CardBattle.FactionIndex : 0,
+                    CurrentTurn != null ? CurrentTurn.CardBattle.MemberIndex : 0));
             _objActorTurnUICurrentBorder.SetActive(index != -1);
             if (index == -1)
             {
@@ -121,9 +121,9 @@ namespace World.Board
             actor.SetDieMask(false);
         }
 
-        public void ShowTurnerMark(Card card)
+        public void ShowTurnerMark(CardBattle cardBattle)
         {
-            if (card == null)
+            if (cardBattle == null)
             {
                 _objTurnerMark.SetActive(false);
                 return;
@@ -134,11 +134,11 @@ namespace World.Board
 
             _objTurnerMark.transform.localScale = new Vector3(2, 2, 2);
             _objTurnerMark.SetActive(true);
-            _objTurnerMark.transform.position = new Vector3(card.transform.position.x,
-                card.Battle.FactionIndex == 1
-                    ? card.transform.position.y + 2
-                    : card.transform.position.y - 2,
-                card.transform.position.z);
+            _objTurnerMark.transform.position = new Vector3(cardBattle.transform.position.x,
+                cardBattle.FactionIndex == 1
+                    ? cardBattle.transform.position.y + 2
+                    : cardBattle.transform.position.y - 2,
+                cardBattle.transform.position.z);
             _objTurnerMark.transform.DOScale(new Vector3(1, 1, 1), 0.3f).SetEase(Ease.OutBack)
                 .WithCancellation(cancellationToken: _ctsTunerMark.Token).Forget();
         }

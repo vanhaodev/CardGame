@@ -92,7 +92,7 @@ namespace World.TheCard
         /// <summary>
         /// Tính tổng sát thương từ attacker gây lên victim, dựa trên danh sách effect công thức.
         /// </summary>
-        public int CalDamage(Card sender, Card receiver, List<SkillDamageTemplateModel> effects)
+        public int CalDamage(CardBattle sender, CardBattle receiver, List<SkillDamageTemplateModel> effects)
         {
             int totalDamage = 0;
 
@@ -106,8 +106,8 @@ namespace World.TheCard
                     paramValues[name] = 0;
 
                 // Gán giá trị tương ứng
-                SetParamValue(paramValues, sender.CardModel.Level.GetLevel(), receiver.CardModel.Level.GetLevel(),
-                    sender.Battle.Attributes, receiver.Battle.Attributes);
+                SetParamValue(paramValues, sender.Card.CardModel.Level.GetLevel(), receiver.Card.CardModel.Level.GetLevel(),
+                    sender.Attributes, receiver.Attributes);
 
                 // Tính toán kết quả
                 var expr = new Expression(effect.Formula);
@@ -120,7 +120,7 @@ namespace World.TheCard
             return totalDamage;
         }
 
-        public int CalModifyAttribute(Card sender, Card reciever, List<SkillModifyAttributeTemplateModel> effects)
+        public int CalModifyAttribute(CardBattle sender, CardBattle reciever, List<SkillModifyAttributeTemplateModel> effects)
         {
             int totalDamage = 0;
 
@@ -134,8 +134,8 @@ namespace World.TheCard
                     paramValues[name] = 0;
 
                 // Gán giá trị tương ứng
-                SetParamValue(paramValues, sender.CardModel.Level.GetLevel(), reciever.CardModel.Level.GetLevel(),
-                    sender.Battle.Attributes, reciever.Battle.Attributes);
+                SetParamValue(paramValues, sender.Card.CardModel.Level.GetLevel(), reciever.Card.CardModel.Level.GetLevel(),
+                    sender.Attributes, reciever.Attributes);
 
                 // Tính toán kết quả
                 var expr = new Expression(effect.Formula);

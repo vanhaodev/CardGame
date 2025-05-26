@@ -21,7 +21,7 @@ namespace World.Board
         private DynamicObjectPool<GameObject> _pointerPool;
         private Board _board;
         [SerializeField] List<GameObject> _instantiatedPointers;
-        [SerializeField] List<Card> _selectingCards;
+        [SerializeField] List<CardBattle> _selectingCards;
         private CancellationTokenSource _ctsOnTouch;
 
         private void Start()
@@ -48,7 +48,7 @@ namespace World.Board
             _board = board;
             var battlers = board.GetAllFactions()
                 .SelectMany(faction => faction.GetAllPositions())
-                .Select(position => position.Card)
+                .Select(position => position.CardBattle)
                 .ToList();
 
             for (int i = 0; i < battlers.Count; i++)
@@ -58,13 +58,13 @@ namespace World.Board
         }
 
 
-        public async void OnTouch(Card card)
+        public async void OnTouch(CardBattle cardBattle)
         {
             if (!gameObject.activeSelf)
             {
                 return;
             }
-            if (card.Battle.IsDead) return;
+            if (cardBattle.IsDead) return;
             _ctsOnTouch?.Cancel();
             _ctsOnTouch = new CancellationTokenSource();
             foreach (var instantiatedPointer in _instantiatedPointers)
@@ -74,12 +74,12 @@ namespace World.Board
 
             //
             // Lấy danh sách các card của faction và sắp xếp theo MemberIndex
-            var factionCards = _board.GetFactionByIndex(card.Battle.FactionIndex).GetAllPositions()
+            var factionCards = _board.GetFactionByIndex(cardBattle.FactionIndex).GetAllPositions()
                 .OrderBy(c => c.MemberIndex)
                 .ToList();
 
             // Tìm index của card center trong danh sách
-            int centerIndex = factionCards.FindIndex(c => c.MemberIndex == card.Battle.MemberIndex);
+            int centerIndex = factionCards.FindIndex(c => c.MemberIndex == cardBattle.MemberIndex);
 
             if (centerIndex == -1)
             {
@@ -87,13 +87,13 @@ namespace World.Board
                 return;
             }
 
-            Debug.Log("FactionIndex " + card.Battle.FactionIndex + " | MemberIndex " + card.Battle.MemberIndex +
+            Debug.Log("FactionIndex " + cardBattle.FactionIndex + " | MemberIndex " + cardBattle.MemberIndex +
                       " | Center = " + centerIndex);
 
             // Xác định các card mục tiêu (card center sẽ luôn được chọn)
             _selectingCards = new();
             // Thêm card center vào đúng giữa
-            _selectingCards.Add(factionCards[centerIndex].Card);
+            _selectingCards.Add(factionCards[centerIndex].CardBattle);
             Debug.Log("Add center index " + centerIndex);
             // Lan ra dần đều hai bên
             for (int i = 1; i <= Mathf.Max(AOEToLeftTargetCount, AOEToRightTargetCount); i++)
@@ -102,16 +102,16 @@ namespace World.Board
                 int leftIndex = centerIndex - i;
                 if (i <= AOEToLeftTargetCount && leftIndex >= 0)
                 {
-                    if (!factionCards[leftIndex].Card.Battle.IsDead)
-                        _selectingCards.Add(factionCards[leftIndex].Card);
+                    if (!factionCards[leftIndex].CardBattle.IsDead)
+                        _selectingCards.Add(factionCards[leftIndex].CardBattle);
                 }
 
                 // Bên phải
                 int rightIndex = centerIndex + i;
                 if (i <= AOEToRightTargetCount && rightIndex < factionCards.Count)
                 {
-                    if (!factionCards[rightIndex].Card.Battle.IsDead)
-                        _selectingCards.Add(factionCards[rightIndex].Card);
+                    if (!factionCards[rightIndex].CardBattle.IsDead)
+                        _selectingCards.Add(factionCards[rightIndex].CardBattle);
                 }
             }
 
@@ -130,7 +130,7 @@ namespace World.Board
             {
                 var pointer = _instantiatedPointers[i];
                 pointer.name =
-                    $"Pointer {_selectingCards[i].Battle.FactionIndex} | {_selectingCards[i].Battle.MemberIndex}";
+                    $"Pointer {_selectingCards[i].FactionIndex} | {_selectingCards[i].MemberIndex}";
                 // Lưu instance id của pointer đã được hiển thị
                 activePointers.Add(pointer.GetInstanceID());
 
@@ -147,7 +147,7 @@ namespace World.Board
                 }
                 else
                 {
-                    if (_selectingCards[i].Battle.MemberIndex < card.Battle.MemberIndex)
+                    if (_selectingCards[i].MemberIndex < cardBattle.MemberIndex)
                     {
                         Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_TargetSelectLeft");
                     }
@@ -179,8 +179,8 @@ namespace World.Board
             List<BoardFactionPosition> selecting = new List<BoardFactionPosition>();
             foreach (var s in _selectingCards)
             {
-                var bfp = _board.GetFactionByIndex(s.Battle.FactionIndex)
-                    .GetPositionByIndex(s.Battle.MemberIndex);
+                var bfp = _board.GetFactionByIndex(s.FactionIndex)
+                    .GetPositionByIndex(s.MemberIndex);
                 selecting.Add(bfp);
             }
 

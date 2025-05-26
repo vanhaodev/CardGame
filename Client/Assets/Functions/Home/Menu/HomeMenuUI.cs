@@ -26,10 +26,10 @@ public class HomeMenuUI : MonoBehaviour
         _tweenTapToPlay.DOPlayForward();
     }
 
-    public void TapTopPlay()
+    public async void TapTopPlay()
     {
-        var isNewbie = PlayerPrefs.GetInt("IsNewbie") == 1;
-        _btnContinue.SetActive(!isNewbie);
+        var appState = await new SaveManager().Load<SaveAppModel>();
+        _btnContinue.SetActive(!appState.IsNewbie);
 
         if (_tweenTapToPlay.tween == null)
         {
@@ -55,10 +55,11 @@ public class HomeMenuUI : MonoBehaviour
         _tweenPlayMenu.DOPlay();
     }
 
-    public void NewGame()
+    public async void NewGame()
     {
         var save = new SaveManager();
         save.Delete<SavePlayerModel>();
+        await save.Save(new SaveAppModel() { IsNewbie = false });
         Global.Instance.Get<SceneLoader>().LoadScene(1,
             null
         );

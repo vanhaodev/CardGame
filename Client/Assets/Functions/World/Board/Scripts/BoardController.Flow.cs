@@ -49,15 +49,15 @@ namespace World.Board
                 return;
             }
 
-            _actionTurnManager.ShowTurnerMark(battler.boardFactionPosition.Card);
-            var targets = GetRandomTargets(battler.actionTurnActorModel.Card);
-            if (battler.boardFactionPosition.Card.Battle.FactionIndex == 1) //Player
+            _actionTurnManager.ShowTurnerMark(battler.boardFactionPosition.CardBattle);
+            var targets = GetRandomTargets(battler.actionTurnActorModel.CardBattle);
+            if (battler.boardFactionPosition.CardBattle.FactionIndex == 1) //Player
             {
                 //show player turn UI
-                ShowPlayerInput(battler.boardFactionPosition.Card);
+                ShowPlayerInput(battler.boardFactionPosition.CardBattle);
                 _targetSelectorController.Show();
                 //chọn giúp player trước, họ thể attack luôn cũng được
-                _targetSelectorController.OnTouch(targets[0].Card);
+                _targetSelectorController.OnTouch(targets[0].CardBattle);
             }
             else //AI
             {
@@ -76,12 +76,12 @@ namespace World.Board
             }
         }
 
-        public async void ShowPlayerInput(Card currentTurnCard)
+        public async void ShowPlayerInput(CardBattle currentTurnCard)
         {
             //will load skill to input
             Debug.Log("ShowPlayerInput");
             _board.SetSkill(currentTurnCard,
-                _board.GetFactionByIndex(currentTurnCard.Battle.FactionIndex)
+                _board.GetFactionByIndex(currentTurnCard.FactionIndex)
                     .FactionAttributes[FactionAttributeType.SkillPoint]);
             _board.SetPlayerInput(true, currentTurnCard);
         }
@@ -94,21 +94,21 @@ namespace World.Board
         {
             //===============[Battler data]==============\\
             var currentTurnBattler = _actionTurnManager.GetCurrentTurn();
-            if (currentTurnBattler.Card.Battle.FactionIndex != 1) return;
+            if (currentTurnBattler.CardBattle.FactionIndex != 1) return;
             var targets = _targetSelectorController.GetSelectingFactions();
-            var faction = _board.GetFactionByIndex(currentTurnBattler.Card.Battle.FactionIndex);
-            var actor = faction.GetPositionByIndex(currentTurnBattler.Card.Battle.MemberIndex);
-            var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(actor.Card.CardModel.TemplateId);
+            var faction = _board.GetFactionByIndex(currentTurnBattler.CardBattle.FactionIndex);
+            var actor = faction.GetPositionByIndex(currentTurnBattler.CardBattle.MemberIndex);
+            var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(actor.CardBattle.Card.CardModel.TemplateId);
 
             //===============[Skill data]==============\\
             var skillTemplate = cardTemplate.Skills.Find(i => i.SlotType == skillSlotType).Skill;
             // var skill = actor.Card.CardModel.Skills[skillSlotType];
 
             if (!skillTemplate.IsValidTarget(
-                    actor.Card.Battle.FactionIndex,
-                    targets[0].Card.Battle.FactionIndex,
-                    actor.Card.Battle.MemberIndex,
-                    targets[0].Card.Battle.MemberIndex
+                    actor.CardBattle.FactionIndex,
+                    targets[0].CardBattle.FactionIndex,
+                    actor.CardBattle.MemberIndex,
+                    targets[0].CardBattle.MemberIndex
                 ))
             {
                 Global.Instance.Get<PopupManager>().ShowToast($"Wrong target, need {skillTemplate.TargetType}", PopupToastSoundType.Error);
@@ -138,13 +138,13 @@ namespace World.Board
             }
             else if (skillSlotType == CardSkillSlotType.Ultimate)
             {
-                actor.Card.Battle.AddUltimatePoint(-100);
+                actor.CardBattle.AddUltimatePoint(-100);
             }
             else if (skillSlotType == CardSkillSlotType.Passive || skillSlotType == CardSkillSlotType.Passive2)
             {
             }
 
-            _board.SetSkill(actor.Card, faction.FactionAttributes[FactionAttributeType.SkillPoint]);
+            _board.SetSkill(actor.CardBattle, faction.FactionAttributes[FactionAttributeType.SkillPoint]);
             StartTurn();
         }
 
@@ -184,8 +184,8 @@ namespace World.Board
                 else
                 {
                     //Get actor
-                    var actorFaction = _board.GetFactionByIndex(turn.Card.Battle.FactionIndex);
-                    actor = actorFaction.GetPositionByIndex(turn.Card.Battle.MemberIndex);
+                    var actorFaction = _board.GetFactionByIndex(turn.CardBattle.FactionIndex);
+                    actor = actorFaction.GetPositionByIndex(turn.CardBattle.MemberIndex);
                 }
 
                 isFound = true;
@@ -196,10 +196,10 @@ namespace World.Board
             return (turn, actor);
         }
 
-        public List<BoardFactionPosition> GetRandomTargets(Card card, int count = 1)
+        public List<BoardFactionPosition> GetRandomTargets(CardBattle card, int count = 1)
         {
             var targetFaction =
-                _board.GetFactionByIndex(card.Battle.FactionIndex == 1 ? 2 : 1);
+                _board.GetFactionByIndex(card.FactionIndex == 1 ? 2 : 1);
             var validTargetIndexes = GetTargets(targetFaction);
 
             if (validTargetIndexes.Count == 0)

@@ -73,11 +73,11 @@ namespace World.Board
                 foreach (var pos in faction.GetAllPositions())
                 {
                     var memberIndex = pos.MemberIndex;
-                    var cardModel = pos.Card.CardModel;
+                    var cardModel = pos.CardBattle.Card.CardModel;
 
                     OriginalOrders.Add(new ActionTurnActorModel()
                     {
-                        Card = pos.Card
+                        CardBattle = pos.CardBattle
                     });
                 }
 
@@ -123,7 +123,7 @@ namespace World.Board
 
             ActionAvailableOrders = OriginalOrders
                 .Where(i => i.IsAvailable())
-                .OrderByDescending(i => i.Card.Battle.BattleAttributes[BattleAttributeType.ActionPoint])
+                .OrderByDescending(i => i.CardBattle.BattleAttributes[BattleAttributeType.ActionPoint])
                 .ToList();
             CurrentRoundCount++;
             UpdateNewRoundActorTurnUI();
@@ -162,7 +162,7 @@ namespace World.Board
             }
 
             Debug.LogError($"Turn bị null\n" +
-                           $"ActionAvailableOrders: {ActionAvailableOrders.Count} (chết: {ActionAvailableOrders.Count(i => !i.Card.Battle.IsDead)}");
+                           $"ActionAvailableOrders: {ActionAvailableOrders.Count} (chết: {ActionAvailableOrders.Count(i => !i.CardBattle.IsDead)}");
             return null; // Không có ai có thể hành động
         }
 

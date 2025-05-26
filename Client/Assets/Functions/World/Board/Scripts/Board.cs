@@ -48,7 +48,7 @@ namespace World.Board
         }
 
         [Button]
-        public void SetPlayerInput(bool isShow, Card currentTurnCard)
+        public void SetPlayerInput(bool isShow, CardBattle currentTurnCard)
         {
             for (int i = 0; i < _tweenPlayerInputUIs.Length; i++)
             {
@@ -76,14 +76,14 @@ namespace World.Board
             }
         }
 
-        public void SetSkill(Card card, int skillPoint)
+        public void SetSkill(CardBattle cardBattle, int skillPoint)
         {
             _skillPointUI.SetPoint(skillPoint);
             _btnBasicAttack.SetSkillUsable(100);
             _btnAdvancedSkill.SetSkillUsable(skillPoint > 0 ? 100 : 0);
-            _btnUltimateSkill.SetSkillUsable(card == null
+            _btnUltimateSkill.SetSkillUsable(cardBattle == null
                 ? 0
-                : card.Battle.BattleAttributes[BattleAttributeType.UltimatePoint]);
+                : cardBattle.BattleAttributes[BattleAttributeType.UltimatePoint]);
         }
 
         private void OnDisable()

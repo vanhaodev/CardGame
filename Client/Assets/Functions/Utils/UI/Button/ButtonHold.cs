@@ -8,7 +8,6 @@ using UnityEngine.Events;
 
 namespace Utils
 {
-    [RequireComponent(typeof(Image))]
     public class ButtonHold : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
         [Tooltip("Thời gian giữ để kích hoạt sự kiện hold (giây)")]
@@ -19,27 +18,33 @@ namespace Utils
 
         private CancellationTokenSource _cts;
         private bool isHolding = false;
+        private bool wasHoldTriggered = false;
 
         public void OnPointerDown(PointerEventData eventData)
         {
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
-            isHolding = false;
+            isHolding = true;
+            wasHoldTriggered = false;
 
             HoldCheckAsync(_cts.Token).Forget();
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            if (isHolding)
+            _cts?.Cancel();
+
+            if (wasHoldTriggered)
             {
-                // Đã gọi onHold rồi, không gọi onClick nữa
-                _cts?.Cancel();
+                // Đã giữ đủ lâu và gọi onHold -> không gọi onClick
                 return;
             }
 
-            _cts?.Cancel();
-            onClick?.Invoke();
+            if (isHolding)
+            {
+                // Chỉ gọi onClick nếu vẫn đang giữ và chưa từng gọi onHold
+                onClick?.Invoke();
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -53,12 +58,15 @@ namespace Utils
             try
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(holdTime), cancellationToken: token);
-                isHolding = true;
-                onHold?.Invoke();
+                if (isHolding)
+                {
+                    wasHoldTriggered = true;
+                    onHold?.Invoke();
+                }
             }
             catch (OperationCanceledException)
             {
-                // Bị hủy thì thôi
+                // Bị hủy -> không làm gì
             }
         }
 

@@ -39,17 +39,17 @@ namespace World.TheCard.Skill
         /// </summary>
         public float HpPercent = -1;
 
-        public override bool IsSatisfied(Card sender, Card receiver)
+        public override bool IsSatisfied(CardBattle sender, CardBattle receiver)
         {
             var checks = GetCheckableCards(sender, receiver);
 
             foreach (var card in checks)
             {
-                var attrs = card.Battle.Attributes;
+                var attrs = card.Attributes;
 
                 if (HpPercent > -1)
                 {
-                    float percent = (float)card.Battle.BattleAttributes[BattleAttributeType.Hp] / attrs[AttributeType.HpMax];
+                    float percent = (float)card.BattleAttributes[BattleAttributeType.Hp] / attrs[AttributeType.HpMax];
                     if (percent <= HpPercent)
                         return true;
                 }

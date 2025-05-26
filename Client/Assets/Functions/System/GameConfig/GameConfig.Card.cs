@@ -129,7 +129,7 @@ namespace GameConfigs
                 return (1, 0f, 0, 0); // default level 1 nếu chưa có data
 
             var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
-            Debug.Log($"Level exps: {JsonConvert.SerializeObject(ordered)}");
+            // Debug.Log($"Level exps: {JsonConvert.SerializeObject(ordered)}");
             for (int i = 0; i < ordered.Count; i++)
             {
                 ushort level = ordered[i].Key;

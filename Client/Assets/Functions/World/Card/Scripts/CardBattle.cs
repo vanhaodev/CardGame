@@ -5,6 +5,9 @@ using AYellowpaper.SerializedCollections;
 using Cysharp.Threading.Tasks;
 using GameConfigs;
 using Globals;
+using Newtonsoft.Json;
+using Popups;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
 using World.TheCard;
@@ -14,9 +17,11 @@ namespace World.TheCard
 {
     public partial class CardBattle : MonoBehaviour
     {
+
         [SerializeField] private CardVital _vital;
         public CardVital Vital => _vital;
-
+        [SerializeField] Card _card;
+        public Card Card => _card;
         [SerializeField] CardEffect _effect;
 
         //----------------------Data-------------------------\\
@@ -31,7 +36,7 @@ namespace World.TheCard
         [SerializeField] private SerializedDictionary<BattleAttributeType, int> _battleAttributes;
 
         [SerializeField] private bool _isDead;
-       [SerializeField] private GameObject _ultimateableNotification;
+        [SerializeField] private GameObject _ultimateableNotification;
         public int FactionIndex => factionIndex;
         public int MemberIndex => memberIndex;
         public ElementType ElementType => _elementType;
@@ -39,7 +44,18 @@ namespace World.TheCard
         public Dictionary<BattleAttributeType, int> BattleAttributes => _battleAttributes;
         public bool IsDead => _isDead;
         public void ResetAP() => _battleAttributes[BattleAttributeType.ActionPoint] = 0;
+        //============================[EVENT]==============================\\
+        private readonly Subject<CardBattle> _eventOnTouch = new Subject<CardBattle>();
+        public void InvokeEventOnTouch() => _eventOnTouch.OnNext(this);
+        private IDisposable _onTouchListener;
 
+        public void ListenEventOnTouch(Action<CardBattle> action)
+        {
+            _onTouchListener?.Dispose();
+            _onTouchListener = _eventOnTouch.Subscribe(action).AddTo(this);
+        }
+        
+        //============================[]==============================\\
         public void AccumulateAP()
         {
             if (IsDead) return;
@@ -51,14 +67,15 @@ namespace World.TheCard
             _battleAttributes[BattleAttributeType.ActionPoint] += Attributes[AttributeType.Speed];
         }
 
-        public async UniTask SetupBattle(Card card, int factionIndexInBoard, int memberIndexInBoard)
+        public async UniTask SetupBattle(CardModel cardModel, int factionIndexInBoard, int memberIndexInBoard)
         {
+            _card.CardModel = cardModel;
             factionIndex = factionIndexInBoard;
             memberIndex = memberIndexInBoard;
             _isDead = false;
 
             //element
-            var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(card.CardModel.TemplateId);
+            var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(_card.CardModel.TemplateId);
             _elementType = cardTemplate.Element;
 
             //pre creat attribute
@@ -69,7 +86,7 @@ namespace World.TheCard
             
             //attribute
             _attributes.Clear();
-            foreach (var attr in card.CardModel.CalculatedAttributes)
+            foreach (var attr in _card.CardModel.CalculatedAttributes)
             {
                 _attributes[attr.Type] = attr.Value;
             }
@@ -131,7 +148,7 @@ namespace World.TheCard
             return (totalDamage, damageLogs);
         }
 
-        public (int aDamage, List<DamageLogType> logs) OnTakeDamage(int attackerTotalDamage, Card attacker)
+        public (int aDamage, List<DamageLogType> logs) OnTakeDamage(int attackerTotalDamage, CardBattle attacker)
         {
             var damageLogs = new List<DamageLogType>();
             if (_isDead) return (0, damageLogs);
@@ -140,8 +157,8 @@ namespace World.TheCard
 
             //==================[ArmorPiercing]========================\\
             if (CalArmorPiercing(
-                    attacker.Battle.Attributes[AttributeType.ArmorPenetrationChance],
-                    attacker.Battle.Attributes[AttributeType.ArmorPenetrationDamage],
+                    attacker.Attributes[AttributeType.ArmorPenetrationChance],
+                    attacker.Attributes[AttributeType.ArmorPenetrationDamage],
                     ref victimTotalDefense))
             {
                 damageLogs.Add(DamageLogType.ArmorPenetration);
@@ -180,6 +197,24 @@ namespace World.TheCard
 
             _vital.UpdateHp(_battleAttributes[BattleAttributeType.Hp], _attributes[AttributeType.HpMax]);
             return _isDead;
+        }
+        
+        /// <summary>
+        /// if not use skill or attack target => Show this card's info <br/>
+        /// if use skill, heal, buff or attack command => this will be the taraget
+        /// </summary>
+        public void OnTouch()
+        {
+            InvokeEventOnTouch();
+        }
+
+        public void OnHold()
+        {
+            Debug.Log(JsonConvert.SerializeObject(_card.CardModel));
+            Global.Instance.Get<PopupManager>().ShowCard(new PopupCardBattleModel()
+            {
+                CardModel = _card.CardModel,
+            });
         }
     }
 }

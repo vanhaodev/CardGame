@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World.TheCard;
+using World.TheCard.Skill;
 using Random = UnityEngine.Random;
 
 namespace World.Board
@@ -36,6 +37,8 @@ namespace World.Board
                 var testModel = new CardModel();
                 testModel.TemplateId = (ushort)Random.Range(1, 3);
                 testModel.Star = (byte)Random.Range(1, 6);
+                testModel.Level = new CardLevelModel();
+                testModel.Level.SetExp((uint)Random.Range(1, 4000));
                 foreach (AttributeType type in Enum.GetValues(typeof(AttributeType)))
                 {
                     if ((int)type < 2)
@@ -63,8 +66,9 @@ namespace World.Board
                         });
                     }
                 }
+
                 // testModel.Skills =
-                position.Card.CardModel = testModel;
+                position.CardBattle.Card.CardModel = testModel;
             }
         }
 
@@ -81,7 +85,7 @@ namespace World.Board
         {
             foreach (var p in _positions)
             {
-                var rect = p.Card.GetComponent<RectTransform>();
+                var rect = p.CardBattle.GetComponent<RectTransform>();
                 p.OriginalPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y);
             }
         }
@@ -91,7 +95,7 @@ namespace World.Board
         {
             foreach (var p in _positions)
             {
-                var rect = p.Card.GetComponent<RectTransform>();
+                var rect = p.CardBattle.GetComponent<RectTransform>();
                 rect.anchoredPosition = p.OriginalPosition;
                 rect.localRotation = Quaternion.identity;
             }
@@ -117,7 +121,7 @@ namespace World.Board
         /// <returns></returns>
         public bool IsAllDead()
         {
-            return _positions.All(i => i.Card.Battle.IsDead); // Tất cả đều chết thì trả về true
+            return _positions.All(i => i.CardBattle.IsDead); // Tất cả đều chết thì trả về true
         }
     }
 }

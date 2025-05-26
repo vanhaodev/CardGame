@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Globals;
+using Newtonsoft.Json;
 using Popups;
 using TMPro;
 using UniRx;
@@ -24,7 +25,6 @@ namespace World.TheCard
         [SerializeField] private CardStarUI _cardStarUI;
 
         [SerializeField] CardEffect _effect;
-        [SerializeField] CardBattle _battle;
 
         //============================[EVENT]==============================\\
         private readonly Subject<Card> _eventOnTouch = new Subject<Card>();
@@ -38,7 +38,7 @@ namespace World.TheCard
         }
         
         //============================[]==============================\\
-        public CardBattle Battle => _battle;
+
 
         public CardModel CardModel
         {
@@ -75,7 +75,11 @@ namespace World.TheCard
         public void OnTouch()
         {
             InvokeEventOnTouch();
-            _effect.PlayTouchEffect();
+        }
+
+        public void OnHold()
+        {
+
         }
     }
 }

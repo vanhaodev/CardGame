@@ -56,6 +56,7 @@ namespace Save
                 T temp = new T();
                 string encryptedFileName = EncryptFileName(temp.DataName);
                 string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
+                Debug.Log(filePath);
                 if (File.Exists(filePath))
                 {
                     string encryptedJson = await File.ReadAllTextAsync(filePath); // ✅ Đọc file async

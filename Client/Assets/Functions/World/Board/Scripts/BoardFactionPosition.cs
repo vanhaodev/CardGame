@@ -17,6 +17,6 @@ namespace World.Board
         /// <summary>
         /// ref
         /// </summary>
-        public TheCard.Card Card;
+        public CardBattle CardBattle;
     }
 }

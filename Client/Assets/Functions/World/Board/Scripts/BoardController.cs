@@ -77,13 +77,13 @@ namespace World.Board
             for (int i = 0; i < 6; i++)
             {
                 var pos = _board.GetFactionByIndex(1).GetPositionByIndex(i + 1);
-                cardInitTasks.Add(pos.Card.Battle.SetupBattle(pos.Card, 1, i + 1));
+                cardInitTasks.Add(pos.CardBattle.SetupBattle(pos.CardBattle.Card.CardModel, 1, i + 1));
             }
 
             for (int i = 0; i < 6; i++)
             {
                 var pos = _board.GetFactionByIndex(2).GetPositionByIndex(i + 1);
-                cardInitTasks.Add(pos.Card.Battle.SetupBattle(pos.Card, 2, i + 1));
+                cardInitTasks.Add(pos.CardBattle.SetupBattle(pos.CardBattle.Card.CardModel, 2, i + 1));
             }
 
             await UniTask.WhenAll(cardInitTasks);
@@ -96,7 +96,7 @@ namespace World.Board
             for (int i = 0; i < 6; i++)
             {
                 var theTarget = targetFaction.GetPositionByIndex(i + 1);
-                if (!theTarget.Card.Battle.IsDead)
+                if (!theTarget.CardBattle.IsDead)
                 {
                     validIndexes.Add(i + 1);
                 }

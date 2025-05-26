@@ -15,16 +15,16 @@ namespace World.Board
         /// <summary>
         /// battle ref
         /// </summary>
-        public TheCard.Card Card;
+        public CardBattle CardBattle;
 
         public bool IsAvailable()
         {
-            return Card.Battle.BattleAttributes[BattleAttributeType.ActionPoint] >= AP_REQUIRED_TO_ACTION &&
-                   !Card.Battle.IsDead;
+            return CardBattle.BattleAttributes[BattleAttributeType.ActionPoint] >= AP_REQUIRED_TO_ACTION &&
+                   !CardBattle.IsDead;
         }
 
-        public void ResetAP() => Card.Battle.ResetAP();
+        public void ResetAP() => CardBattle.ResetAP();
 
-        public void AccumulateAP() => Card.Battle.AccumulateAP();
+        public void AccumulateAP() => CardBattle.AccumulateAP();
     }
 }

@@ -11,12 +11,12 @@ namespace World.TheCard.Skill
     {
         public List<ElementType> ElementTypes;
 
-        public override bool IsSatisfied(Card sender, Card receiver)
+        public override bool IsSatisfied(CardBattle sender, CardBattle receiver)
         {
             var checks = GetCheckableCards(sender, receiver);
             foreach (var card in checks)
             {
-                if (ElementTypes.Contains(card.Battle.ElementType))
+                if (ElementTypes.Contains(card.ElementType))
                 {
                     return true;
                 }

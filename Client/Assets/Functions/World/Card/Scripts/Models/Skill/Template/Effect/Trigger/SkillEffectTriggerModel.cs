@@ -48,53 +48,53 @@ namespace World.TheCard.Skill
         }
 
         public SkillEffectTriggerCheckType CheckType;
-        public abstract bool IsSatisfied(Card sender, Card receiver);
+        public abstract bool IsSatisfied(CardBattle sender, CardBattle receiver);
 
-        public List<Card> GetCheckableCards(Card sender, Card receiver)
+        public List<CardBattle> GetCheckableCards(CardBattle sender, CardBattle receiver)
         {
             var board = Globals.Global.Instance.Get<BattleData>().Board;
             switch (CheckType)
             {
                 case SkillEffectTriggerCheckType.CheckTarget:
                 {
-                    return new List<Card> { receiver };
+                    return new List<CardBattle> { receiver };
                 }
                 case SkillEffectTriggerCheckType.CheckSender:
                 {
-                    return new List<Card> { sender };
+                    return new List<CardBattle> { sender };
                 }
                 case SkillEffectTriggerCheckType.CheckSenderTeam:
                 {
                     return board
-                        .GetFactionByIndex(sender.Battle.FactionIndex)
+                        .GetFactionByIndex(sender.FactionIndex)
                         .GetAllPositions()
-                        .Where(i => i.Card != sender)
-                        .Select(i => i.Card)
+                        .Where(i => i.CardBattle != sender)
+                        .Select(i => i.CardBattle)
                         .ToList();
                 }
                 case SkillEffectTriggerCheckType.CheckSenderAndSenderTeam:
                 {
                     return board
-                        .GetFactionByIndex(sender.Battle.FactionIndex)
+                        .GetFactionByIndex(sender.FactionIndex)
                         .GetAllPositions()
-                        .Select(i => i.Card)
+                        .Select(i => i.CardBattle)
                         .ToList();
                 }
                 case SkillEffectTriggerCheckType.CheckTargetTeam:
                 {
                     return board
-                        .GetFactionByIndex(receiver.Battle.FactionIndex)
+                        .GetFactionByIndex(receiver.FactionIndex)
                         .GetAllPositions()
-                        .Where(i => i.Card != receiver)
-                        .Select(i => i.Card)
+                        .Where(i => i.CardBattle != receiver)
+                        .Select(i => i.CardBattle)
                         .ToList();
                 }
                 case SkillEffectTriggerCheckType.CheckTargetAndTargetTeam:
                 {
                     return board
-                        .GetFactionByIndex(receiver.Battle.FactionIndex)
+                        .GetFactionByIndex(receiver.FactionIndex)
                         .GetAllPositions()
-                        .Select(i => i.Card)
+                        .Select(i => i.CardBattle)
                         .ToList();
                 }
                 case SkillEffectTriggerCheckType.CheckAllBattlers:
@@ -102,7 +102,7 @@ namespace World.TheCard.Skill
                     var factions = board.GetAllFactions();
                     var allPositions = factions.SelectMany(f => f.GetAllPositions());
                     var allCards = allPositions
-                        .Select(p => p.Card)
+                        .Select(p => p.CardBattle)
                         .Where(c => c != null)
                         .ToList();
                     return allCards;
