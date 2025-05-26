@@ -29,7 +29,7 @@ namespace Utils.Tab
         DOTweenTextFadeSmooth _textTweener = new DOTweenTextFadeSmooth();
         CancellationTokenSource _ctsCurrentTabTitleTextAnim;
 
-        public void Init(TabSwitcherWindowModel model = null)
+        public void Init(TabSwitcherWindowModel model = null, int switchIndex = -1)
         {
             if (Tabs.Count == 0)
             {
@@ -69,7 +69,7 @@ namespace Utils.Tab
                 tabBtn.Set(Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index, theModel));
             }
 
-            SwitchTab(DefaultIndex, model);
+            SwitchTab(switchIndex >= 0 ? switchIndex : DefaultIndex, model);
         }
 
         public async void SwitchTab(int index, TabSwitcherWindowModel model = null)

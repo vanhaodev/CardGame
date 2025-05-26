@@ -50,10 +50,11 @@ namespace World.Player.PopupCharacter
             Vector2 pos = _layoutTransformLineupCards.anchoredPosition;
             pos.y = _layoutTransformLineupCards.rect.height + 50; // targetY là giá trị mới mày muốn đặt
             _layoutTransformLineupCards.anchoredPosition = pos;
-            _tabSwitcherTeam.Init();
+            _tabSwitcherTeam.Init(switchIndex: _tabSwitcherTeam.CurrentIndex);
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
             InitLineupTeamTab();
-            InitCards(0).Forget();
+            InitCards((byte)_tabSwitcherTeam.CurrentIndex)
+                .Forget(); //lấy current để khi equip hay unequip card, nó sẽ init rồi show thẳng tab đang chọn lun ạ
         }
 
         public UniTask LateInit()
@@ -138,7 +139,7 @@ namespace World.Player.PopupCharacter
         {
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(false));
             await PlayLayoutGroupLineupCardsSpearAnimation(false);
-            Debug.Log("Init lineup " + teamLineupIndex);
+            // Debug.Log("Init lineup " + teamLineupIndex);
             var tasks = new List<UniTask>();
             for (int i = 0; i < _lineupCards.Count; i++)
             {
