@@ -29,25 +29,14 @@ namespace World.TheCard
         //============================[EVENT]==============================\\
         private readonly Subject<Card> _eventOnTouch = new Subject<Card>();
         public void InvokeEventOnTouch() => _eventOnTouch.OnNext(this);
-        private readonly Dictionary<Action<Card>, IDisposable> _eventListeners = new();
+        private IDisposable _onTouchListener;
 
         public void ListenEventOnTouch(Action<Card> action)
         {
-            if (_eventListeners.ContainsKey(action))
-                return; // tránh đăng ký trùng
-
-            var disposable = _eventOnTouch.Subscribe(action).AddTo(this);
-            _eventListeners[action] = disposable;
+            _onTouchListener?.Dispose();
+            _onTouchListener = _eventOnTouch.Subscribe(action).AddTo(this);
         }
-
-        public void UnListenEventOnTouch(Action<Card> action)
-        {
-            if (_eventListeners.TryGetValue(action, out var disposable))
-            {
-                disposable.Dispose();
-                _eventListeners.Remove(action);
-            }
-        }
+        
         //============================[]==============================\\
         public CardBattle Battle => _battle;
 

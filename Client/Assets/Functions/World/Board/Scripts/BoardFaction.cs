@@ -72,7 +72,7 @@ namespace World.Board
 
         public BoardFactionPosition GetPositionByIndex(int index)
         {
-            Debug.Log($"GetPositionByIndex: {index}");
+            // Debug.Log($"GetPositionByIndex: {index}");
             return _positions[index - 1];
         }
 

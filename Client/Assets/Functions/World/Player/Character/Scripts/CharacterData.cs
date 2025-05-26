@@ -15,11 +15,11 @@ namespace World.Player.Character
     {
         [SerializeField] private CharacterModel _characterModel;
         [SerializeField] private UniqueIdentityModel _uniqueIdentityModel;
-
-
+        
+        //=======================[EVENTS]===========================\\
         public readonly Subject<Unit> OnCharacterChanged = new Subject<Unit>();
         public void InvokeOnCharacterChanged() => OnCharacterChanged.OnNext(Unit.Default);
-
+        //==========================================================//
         public CharacterModel CharacterModel
         {
             get => _characterModel;

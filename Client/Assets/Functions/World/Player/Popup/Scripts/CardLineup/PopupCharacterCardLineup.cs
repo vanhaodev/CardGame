@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Globals;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -20,10 +21,30 @@ namespace World.Player.PopupCharacter
         [SerializeField] private RectTransform _layoutTransformLineupCards;
         [SerializeField] PopupCharacterCardCollectionSelector _popupCharacterCardCollectionSelector;
         CancellationTokenSource _ctsLayoutGrLineUpCardSpearAnimation;
+        private CompositeDisposable _disposables = new CompositeDisposable();
+
+        private void OnEnable()
+        {
+            var sub = Global.Instance.Get<CharacterData>().CharacterModel.OnCardLineupChanged
+                .Subscribe(_ =>
+                {
+                    Debug.Log($"OnCardLineupChanged: {_}");
+                    Init().Forget();
+                });
+            _disposables.Add(sub);
+        }
+
+        private void OnDisable()
+        {
+            _disposables.Dispose(); // Hủy tất cả
+            _disposables = new CompositeDisposable(); // Reset
+        }
+
         private void Start()
         {
             _tabSwitcherTeam.OnTabSwitched += OnSwitchLineupTeam;
         }
+
         public async UniTask Init(TabSwitcherWindowModel model = null)
         {
             Vector2 pos = _layoutTransformLineupCards.anchoredPosition;
@@ -32,7 +53,7 @@ namespace World.Player.PopupCharacter
             _tabSwitcherTeam.Init();
             _tabSwitcherTeam.Tabs.ForEach(i => i.TabSwitcherButton.SetButtonActive(true));
             InitLineupTeamTab();
-            InitCards(1).Forget();
+            InitCards(0).Forget();
         }
 
         public UniTask LateInit()
@@ -121,7 +142,7 @@ namespace World.Player.PopupCharacter
             var tasks = new List<UniTask>();
             for (int i = 0; i < _lineupCards.Count; i++)
             {
-                tasks.Add(_lineupCards[i].Setup((byte)(i + 1), teamLineupIndex,  ShowSelectorCollection));
+                tasks.Add(_lineupCards[i].Setup((byte)(i), teamLineupIndex, ShowSelectorCollection));
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsLayoutGrLineUpCardSpearAnimation.Token);
@@ -139,7 +160,7 @@ namespace World.Player.PopupCharacter
                 return;
             }
 
-            InitCards((byte)(index + 1));
+            InitCards((byte)(index));
         }
 
         private void OnDestroy()
@@ -150,7 +171,7 @@ namespace World.Player.PopupCharacter
         private async void ShowSelectorCollection(byte slotIndex)
         {
             Debug.Log(slotIndex);
-            _popupCharacterCardCollectionSelector.LineupIndex = (byte)(_tabSwitcherTeam.CurrentIndex + 1);
+            _popupCharacterCardCollectionSelector.LineupIndex = (byte)(_tabSwitcherTeam.CurrentIndex);
             _popupCharacterCardCollectionSelector.SlotIndex = slotIndex;
             await _popupCharacterCardCollectionSelector.Init();
             _popupCharacterCardCollectionSelector.gameObject.SetActive(true);

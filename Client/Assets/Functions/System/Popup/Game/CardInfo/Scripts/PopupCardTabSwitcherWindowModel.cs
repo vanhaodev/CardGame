@@ -1,10 +1,12 @@
-﻿using Utils.Tab;
+﻿using System;
+using Utils.Tab;
 using World.TheCard;
 
 namespace Popups
 {
     public class PopupCardTabSwitcherWindowModel : TabSwitcherWindowModel
     {
-        public CardModel CardModel;
+        public PopupCardModel PopupCardModel;
+        public Action OnClosePopupCard;
     }
 }

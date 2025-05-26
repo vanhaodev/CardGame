@@ -12,6 +12,6 @@ namespace Functions.World.Player
     public class CardLineupModel
     {
         [SerializeReference]
-        public Dictionary<byte /*slot index*/, int /*card unique id*/> Cards;
+        public Dictionary<byte /*slot index start from 0*/, int /*card unique id*/> Cards;
     }
 }

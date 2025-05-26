@@ -11,15 +11,25 @@ namespace Popups
     {
         [SerializeField] private TabSwitcher _tab;
         private PopupCardModel _model;
+
         public void SetupCard(PopupCardModel model)
         {
             _model = model;
-            
+
             Debug.Log(nameof(model));
             _tab.Init(new PopupCardTabSwitcherWindowModel()
             {
-                CardModel = _model.CardModel,
+                PopupCardModel = model,
+                OnClosePopupCard = (() =>
+                {
+                    Close();
+                    model.OnClose?.Invoke();
+                })
             });
+        }
+
+        private void SetupFeatureTabs()
+        {
         }
     }
 }

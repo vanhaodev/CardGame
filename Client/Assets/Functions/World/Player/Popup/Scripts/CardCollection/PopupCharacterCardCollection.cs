@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Globals;
 using UnityEngine;
 using Utils.Tab;
 using World.Player.Character;
-
+using UniRx;
 namespace World.Player.PopupCharacter
 {
     public class PopupCharacterCardCollection : MonoBehaviour, ITabSwitcherWindow
@@ -13,6 +14,24 @@ namespace World.Player.PopupCharacter
         [SerializeField] protected CardCollectionItem _prefabCardCollectionItem;
         [SerializeField] protected Transform _parentCardCollectionItem;
         protected CancellationTokenSource _ctsInit;
+        private CompositeDisposable _disposables = new CompositeDisposable();
+        private void OnEnable()
+        {
+            var sub = Global.Instance.Get<CharacterData>().CharacterModel.OnCardCollectionChanged
+                .Subscribe(u =>
+                {
+                    Debug.Log($"OnCardCollectionChanged: {u}");
+                    Init().Forget();
+                });
+            _disposables.Add(sub);
+        }
+
+        private void OnDisable()
+        {
+            _disposables.Dispose();     // Hủy tất cả
+            _disposables = new CompositeDisposable(); // Reset
+        }
+
         public virtual async UniTask Init(TabSwitcherWindowModel model = null)
         {
             _ctsInit?.Cancel();

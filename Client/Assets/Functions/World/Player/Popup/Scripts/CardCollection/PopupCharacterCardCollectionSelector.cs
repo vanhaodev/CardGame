@@ -29,10 +29,15 @@ namespace World.Player.PopupCharacter
             {
                 var cardModel = cardCollection.Cards[i];
                 var cardCollectionItem = Instantiate(_prefabCardCollectionItem, _parentCardCollectionItem);
-                tasks.Add(cardCollectionItem.Set(cardModel, true, LineupIndex, SlotIndex)); //thay đổi duy nhất mà override
+                tasks.Add(cardCollectionItem.Set(cardModel, true, LineupIndex, SlotIndex, OnClose: Close));
             }
 
             await UniTask.WhenAll(tasks).AttachExternalCancellation(_ctsInit.Token);
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

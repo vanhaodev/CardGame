@@ -1,4 +1,5 @@
-﻿using World.TheCard;
+﻿using System;
+using World.TheCard;
 
 namespace Popups
 {
@@ -8,6 +9,7 @@ namespace Popups
     public abstract class PopupCardModel
     {
         public CardModel CardModel;
+        public Action OnClose;
     }
 
     public class PopupCardEquipModel : PopupCardModel

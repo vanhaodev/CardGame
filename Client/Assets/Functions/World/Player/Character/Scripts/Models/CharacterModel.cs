@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Functions.World.Player;
+using UniRx;
 using UnityEngine.Serialization;
 using World.Requirement;
 using World.TheCard;
@@ -29,10 +30,22 @@ namespace World.Player.Character
         /// </summary>
         public byte MaxLineupTeamCount;
         /// <summary>
-        /// có the setup trước lineup cho nhiều đội hình giúp khắc chế tốt hơn, nhưng sẽ tốn tiền để mở thêm slot lineup :))
+        /// có the setup trước lineup cho nhiều đội hình giúp khắc chế tốt hơn, nhưng sẽ tốn tiền để mở thêm slot lineup :)) <br/>
+        /// Index bắt đầu từ 0
         /// </summary>
         public List<CardLineupModel> CardLineups;
         
+        //===============================[EVENTS]===============================//
+        //--------------
+        public readonly Subject<Unit> OnCurrencyChanged = new Subject<Unit>();
+        public void InvokeOnCurrencyChanged() => OnCurrencyChanged.OnNext(Unit.Default);
+        //--------------
+        public readonly Subject<Unit> OnCardCollectionChanged = new Subject<Unit>();
+        public void InvokeOnCardCollectionChanged() => OnCardCollectionChanged.OnNext(Unit.Default);
+        //---------------
+        public readonly Subject<Unit> OnCardLineupChanged = new Subject<Unit>();
+        public void InvokeOnCardLineupChanged() => OnCardLineupChanged.OnNext(Unit.Default);
+        //========================================================================//
         public void SetDefault()
         {
             Id = Guid.NewGuid().ToString();

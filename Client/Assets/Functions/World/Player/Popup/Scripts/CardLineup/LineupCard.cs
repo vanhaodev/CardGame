@@ -26,11 +26,10 @@ namespace World.Player.PopupCharacter
             var found = false;
             var charData = Global.Instance.Get<CharacterData>();
             _slotIndex = slotIndex;
-            _txSlotIndex.text = slotIndex.ToString();
+            _txSlotIndex.text = (slotIndex + 1).ToString(); //vì back là bắt 0 nên +1 ở display nhé
             var cardLineups = charData.CharacterModel.CardLineups;
-            if (lineupIndex - 1 >= 0 &&
-                lineupIndex - 1 < cardLineups.Count &&
-                cardLineups[lineupIndex - 1] is { Cards: not null } lineup &&
+            if (lineupIndex < cardLineups.Count &&
+                cardLineups[lineupIndex] is { Cards: not null } lineup &&
                 lineup.Cards.TryGetValue(_slotIndex, out var cardId))
             {
                 var cardData = charData.CharacterModel.CardCollection.GetCard(cardId);
@@ -53,7 +52,7 @@ namespace World.Player.PopupCharacter
                         {
                             CardModel = cardData,
                             LineupIndex = lineupIndex,
-                            SlotIndex = _slotIndex
+                            SlotIndex = _slotIndex,
                         });
                     });
                 }
