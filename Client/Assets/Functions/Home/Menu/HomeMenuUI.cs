@@ -29,7 +29,7 @@ public class HomeMenuUI : MonoBehaviour
     public async void TapTopPlay()
     {
         var appState = await new SaveManager().Load<SaveAppModel>();
-        _btnContinue.SetActive(!appState.IsNewbie);
+        _btnContinue.SetActive(!appState.IsFirstPlay);
 
         if (_tweenTapToPlay.tween == null)
         {
@@ -58,8 +58,9 @@ public class HomeMenuUI : MonoBehaviour
     public async void NewGame()
     {
         var save = new SaveManager();
-        save.Delete<SavePlayerModel>();
-        await save.Save(new SaveAppModel() { IsNewbie = false });
+        //xóa save cũ
+        save.Delete<SavePlayerModel>();        
+        save.Delete<SaveAppModel>();
         Global.Instance.Get<SceneLoader>().LoadScene(1,
             null
         );
@@ -67,8 +68,9 @@ public class HomeMenuUI : MonoBehaviour
 
     public void ContinueGame()
     {
-        // Global.Instance.Get<SceneLoader>().LoadScene(1, () => GameStartup.Instance.GetTasks());
-        Application.OpenURL("https://www.youtube.com/@vanhaodev2001");
+        Global.Instance.Get<SceneLoader>().LoadScene(1,
+            null
+        );
     }
 
     public void GameInfo()

@@ -40,9 +40,30 @@ namespace World.Player.Character
         {
             // Debug.Log("Loading playerData data");
             var save = new SaveManager();
-            var playerData = await save.Load<SavePlayerModel>();
-            CharacterModel = playerData.CharacterModel;
-            UniqueIdentityModel = playerData.UniqueIdentityModel;
+            var app = await save.Load<SaveAppModel>();
+            
+            //new player
+            if (app.IsFirstPlay)
+            {
+                app.IsFirstPlay = false;
+                CharacterModel = new CharacterModel();
+                CharacterModel.SetDefault();
+                UniqueIdentityModel = new UniqueIdentityModel();
+                
+                await save.Save(app);
+                await save.Save(new SavePlayerModel()
+                {
+                    CharacterModel = CharacterModel,
+                    UniqueIdentityModel = UniqueIdentityModel
+                });
+            }
+            //old
+            else
+            {
+                var playerData = await save.Load<SavePlayerModel>();
+                CharacterModel = playerData.CharacterModel;
+                UniqueIdentityModel = playerData.UniqueIdentityModel;
+            }
         }
     }
 }

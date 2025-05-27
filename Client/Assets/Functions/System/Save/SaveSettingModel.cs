@@ -13,10 +13,14 @@
         public bool IsHideSkillEffects;
         public bool IsHideEnviromentEffects;
 
+        public SaveSettingGraphicModel()
+        {
+            DataName = "Graphic";
+        }
         public override void SetDefault()
         {
             base.SetDefault();
-            Fps = -1; //unlimited
+            Fps = 60; //unlimited
             OtherPlayerEnableAround = -1; //unlimited
             IsHideOtherPlayerTextures = false;
             IsHideSkillEffects = false;
@@ -31,6 +35,10 @@
         public float EnviromentVolume;
         public float EffectVolume;
 
+        public SaveSettingSoundModel()
+        {
+            DataName = "Sound";
+        }
         public override void SetDefault()
         {
             base.SetDefault();

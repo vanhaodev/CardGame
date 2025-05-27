@@ -9,6 +9,11 @@ namespace Save
     {
         public CharacterModel CharacterModel;
         public UniqueIdentityModel UniqueIdentityModel;
+
+        public SavePlayerModel()
+        {
+            DataName = "Player";
+        }
         public override void SetDefault()
         {
             base.SetDefault();

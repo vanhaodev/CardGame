@@ -8,23 +8,14 @@ namespace Save
 {
     public class SaveManager
     {
-        private string _extName = "log"; //goddesses' leveling data
+        private string _extName = "save"; //goddesses' leveling data
         private EncryptionAes encryption;
 
         public SaveManager()
         {
             encryption = new EncryptionAes();
         }
-
-        private string EncryptFileName(string fileName)
-        {
-            string encrypted = encryption.EncryptString(fileName);
-            // Chuyển thành Base64 safe
-            return encrypted
-                .Replace("/", "_")
-                .Replace("+", "-")
-                .Replace("=", ""); // có thể giữ lại nếu bạn không dùng file extension
-        }
+        
         
         public async UniTask Save<T>(T data) where T : SaveModel
         {
@@ -36,8 +27,7 @@ namespace Save
                 });
 
                 string encryptedJson = encryption.EncryptString(json);
-                string encryptedFileName = EncryptFileName(data.DataName);
-                string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
+                string filePath = GetSaveFilePath(data.DataName + $".{_extName}");
 
                 await File.WriteAllTextAsync(filePath, encryptedJson); // ✅ Ghi file async
 
@@ -54,8 +44,7 @@ namespace Save
             try
             {
                 T temp = new T();
-                string encryptedFileName = EncryptFileName(temp.DataName);
-                string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
+                string filePath = GetSaveFilePath(temp.DataName + $".{_extName}");
                 Debug.Log(filePath);
                 if (File.Exists(filePath))
                 {
@@ -88,7 +77,7 @@ namespace Save
             try
             {
                 T temp = new T();
-                string encryptedFileName = EncryptFileName(temp.DataName);
+                string encryptedFileName = temp.DataName;
                 string filePath = GetSaveFilePath(encryptedFileName + $".{_extName}");
                 if (!File.Exists(filePath))
                     return;
