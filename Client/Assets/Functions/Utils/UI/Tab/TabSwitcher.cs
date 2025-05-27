@@ -66,7 +66,7 @@ namespace Utils.Tab
 
                 Tabs[i].TabSwitcherButton = tabBtn;
                 var theModel = model;
-                tabBtn.Set(Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index, theModel));
+                tabBtn.Set(_isInstantiateTabButton, Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index, theModel));
             }
 
             SwitchTab(switchIndex >= 0 ? switchIndex : DefaultIndex, model);

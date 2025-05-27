@@ -4,6 +4,7 @@ using Globals;
 using TMPro;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World.Player.Character;
 
@@ -11,11 +12,9 @@ namespace World.Lobby
 {
     public class CharacterInfo : MonoBehaviour
     {
-        [SerializeField] Image _imageAvatar;
-        [SerializeField] Image _imageAvatarFrame;
         [SerializeField] TextMeshProUGUI _txName;
-        [SerializeField] TextMeshProUGUI _txGold;
-        [SerializeField] TextMeshProUGUI _txSliver;
+        [SerializeField] TextMeshProUGUI _txCircuitCurrency;
+        [SerializeField] TextMeshProUGUI _txScrapCurrency;
 
         private void OnEnable()
         {
@@ -27,14 +26,14 @@ namespace World.Lobby
         public async void Setup(CharacterModel characterModel)
         {
             _txName.text = characterModel.Name;
-            _txGold.text = characterModel.Currencies.Find(i => i.Type == CurrencyType.Gold)?.Amount.ToString() ?? "0";
-            _txSliver.text = characterModel.Currencies.Find(i => i.Type == CurrencyType.Sliver)?.Amount.ToString() ??
+            _txCircuitCurrency.text = characterModel.Currencies.Find(i => i.Type == CurrencyType.Circuit)?.Amount.ToString() ?? "0";
+            _txScrapCurrency.text = characterModel.Currencies.Find(i => i.Type == CurrencyType.Scrap)?.Amount.ToString() ??
                              "0";
             await UniTask.DelayFrame(1);
             // LayoutRebuilder.ForceRebuildLayoutImmediate(_txGold.rectTransform);
             // LayoutRebuilder.ForceRebuildLayoutImmediate(_txSliver.rectTransform);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_txGold.transform.parent.GetComponent<RectTransform>());
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_txSliver.transform.parent.GetComponent<RectTransform>());
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_txCircuitCurrency.transform.parent.GetComponent<RectTransform>());
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_txScrapCurrency.transform.parent.GetComponent<RectTransform>());
         }
     }
 }

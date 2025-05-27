@@ -18,27 +18,30 @@ namespace Utils.Tab
             _btn.interactable = active;
         }
 
-        public void Set(string btnName, Sprite icon, UnityAction onClick)
+        public void Set(bool isInstantiateTabButton, string btnName, Sprite icon, UnityAction onClick)
         {
-            if (_txBtnName != null)
+            if (isInstantiateTabButton)
             {
-                _txBtnName.text = btnName;
-            }
-
-            if (icon != null)
-            {
-                if (_imgIcon != null)
+                if (_txBtnName != null)
                 {
-                    _imgIcon.enabled = true;
-                    _imgIcon.sprite = icon;
+                    _txBtnName.text = btnName;
                 }
-            }
-            else
-            {
-                if (_imgIcon != null)
+
+                if (icon != null)
                 {
-                    _imgIcon.sprite = null;
-                    _imgIcon.enabled = false;
+                    if (_imgIcon != null)
+                    {
+                        _imgIcon.enabled = true;
+                        _imgIcon.sprite = icon;
+                    }
+                }
+                else
+                {
+                    if (_imgIcon != null)
+                    {
+                        _imgIcon.sprite = null;
+                        _imgIcon.enabled = false;
+                    }
                 }
             }
 

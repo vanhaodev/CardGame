@@ -15,10 +15,11 @@ namespace Popups
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
         [Button]
-        public async void ShowCharacter()
+        public async void ShowCharacter(int switchIndex = -1)
         {
             var pop = GetPopup<PopupCharacter>() as PopupCharacter;
             await pop.SetupData();
+            pop.SetSwitchIndexFirst(switchIndex);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }

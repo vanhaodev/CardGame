@@ -59,12 +59,12 @@ namespace World.Player.Character
             {
                 new CurrencyModel()
                 {
-                    Type = CurrencyType.Gold,
+                    Type = CurrencyType.Circuit,
                     Amount = 0
                 },
                 new CurrencyModel()
                 {
-                    Type = CurrencyType.Sliver,
+                    Type = CurrencyType.Scrap,
                     Amount = 0
                 }
             };

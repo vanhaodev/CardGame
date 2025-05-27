@@ -2,6 +2,8 @@
 {
     public enum CurrencyType
     {
-        Sliver, Gold
+        Scrap
+        , 
+        Circuit
     }
 }
