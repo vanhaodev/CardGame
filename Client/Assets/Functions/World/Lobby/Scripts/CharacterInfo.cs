@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using Globals;
 using TMPro;
 using UniRx;
@@ -23,12 +24,17 @@ namespace World.Lobby
             Setup(cd.CharacterModel);
         }
 
-        public void Setup(CharacterModel characterModel)
+        public async void Setup(CharacterModel characterModel)
         {
             _txName.text = characterModel.Name;
             _txGold.text = characterModel.Currencies.Find(i => i.Type == CurrencyType.Gold)?.Amount.ToString() ?? "0";
             _txSliver.text = characterModel.Currencies.Find(i => i.Type == CurrencyType.Sliver)?.Amount.ToString() ??
                              "0";
+            await UniTask.DelayFrame(1);
+            // LayoutRebuilder.ForceRebuildLayoutImmediate(_txGold.rectTransform);
+            // LayoutRebuilder.ForceRebuildLayoutImmediate(_txSliver.rectTransform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_txGold.transform.parent.GetComponent<RectTransform>());
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_txSliver.transform.parent.GetComponent<RectTransform>());
         }
     }
 }

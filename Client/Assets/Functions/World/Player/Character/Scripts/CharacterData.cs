@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Functions.World.Data;
 using Globals;
 using Save;
+using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
@@ -64,6 +65,16 @@ namespace World.Player.Character
                 CharacterModel = playerData.CharacterModel;
                 UniqueIdentityModel = playerData.UniqueIdentityModel;
             }
+        }
+
+        [Button]
+        public async void Save()
+        {
+            await new SaveManager().Save(new SavePlayerModel()
+            {
+                CharacterModel = CharacterModel,
+                UniqueIdentityModel = UniqueIdentityModel
+            });
         }
     }
 }
