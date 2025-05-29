@@ -1,8 +1,16 @@
-﻿namespace Functions.World.Player.Inventory.Item
+﻿using System;
+
+namespace Functions.World.Player.Inventory
 {
-    public class ItemModel
+    [System.Serializable]
+    public abstract class ItemModel
     {
         public uint Id;
         public uint TemplateId;
+        public ItemRarity Rarity;
+        /// <summary>
+        /// UTC
+        /// </summary>
+        public DateTime CreatedAt;
     }
 }

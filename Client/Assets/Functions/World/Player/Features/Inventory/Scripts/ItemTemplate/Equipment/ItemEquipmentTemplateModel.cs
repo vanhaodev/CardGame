@@ -13,6 +13,8 @@ namespace Functions.World.Player.Inventory
         Ring, // Nhẫn
         Amulet // Dây chuyền
     }
+
+    [System.Serializable]
     
     public class ItemEquipmentTemplateModel : ItemTemplateModel
     {

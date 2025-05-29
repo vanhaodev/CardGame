@@ -1,4 +1,8 @@
+using System;
 using Cysharp.Threading.Tasks;
+using Functions.World.Player.Inventory;
+using GameConfigs;
+using Globals;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,23 +16,35 @@ namespace World.Player.PopupCharacter
         [SerializeField] private TextMeshProUGUI _txItemQuantity;
         [SerializeField] private GameObject _objLoadingLock;
         [SerializeField] Sprite[] _spriteBackgrounds;
-        [SerializeField] private uint _itemId;
-        [SerializeField] private byte _itemType;
-        public uint ItemId => _itemId;
-        public async UniTask Init()
+        [SerializeField] private InventoryItemModel _item;
+        [SerializeField] private ItemType _itemType;
+        public InventoryItemModel Item => _item;
+        public ItemType ItemType => _itemType;
+
+        public async UniTask Init(InventoryItemModel inventoryItemModel)
         {
             _objLoadingLock.SetActive(true);
+            _item = inventoryItemModel;
+            _itemType = _item.Item switch
+            {
+                ItemEquipmentModel => ItemType.Equipment,
+                ItemResourceModel => ItemType.Resource,
+                _ => throw new Exception("Unknown item type")
+            };
+            _txItemQuantity.text = _item.Quantity.ToString();
+            _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity];
+            _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
             _objLoadingLock.SetActive(false);
         }
+
         public void OnTouch()
         {
-            if(_objLoadingLock.activeSelf) return;
+            if (_objLoadingLock.activeSelf) return;
         }
 
         public void OnHold()
         {
-            if(_objLoadingLock.activeSelf) return;
+            if (_objLoadingLock.activeSelf) return;
         }
     }
-
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Sounds
+  m_Name: Sound
   m_EditorClassIdentifier: 
-  m_GroupName: Sounds
+  m_GroupName: Sound
   m_GUID: 29ec927d24930ff46a9f30dd75f94eb2
   m_SerializeEntries:
   - m_GUID: 18ed7ea1abd6b1b488c918fc3d880ebb

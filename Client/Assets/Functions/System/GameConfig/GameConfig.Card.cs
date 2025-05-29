@@ -18,7 +18,7 @@ namespace GameConfigs
         {
             var paths = new[]
             {
-                "CardConfig/LevelExpsSO.asset"
+                "CardConfigs/LevelExpsSO"
             };
 
             var tasks = new List<UniTask<TextSO>>();
@@ -59,7 +59,7 @@ namespace GameConfigs
             }
 
             var cardSO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<CardTemplateModel>("CardTemplateModels/" + cardTemplateId + ".asset");
+                .LoadAssetAsync<CardTemplateModel>("CardTemplateModels/" + cardTemplateId);
             _cardTemplates.TryAdd(cardTemplateId, cardSO);
             return cardSO;
         }
@@ -93,36 +93,7 @@ namespace GameConfigs
 
             return newSprite;
         }
-
-        // public (ushort level, float progressPercent, uint expNext) GetLevelProgressAndNextExp(uint exp)
-        // {
-        //     if (LevelExps == null || LevelExps.Count == 0)
-        //         return (0, 0f, 0);
-        //
-        //     var ordered = LevelExps.OrderBy(kvp => kvp.Key).ToList();
-        //
-        //     for (int i = 0; i < ordered.Count; i++)
-        //     {
-        //         ushort level = ordered[i].Key;
-        //         uint requiredExp = ordered[i].Value;
-        //
-        //         if (exp < requiredExp)
-        //         {
-        //             ushort prevLevel = ordered[i - 1].Key;
-        //             uint prevExp = ordered[i - 1].Value;
-        //
-        //             uint range = requiredExp - prevExp;
-        //             uint currentProgress = exp - prevExp;
-        //
-        //             float progress = range > 0 ? (float)currentProgress / range * 100f : 0f;
-        //             return (prevLevel, progress, range);
-        //         }
-        //     }
-        //
-        //     // Nếu exp >= max mốc
-        //     ushort maxLevel = ordered.Last().Key;
-        //     return (maxLevel, 100f, 0);
-        // }
+        
         public (ushort level, float progressPercent, uint expCurrent, uint expNext) GetLevelProgressAndNextExp(uint exp)
         {
             if (LevelExps == null || LevelExps.Count == 0)
