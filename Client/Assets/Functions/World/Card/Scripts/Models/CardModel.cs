@@ -17,7 +17,7 @@ namespace World.TheCard
         public ushort TemplateId;
 
         /// <summary>
-        /// Bậc sao của card, bậc càng cao, ảnh càng đẹp
+        /// Awakening Stage của card, bậc càng cao, ảnh càng đẹp chỉ số càng bá, skill nâng cấp cao hơn, gọi là Awakening Stage
         /// </summary>
         public byte Star;
 

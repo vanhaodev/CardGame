@@ -16,6 +16,7 @@ namespace Utils.Tab
     {
         public List<TabSwitcherModel> Tabs = new List<TabSwitcherModel>();
         public Action<int> OnTabSwitched;
+        public UnityEvent<int> OnTabSwitchedEvent;
         [SerializeField] TabSwitcherButton _prefabTabButton;
         [SerializeField] Transform _parentTabButton;
         [SerializeField] private TextMeshProUGUI _txWindowTitle;
@@ -105,6 +106,7 @@ namespace Utils.Tab
             // Debug.Log($"SwitchTab {index}");
             CurrentIndex = index;
             OnTabSwitched?.Invoke(index);
+            OnTabSwitchedEvent?.Invoke(index);
         }
 
         private void OnDestroy()

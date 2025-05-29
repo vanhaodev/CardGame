@@ -85,10 +85,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6308427158529902357}
   - component: {fileID: 1267301787516039115}
-  - component: {fileID: 4093558881881063210}
   - component: {fileID: 2859487767692503976}
   - component: {fileID: 6790569051897745857}
   - component: {fileID: 6039580771652473622}
+  - component: {fileID: 2654777885487183307}
   m_Layer: 5
   m_Name: CardBattle
   m_TagString: Untagged
@@ -142,49 +142,6 @@ MonoBehaviour:
     _serializedList: []
   _isDead: 0
   _ultimateableNotification: {fileID: 306780917603140332}
---- !u!114 &4093558881881063210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5220610649100969717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54c90bc3746d4361922331cf0f3f0609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  holdTime: 1.25
-  onClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1267301787516039115}
-        m_TargetAssemblyTypeName: World.TheCard.CardBattle, Assembly-CSharp
-        m_MethodName: OnTouch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onHold:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1267301787516039115}
-        m_TargetAssemblyTypeName: World.TheCard.CardBattle, Assembly-CSharp
-        m_MethodName: OnHold
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &2859487767692503976
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -237,6 +194,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isSpamClick: 0
   _transform: {fileID: 0}
+--- !u!114 &2654777885487183307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220610649100969717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54abc2cef46d43548d17794d25251b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdTime: 1.25
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1267301787516039115}
+        m_TargetAssemblyTypeName: World.TheCard.CardBattle, Assembly-CSharp
+        m_MethodName: OnTouch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHold:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1267301787516039115}
+        m_TargetAssemblyTypeName: World.TheCard.CardBattle, Assembly-CSharp
+        m_MethodName: OnHold
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1046350340456854532
 PrefabInstance:
   m_ObjectHideFlags: 0

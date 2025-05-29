@@ -18,7 +18,7 @@ namespace GameConfigs
         {
             var paths = new[]
             {
-                "ItemTemplates/LevelExpsSO.asset"
+                "CardConfig/LevelExpsSO.asset"
             };
 
             var tasks = new List<UniTask<TextSO>>();

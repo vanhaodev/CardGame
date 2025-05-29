@@ -15,23 +15,8 @@ MonoBehaviour:
   m_GroupName: Game
   m_GUID: 34776c83da527e74ab4c5ecd9ac57adc
   m_SerializeEntries:
-  - m_GUID: 3881038c02a131b48b91efa9b76935ed
-    m_Address: ItemTemplates/ItemTypesSO.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5955f1f900937564b9ed8223e70d55c8
-    m_Address: ItemTemplates
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 68e6db2ebdc24f95958faec2be5558d6
     m_Address: Assets/TextMesh Pro/Shaders/TMP_SDF.shader
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9a05bd73c5337b2459febd0b6a0590e6
-    m_Address: ItemTemplates/LevelExpsSO.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -47,21 +32,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb989056171e61240bfcd87d567dc298
     m_Address: Effect/EffectDeath.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d2c8729a14652cb46a9e998b1386319e
-    m_Address: ItemTemplates
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e291849f141654c4588bd9b3a2272e44
-    m_Address: ItemTemplates/ItemTypeGroupsSO.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ead112a825e6cce4087805d1944f86ba
-    m_Address: ItemTemplates
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

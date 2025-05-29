@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Functions.World.Player;
+using Functions.World.Player.Inventory;
 using UniRx;
-using UnityEngine.Serialization;
-using World.Requirement;
-using World.TheCard;
 
 namespace World.Player.Character
 {

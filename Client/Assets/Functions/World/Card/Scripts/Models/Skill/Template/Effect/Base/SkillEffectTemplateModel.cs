@@ -3,7 +3,6 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 using World.TheCard.Skill;
-using World.Requirement;
 
 namespace World.TheCard.Skill
 {

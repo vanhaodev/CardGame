@@ -70,7 +70,7 @@ namespace Utils
             _scaleDownTween.Restart();
 
             // Chỗ này bạn tùy chọn chơi sound khi thả ra
-            Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_Touch");
+            Global.Instance?.Get<SoundManager>()?.PlaySoundOneShot("FX_Touch");
         }
 
         private void OnDisable()

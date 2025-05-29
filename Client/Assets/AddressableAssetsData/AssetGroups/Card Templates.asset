@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a05bd73c5337b2459febd0b6a0590e6
+    m_Address: CardConfig/LevelExpsSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cebf553dc1cc3ba4496cf051477e68bd
     m_Address: CardSprites/1
     m_ReadOnly: 0

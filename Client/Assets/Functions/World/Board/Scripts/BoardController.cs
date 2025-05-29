@@ -60,16 +60,6 @@ namespace World.Board
             _targetSelectorController.InitTargets(_board);
         }
 
-        public void OnGUI()
-        {
-            // Tạo một button tại vị trí (100, 100) với kích thước 200x50
-            if (GUI.Button(new Rect(100, 100, 200, 200), "Test!"))
-            {
-                SetupBattleFlow();
-                Event.current.Use(); // Chặn sự kiện chuột
-            }
-        }
-
         [Button]
         public async UniTask SetupBoardCards()
         {

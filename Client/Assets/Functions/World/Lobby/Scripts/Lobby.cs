@@ -7,6 +7,10 @@ namespace World.Lobby
 {
     public class Lobby : MonoBehaviour
     {
+        public void OpenSetting()
+        {
+            Global.Instance.Get<PopupManager>().ShowSetting();
+        }
         public void OpenLineup()
         {
             Global.Instance.Get<PopupManager>().ShowCharacter(0);

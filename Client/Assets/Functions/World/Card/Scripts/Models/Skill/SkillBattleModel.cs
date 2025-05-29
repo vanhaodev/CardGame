@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using World.Requirement;
 
 namespace World.TheCard.Skill
 {

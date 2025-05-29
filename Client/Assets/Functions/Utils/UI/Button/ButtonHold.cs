@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine.Events;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
-using UnityEngine.Events;
 
 namespace Utils
 {
-    public class ButtonHold : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+    public abstract class ButtonHold : MonoBehaviour
     {
         [Tooltip("Thời gian giữ để kích hoạt sự kiện hold (giây)")]
         public float holdTime = 1.25f;
@@ -16,11 +14,11 @@ namespace Utils
         public UnityEvent onClick;
         public UnityEvent onHold;
 
-        private CancellationTokenSource _cts;
-        private bool isHolding = false;
-        private bool wasHoldTriggered = false;
+        protected bool isHolding = false;
+        protected bool wasHoldTriggered = false;
+        protected CancellationTokenSource _cts;
 
-        public void OnPointerDown(PointerEventData eventData)
+        protected void StartHold()
         {
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
@@ -30,26 +28,15 @@ namespace Utils
             HoldCheckAsync(_cts.Token).Forget();
         }
 
-        public void OnPointerUp(PointerEventData eventData)
+        protected void ReleaseHold()
         {
             _cts?.Cancel();
 
-            if (wasHoldTriggered)
+            if (!wasHoldTriggered && isHolding)
             {
-                // Đã giữ đủ lâu và gọi onHold -> không gọi onClick
-                return;
-            }
-
-            if (isHolding)
-            {
-                // Chỉ gọi onClick nếu vẫn đang giữ và chưa từng gọi onHold
                 onClick?.Invoke();
             }
-        }
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            _cts?.Cancel();
             isHolding = false;
         }
 
@@ -64,13 +51,10 @@ namespace Utils
                     onHold?.Invoke();
                 }
             }
-            catch (OperationCanceledException)
-            {
-                // Bị hủy -> không làm gì
-            }
+            catch (OperationCanceledException) { }
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             _cts?.Cancel();
             _cts?.Dispose();

@@ -1,0 +1,1 @@
+﻿Chứa các đội hình card được setup sẵn, ra trận có thể chọn

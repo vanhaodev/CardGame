@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using World.Requirement;
 
 namespace World.TheCard.Skill
 {
