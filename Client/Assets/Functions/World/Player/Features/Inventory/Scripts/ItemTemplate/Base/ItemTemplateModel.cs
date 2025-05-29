@@ -1,0 +1,25 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Functions.World.Player.Inventory
+{
+    public abstract class ItemTemplateModel
+    {
+        public uint Id;
+        public string ItemName;
+        public ItemRarity Rarity;
+        public ItemType ItemType;
+        public string Description;
+        /// <summary>
+        /// Khối lượng của item (Kilogram)
+        /// </summary>
+        public uint Weight;
+        //==========[Giá bán cho shop]=============//
+        public uint SellToShopScrapPrice;
+        public uint SellToShopCircuitPrice;
+        /// <summary>
+        /// Hạn sử dụng tính bằng phút
+        /// </summary>
+        public int LifeSpanMinute;
+    }
+}

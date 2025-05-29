@@ -1,0 +1,65 @@
+﻿using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+namespace Utils.Tab
+{
+    [System.Serializable]
+    public class TabSwitcherModel : IDisposable
+    {
+        public GameObject ObjWindow; //nullable có thể không cần window dành cho loại tab như lọc item (chỉ cần respawn)
+        public string TabButtonName; //nullable chủ yếu để set vào title window hoặc title button, nếu không cần title thì cứ để trống
+        public Sprite SpriteTabButtonIcon; //nullable nếu button được tạo sẵn thì không cần, còn dạng spawn động thì có thể ref để nó tự set icon
+        /// <summary>
+        /// Nếu null thì hệ thống sẽ sinh ra từ prefab ở TabSwicher <br/>
+        /// muốn tab đứng ở các vị trí đặc biệt mà hệ thống scrollview hay grid không làm được thì có thể set sẵn rồi kéo vào để ko pải instantiate
+        /// </summary>
+        public TabSwitcherButton TabSwitcherButton;
+        CancellationTokenSource _ctsSelectingBorderAnim;
+        public void Set(bool isSelected)
+        {
+            _ctsSelectingBorderAnim?.Cancel();
+            _ctsSelectingBorderAnim = new CancellationTokenSource();
+            if (isSelected)
+            {
+                // Đặt scale ban đầu là 0.2 rồi mới bật đối tượng
+                TabSwitcherButton.ObjSelectingCover.transform.localScale =
+                    Vector3.zero; // Đặt scale ban đầu là 0.2
+                TabSwitcherButton.Select(true);
+                ShowWindow(true); // Bật đối tượng
+
+                // Thực hiện tween scale từ 0.2 lên 1 trong 0.3s
+                TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.one, 0.3f)
+                    .WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token).Forget();
+            }
+            else
+            {
+                ShowWindow(false); // Tắt đối tượng sau khi tween hoàn tất
+                // Scale ngược lại từ 1 về 0.2 rồi tắt đối tượng
+                TabSwitcherButton.ObjSelectingCover.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() =>
+                {
+                    TabSwitcherButton.ObjSelectingCover.transform.localScale =
+                        Vector3.one; // Đảm bảo set lại scale về 1
+                    TabSwitcherButton.Select(false);
+                }).WithCancellation(cancellationToken: _ctsSelectingBorderAnim.Token).Forget();
+            }
+        }
+
+        public void ShowWindow(bool isShow = true)
+        {
+            if (ObjWindow)
+            {
+                ObjWindow.SetActive(isShow); // Bật đối tượng
+            }
+        }
+
+        public void Dispose()
+        {
+            _ctsSelectingBorderAnim?.Cancel();
+        }
+    }
+}

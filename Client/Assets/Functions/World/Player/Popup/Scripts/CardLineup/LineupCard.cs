@@ -1,0 +1,71 @@
+using System;
+using Cysharp.Threading.Tasks;
+using Functions.World.Player;
+using GameConfigs;
+using Globals;
+using Popups;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using World.Player.Character;
+using World.TheCard;
+
+namespace World.Player.PopupCharacter
+{
+    public class LineupCard : MonoBehaviour
+    {
+        [SerializeField] private byte _slotIndex;
+        [SerializeField] private Card _card;
+        [SerializeField] private Button _btnEquipCard;
+        [SerializeField] private GameObject _objEmpty;
+        [SerializeField] TextMeshProUGUI _txSlotIndex;
+        [SerializeField] TextMeshProUGUI _txCardName;
+
+        public async UniTask Setup(byte slotIndex, byte lineupIndex, Action<byte> onEquipCardClick)
+        {
+            var found = false;
+            var charData = Global.Instance.Get<CharacterData>();
+            _slotIndex = slotIndex;
+            _txSlotIndex.text = (slotIndex + 1).ToString(); //vì back là bắt 0 nên +1 ở display nhé
+            var cardLineups = charData.CharacterModel.CardLineups;
+            if (lineupIndex < cardLineups.Count &&
+                cardLineups[lineupIndex] is { Cards: not null } lineup &&
+                lineup.Cards.TryGetValue(_slotIndex, out var cardId))
+            {
+                var cardData = charData.CharacterModel.CardCollection.GetCard(cardId);
+                if (cardData == null)
+                {
+                    found = false;
+                }
+                else
+                {
+                    found = true;
+                    var cardTemp = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardData.TemplateId);
+                    _objEmpty.SetActive(false);
+                    _card.CardModel = cardData;
+                    _card.gameObject.SetActive(true);
+                    _txCardName.text = cardTemp.Name;
+
+                    _card.ListenEventOnTouch((c) =>
+                    {
+                        Global.Instance.Get<PopupManager>().ShowCard(new PopupCardUnequipModel()
+                        {
+                            CardModel = cardData,
+                            LineupIndex = lineupIndex,
+                            SlotIndex = _slotIndex,
+                        });
+                    });
+                }
+            }
+
+            if (found == false)
+            {
+                _objEmpty.SetActive(true);
+                _card.gameObject.SetActive(false);
+                _txCardName.text = "";
+                _btnEquipCard.onClick.RemoveAllListeners();
+                _btnEquipCard.onClick.AddListener(() => onEquipCardClick?.Invoke(_slotIndex));
+            }
+        }
+    }
+}

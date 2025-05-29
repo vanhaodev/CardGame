@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Card Templates
+  m_EditorClassIdentifier: 
+  m_GroupName: Card Templates
+  m_GUID: 201fa9f71c088374091ed7485fe8885e
+  m_SerializeEntries:
+  - m_GUID: 0173dc7a3fc97eb43ae329e80e1251e0
+    m_Address: CardTemplateModels/2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b890b98023b85e45b91edb5c54d42f5
+    m_Address: CardSprites/2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48f59e2c4863c6d46b7e01bb37551348
+    m_Address: CardTemplateModels/1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a05bd73c5337b2459febd0b6a0590e6
+    m_Address: CardConfig/LevelExpsSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cebf553dc1cc3ba4496cf051477e68bd
+    m_Address: CardSprites/1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 2700156480cc2364fbbf9e624c5f03e0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 29162909dd0e1914485325e7027503a6, type: 2}
+    - {fileID: 11400000, guid: 4d0dcec9fa2577f4bbebeb2be8b8e20c, type: 2}
