@@ -1,1 +1,0 @@
-﻿Chỉ chứa CARD
