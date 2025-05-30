@@ -24,6 +24,7 @@ namespace World.Player.PopupCharacter
         public async UniTask Init()
         {
             var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
+            await inv.Arrange();
             var items = inv.Items
                 .OrderByDescending(i => i.Item.Rarity)
                 .ThenByDescending(i => i.Quantity)
