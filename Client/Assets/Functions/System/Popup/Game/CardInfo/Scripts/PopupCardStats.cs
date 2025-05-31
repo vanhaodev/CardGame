@@ -47,7 +47,7 @@ namespace Popups
             var template = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardModel.TemplateId);
 
             //====================[Name]=================\\
-            var starColor = Global.Instance.Get<GameConfig>().GetStarColor(cardModel.Star);
+            var starColor = Global.Instance.Get<GameConfig>().GetRarityColor(cardModel.Star);
             // Gán text như bình thường (không dùng richtext)
             _txCardName.text = template.Name;
             _txCardName.enableVertexGradient = true;
@@ -68,7 +68,7 @@ namespace Popups
                 $"{cardModel.Level.GetExpNext(false).ToString()}";
             _imgLevelExpFill.fillAmount = cardModel.Level.GetProgress(false) / 100;
 
-            _cardAttributeUI.Init(cardModel);
+            _cardAttributeUI.Init( AttributeModel.ToDictionary(cardModel.CalculatedAttributes));
 
             //=============[BTN]=================\\
             _btnAddToLineup.gameObject.SetActive(tabSwitcherWindowModel.PopupCardModel is PopupCardEquipModel);

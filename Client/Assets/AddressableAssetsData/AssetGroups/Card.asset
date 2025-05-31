@@ -25,11 +25,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 41c463d029cc8924e84fdc9ab28268c1
-    m_Address: CardConfigs/LevelExpsSO
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48f59e2c4863c6d46b7e01bb37551348
     m_Address: CardTemplateModels/1
     m_ReadOnly: 0

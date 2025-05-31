@@ -16,7 +16,7 @@ namespace GameConfigs
             await UniTask.WhenAll(tasks);
         }
 
-        public (string mainColor, string gradient, string gradient2) GetStarColor(byte star)
+        public (string mainColor, string gradient, string gradient2) GetRarityColor(byte star)
         {
             return star switch
             {

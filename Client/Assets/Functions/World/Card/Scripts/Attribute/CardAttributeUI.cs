@@ -13,9 +13,8 @@ namespace World.TheCard
         [SerializeField] private ContentSizeFitter2 _contentSizeFitterContainer;
         [SerializeField] private List<CardAttributeItemUI> _cardAttributeItemUIs;
 
-        public void Init(CardModel model)
+        public void Init(Dictionary<AttributeType, int> atts)
         {
-            var atts = AttributeModel.ToDictionary(model.CalculatedAttributes);
             var types = (AttributeType[])Enum.GetValues(typeof(AttributeType));
 
             // Đảm bảo đủ số lượng UI (tái sử dụng hoặc instantiate thêm)

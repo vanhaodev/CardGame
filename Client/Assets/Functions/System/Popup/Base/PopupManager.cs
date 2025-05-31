@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Functions.World.Player.Inventory;
 using Globals;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -14,6 +15,22 @@ namespace Popups
 {
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
+        public async void ShowItemInfo(InventoryItemModel item)
+        {
+            var pop = GetPopup<PopupItem>() as PopupItem;
+            await pop.SetupData();
+            pop.InitItem(item);
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+        }
+        public async void ShowEquipmentInfo(InventoryItemModel item)
+        {
+            var pop = GetPopup<PopupEquipment>() as PopupEquipment;
+            await pop.SetupData();
+            pop.InitItem(item);
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+        }
         [Button]
         public async void ShowCharacter(int switchIndex = -1)
         {

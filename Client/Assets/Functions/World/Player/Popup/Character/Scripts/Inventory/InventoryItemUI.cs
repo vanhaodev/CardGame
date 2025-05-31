@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using GameConfigs;
 using Globals;
+using Popups;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,10 +37,18 @@ namespace World.Player.PopupCharacter
             _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
             _objLoadingLock.SetActive(false);
         }
-
+        
         public void OnTouch()
         {
             if (_objLoadingLock.activeSelf) return;
+            if (_itemType == ItemType.Resource)
+            {
+                Global.Instance.Get<PopupManager>().ShowItemInfo(_item);
+            }
+            else if (_itemType == ItemType.Equipment)
+            {
+                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item);
+            }
         }
 
         public void OnHold()
