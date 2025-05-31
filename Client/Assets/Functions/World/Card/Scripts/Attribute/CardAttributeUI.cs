@@ -13,20 +13,28 @@ namespace World.TheCard
         [SerializeField] private ContentSizeFitter2 _contentSizeFitterContainer;
         [SerializeField] private List<CardAttributeItemUI> _cardAttributeItemUIs;
 
-        public void Init(Dictionary<AttributeType, int> atts)
+        public void Init(Dictionary<AttributeType, int> atts, bool isShow0Value = false)
         {
             var types = (AttributeType[])Enum.GetValues(typeof(AttributeType));
 
-            // Đảm bảo đủ số lượng UI (tái sử dụng hoặc instantiate thêm)
-            for (int i = 0; i < types.Length; i++)
+            int uiIndex = 0;
+
+            foreach (var type in types)
             {
-                AttributeType type = types[i];
-                int attValue = atts.TryGetValue(type, out var val) ? val : 0;
+                int attValue = 0;
+                if (atts.TryGetValue(type, out var val))
+                {
+                    attValue = val;
+                }
+                else
+                {
+                    if (!isShow0Value) continue;
+                }
 
                 CardAttributeItemUI ui;
-                if (i < _cardAttributeItemUIs.Count)
+                if (uiIndex < _cardAttributeItemUIs.Count)
                 {
-                    ui = _cardAttributeItemUIs[i];
+                    ui = _cardAttributeItemUIs[uiIndex];
                     ui.gameObject.SetActive(true);
                 }
                 else
@@ -36,10 +44,11 @@ namespace World.TheCard
                 }
 
                 ui.Init(type, attValue);
+                uiIndex++;
             }
 
             // Ẩn các UI dư nếu có
-            for (int i = types.Length; i < _cardAttributeItemUIs.Count; i++)
+            for (int i = uiIndex; i < _cardAttributeItemUIs.Count; i++)
             {
                 _cardAttributeItemUIs[i].gameObject.SetActive(false);
             }
