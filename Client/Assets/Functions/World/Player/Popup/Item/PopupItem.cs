@@ -12,7 +12,7 @@ namespace World.Player.PopupCharacter
     public class PopupItem : Popup
     {
         [SerializeField] private InventoryItemUI _itemUI;
-        [SerializeField] private TextMeshProUGUI _txName;
+        [SerializeField] protected TextMeshProUGUI _txName;
         [SerializeField] private TextMeshProUGUI _txDescription;
 
         public virtual async void InitItem(InventoryItemModel item)

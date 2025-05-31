@@ -30,6 +30,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75f8f5f5d2999ae4ca681640c80262f4
+    m_Address: ItemTemplates/3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83728443ad195034a95c65dcbcfdbaab
+    m_Address: ItemIcons/3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b923ab85b289b474280a41e0aff89fcc
     m_Address: ItemTemplates/2
     m_ReadOnly: 0

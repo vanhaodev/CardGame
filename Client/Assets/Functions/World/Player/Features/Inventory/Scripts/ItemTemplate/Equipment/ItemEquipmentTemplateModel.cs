@@ -5,7 +5,7 @@ namespace Functions.World.Player.Inventory
 {
     public enum EquipmentType
     {
-        Weapone, //Vũ khí
+        Weapon, //Vũ khí
         Head, // Mũ
         Chest, // Giáp
         Legs, // Quần / giáp chân

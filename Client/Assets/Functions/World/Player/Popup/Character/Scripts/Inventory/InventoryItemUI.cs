@@ -32,7 +32,7 @@ namespace World.Player.PopupCharacter
                 ItemResourceModel => ItemType.Resource,
                 _ => throw new Exception("Unknown item type")
             };
-            _txItemQuantity.text = _item.Quantity.ToString();
+            _txItemQuantity.text = _item.Quantity > 1 ? _item.Quantity.ToString() : string.Empty;
             _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity];
             _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
             _objLoadingLock.SetActive(false);
