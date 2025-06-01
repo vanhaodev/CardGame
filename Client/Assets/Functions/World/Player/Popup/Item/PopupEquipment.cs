@@ -17,6 +17,7 @@ namespace World.Player.PopupCharacter
         public override async void InitItem(InventoryItemModel item)
         {
             var equipment = item.Item as ItemEquipmentModel;
+            EquipmentUpgrade.Item = equipment;
             base.InitItem(item);
             //upgrade
             if (equipment.UpgradeLevel > 0)
@@ -24,10 +25,7 @@ namespace World.Player.PopupCharacter
                 _txName.text += " +" + equipment.UpgradeLevel.ToString();
             }
             //attribute
-            var attributes = (equipment.CalculatedAttributes ?? Enumerable.Empty<AttributeModel>())
-                .Concat(equipment.CalculatedAttributePercents ?? Enumerable.Empty<AttributeModel>())
-                .ToList();
-            _attributeUI.Init(AttributeModel.ToDictionary(attributes));
+            _attributeUI.Init(AttributeModel.ToDictionary(equipment.CalculatedAttributes ), AttributeModel.ToDictionary(equipment.CalculatedAttributePercents));
             //
             _tab.Init();
             await _attributeUI.RefreshUI();

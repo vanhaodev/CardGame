@@ -32,7 +32,7 @@ MonoBehaviour:
         EquipmentType: 0
         Attributes:
         - Type: 1
-          Value: 1000
+          Value: 985
         AttributePercents:
         - Type: 1
-          Value: 1000
+          Value: 200

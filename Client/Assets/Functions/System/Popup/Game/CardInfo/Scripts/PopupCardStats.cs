@@ -68,7 +68,7 @@ namespace Popups
                 $"{cardModel.Level.GetExpNext(false).ToString()}";
             _imgLevelExpFill.fillAmount = cardModel.Level.GetProgress(false) / 100;
 
-            _cardAttributeUI.Init( AttributeModel.ToDictionary(cardModel.CalculatedAttributes), true);
+            _cardAttributeUI.Init(AttributeModel.ToDictionary(cardModel.CalculatedAttributes), isShow0Value: true);
 
             //=============[BTN]=================\\
             _btnAddToLineup.gameObject.SetActive(tabSwitcherWindowModel.PopupCardModel is PopupCardEquipModel);

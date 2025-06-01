@@ -13,47 +13,64 @@ namespace World.TheCard
         [SerializeField] private ContentSizeFitter2 _contentSizeFitterContainer;
         [SerializeField] private List<CardAttributeItemUI> _cardAttributeItemUIs;
 
-        public void Init(Dictionary<AttributeType, int> atts, bool isShow0Value = false)
+        public void Init(Dictionary<AttributeType, int> atts, Dictionary<AttributeType, int> attPercents = null,
+            bool isShow0Value = false)
         {
             var types = (AttributeType[])Enum.GetValues(typeof(AttributeType));
-
             int uiIndex = 0;
 
             foreach (var type in types)
             {
-                int attValue = 0;
-                if (atts.TryGetValue(type, out var val))
+                bool hasValue = false;
+
+                if (atts != null && atts.TryGetValue(type, out var baseValue))
                 {
-                    attValue = val;
-                }
-                else
-                {
-                    if (!isShow0Value) continue;
+                    if (isShow0Value || baseValue != 0)
+                    {
+                        EnsureUI(uiIndex).Init(type, baseValue, false); // false = không phải phần trăm
+                        uiIndex++;
+                        hasValue = true;
+                    }
                 }
 
-                CardAttributeItemUI ui;
-                if (uiIndex < _cardAttributeItemUIs.Count)
+                if (attPercents != null && attPercents.TryGetValue(type, out var percentValue))
                 {
-                    ui = _cardAttributeItemUIs[uiIndex];
-                    ui.gameObject.SetActive(true);
-                }
-                else
-                {
-                    ui = Instantiate(_prefab, transform);
-                    _cardAttributeItemUIs.Add(ui);
+                    if (isShow0Value || percentValue != 0)
+                    {
+                        EnsureUI(uiIndex).Init(type, percentValue, true); // true = là phần trăm
+                        uiIndex++;
+                        hasValue = true;
+                    }
                 }
 
-                ui.Init(type, attValue);
-                uiIndex++;
+                // Nếu không có giá trị và không muốn hiện số 0, bỏ qua
+                if (!hasValue && !isShow0Value)
+                    continue;
             }
 
-            // Ẩn các UI dư nếu có
+            // Ẩn các UI dư
             for (int i = uiIndex; i < _cardAttributeItemUIs.Count; i++)
             {
                 _cardAttributeItemUIs[i].gameObject.SetActive(false);
             }
         }
 
+        private CardAttributeItemUI EnsureUI(int index)
+        {
+            if (index < _cardAttributeItemUIs.Count)
+            {
+                var ui = _cardAttributeItemUIs[index];
+                ui.gameObject.SetActive(true);
+                return ui;
+            }
+            else
+            {
+                var ui = Instantiate(_prefab, transform);
+                _cardAttributeItemUIs.Add(ui);
+                return ui;
+            }
+        }
+        
         public async UniTask RefreshUI()
         {
             await _contentSizeFitterContainer.UpdateSize();
