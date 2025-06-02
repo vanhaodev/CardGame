@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Functions.World.Player.Inventory;
 using GameConfigs;
 using Globals;
@@ -15,6 +16,7 @@ namespace World.Player.PopupCharacter
 {
     public class EquipmentUpgrade : MonoBehaviour
     {
+        [SerializeField] private GameObject _objBlockInput;
         [SerializeField] private GameObject _objMaxLevel;
         [SerializeField] private GameObject _objNotMaxLevel;
         [SerializeField] private Button _btnUpgrade;
@@ -22,6 +24,10 @@ namespace World.Player.PopupCharacter
         [SerializeField] private TextMeshProUGUI _txUpgradeLevel;
         [SerializeField] private TextMeshProUGUI _txSuccessRate;
         [SerializeField] private TextMeshProUGUI _txIncreaseRate;
+        [SerializeField] private ParticleSystem _particleSuccess;
+        [SerializeField] private ParticleSystem _particleFail;
+        [SerializeField] private GameObject _objProgressLoad;
+        [SerializeField] private Image _imgProgressLoadFill;
         private bool _isHasScrap;
         private ushort _successRate;
         private uint _scrapCost;
@@ -43,65 +49,90 @@ namespace World.Player.PopupCharacter
         public void Init()
         {
             _btnUpgrade.interactable = false;
-            _scrapCost = Global.Instance.Get<GameConfig>().UpgradeItemScrapCost((byte)(_item.UpgradeLevel + 1));
-            _successRate = Global.Instance.Get<GameConfig>().UpgradeItemSuccessRate((byte)(_item.UpgradeLevel + 1));
-            _objMaxLevel.SetActive(_successRate == 0);
-            _objNotMaxLevel.SetActive(_successRate != 0);
+
+            RefreshUpgradeData();
+
             if (_successRate == 0)
             {
+                _objMaxLevel.SetActive(true);
+                _objNotMaxLevel.SetActive(false);
                 return;
             }
 
-            // Lấy object currency kiểu Scrap trong danh sách
-            var charData = Global.Instance.Get<CharacterData>();
-            var scrapCurrency = charData.CharacterModel.Currencies.Find(i => i.Type == CurrencyType.Scrap);
-            _myScrap = scrapCurrency != null ? (uint)scrapCurrency.Amount : 0;
-            _isHasScrap = _myScrap > _scrapCost;
-
-            var increasePercentCurrent = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(_item.UpgradeLevel);
-            var increasePercentNext = Global.Instance.Get<GameConfig>()
-                .UpgradeItemPercentBonus((byte)(_item.UpgradeLevel + 1));
-            _txScrapCost.text = $"{(_isHasScrap ? "" : "<color=red>")}" + _scrapCost;
-            _txUpgradeLevel.text = $"+{_item.UpgradeLevel} <color=#6BFF00>-> +{_item.UpgradeLevel + 1}</color>";
-            _txIncreaseRate.text =
-                $"{increasePercentCurrent:0.##}% -> <color=#6BFF00>{increasePercentNext:0.##}% Increase";
-            _txSuccessRate.text = $"{_successRate / 100f:0.##}% Success rate";
+            RefreshScrapStatus();
+            RefreshUI();
             _btnUpgrade.interactable = true;
         }
 
         private async void OnUpgrade()
         {
-            //real time update
-            _scrapCost = Global.Instance.Get<GameConfig>().UpgradeItemScrapCost((byte)(_item.UpgradeLevel + 1));
-            _isHasScrap = _myScrap > _scrapCost;
-            //
-            if (_isHasScrap == false)
+            _btnUpgrade.interactable = false;
+            _objBlockInput.SetActive(true);
+            RefreshUpgradeData();
+            RefreshScrapStatus();
+
+            if (!_isHasScrap)
             {
+                _btnUpgrade.interactable = true;
                 Global.Instance.Get<PopupManager>().ShowToast("You don't have enough Scrap");
                 return;
             }
-            //- money
+
             var charData = Global.Instance.Get<CharacterData>();
             var scrapCurrency = charData.CharacterModel.Currencies.Find(i => i.Type == CurrencyType.Scrap);
             scrapCurrency.Amount -= _scrapCost;
-            //
-            _btnUpgrade.interactable = false;
+            _imgProgressLoadFill.fillAmount = 0;
+            _objProgressLoad.SetActive(true);
             var itemNeedToUp = _item;
             bool isSuccess = Random.Range(0, 10000) < _successRate;
+            await _imgProgressLoadFill.DOFillAmount(1, 1).WithCancellation(destroyCancellationToken);
             if (isSuccess)
             {
                 Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_UpgradeSuccess");
+                _particleSuccess.Play();
                 itemNeedToUp.UpgradeLevel += 1;
                 await itemNeedToUp.UpdateAttribute();
-                Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(itemNeedToUp.UpgradeLevel);
-                Init();
+                Init(); // Refresh lại toàn bộ UI sau khi nâng cấp
             }
             else
             {
                 Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_UpgradeFail");
+                _particleFail.Play();
             }
 
+            _objProgressLoad.SetActive(false);
             _btnUpgrade.interactable = true;
+            _objBlockInput.SetActive(false);
+        }
+
+        private void RefreshUpgradeData()
+        {
+            _scrapCost = Global.Instance.Get<GameConfig>().UpgradeItemScrapCost((byte)(_item.UpgradeLevel + 1));
+            _successRate = Global.Instance.Get<GameConfig>().UpgradeItemSuccessRate((byte)(_item.UpgradeLevel + 1));
+            _objMaxLevel.SetActive(_successRate == 0);
+            _objNotMaxLevel.SetActive(_successRate != 0);
+        }
+
+        private void RefreshScrapStatus()
+        {
+            var charData = Global.Instance.Get<CharacterData>();
+            var scrapCurrency = charData.CharacterModel.Currencies.Find(i => i.Type == CurrencyType.Scrap);
+            _myScrap = scrapCurrency != null ? (uint)scrapCurrency.Amount : 0;
+            _isHasScrap = _myScrap >= _scrapCost;
+            charData.InvokeOnCharacterChanged();
+        }
+
+        private void RefreshUI()
+        {
+            var increasePercentCurrent = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(_item.UpgradeLevel);
+            var increasePercentNext = Global.Instance.Get<GameConfig>()
+                .UpgradeItemPercentBonus((byte)(_item.UpgradeLevel + 1));
+
+            _txScrapCost.text = $"{(_isHasScrap ? "" : "<color=red>")}{_scrapCost}";
+            _txUpgradeLevel.text = $"+{_item.UpgradeLevel} <color=#6BFF00>-> +{_item.UpgradeLevel + 1}</color>";
+            _txIncreaseRate.text =
+                $"{increasePercentCurrent:0.##}% -> <color=#6BFF00>{increasePercentNext:0.##}% Increase";
+            _txSuccessRate.text = $"{_successRate / 100f:0.##}% Success rate";
         }
     }
 }
