@@ -18,7 +18,7 @@ namespace GameConfigs
         {
             var paths = new[]
             {
-                "CardConfigs/LevelExpsSO"
+                "CardConfigs/LevelExps"
             };
 
             var tasks = new List<UniTask<TextSO>>();

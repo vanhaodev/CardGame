@@ -65,8 +65,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb8793624bae26e4880696a8e2d2aaf8
+    m_Address: Audios/FX_UpgradeFail
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e0e334f65785bb542af06e2811fee1ff
     m_Address: Audios/BGM_Home
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e832c94953bf95342bf89527993d0631
+    m_Address: Audios/FX_UpgradeSuccess
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
