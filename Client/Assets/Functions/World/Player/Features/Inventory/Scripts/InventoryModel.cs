@@ -25,7 +25,7 @@ namespace Functions.World.Player.Inventory
 
         public async UniTask Arrange()
         {
-            if(Items.Count == _lastArrangeItemCount) return; 
+            //if(Items.Count == _lastArrangeItemCount) return; 
             var grouped = new Dictionary<(uint TemplateId, ItemRarity Rarity), InventoryItemModel>();
             var newItems = new List<InventoryItemModel>();
 
@@ -60,6 +60,7 @@ namespace Functions.World.Player.Inventory
             }
 
             newItems.AddRange(grouped.Values);
+            newItems.RemoveAll(i => i.Quantity < 1);
             Items = newItems;
             _lastArrangeItemCount = newItems.Count;
         }

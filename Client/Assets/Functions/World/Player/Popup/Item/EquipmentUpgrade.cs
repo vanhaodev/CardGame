@@ -74,6 +74,7 @@ namespace World.Player.PopupCharacter
             {
                 _btnUpgrade.interactable = true;
                 Global.Instance.Get<PopupManager>().ShowToast("You don't have enough Scrap");
+                _objBlockInput.SetActive(false);
                 return;
             }
 

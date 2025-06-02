@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using Globals;
+using Popups.Commons.Choice;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Utils;
@@ -15,23 +16,36 @@ namespace Popups
 {
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
+        public async void ShowChoice(string content, List<ButtonChoiceModel> choices,
+            bool isShowInput = false, string inputDefault = "", Action<Action> onCloseSetter = null)
+        {
+            var pop = GetPopup<PopupChoice>() as PopupChoice;
+            await pop.SetupData();
+            pop.Init(content, choices, isShowInput, inputDefault);
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+            onCloseSetter?.Invoke(() => pop.Close());
+        }
+
         public async void ShowItemInfo(InventoryItemModel item)
         {
             var pop = GetPopup<PopupItem>() as PopupItem;
             await pop.SetupData();
-            pop.InitItem(item);
+            pop.Init(item);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
+
         public async void ShowEquipmentInfo(InventoryItemModel item)
         {
             var pop = GetPopup<PopupEquipment>() as PopupEquipment;
             await pop.SetupData();
             pop.SetItem(item);
-            pop.InitItem(null);
+            pop.Init(null);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
+
         [Button]
         public async void ShowCharacter(int switchIndex = -1)
         {
@@ -41,6 +55,7 @@ namespace Popups
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
+
         [Button]
         public async void ShowSetting()
         {

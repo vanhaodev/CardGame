@@ -16,38 +16,41 @@ namespace World.Player.PopupCharacter
         [SerializeField] private CardAttributeUI _attributeUI;
         [SerializeField] RectTransform _rectTransformContent;
         public static ItemEquipmentModel EquipmentItem;
-        private InventoryItemModel _item;
-        private void OnEnable()
+
+        private void OnDisable()
         {
-            InitItem(_item);
+            _tab.OnTabSwitched -= ReInit;
         }
 
         public void SetItem(InventoryItemModel item)
         {
             _item = item;
             EquipmentItem = item.Item as ItemEquipmentModel;
+            _tab.Init();
+            _tab.OnTabSwitched += ReInit;
         }
-        public override async void InitItem(InventoryItemModel item)
+
+        private void ReInit(int _)
         {
-            base.InitItem(_item);
+            if (_tab.CurrentIndex != 0) return;
+            Init(_item);
+        }
+
+        public override async void Init(InventoryItemModel item)
+        {
+            base.Init(_item);
             //upgrade
             if (EquipmentItem.UpgradeLevel > 0)
             {
                 _txName.text += " +" + EquipmentItem.UpgradeLevel.ToString();
             }
+
             //attribute
-            _attributeUI.Init(AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributes ), AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributePercents));
+            _attributeUI.Init(AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributes),
+                AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributePercents));
             //
-            _tab.Init();
             await _attributeUI.RefreshUI();
             LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransformContent);
         }
-
-        // public override async UniTask Show(float fadeDuration = 0.3f)
-        // {
-        //     await base.Show(fadeDuration);
-        //     await _attributeUI.RefreshUI();
-        //     LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTransformContent);
-        // }
     }
 }

@@ -56,17 +56,17 @@ namespace GameConfigs
             switch (upgradeLevel)
             {
                 case 0: return 0f;
-                case 1: return 1.6f;
-                case 2: return 3.2f;
-                case 3: return 5.0f;
-                case 4: return 7.0f;
-                case 5: return 9.5f;
-                case 6: return 12.0f;
-                case 7: return 15.0f;
-                case 8: return 18.5f;
-                case 9: return 22.0f;
-                case 10: return 26.0f;
-                default: return 26.0f;
+                case 1: return 3.6f;
+                case 2: return 5.2f;
+                case 3: return 7.0f;
+                case 4: return 9.0f;
+                case 5: return 12.5f;
+                case 6: return 15.0f;
+                case 7: return 22.0f;
+                case 8: return 27.5f;
+                case 9: return 32.0f;
+                case 10: return 37.0f;
+                default: return 37.0f;
             }
         }
 
@@ -81,14 +81,14 @@ namespace GameConfigs
             {
                 case 1: return 8500; // 85%
                 case 2: return 7000; // 70%
-                case 3: return 5500; // 55%
-                case 4: return 4000; // 40%
-                case 5: return 3000; // 30%
-                case 6: return 2200; // 22%
-                case 7: return 1600; // 16%
-                case 8: return 1200; // 12%
-                case 9: return 1100; // 11%
-                case 10: return 1000; // 10%
+                case 3: return 7000; // 70%
+                case 4: return 7000; // 70%
+                case 5: return 5500; // 55%
+                case 6: return 5500; // 55%
+                case 7: return 4000; // 40%
+                case 8: return 3000; // 30%
+                case 9: return 2400; // 24%
+                case 10: return 2000; // 20%
                 default: return 0; // Ko hợp lệ hoặc ko nâng được
             }
         }
@@ -97,16 +97,16 @@ namespace GameConfigs
         {
             switch (upgradeLevel)
             {
-                case 1: return 1000; // 85%
-                case 2: return 1000; // 70%
-                case 3: return 1000; // 55%
-                case 4: return 3000; // 40%
-                case 5: return 3000; // 30%
-                case 6: return 3000; // 22%
-                case 7: return 7000; // 16%
-                case 8: return 7000; // 12%
-                case 9: return 9000; // 11%
-                case 10: return 15000; // 10%
+                case 1: return 1000;
+                case 2: return 1000;
+                case 3: return 1000;
+                case 4: return 3000;
+                case 5: return 3000;
+                case 6: return 3000;
+                case 7: return 7000;
+                case 8: return 7000;
+                case 9: return 9000;
+                case 10: return 15000;
                 default: return 0;
             }
         }
