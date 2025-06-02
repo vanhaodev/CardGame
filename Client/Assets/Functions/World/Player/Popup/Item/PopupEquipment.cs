@@ -15,29 +15,28 @@ namespace World.Player.PopupCharacter
         [SerializeField] private TabSwitcher _tab;
         [SerializeField] private CardAttributeUI _attributeUI;
         [SerializeField] RectTransform _rectTransformContent;
-        public static ItemEquipmentModel Item;
-
+        public static ItemEquipmentModel EquipmentItem;
+        private InventoryItemModel _item;
         private void OnEnable()
         {
-            InitItem(Item);
+            InitItem(_item);
         }
 
-        public void SetItem(ItemEquipmentModel item)
+        public void SetItem(InventoryItemModel item)
         {
-            Item = item;
+            _item = item;
+            EquipmentItem = item.Item as ItemEquipmentModel;
         }
-        public override async void InitItem(ItemEquipmentModel item)
+        public override async void InitItem(InventoryItemModel item)
         {
-            var equipment = item.Item as ItemEquipmentModel;
-            PopupEquipment.Item = equipment;
-            base.InitItem(item);
+            base.InitItem(_item);
             //upgrade
-            if (equipment.UpgradeLevel > 0)
+            if (EquipmentItem.UpgradeLevel > 0)
             {
-                _txName.text += " +" + equipment.UpgradeLevel.ToString();
+                _txName.text += " +" + EquipmentItem.UpgradeLevel.ToString();
             }
             //attribute
-            _attributeUI.Init(AttributeModel.ToDictionary(equipment.CalculatedAttributes ), AttributeModel.ToDictionary(equipment.CalculatedAttributePercents));
+            _attributeUI.Init(AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributes ), AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributePercents));
             //
             _tab.Init();
             await _attributeUI.RefreshUI();

@@ -32,7 +32,7 @@ namespace World.Player.PopupCharacter
         private ushort _successRate;
         private uint _scrapCost;
         private uint _myScrap;
-        private ItemEquipmentModel _item => PopupEquipment.Item;
+        private ItemEquipmentModel EquipmentItem => PopupEquipment.EquipmentItem;
 
         private void OnEnable()
         {
@@ -82,7 +82,7 @@ namespace World.Player.PopupCharacter
             scrapCurrency.Amount -= _scrapCost;
             _imgProgressLoadFill.fillAmount = 0;
             _objProgressLoad.SetActive(true);
-            var itemNeedToUp = _item;
+            var itemNeedToUp = EquipmentItem;
             bool isSuccess = Random.Range(0, 10000) < _successRate;
             await _imgProgressLoadFill.DOFillAmount(1, 1).WithCancellation(destroyCancellationToken);
             if (isSuccess)
@@ -108,8 +108,8 @@ namespace World.Player.PopupCharacter
 
         private void RefreshUpgradeData()
         {
-            _scrapCost = Global.Instance.Get<GameConfig>().UpgradeItemScrapCost((byte)(_item.UpgradeLevel + 1));
-            _successRate = Global.Instance.Get<GameConfig>().UpgradeItemSuccessRate((byte)(_item.UpgradeLevel + 1));
+            _scrapCost = Global.Instance.Get<GameConfig>().UpgradeItemScrapCost((byte)(EquipmentItem.UpgradeLevel + 1));
+            _successRate = Global.Instance.Get<GameConfig>().UpgradeItemSuccessRate((byte)(EquipmentItem.UpgradeLevel + 1));
             _objMaxLevel.SetActive(_successRate == 0);
             _objNotMaxLevel.SetActive(_successRate != 0);
         }
@@ -125,12 +125,12 @@ namespace World.Player.PopupCharacter
 
         private void RefreshUI()
         {
-            var increasePercentCurrent = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(_item.UpgradeLevel);
+            var increasePercentCurrent = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(EquipmentItem.UpgradeLevel);
             var increasePercentNext = Global.Instance.Get<GameConfig>()
-                .UpgradeItemPercentBonus((byte)(_item.UpgradeLevel + 1));
+                .UpgradeItemPercentBonus((byte)(EquipmentItem.UpgradeLevel + 1));
 
             _txScrapCost.text = $"{(_isHasScrap ? "" : "<color=red>")}{_scrapCost}";
-            _txUpgradeLevel.text = $"+{_item.UpgradeLevel} <color=#6BFF00>-> +{_item.UpgradeLevel + 1}</color>";
+            _txUpgradeLevel.text = $"+{EquipmentItem.UpgradeLevel} <color=#6BFF00>-> +{EquipmentItem.UpgradeLevel + 1}</color>";
             _txIncreaseRate.text =
                 $"{increasePercentCurrent:0.##}% -> <color=#6BFF00>{increasePercentNext:0.##}% Increase";
             _txSuccessRate.text = $"{_successRate / 100f:0.##}% Success rate";
