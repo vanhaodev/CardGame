@@ -32,8 +32,7 @@ namespace World.Player.PopupCharacter
         private ushort _successRate;
         private uint _scrapCost;
         private uint _myScrap;
-        public static ItemEquipmentModel Item;
-        private ItemEquipmentModel _item => EquipmentUpgrade.Item;
+        private ItemEquipmentModel _item => PopupEquipment.Item;
 
         private void OnEnable()
         {
@@ -89,6 +88,7 @@ namespace World.Player.PopupCharacter
             if (isSuccess)
             {
                 Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_UpgradeSuccess");
+                _particleSuccess.Stop();
                 _particleSuccess.Play();
                 itemNeedToUp.UpgradeLevel += 1;
                 await itemNeedToUp.UpdateAttribute();
@@ -97,6 +97,7 @@ namespace World.Player.PopupCharacter
             else
             {
                 Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_UpgradeFail");
+                _particleFail.Stop();
                 _particleFail.Play();
             }
 

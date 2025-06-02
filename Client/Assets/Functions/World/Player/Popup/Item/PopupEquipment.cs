@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -14,10 +15,21 @@ namespace World.Player.PopupCharacter
         [SerializeField] private TabSwitcher _tab;
         [SerializeField] private CardAttributeUI _attributeUI;
         [SerializeField] RectTransform _rectTransformContent;
-        public override async void InitItem(InventoryItemModel item)
+        public static ItemEquipmentModel Item;
+
+        private void OnEnable()
+        {
+            InitItem(Item);
+        }
+
+        public void SetItem(ItemEquipmentModel item)
+        {
+            Item = item;
+        }
+        public override async void InitItem(ItemEquipmentModel item)
         {
             var equipment = item.Item as ItemEquipmentModel;
-            EquipmentUpgrade.Item = equipment;
+            PopupEquipment.Item = equipment;
             base.InitItem(item);
             //upgrade
             if (equipment.UpgradeLevel > 0)
