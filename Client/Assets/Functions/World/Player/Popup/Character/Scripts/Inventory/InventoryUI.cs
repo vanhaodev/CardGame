@@ -82,6 +82,7 @@ namespace World.Player.PopupCharacter
             var itemType = index -= 1;
             foreach (var item in _inventoryItemUIs)
             {
+                if(item.Item.Quantity < 1) continue;
                 var isActive = false;
                 if (itemType != -1)
                 {

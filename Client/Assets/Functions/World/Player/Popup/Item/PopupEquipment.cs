@@ -33,12 +33,12 @@ namespace World.Player.PopupCharacter
         private void ReInit(int _)
         {
             if (_tab.CurrentIndex != 0) return;
-            Init(_item);
+            Init(_item, _onChanged);
         }
 
-        public override async void Init(InventoryItemModel item)
+        public override async void Init(InventoryItemModel item, Action onChanged)
         {
-            base.Init(_item);
+            base.Init(_item, onChanged);
             //upgrade
             if (EquipmentItem.UpgradeLevel > 0)
             {

@@ -24,6 +24,7 @@ namespace World.Player.PopupCharacter
 
         public async UniTask Init(InventoryItemModel inventoryItemModel)
         {
+            if (inventoryItemModel.Quantity < 1) gameObject.SetActive(false);
             _objLoadingLock.SetActive(true);
             _item = inventoryItemModel;
             _itemType = _item.Item switch
@@ -37,17 +38,17 @@ namespace World.Player.PopupCharacter
             _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
             _objLoadingLock.SetActive(false);
         }
-        
+
         public void OnTouch()
         {
             if (_objLoadingLock.activeSelf) return;
             if (_itemType == ItemType.Resource)
             {
-                Global.Instance.Get<PopupManager>().ShowItemInfo(_item);
+                Global.Instance.Get<PopupManager>().ShowItemInfo(_item, () => { Init(_item); });
             }
             else if (_itemType == ItemType.Equipment)
             {
-                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item);
+                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item, () => { Init(_item); });
             }
         }
 

@@ -21,9 +21,12 @@ namespace World.Player.PopupCharacter
         private uint _sellScrapPrice;
         private uint _sellCircuitPrice;
         protected InventoryItemModel _item;
+        protected Action _onChanged;
 
-        public virtual async void Init(InventoryItemModel item)
+        public virtual async void Init(InventoryItemModel item, Action onChanged)
         {
+            _onChanged = onChanged;
+            _onChanged += () => _itemUI.Init(item);
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(item.Item.TemplateId);
             _sellScrapPrice = template.SellToShopScrapPrice;
             _sellCircuitPrice = template.SellToShopCircuitPrice;
@@ -97,6 +100,12 @@ namespace World.Player.PopupCharacter
                         _item.Quantity -= quantity;
                         charData.InvokeOnCharacterChanged();
                         onCloseChoice?.Invoke();
+                        _onChanged?.Invoke();
+                        if (_item.Quantity < 1)
+                        {
+                            //nếu hết quantity đóng luôn info
+                            Close();
+                        }
                     }
                 }
             }, this is not PopupEquipment, "1", close => onCloseChoice = close);

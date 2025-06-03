@@ -27,21 +27,21 @@ namespace Popups
             onCloseSetter?.Invoke(() => pop.Close());
         }
 
-        public async void ShowItemInfo(InventoryItemModel item)
+        public async void ShowItemInfo(InventoryItemModel item, Action onChanged)
         {
             var pop = GetPopup<PopupItem>() as PopupItem;
             await pop.SetupData();
-            pop.Init(item);
+            pop.Init(item, onChanged);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
 
-        public async void ShowEquipmentInfo(InventoryItemModel item)
+        public async void ShowEquipmentInfo(InventoryItemModel item, Action onChanged)
         {
             var pop = GetPopup<PopupEquipment>() as PopupEquipment;
             await pop.SetupData();
             pop.SetItem(item);
-            pop.Init(null);
+            pop.Init(null, onChanged);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
