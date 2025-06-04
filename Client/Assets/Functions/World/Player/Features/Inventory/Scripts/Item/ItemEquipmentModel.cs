@@ -15,7 +15,7 @@ namespace Functions.World.Player.Inventory
         /// Cường hoá + <br/>
         /// Mỗi cấp cộng 0.25% điểm att đang có
         /// </summary>
-        public byte UpgradeLevel;
+        public byte UpgradeLevel = 1;
 
         /// <summary>
         /// tăng chỉ số static vào người đeo

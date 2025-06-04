@@ -19,6 +19,10 @@ namespace Functions.World.Player.Inventory
     public class ItemEquipmentTemplateModel : ItemTemplateModel
     {
         /// <summary>
+        /// Card level need
+        /// </summary>
+        public byte RequiredLevel;
+        /// <summary>
         /// Có được đeo trùng không, có vài item  cho phép đeo dồn, tuy nhiên hiệu ứng đặc biệt của trang bị sẽ không cộng dồn và chỉ lấy của trang bị có hiệu ứng tốt nhất.
         /// </summary>
         public bool IsDuplicateEquip;

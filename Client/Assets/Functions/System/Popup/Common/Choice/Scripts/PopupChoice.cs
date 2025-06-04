@@ -12,7 +12,9 @@ namespace Popups.Commons.Choice
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private RectTransform _rectContent; //140 & 212
         [SerializeField] private List<ButtonChoiceUI> _choiceUIs;
-        public void Init(string content, List<ButtonChoiceModel> choices, bool isShowInput = false, string inputDefault = "")
+
+        public void Init(string content, List<ButtonChoiceModel> choices, bool isShowInput = false,
+            string inputDefault = "")
         {
             _txContent.text = content;
             //
@@ -23,22 +25,31 @@ namespace Popups.Commons.Choice
             _inputField.text = inputDefault;
             //
             //choice
-            while (_choiceUIs.Count < choices.Count)
+
+            if (choices != null)
             {
-                var choice = Instantiate(_prefabButton, _transformButtonContainer);
-                _choiceUIs.Add(choice);
+                while (_choiceUIs.Count < choices.Count)
+                {
+                    var choice = Instantiate(_prefabButton, _transformButtonContainer);
+                    _choiceUIs.Add(choice);
+                }
+
+                for (int i = 0; i < _choiceUIs.Count; i++)
+                {
+                    if (i < choices.Count)
+                    {
+                        _choiceUIs[i].gameObject.SetActive(true);
+                        _choiceUIs[i].Init(choices[i], _inputField);
+                    }
+                    else
+                    {
+                        _choiceUIs[i].gameObject.SetActive(false);
+                    }
+                }
             }
-            for (int i = 0; i < _choiceUIs.Count; i++)
+            else
             {
-                if (i < choices.Count)
-                {
-                    _choiceUIs[i].gameObject.SetActive(true);
-                    _choiceUIs[i].Init(choices[i], _inputField);
-                }
-                else
-                {
-                    _choiceUIs[i].gameObject.SetActive(false);
-                }
+                for (int i = 0; i < _choiceUIs.Count; i++) _choiceUIs[i].gameObject.SetActive(false);
             }
         }
     }

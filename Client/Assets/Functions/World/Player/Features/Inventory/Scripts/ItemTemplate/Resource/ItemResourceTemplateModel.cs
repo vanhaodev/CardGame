@@ -13,7 +13,6 @@
     public class ItemCardShardTemplateModel : ItemResourceTemplateModel
     {
         public ushort CardTemplateId;
-        public ushort RequiredShardCount;
     }
 
     [System.Serializable]

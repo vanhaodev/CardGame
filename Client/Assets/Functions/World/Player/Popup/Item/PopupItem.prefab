@@ -937,6 +937,7 @@ MonoBehaviour:
   _itemUI: {fileID: 494731689093082482}
   _txName: {fileID: 8286774351832721090}
   _txDescription: {fileID: 7092621589555788042}
+  _btnUse: {fileID: 9106129432124639370}
 --- !u!1 &3096109278982470046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1518,7 +1519,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5089510808262107694}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4848171321162187515}
+        m_TargetAssemblyTypeName: World.Player.PopupCharacter.PopupItem, Assembly-CSharp
+        m_MethodName: Use
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1613902624486168179
 MonoBehaviour:
   m_ObjectHideFlags: 0

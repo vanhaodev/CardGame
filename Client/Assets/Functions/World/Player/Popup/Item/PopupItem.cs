@@ -7,8 +7,7 @@ using Popups;
 using Popups.Commons.Choice;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using World.Player.Character;
 
 namespace World.Player.PopupCharacter
@@ -18,6 +17,7 @@ namespace World.Player.PopupCharacter
         [SerializeField] private InventoryItemUI _itemUI;
         [SerializeField] protected TextMeshProUGUI _txName;
         [SerializeField] private TextMeshProUGUI _txDescription;
+        [SerializeField] private Button _btnUse;
         private uint _sellScrapPrice;
         private uint _sellCircuitPrice;
         protected InventoryItemModel _item;
@@ -42,8 +42,34 @@ namespace World.Player.PopupCharacter
                 bottomColor, bottomColor // Bottom Left, Bottom Right
             );
             _txDescription.text = template.Description;
+
+            bool isUsable = template is ItemCardShardTemplateModel;
+            _btnUse.gameObject.SetActive(isUsable);
         }
 
+        public async void Use()
+        {
+            _btnUse.interactable = false;
+            var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(_item.Item.TemplateId);
+            switch (template)
+            {
+                case ItemCardShardTemplateModel cardShard:
+                {
+                    var requiredShardCount = Global.Instance.Get<GameConfig>().RequiredShardCount;
+                    bool isHaveEnough = _item.Quantity >= requiredShardCount;
+                    if (isHaveEnough)
+                    {
+                        
+                    }
+                    else
+                    {
+                        Global.Instance.Get<PopupManager>().ShowChoice($"You need to have at least {requiredShardCount} shards to combine the card.");
+                    }
+                    break;
+                }
+            }
+            _btnUse.interactable = true;
+        }
         public void Sell()
         {
             // Giả lập localization (sau thay bằng hệ thống real sau)
@@ -99,7 +125,7 @@ namespace World.Player.PopupCharacter
 
                         _item.Quantity -= quantity;
                         charData.InvokeOnCharacterChanged();
-                        onCloseChoice?.Invoke();
+                        onCloseChoice?.Invoke(); //khi nhấn bán, sẽ đóng popup choice bán
                         _onChanged?.Invoke();
                         if (_item.Quantity < 1)
                         {

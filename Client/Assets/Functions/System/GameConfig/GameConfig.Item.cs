@@ -12,6 +12,7 @@ namespace GameConfigs
 {
     public partial class GameConfig : MonoBehaviour, IGlobal
     {
+        public ushort RequiredShardCount = 100;
         public async UniTask InitItem()
         {
         }

@@ -15,7 +15,7 @@ namespace Functions.World.Player.Inventory
         /// <summary>
         /// Khối lượng của item (Kilogram)
         /// </summary>
-        public uint Weight;
+        public uint Weight = 1;
 
         //==========[Giá bán cho shop]=============//
         public uint SellToShopScrapPrice;

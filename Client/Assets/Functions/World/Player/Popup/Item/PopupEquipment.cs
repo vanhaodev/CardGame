@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
+using GameConfigs;
+using Globals;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils.Tab;
@@ -13,6 +16,7 @@ namespace World.Player.PopupCharacter
     public class PopupEquipment : PopupItem
     {
         [SerializeField] private TabSwitcher _tab;
+        [SerializeField] private TextMeshProUGUI _txRequiredLevel;
         [SerializeField] private CardAttributeUI _attributeUI;
         [SerializeField] RectTransform _rectTransformContent;
         public static ItemEquipmentModel EquipmentItem;
@@ -36,8 +40,9 @@ namespace World.Player.PopupCharacter
             Init(_item, _onChanged);
         }
 
-        public override async void Init(InventoryItemModel item, Action onChanged)
+        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, Action onChanged)
         {
+            var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(_item.Item.TemplateId);
             base.Init(_item, onChanged);
             //upgrade
             if (EquipmentItem.UpgradeLevel > 0)
@@ -45,6 +50,7 @@ namespace World.Player.PopupCharacter
                 _txName.text += " +" + EquipmentItem.UpgradeLevel.ToString();
             }
 
+            _txRequiredLevel.text = $"Required Level: {(template as ItemEquipmentTemplateModel).RequiredLevel}";
             //attribute
             _attributeUI.Init(AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributes),
                 AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributePercents));

@@ -28,6 +28,7 @@ MonoBehaviour:
         SellToShopScrapPrice: 1000
         SellToShopCircuitPrice: 0
         LifeSpanMinute: -1
+        RequiredLevel: 10
         IsDuplicateEquip: 0
         EquipmentType: 0
         Attributes:

@@ -16,7 +16,15 @@ namespace Popups
 {
     public partial class PopupManager : MonoBehaviour, IGlobal
     {
-        public async void ShowChoice(string content, List<ButtonChoiceModel> choices,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="choices"></param>
+        /// <param name="isShowInput"></param>
+        /// <param name="inputDefault"></param>
+        /// <param name="onCloseSetter">Gọi action này sẽ giúp đóng pop này</param>
+        public async void ShowChoice(string content, List<ButtonChoiceModel> choices = null,
             bool isShowInput = false, string inputDefault = "", Action<Action> onCloseSetter = null)
         {
             var pop = GetPopup<PopupChoice>() as PopupChoice;
