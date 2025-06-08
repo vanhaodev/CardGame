@@ -50,7 +50,7 @@ namespace World.Player.PopupCharacter
                 _txName.text += " +" + EquipmentItem.UpgradeLevel.ToString();
             }
 
-            _txRequiredLevel.text = $"Required Level: {(template as ItemEquipmentTemplateModel).RequiredLevel}";
+            _txRequiredLevel.text = $"Required Level: {(template as ItemEquipmentTemplateModel).RequiredLevel}"; //nếu null thì chắc đang config sai itemtype của item
             //attribute
             _attributeUI.Init(AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributes),
                 AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributePercents));

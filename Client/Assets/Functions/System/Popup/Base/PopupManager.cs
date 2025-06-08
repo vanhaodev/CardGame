@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Functions.World.Gacha;
 using Functions.World.Player.Inventory;
 using Globals;
 using Popups.Commons.Choice;
@@ -35,6 +36,15 @@ namespace Popups
             onCloseSetter?.Invoke(() => pop.Close());
         }
 
+        [Button]
+        public async void ShowGachaCard()
+        {
+            var pop = GetPopup<PopupGachaCard>() as PopupGachaCard;
+            await pop.SetupData();
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+        }
+
         public async void ShowItemInfo(InventoryItemModel item, Action onChanged)
         {
             var pop = GetPopup<PopupItem>() as PopupItem;
@@ -54,7 +64,6 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        [Button]
         public async void ShowCharacter(int switchIndex = -1)
         {
             var pop = GetPopup<PopupCharacter>() as PopupCharacter;
@@ -64,7 +73,6 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        [Button]
         public async void ShowSetting()
         {
             var pop = GetPopup<PopupSetting>() as PopupSetting;
@@ -73,7 +81,6 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        [Button]
         public async void ShowCard(PopupCardModel model)
         {
             var pop = GetPopup<PopupCard>() as PopupCard;

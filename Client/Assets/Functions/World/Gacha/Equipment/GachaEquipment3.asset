@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5682e2badbf74778b16ec5782ba7b2ba, type: 3}
+  m_Name: GachaEquipment3
+  m_EditorClassIdentifier: 
+  Content: "[\n  {\n    \"Rate\": 60000,\n    \"EquipmentTemplateIds\": [1, 2, 3,
+    4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rate\": 25000,\n    \"EquipmentTemplateIds\":
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rate\": 10000,\n    \"EquipmentTemplateIds\":
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rate\": 4000,\n    \"EquipmentTemplateIds\":
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rate\": 1000,\n    \"EquipmentTemplateIds\":
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rate\": 0,\n    \"EquipmentTemplateIds\":
+    []\n  }\n]"

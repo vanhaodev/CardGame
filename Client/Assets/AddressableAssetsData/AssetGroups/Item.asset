@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Item
   m_GUID: 68d04e96cdfd97d4bb7953e421afaf6b
   m_SerializeEntries:
+  - m_GUID: 23eecf98922f06d4c86a0cbd8e3f7bb3
+    m_Address: ItemTemplates/3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 348a718507e3c5b41ad7f4e659b40649
     m_Address: ItemIcons/2
     m_ReadOnly: 0
@@ -41,7 +46,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 83728443ad195034a95c65dcbcfdbaab
-    m_Address: ItemIcons/3
+    m_Address: ItemIcons/7
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -52,6 +57,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b923ab85b289b474280a41e0aff89fcc
     m_Address: ItemTemplates/2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c98d2d1033fa470428ee8238bc6938f4
+    m_Address: ItemIcons/3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

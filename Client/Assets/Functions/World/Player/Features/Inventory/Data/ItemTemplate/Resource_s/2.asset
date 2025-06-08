@@ -21,10 +21,10 @@ MonoBehaviour:
       type: {class: ItemResourceTemplateModel, ns: Functions.World.Player.Inventory, asm: Assembly-CSharp}
       data:
         Id: 2
-        ItemName: Test 2
+        ItemName: Standard DNA
         ItemType: 1
-        Description: Test des 2
-        Weight: 10
-        SellToShopScrapPrice: 10000
+        Description: Used to summon cards
+        Weight: 0
+        SellToShopScrapPrice: 10
         SellToShopCircuitPrice: 0
         LifeSpanMinute: -1
