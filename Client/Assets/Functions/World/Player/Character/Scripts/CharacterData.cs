@@ -16,10 +16,12 @@ namespace World.Player.Character
     {
         [SerializeField] private CharacterModel _characterModel;
         [SerializeField] private UniqueIdentityModel _uniqueIdentityModel;
-        
+
         //=======================[EVENTS]===========================\\
         public readonly Subject<Unit> OnCharacterChanged = new Subject<Unit>();
+
         public void InvokeOnCharacterChanged() => OnCharacterChanged.OnNext(Unit.Default);
+
         //==========================================================//
         public CharacterModel CharacterModel
         {
@@ -42,7 +44,7 @@ namespace World.Player.Character
             // Debug.Log("Loading playerData data");
             var save = new SaveManager();
             var app = await save.Load<SaveAppModel>();
-            
+
             //new player
             if (app.IsFirstPlay)
             {
@@ -50,20 +52,28 @@ namespace World.Player.Character
                 CharacterModel = new CharacterModel();
                 CharacterModel.SetDefault();
                 UniqueIdentityModel = new UniqueIdentityModel();
-                
+
                 await save.Save(app);
                 await save.Save(new SavePlayerModel()
                 {
-                    CharacterModel = CharacterModel,
-                    UniqueIdentityModel = UniqueIdentityModel
+                    CharacterModel = CharacterModel
                 });
             }
             //old
             else
             {
                 var playerData = await save.Load<SavePlayerModel>();
+                var currencyData = await save.Load<SaveCurrencyModel>();
+                var inventoryData = await save.Load<SaveInventoryModel>();
+                var cardData = await save.Load<SaveCardModel>();
+                var uniqueIdentityData = await save.Load<SaveUniqueIdentityModel>();
                 CharacterModel = playerData.CharacterModel;
-                UniqueIdentityModel = playerData.UniqueIdentityModel;
+                CharacterModel.Currencies = currencyData.Currencies;
+                CharacterModel.Inventory = inventoryData.Inventory;
+                CharacterModel.CardCollection = cardData.CardCollection;
+                CharacterModel.MaxLineupTeamCount = cardData.MaxLineupTeamCount;
+                CharacterModel.CardLineups = cardData.CardLineups;
+                UniqueIdentityModel = uniqueIdentityData.UniqueIdentity;
             }
         }
 
@@ -73,7 +83,24 @@ namespace World.Player.Character
             await new SaveManager().Save(new SavePlayerModel()
             {
                 CharacterModel = CharacterModel,
-                UniqueIdentityModel = UniqueIdentityModel
+            });
+            await new SaveManager().Save(new SaveCurrencyModel()
+            {
+                Currencies = CharacterModel.Currencies,
+            });
+            await new SaveManager().Save(new SaveInventoryModel()
+            {
+                Inventory = CharacterModel.Inventory,
+            });
+            await new SaveManager().Save(new SaveCardModel()
+            {
+                CardCollection = CharacterModel.CardCollection,
+                MaxLineupTeamCount = CharacterModel.MaxLineupTeamCount,
+                CardLineups = CharacterModel.CardLineups,
+            });
+            await new SaveManager().Save(new SaveUniqueIdentityModel()
+            {
+                UniqueIdentity = UniqueIdentityModel,
             });
         }
     }

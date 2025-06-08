@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Functions.World.Gacha;
 using Functions.World.Player.Inventory;
 using Globals;
 using Newtonsoft.Json;
@@ -13,6 +15,7 @@ namespace GameConfigs
     public partial class GameConfig : MonoBehaviour, IGlobal
     {
         public ushort RequiredShardCount = 100;
+
         public async UniTask InitItem()
         {
         }
@@ -110,6 +113,61 @@ namespace GameConfigs
                 case 10: return 15000;
                 default: return 0;
             }
+        }
+    }
+
+    public partial class GameConfig : MonoBehaviour, IGlobal
+    {
+        [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment1; //gacha gỗ
+        [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment2; //gacha bạc
+        [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment3; //gacha vàng
+
+        /// <summary>
+        /// 1: gỗ <br/>
+        /// 2: bạc <br/>
+        /// 3: vàng <br/>
+        /// </summary>
+        /// <param name="type"></param>
+        public async UniTask<List<GachaEquipmentModel>> GetEquipmentGacha(byte type)
+        {
+            switch (type)
+            {
+                case 1:
+                {
+                    if (_gachaEquipment1 == null || _gachaEquipment1.Count == 0)
+                    {
+                        var json1 = await Global.Instance.Get<AddressableLoader>()
+                            .LoadAssetAsync<TextSO>("CardConfigs/GachaEquipment1");
+                        _gachaEquipment1 = JsonConvert.DeserializeObject<List<GachaEquipmentModel>>(json1.Content);
+                    }
+
+                    return _gachaEquipment1;
+                }
+                case 2:
+                {
+                    if (_gachaEquipment2 == null || _gachaEquipment2.Count == 0)
+                    {
+                        var json2 = await Global.Instance.Get<AddressableLoader>()
+                            .LoadAssetAsync<TextSO>("CardConfigs/GachaEquipment2");
+                        _gachaEquipment2 = JsonConvert.DeserializeObject<List<GachaEquipmentModel>>(json2.Content);
+                    }
+
+                    return _gachaEquipment2;
+                }
+                case 3:
+                {
+                    if (_gachaEquipment3 == null || _gachaEquipment3.Count == 0)
+                    {
+                        var json3 = await Global.Instance.Get<AddressableLoader>()
+                            .LoadAssetAsync<TextSO>("CardConfigs/GachaEquipment3");
+                        _gachaEquipment3 = JsonConvert.DeserializeObject<List<GachaEquipmentModel>>(json3.Content);
+                    }
+
+                    return _gachaEquipment3;
+                }
+            }
+
+            return null;
         }
     }
 }
