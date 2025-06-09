@@ -14,7 +14,7 @@ namespace World.Player.Character
         {
             Cards = new List<CardModel>();
         }
-        public CardModel GetCard(int id)
+        public CardModel GetCard(uint id)
         {
             return Cards.Find(x => x.Id == id);
         }

@@ -53,9 +53,9 @@ namespace GameConfigs
             //           $"\n{LevelExps.Count} level exps");
         }
 
-        private ConcurrentDictionary<ushort, CardTemplateModel> _cardTemplates = new();
+        private ConcurrentDictionary<uint, CardTemplateModel> _cardTemplates = new();
 
-        public async UniTask<CardTemplateModel> GetCardTemplate(ushort cardTemplateId)
+        public async UniTask<CardTemplateModel> GetCardTemplate(uint cardTemplateId)
         {
             if (_cardTemplates.TryGetValue(cardTemplateId, out var value))
             {
@@ -71,7 +71,7 @@ namespace GameConfigs
         /// <summary>
         /// sprite of this card
         /// </summary>
-        private ConcurrentDictionary<ushort, ConcurrentDictionary<string, Sprite>> _loadedCardSprites = new();
+        private ConcurrentDictionary<uint, ConcurrentDictionary<string, Sprite>> _loadedCardSprites = new();
 
         public async UniTask<Sprite> GetCardSprite(CardModel cardModel, string skinName = "" /*default is null*/)
         {
@@ -146,7 +146,7 @@ namespace GameConfigs
         /// 3: cao cấp <br/>
         /// </summary>
         /// <param name="type"></param>
-        public async UniTask<List<GachaCardModel>> GetCardGacha(byte type)
+        public async UniTask<List<GachaCardModel>> GetCardGacha(int type)
         {
             switch (type)
             {

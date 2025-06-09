@@ -6,13 +6,13 @@
     [System.Serializable]
     public class UniqueIdentityModel
     {
-        public UniqueIdentityIntModel ItemId;
-        public UniqueIdentityIntModel CardId;
+        public UniqueIdentityUIntModel ItemId;
+        public UniqueIdentityUIntModel CardId;
 
         public void SetDefault()
         {
-            ItemId = new UniqueIdentityIntModel();
-            CardId = new UniqueIdentityIntModel();
+            ItemId = new UniqueIdentityUIntModel();
+            CardId = new UniqueIdentityUIntModel();
             ItemId.SetDefault();
             CardId.SetDefault();
         }
@@ -24,6 +24,22 @@
         public int Value;
 
         public int GetValue()
+        {
+            Value += 1;
+            return Value;
+        }
+
+        public void SetDefault()
+        {
+            Value = 0;
+        }
+    }
+    [System.Serializable]
+    public class UniqueIdentityUIntModel
+    {
+        public uint Value;
+
+        public uint GetValue()
         {
             Value += 1;
             return Value;

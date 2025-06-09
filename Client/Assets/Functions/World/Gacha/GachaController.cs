@@ -5,35 +5,40 @@ namespace Functions.World.Gacha
 {
     public class GachaController
     {
-        public GachaRewardModel PlayGacha(List<GachaRewardModel> rewards, int accumulatedBonus = 0)
+        /// <summary>
+        /// Rút thưởng từ danh sách theo tỉ lệ, ưu tiên vật phẩm hiếm trước (Rate thấp hơn).
+        /// </summary>
+        /// <param name="rewardPool">Danh sách phần thưởng, không cần sắp xếp.</param>
+        /// <param name="accumulatedBonus">
+        /// Bonus giảm giá trị random để tăng tỉ lệ trúng item hiếm.
+        /// VD: nếu random ra 50000, bonus = 10000 thì roll thực tế là 40000.
+        /// </param>
+        /// <returns>Index phần thưởng trúng trong rewardPool, hoặc -1 nếu không có phần thưởng.</returns>
+        public int PlayGacha(List<GachaRewardModel> rewardPool, int accumulatedBonus = 0)
         {
-            // Sinh ra một số ngẫu nhiên từ 0 đến 99999
-            // Giá trị càng nhỏ càng hiếm.
-            var rollResult = UnityEngine.Random.Range(0, 100000); 
-    
-            // Áp dụng bonus: trừ bonus từ rollResult
-            // Điều này làm cho rollResult nhỏ hơn, dễ đạt được các vật phẩm hiếm (có Rate thấp) hơn.
-            rollResult -= accumulatedBonus; 
-
-            // Đảm bảo rollResult không âm (ngưỡng thấp nhất)
-            // Nếu Rate thấp nhất là 0, thì rollResult không nên thấp hơn 0
-            rollResult = Mathf.Max(0, rollResult); 
-
-            // Duyệt qua danh sách phần thưởng từ hiếm nhất đến phổ biến nhất
-            // Giả định rewards[i].Rate là ngưỡng trên cho vật phẩm đó (VD: 1000 cho 1%)
-            // Và danh sách rewards được sắp xếp theo Rate tăng dần (hiếm -> phổ biến)
-            for (int i = 0; i < rewards.Count; i++) // Vòng lặp từ đầu đến cuối
+            if (rewardPool == null || rewardPool.Count == 0)
             {
-                if (rollResult < rewards[i].Rate)
+                Debug.LogWarning("PlayGacha: rewardPool is empty.");
+                return -1;
+            }
+
+            // Bước 1: Random một số từ 1 đến 100000 (tương đương 100%)
+            int rawRoll = UnityEngine.Random.Range(1, 100001);
+
+            // Bước 2: Trừ bonus để tăng tỉ lệ ra item hiếm
+            int adjustedRoll = Mathf.Max(1, rawRoll - accumulatedBonus);
+
+            // Bước 3: Duyệt ngược từ cuối (Rate thấp = item hiếm) để ưu tiên trúng item hiếm trước
+            for (int i = rewardPool.Count - 1; i >= 0; i--)
+            {
+                if (adjustedRoll <= rewardPool[i].Rate)
                 {
-                    return rewards[i];
+                    return i;
                 }
             }
 
-            // Nếu không khớp với bất kỳ Rate nào (ví dụ, rollResult quá cao),
-            // trả về phần thưởng phổ biến nhất.
-            // Điều này giả định rewards[rewards.Count - 1] là phần thưởng phổ biến nhất.
-            return rewards[rewards.Count - 1]; 
+            // Không trúng item nào (nên chỉ xảy ra nếu tổng Rate < 100000), fallback:
+            return 0;
         }
     }
 }

@@ -22,14 +22,18 @@ namespace Functions.World.Gacha
         [BoxGroup("Play")] [SerializeField] protected Button _btnPlayGachaX1;
         [BoxGroup("Play")] [SerializeField] protected Button _btnPlayGachaX10;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             _tabSwitcher.OnTabSwitched += OnTabSwitched;
+            _btnPlayGachaX1.onClick.AddListener(PlayGachaX1);
+            _btnPlayGachaX10.onClick.AddListener(PlayGachaX10);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             _tabSwitcher.OnTabSwitched -= OnTabSwitched;
+            _btnPlayGachaX1.onClick.RemoveListener(PlayGachaX1);
+            _btnPlayGachaX10.onClick.RemoveListener(PlayGachaX10);
         }
 
         protected virtual void OnTabSwitched(int index)
@@ -45,10 +49,11 @@ namespace Functions.World.Gacha
 
         public virtual async void PlayGachaX1()
         {
+            
         }
-
         public virtual async void PlayGachaX10()
         {
+            
         }
     }
 }

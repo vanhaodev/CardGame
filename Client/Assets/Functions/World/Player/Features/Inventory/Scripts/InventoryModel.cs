@@ -9,19 +9,50 @@ using UnityEngine;
 namespace Functions.World.Player.Inventory
 {
     [Serializable]
-    public class InventoryModel
+    public partial class InventoryModel
     {
         /// <summary>
         /// tính theo Kilogram
         /// </summary>
         public uint MaxWeight;
+
         public List<InventoryItemModel> Items;
         private int _lastArrangeItemCount;
+
         public InventoryModel()
         {
             MaxWeight = 1000;
             Items = new List<InventoryItemModel>();
         }
+
+        /// <summary>
+        /// Check inv đủ chỗ ko
+        /// </summary>
+        /// <param name="itemTemplateId"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public async UniTask<bool> IsWeightEnough(uint itemTemplateId, uint quantity)
+        {
+            var itemTask = Global.Instance.Get<GameConfig>().GetItemTemplate(itemTemplateId);
+            var weightTask = GetCurrentWeight();
+
+            await UniTask.WhenAll(itemTask, weightTask);
+
+            // Lấy kết quả từ 2 task đã hoàn thành
+            var temp = await itemTask;
+            var currentWeight = await weightTask;
+
+            if (temp == null)
+            {
+                Debug.LogWarning($"ItemTemplate not found for id {itemTemplateId}");
+                return false;
+            }
+
+            long totalWeightAfterAdd = (long)currentWeight + (long)temp.Weight * (long)quantity;
+            return totalWeightAfterAdd <= MaxWeight;
+        }
+
+
 
         public async UniTask Arrange()
         {
@@ -94,7 +125,6 @@ namespace Functions.World.Player.Inventory
             return totalWeight;
         }
     }
-
     [Serializable]
     public class InventoryItemModel
     {

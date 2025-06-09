@@ -84,7 +84,7 @@ namespace World.Player.PopupCharacter
             _imgProgressLoadFill.fillAmount = 0;
             _objProgressLoad.SetActive(true);
             var itemNeedToUp = EquipmentItem;
-            bool isSuccess = Random.Range(0, 10000) < _successRate;
+            bool isSuccess = Random.Range(1, 10001) < _successRate;
             await _imgProgressLoadFill.DOFillAmount(1, 1).WithCancellation(destroyCancellationToken);
             if (isSuccess)
             {

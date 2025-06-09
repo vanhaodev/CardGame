@@ -22,10 +22,10 @@ namespace World.Player.PopupCharacter
 
             var charData = Global.Instance.Get<CharacterData>();
             
-            HashSet<int> idsExistsInCurrentLineup = new HashSet<int>();
+            HashSet<uint> idsExistsInCurrentLineup = new HashSet<uint>();
             if (charData.CharacterModel.CardLineups.Count > LineupIndex)
             {
-                idsExistsInCurrentLineup = new HashSet<int>(charData.CharacterModel.CardLineups[LineupIndex].Cards.Values);
+                idsExistsInCurrentLineup = new HashSet<uint>(charData.CharacterModel.CardLineups[LineupIndex].Cards.Values);
             }
 
             var cards = charData.CharacterModel.CardCollection.Cards

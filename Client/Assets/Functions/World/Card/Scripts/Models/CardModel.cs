@@ -13,8 +13,8 @@ namespace World.TheCard
     [Serializable]
     public class CardModel
     {
-        public int Id;
-        public ushort TemplateId;
+        public uint Id;
+        public uint TemplateId;
 
         /// <summary>
         /// Awakening Stage của card, bậc càng cao, ảnh càng đẹp chỉ số càng bá, skill nâng cấp cao hơn, gọi là Awakening Stage
@@ -25,12 +25,6 @@ namespace World.TheCard
         /// Cấp của card
         /// </summary>
         public CardLevelModel Level;
-
-        /// <summary>
-        /// Base is default stats and star, level, enchantic stats...
-        /// </summary>
-        public List<AttributeModel> BaseAttributes = new List<AttributeModel>();
-
         /// <summary>
         /// Calculated = equipments + base + template base
         /// <br/>
@@ -39,6 +33,9 @@ namespace World.TheCard
         public List<AttributeModel> CalculatedAttributes = new List<AttributeModel>();
         
         // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
+        /// <summary>
+        /// Nếu skill ở temp ko có ở trong đây thì mặc định là level 1
+        /// </summary>
         [SerializeReference]
         public Dictionary<CardSkillSlotType, SkillModel> Skills = new Dictionary<CardSkillSlotType, SkillModel>();
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameConfigs;
@@ -20,15 +21,11 @@ namespace Functions.World.Player.Inventory
         /// <summary>
         /// tăng chỉ số static vào người đeo
         /// </summary>
-        public List<AttributeModel> Attributes;
-
         public List<AttributeModel> CalculatedAttributes;
 
         /// <summary>
         /// Tăng chỉ số người đeo theo %
         /// </summary>
-        public List<AttributeModel> AttributePercents;
-
         public List<AttributeModel> CalculatedAttributePercents;
 
         [Button]
@@ -36,6 +33,59 @@ namespace Functions.World.Player.Inventory
         /// Cập nhật khi cường hoá hoặc phiên bản mới
         /// </summary>
         public async UniTask UpdateAttribute()
+        {
+            // Lấy template (có thể thay đổi mỗi bản cập nhật)
+            var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(TemplateId) as ItemEquipmentTemplateModel;
+
+            // Nếu template null thì log warning và thoát
+            if (template == null)
+            {
+                throw new Exception($"Item template with ID {TemplateId} is null or not an equipment template.");
+                return;
+            }
+
+            var templateAttributes = AttributeModel.ToDictionary(template.Attributes);
+            var templateAttributePercents = AttributeModel.ToDictionary(template.AttributePercents);
+
+            // Lấy bonus phần trăm từ cấp cường hóa (ví dụ 26f nghĩa là 26%)
+            float upgradePercentBonus = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(UpgradeLevel);
+
+            CalculatedAttributes = new List<AttributeModel>();
+            CalculatedAttributePercents = new List<AttributeModel>();
+
+            // Tính chỉ số cộng thẳng
+            foreach (var pair in templateAttributes)
+            {
+                var type = pair.Key;
+                var baseValue = pair.Value;
+
+                float upgradedValue = baseValue + (baseValue * upgradePercentBonus / 100f);
+
+                CalculatedAttributes.Add(new AttributeModel
+                {
+                    Type = type,
+                    Value = (int)upgradedValue
+                });
+            }
+
+            // Tính chỉ số phần trăm (hệ số 10000)
+            foreach (var pair in templateAttributePercents)
+            {
+                var type = pair.Key;
+                var baseValue = pair.Value;
+
+                float upgradedPercent = baseValue + (baseValue * upgradePercentBonus / 100f);
+
+                CalculatedAttributePercents.Add(new AttributeModel
+                {
+                    Type = type,
+                    Value = (int)upgradedPercent
+                });
+            }
+        }
+        #region old
+/*
+         public async UniTask UpdateAttribute()
         {
             // Lấy template (có thể thay đổi mỗi bản cập nhật)
             var template =
@@ -105,5 +155,8 @@ namespace Functions.World.Player.Inventory
                 });
             }
         }
+
+*/
+        #endregion
     }
 }

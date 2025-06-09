@@ -134,7 +134,7 @@ namespace Popups
             }
 
             if (lineups[equip.LineupIndex].Cards == null)
-                lineups[equip.LineupIndex].Cards = new Dictionary<byte, int>();
+                lineups[equip.LineupIndex].Cards = new Dictionary<byte, uint>();
 
             lineups[equip.LineupIndex].Cards[equip.SlotIndex] = cardModel.Id;
 
