@@ -25,6 +25,11 @@ namespace Functions.World.Player.Inventory
             Items = new List<InventoryItemModel>();
         }
 
+        public InventoryItemModel GetItemByTemplateId(uint templateId)
+        {
+            return Items?.FirstOrDefault(i => i?.Item?.TemplateId == templateId);
+        }
+
         /// <summary>
         /// Check inv đủ chỗ ko
         /// </summary>
@@ -36,11 +41,8 @@ namespace Functions.World.Player.Inventory
             var itemTask = Global.Instance.Get<GameConfig>().GetItemTemplate(itemTemplateId);
             var weightTask = GetCurrentWeight();
 
-            await UniTask.WhenAll(itemTask, weightTask);
-
-            // Lấy kết quả từ 2 task đã hoàn thành
-            var temp = await itemTask;
-            var currentWeight = await weightTask;
+            // Await UniTask.WhenAll and get the results directly from the awaited tuple
+            var (temp, currentWeight) = await UniTask.WhenAll(itemTask, weightTask);
 
             if (temp == null)
             {
@@ -51,8 +53,6 @@ namespace Functions.World.Player.Inventory
             long totalWeightAfterAdd = (long)currentWeight + (long)temp.Weight * (long)quantity;
             return totalWeightAfterAdd <= MaxWeight;
         }
-
-
 
         public async UniTask Arrange()
         {
@@ -125,6 +125,7 @@ namespace Functions.World.Player.Inventory
             return totalWeight;
         }
     }
+
     [Serializable]
     public class InventoryItemModel
     {

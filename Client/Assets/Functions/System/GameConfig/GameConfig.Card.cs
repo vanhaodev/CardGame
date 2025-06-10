@@ -63,7 +63,7 @@ namespace GameConfigs
             }
 
             var cardSO = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<CardTemplateModel>("CardTemplateModels/" + cardTemplateId);
+                .LoadAssetAsync<CardTemplateModel>("CardTemplates/" + cardTemplateId);
             _cardTemplates.TryAdd(cardTemplateId, cardSO);
             return cardSO;
         }
@@ -73,11 +73,28 @@ namespace GameConfigs
         /// </summary>
         private ConcurrentDictionary<uint, ConcurrentDictionary<string, Sprite>> _loadedCardSprites = new();
 
-        public async UniTask<Sprite> GetCardSprite(CardModel cardModel, string skinName = "" /*default is null*/)
+        public async UniTask<Sprite> GetCardShardIcon(uint cardTemplateId)
         {
-            if (cardModel.Star < 1) throw new System.Exception("Card star must be >= 1");
+            var key = $"CardSprites/{cardTemplateId}";
+            // Đảm bảo ConcurrentDictionary con tồn tại
+            var value = _loadedCardSprites.GetOrAdd(cardTemplateId, _ => new ConcurrentDictionary<string, Sprite>());
+
+            // Nếu key đã tồn tại, trả về ngay
+            if (value.TryGetValue(key, out var image))
+            {
+                return image;
+            }
+            var newSprite = await Global.Instance.Get<AddressableLoader>()
+                .LoadAssetAsync<Sprite>(key);
+            // Thêm vào dictionary nếu chưa tồn tại (tránh lỗi "key exists")
+            value.TryAdd(key, newSprite);
+
+            return newSprite;
+        }
+        public async UniTask<Sprite> GetCardSprite(CardModel cardModel, uint skinId = 0 /*default is null*/)
+        {
             var cardTemplateId = cardModel.TemplateId;
-            var key = $"{cardModel.Star}";
+            var key = $"CardSprites/{cardTemplateId}{(skinId > 0 ? $"_{skinId}" : "")}";
 
             // Đảm bảo ConcurrentDictionary con tồn tại
             var value = _loadedCardSprites.GetOrAdd(cardTemplateId, _ => new ConcurrentDictionary<string, Sprite>());
@@ -90,8 +107,7 @@ namespace GameConfigs
 
             // Tải sprite mới
             var newSprite = await Global.Instance.Get<AddressableLoader>()
-                .LoadAssetAsync<Sprite>(
-                    $"CardSprites/{cardTemplateId}{(skinName.Length > 0 ? $"/{skinName}" : "")}/{key}.png");
+                .LoadAssetAsync<Sprite>(key);
             // Thêm vào dictionary nếu chưa tồn tại (tránh lỗi "key exists")
             value.TryAdd(key, newSprite);
 
@@ -140,6 +156,7 @@ namespace GameConfigs
         [SerializeReference] private List<GachaCardModel> _gachaCard1; //gacha thường
         [SerializeReference] private List<GachaCardModel> _gachaCard2; //gacha trung cấp
         [SerializeReference] private List<GachaCardModel> _gachaCard3; //gacha cao cấp
+
         /// <summary>
         /// 1: thường <br/>
         /// 2: trung cấp <br/>

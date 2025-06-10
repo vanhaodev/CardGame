@@ -35,7 +35,25 @@ namespace World.Player.PopupCharacter
             };
             _txItemQuantity.text = _item.Quantity > 1 ? _item.Quantity.ToString() : string.Empty;
             _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity];
-            _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
+            
+            //card shard sẽ lấy icon theo kiểu khác
+            bool isCardShard = false;
+            if (_itemType == ItemType.Resource)
+            {
+                var temp = await Global.Instance.Get<GameConfig>().GetItemTemplate(_item.Item.TemplateId);
+                if (temp is ItemCardShardTemplateModel cardShard)
+                {
+                    _imgItemIcon.sprite =
+                        await Global.Instance.Get<GameConfig>().GetCardShardIcon(cardShard.CardTemplateId);
+                    isCardShard = true;
+                }
+            }
+
+            if (!isCardShard)
+            {
+                _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
+            }
+
             _objLoadingLock.SetActive(false);
         }
 

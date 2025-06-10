@@ -44,8 +44,19 @@ namespace World.Player.PopupCharacter
                     _objEmpty.SetActive(false);
                     _card.CardModel = cardData;
                     _card.gameObject.SetActive(true);
-                    _txCardName.text = cardTemp.Name;
 
+                    //card name
+                    var starColor = Global.Instance.Get<GameConfig>().GetRarityColor(cardData.Star);
+                    _txCardName.text = cardTemp.Name; 
+                    _txCardName.enableVertexGradient = true; 
+                    ColorUtility.TryParseHtmlString(starColor.gradient, out var topColor);
+                    ColorUtility.TryParseHtmlString(starColor.gradient2, out var bottomColor);
+                    _txCardName.colorGradient = new VertexGradient(
+                        topColor, topColor,       
+                        bottomColor, bottomColor 
+                    );
+                    
+                    //
                     _card.ListenEventOnTouch((c) =>
                     {
                         Global.Instance.Get<PopupManager>().ShowCard(new PopupCardUnequipModel()

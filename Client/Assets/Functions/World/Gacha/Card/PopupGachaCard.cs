@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utils.Tab;
 using World.Player.Character;
+using Random = Unity.Mathematics.Random;
 
 namespace Functions.World.Gacha
 {
@@ -91,6 +92,16 @@ namespace Functions.World.Gacha
                         await Global.Instance.Get<GameConfig>().GetCardGacha(_tabSwitcher.CurrentIndex + 1);
                     var result = gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaRewardModel>().ToList())];
                     Debug.Log(JsonConvert.SerializeObject(result));
+                    var cardResultTempId = GetRandomCardTemplateId(result.CardTemplateIds);
+                    if (result.IsHaveCard)
+                    {
+                        charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                    }
+                    else //shard
+                    {
+                        var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
+                        charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
+                    }
 
                     await charData.CharacterModel.Inventory.Arrange();
                 }
@@ -128,6 +139,21 @@ namespace Functions.World.Gacha
                         results.Add(result);
                     }
 
+                    foreach (var result in results)
+                    {
+                        var cardResultTempId = GetRandomCardTemplateId(result.CardTemplateIds);
+                        if (result.IsHaveCard)
+                        {
+                            charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                        }
+                        else //shard
+                        {
+                            var cardTemplate =
+                                await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
+                            charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
+                        }
+                    }
+
                     Debug.Log(JsonConvert.SerializeObject(results));
                     await charData.CharacterModel.Inventory.Arrange();
                 }
@@ -139,6 +165,11 @@ namespace Functions.World.Gacha
 
             _btnPlayGachaX1.interactable = true;
             _btnPlayGachaX10.interactable = true;
+        }
+
+        private uint GetRandomCardTemplateId(List<uint> templateIds)
+        {
+            return templateIds[UnityEngine.Random.Range(0, templateIds.Count)];
         }
 
         private uint GetItemNeedTemplateId()

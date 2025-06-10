@@ -11,9 +11,13 @@ namespace World.TheCard
     [CreateAssetMenu(fileName = "CardTemplateModel", menuName = "Data/CardTemplateModel", order = 1)]
     public class CardTemplateModel : ScriptableObject
     {
-        public ushort Id;
+        public uint Id;
         public string Name;
         public string History;
+        /// <summary>
+        /// ItemtemplateId
+        /// </summary>
+        public uint ShardId;
         public ClassType Class;
         public ElementType Element;
         /// <summary>

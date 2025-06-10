@@ -16,17 +16,27 @@ MonoBehaviour:
   m_GUID: 201fa9f71c088374091ed7485fe8885e
   m_SerializeEntries:
   - m_GUID: 0173dc7a3fc97eb43ae329e80e1251e0
-    m_Address: CardTemplateModels/2
+    m_Address: CardTemplates/2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2b890b98023b85e45b91edb5c54d42f5
-    m_Address: CardSprites/2
+  - m_GUID: 0c91b7169d6538245af68f7080745b9c
+    m_Address: CardTemplates/4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36f4c18018d477543a067fa3625a173a
+    m_Address: CardSprites/4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 413c84bdb077b244d88697008352a7da
+    m_Address: CardSprites/3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48f59e2c4863c6d46b7e01bb37551348
-    m_Address: CardTemplateModels/1
+    m_Address: CardTemplates/1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -35,18 +45,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7087d0f87c9c67047b445810c1619341
+    m_Address: CardTemplates/3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7aba3ce8b67905d499da5485bdd3f867
+    m_Address: CardSprites/2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af5a26850916c0943ba0470bea450455
+    m_Address: CardTemplates/5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c84d22ea6d54d4845985cf990163666b
     m_Address: CardConfigs/GachaCard3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cebf553dc1cc3ba4496cf051477e68bd
+  - m_GUID: d72226883d0cd674ea15685e6b40b329
     m_Address: CardSprites/1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e539aa449e3f644498c2ccd49cff91e2
     m_Address: CardConfigs/CardLevelExps
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e65faa0e9f0d4bf4896273896125734c
+    m_Address: CardSprites/5
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

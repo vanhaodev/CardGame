@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5682e2badbf74778b16ec5782ba7b2ba, type: 3}
   m_Name: GachaCard2
   m_EditorClassIdentifier: 
-  Content: "[\n  {\n    \"Rate\": 50000,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5,
-    6, 7, 8, 9, 10],\n    \"Quantity\": 2,\n    \"IsHaveCard\": false\n  },\n  {\n   
-    \"Rate\": 30000,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n   
-    \"Quantity\": 4,\n    \"IsHaveCard\": false\n  },\n  {\n    \"Rate\": 15000,\n   
-    \"CardTemplateIds\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n    \"Quantity\": 12,\n   
-    \"IsHaveCard\": false\n  },\n  {\n    \"Rate\": 4500,\n    \"CardTemplateIds\":
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n    \"Quantity\": 25,\n    \"IsHaveCard\":
-    false\n  },\n  {\n    \"Rate\": 4000,\n    \"CardTemplateIds\": [1, 2, 3, 4,
-    5, 6, 7, 8, 9, 10],\n    \"Quantity\": 45,\n    \"IsHaveCard\": false\n  },\n 
-    {\n    \"Rate\": 500,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],\n   
-    \"Quantity\": 1,\n    \"IsHaveCard\": true\n  }\n]"
+  Content: "[\n  {\n    \"Rate\": 50000,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5],\n   
+    \"Quantity\": 2,\n    \"IsHaveCard\": false\n  },\n  {\n    \"Rate\": 30000,\n   
+    \"CardTemplateIds\": [1, 2, 3, 4, 5],\n    \"Quantity\": 4,\n    \"IsHaveCard\":
+    false\n  },\n  {\n    \"Rate\": 15000,\n    \"CardTemplateIds\": [1, 2, 3, 4,
+    5],\n    \"Quantity\": 12,\n    \"IsHaveCard\": false\n  },\n  {\n    \"Rate\":
+    4500,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5],\n    \"Quantity\": 25,\n   
+    \"IsHaveCard\": false\n  },\n  {\n    \"Rate\": 4000,\n    \"CardTemplateIds\":
+    [1, 2, 3, 4, 5],\n    \"Quantity\": 45,\n    \"IsHaveCard\": false\n  },\n  {\n   
+    \"Rate\": 500,\n        \"CardTemplateIds\": [1, 2, 3, 4, 5],\n    \"Quantity\":
+    1,\n    \"IsHaveCard\": true\n  }\n]"

@@ -1,4 +1,5 @@
-﻿using GameConfigs;
+﻿using System;
+using GameConfigs;
 using Globals;
 using World.Player.Character;
 using World.TheCard;
@@ -18,12 +19,35 @@ namespace Functions.World.Player.Inventory
                 Star = 1,
                 Level = new CardLevelModel()
             };
+            chaData.CharacterModel.CardCollection.Cards.Add(card);
             return card;
         }
 
-        public ItemResourceModel AddNewItemResource(uint cardTemplateId, uint quantity = 1)
+        public ItemResourceModel AddNewCardShard(uint itemTemplateId, uint quantity = 1)
         {
-            
+            var itemInInv = GetItemByTemplateId(itemTemplateId);
+            if (itemInInv != null)
+            {
+                itemInInv.Quantity += quantity;
+                return itemInInv.Item as ItemResourceModel;
+            }
+            else
+            {
+                var chaData = Global.Instance.Get<CharacterData>();
+                var item = new ItemResourceModel()
+                {
+                    Id = chaData.UniqueIdentityModel.ItemId.GetValue(),
+                    TemplateId = itemTemplateId,
+                    Rarity = ItemRarity.UR,
+                    CreatedAt = DateTime.UtcNow
+                };
+                Items.Add(new InventoryItemModel()
+                {
+                    Item = item,
+                    Quantity = quantity
+                });
+                return item;
+            }
         }
     }
 }

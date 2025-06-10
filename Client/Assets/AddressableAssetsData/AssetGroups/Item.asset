@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33fd801c5eeb52d4c9c4f5e7a6ea1e99
+    m_Address: ItemTemplates/1003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 348a718507e3c5b41ad7f4e659b40649
     m_Address: ItemIcons/2
     m_ReadOnly: 0
@@ -40,8 +45,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 675ce8f6177b7204088f44acd0ebd837
+    m_Address: ItemTemplates/1001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75f8f5f5d2999ae4ca681640c80262f4
     m_Address: ItemTemplates/3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76c5f3b8949f40c47a10b985b489f21a
+    m_Address: ItemTemplates/1004
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -67,6 +82,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd4226487bf0d964d997f60c8890171b
     m_Address: ItemConfigs/GachaEquipment2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5772d1769db0474d99d796e97901052
+    m_Address: ItemTemplates/1005
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2e07aefb3be31b4daf1224aecf4a2a9
+    m_Address: ItemTemplates/1002
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

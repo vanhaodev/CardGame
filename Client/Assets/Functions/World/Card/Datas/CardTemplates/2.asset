@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3722ea1030224df4b582c9145e6ab73a, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: 
+  Id: 2
+  Name: Shiva
+  History: Shiva, the goddess of destruction and rebirth in Hinduism, wields three
+    eyes and performs the cosmic Tandava dance that shapes creation and ruin. She
+    balances divine fury with transcendental wisdom.
+  ShardId: 1002
+  Class: 2
+  Element: 0
+  Attributes: []
+  Skills:
+  - SlotType: 2
+    Skill:
+      Name: "Th\u1ED5 C\xF4ng"
+      Description: 
+      TargetType: 3
+      Levels:
+      - AOEToLeftTargetCount: 0
+        AOEToRightTargetCount: 0
+        CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 2316759153431281746
+  - SlotType: 3
+    Skill:
+      Name: "Th\u1ED5 Th\u1EA7n"
+      Description: 
+      TargetType: 3
+      Levels:
+      - AOEToLeftTargetCount: 1
+        AOEToRightTargetCount: 1
+        CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 2316759153431281747
+  - SlotType: 4
+    Skill:
+      Name: "Th\u1ED5 Th\u1EA7n"
+      Description: 
+      TargetType: 3
+      Levels:
+      - AOEToLeftTargetCount: 10
+        AOEToRightTargetCount: 10
+        CooldownRound: 0
+        SkillAttributeBonus: []
+        SkillEffects:
+        - rid: 2316759153431281748
+  references:
+    version: 2
+    RefIds:
+    - rid: 2316759153431281746
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: (((S_Attack * 1.70) + 255) * S_CritDamage) - R_Defense
+    - rid: 2316759153431281747
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: (((S_Attack * 1.70) + 255) * S_CritDamage) - R_Defense
+    - rid: 2316759153431281748
+      type: {class: SkillDamageTemplateModel, ns: World.TheCard.Skill, asm: Assembly-CSharp}
+      data:
+        Triggers: []
+        ImpactRound: 1
+        SuccessRate: 10000
+        Formula: (((S_Attack * 1.70) + 255) * S_CritDamage) - R_Defense

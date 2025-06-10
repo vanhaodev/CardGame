@@ -26,7 +26,6 @@ namespace Functions.World.Gacha
         public uint Quantity;
 
         public bool IsHaveCard;
-        public bool IsHaveShard;
     }
 
     [System.Serializable]

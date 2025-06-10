@@ -670,9 +670,9 @@ RectTransform:
   - {fileID: 6940027240101139529}
   m_Father: {fileID: 2593427894406828047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.54999, y: -305}
   m_SizeDelta: {x: 478.69, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4181709723650380052
@@ -1534,9 +1534,9 @@ RectTransform:
   - {fileID: 1575109313932538348}
   m_Father: {fileID: 2593427894406828047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.54999, y: -100}
   m_SizeDelta: {x: 478.69, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &746878827101634171
@@ -2972,9 +2972,9 @@ RectTransform:
   - {fileID: 7156805371511097042}
   m_Father: {fileID: 2593427894406828047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.54999, y: -510}
   m_SizeDelta: {x: 478.69, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8646499376307694922
@@ -5460,6 +5460,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 296775142005463671}
     m_Modifications:
+    - target: {fileID: 728954931485136480, guid: 1a2bfb48e55b4ca47b1ee3794eeb65db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1605186675418561523}
+    - target: {fileID: 728954931485136480, guid: 1a2bfb48e55b4ca47b1ee3794eeb65db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
     - target: {fileID: 6339325384057936948, guid: 1a2bfb48e55b4ca47b1ee3794eeb65db, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
