@@ -18,8 +18,8 @@ MonoBehaviour:
     sees fate and two ravens\u2014Hugin and Munin\u2014she watches over the world,
     guiding Asgard\u2019s destiny with unmatched will and far-reaching insight."
   ShardId: 1001
-  Class: 1
-  Element: 4
+  Class: 4
+  Element: 0
   Attributes:
   - Type: 0
     Value: 50
@@ -27,7 +27,21 @@ MonoBehaviour:
     Value: 10
   - Type: 4
     Value: 10
+  - Type: 0
+    Value: 0
   Skills:
+  - SlotType: 0
+    Skill:
+      Name: 
+      Description: 
+      TargetType: 0
+      Levels: []
+  - SlotType: 1
+    Skill:
+      Name: 
+      Description: 
+      TargetType: 0
+      Levels: []
   - SlotType: 2
     Skill:
       Name: "Th\u1ED5 C\xF4ng"

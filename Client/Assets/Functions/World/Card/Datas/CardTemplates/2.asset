@@ -18,8 +18,8 @@ MonoBehaviour:
     eyes and performs the cosmic Tandava dance that shapes creation and ruin. She
     balances divine fury with transcendental wisdom.
   ShardId: 1002
-  Class: 2
-  Element: 0
+  Class: 1
+  Element: 3
   Attributes: []
   Skills:
   - SlotType: 2
