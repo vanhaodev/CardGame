@@ -133,7 +133,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _txProgress: {fileID: 4047633142893802487}
   _imageLoadingFill: {fileID: 4754812023447817172}
+  _imageBackground: {fileID: 542732079549718341}
   _canvasGroup: {fileID: 8752038879779434268}
+  _assetReferenceBgs:
+  - _assetRef:
+      m_AssetGUID: a35318bc7c7c0a04792344a74264e843
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1
+    _addressPath: SceneLoader/loading_background_chang'e.jpg
+  - _assetRef:
+      m_AssetGUID: a7c396fb3dd60f24fa258f6f0e96c072
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1
+    _addressPath: SceneLoader/loading_background_gumiho
 --- !u!225 &8752038879779434268
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -204,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -213,7 +229,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -232,6 +248,7 @@ GameObject:
   - component: {fileID: 4469035273995985148}
   - component: {fileID: 2680149971012024165}
   - component: {fileID: 4754812023447817172}
+  - component: {fileID: 7591929889525468186}
   m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
@@ -279,14 +296,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.97965753, b: 0.0047169924, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 18d1384bf48c6e8439014f76b7065efb, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 5c62685857a83874ab6eae9f7820d09c, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -296,6 +313,53 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7591929889525468186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503782837225846527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e253d67b1b612a4a9ddd3d4eff3790c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientStyle: 0
+  _blend: 0
+  _moreVertices: 1
+  _offset: 0
+  _scale: 1
+  _gradient:
+    serializedVersion: 2
+    key0: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+    key1: {r: 0.1273585, g: 0.67721677, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &8409925104571880831
 GameObject:
   m_ObjectHideFlags: 0

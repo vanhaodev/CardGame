@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 352e61288209c664ca203c3c0cd57571
+    m_Address: CardSprites/gacha_card_standard_tab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 36f4c18018d477543a067fa3625a173a
     m_Address: CardSprites/4
     m_ReadOnly: 0
@@ -37,6 +42,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48f59e2c4863c6d46b7e01bb37551348
     m_Address: CardTemplates/1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5215e234e6e9a91458869d44e9b9cb68
+    m_Address: CardSprites/gacha_card_banner
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -65,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc0d136688664024795624b2a740d55b
+    m_Address: CardSprites/gacha_card_normal_tab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d72226883d0cd674ea15685e6b40b329
     m_Address: CardSprites/1
     m_ReadOnly: 0
@@ -80,8 +95,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3cc59073d80e5741b59e0513160810e
+    m_Address: CardSprites/gacha_card_deluxe_tab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f9408235e93e72e48867805e72b89874
     m_Address: CardConfigs/GachaCard1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe5bfb9e9d1c9df49af4226a46490f3a
+    m_Address: CardSprites/gacha_card_result
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

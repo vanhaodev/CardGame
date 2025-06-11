@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 #endif
-
+//Có thêm path cho dễ truy ra thôi, không có gì khác bình thường đâu
 namespace Utils
 {
     [System.Serializable]

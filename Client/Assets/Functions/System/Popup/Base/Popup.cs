@@ -23,7 +23,8 @@ namespace Popups
 
         public virtual async UniTask SetupData()
         {
-            _canvasGroup.alpha = 0;
+            // _canvasGroup.alpha = 0;
+            transform.GetChild(0).localScale = new Vector3(0, 1, 1);
             gameObject.transform.SetAsLastSibling();
         }
 
@@ -31,7 +32,8 @@ namespace Popups
         {
             _ctsAnimation?.Cancel();
             _ctsAnimation = new CancellationTokenSource();
-            await _canvasGroup.DOFade(1, fadeDuration).WithCancellation(cancellationToken: _ctsAnimation.Token);
+            // await _canvasGroup.DOFade(1, fadeDuration).WithCancellation(cancellationToken: _ctsAnimation.Token);
+            await transform.GetChild(0).DOScaleX(1, fadeDuration).WithCancellation(cancellationToken: _ctsAnimation.Token);
             OnShow?.Invoke();
             if (_objBlockInput) _objBlockInput.SetActive(false);
         }
@@ -41,7 +43,15 @@ namespace Popups
             if (_objBlockInput) _objBlockInput?.SetActive(true);
             _ctsAnimation?.Cancel();
             _ctsAnimation = new CancellationTokenSource();
-            _canvasGroup.DOFade(0, fadeDuration).OnComplete(() =>
+            // _canvasGroup.DOFade(0, fadeDuration).OnComplete(() =>
+            //     {
+            //         Global.Instance.Get<PopupManager>().ClosePopup(this);
+            //         OnHide?.Invoke();
+            //         OnShow = null;
+            //         OnHide = null;
+            //     })
+            //     .WithCancellation(cancellationToken: _ctsAnimation.Token);
+            transform.GetChild(0).DOScaleX(0, fadeDuration).OnComplete(() =>
                 {
                     Global.Instance.Get<PopupManager>().ClosePopup(this);
                     OnHide?.Invoke();

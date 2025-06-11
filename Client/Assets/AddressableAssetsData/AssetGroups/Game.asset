@@ -25,6 +25,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a35318bc7c7c0a04792344a74264e843
+    m_Address: SceneLoader/loading_background_chang'e.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7c396fb3dd60f24fa258f6f0e96c072
+    m_Address: SceneLoader/loading_background_gumiho
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b897d7ba218a8f842a80c8a7afd7c74d
     m_Address: Effect/EffectDamage.prefab
     m_ReadOnly: 0

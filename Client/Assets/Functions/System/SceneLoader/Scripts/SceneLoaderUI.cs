@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Utils;
 
 namespace System.SceneLoader
 {
@@ -11,7 +12,10 @@ namespace System.SceneLoader
     {
         [SerializeField] TextMeshProUGUI _txProgress;
         [SerializeField] private Image _imageLoadingFill;
+        [SerializeField] private Image _imageBackground;
         [SerializeField] CanvasGroup _canvasGroup;
+        [SerializeField] private AssetReferenceWithPath[] _assetReferenceBgs;
+        private AssetReferenceWithPath _selectedAssetBg;
         private CancellationTokenSource _ctsShow;
         private CancellationTokenSource _ctsProgress;
 
@@ -28,7 +32,23 @@ namespace System.SceneLoader
 
             try
             {
+                if (isShow)
+                {
+                    _imageBackground.DOFade(0, 0);
+                    var bgAsset = _assetReferenceBgs[UnityEngine.Random.Range(0, _assetReferenceBgs.Length)];
+                    _selectedAssetBg = bgAsset;
+                    var bg = await bgAsset.AssetRef.LoadAssetAsync<Sprite>();
+                    _imageBackground.sprite = bg;
+                    _imageBackground.DOFade(1, 0.3f);
+                }
+
                 await _canvasGroup.DOFade(isShow ? 1f : 0f, 0.5f).ToUniTask(cancellationToken: _ctsShow.Token);
+                if (!isShow)
+                {
+                    _imageBackground.sprite = null;
+                    _selectedAssetBg.AssetRef.ReleaseAsset();
+                    _selectedAssetBg = null;
+                }
             }
             catch
             {
@@ -67,6 +87,7 @@ namespace System.SceneLoader
             await UniTask.WaitUntil(() => (int)_imageLoadingFill.fillAmount >= 1);
             await UniTask.WaitForSeconds(1);
         }
+
         private void OnDestroy()
         {
             _ctsShow?.Cancel();

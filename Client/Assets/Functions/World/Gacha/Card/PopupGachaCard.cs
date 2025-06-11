@@ -10,6 +10,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 using Utils.Tab;
 using World.Player.Character;
 using Random = Unity.Mathematics.Random;
@@ -18,20 +19,71 @@ namespace Functions.World.Gacha
 {
     public class PopupGachaCard : PopupGacha
     {
+        [BoxGroup("General")] [SerializeField] private AssetReferenceWithPath _assetRefSpriteBanner;
         [BoxGroup("General")] [SerializeField] private Image _imageDNAIconNormal;
         [BoxGroup("General")] [SerializeField] private Image _imageDNAIconStandard;
         [BoxGroup("General")] [SerializeField] private Image _imageDNAIconDeluxe;
         [BoxGroup("General")] [SerializeField] protected TextMeshProUGUI _txDNANormalAmount;
         [BoxGroup("General")] [SerializeField] protected TextMeshProUGUI _txDNAStandardAmount;
         [BoxGroup("General")] [SerializeField] protected TextMeshProUGUI _txDNADeluxeAmount;
+        [BoxGroup("General")] [SerializeField] private Image _imageBanner;
+
+        [BoxGroup("Tab")] [SerializeField] private AssetReferenceWithPath _assetRefSpriteTabNormal;
+        [BoxGroup("Tab")] [SerializeField] private AssetReferenceWithPath _assetRefSpriteTabStandard;
+        [BoxGroup("Tab")] [SerializeField] private AssetReferenceWithPath _assetRefSpriteTabDeluxe;
+        [BoxGroup("Tab")] [SerializeField] private Image _imageTabNormal;
+        [BoxGroup("Tab")] [SerializeField] private Image _imageTabStandard;
+        [BoxGroup("Tab")] [SerializeField] private Image _imageTabDeluxe;
 
         public override async UniTask SetupData()
         {
             await base.SetupData();
-            _imageDNAIconNormal.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(1);
-            _imageDNAIconStandard.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(2);
-            _imageDNAIconDeluxe.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(3);
+
+            var (iconNormal, iconStandard, iconDeluxe) = await UniTask.WhenAll(
+                Global.Instance.Get<GameConfig>().GetItemIcon(1),
+                Global.Instance.Get<GameConfig>().GetItemIcon(2),
+                Global.Instance.Get<GameConfig>().GetItemIcon(3)
+            );
+
+            _imageDNAIconNormal.sprite = iconNormal;
+            _imageDNAIconStandard.sprite = iconStandard;
+            _imageDNAIconDeluxe.sprite = iconDeluxe;
+
             InitInventoryDNA();
+        }
+
+
+        public override async UniTask Show(float fadeDuration = 0.3f)
+        {
+            var (banner, tab1, tab2, tab3) = await UniTask.WhenAll(
+                _assetRefSpriteBanner.AssetRef.LoadAssetAsync<Sprite>().ToUniTask(),
+                _assetRefSpriteTabNormal.AssetRef.LoadAssetAsync<Sprite>().ToUniTask(),
+                _assetRefSpriteTabStandard.AssetRef.LoadAssetAsync<Sprite>().ToUniTask(),
+                _assetRefSpriteTabDeluxe.AssetRef.LoadAssetAsync<Sprite>().ToUniTask()
+            );
+
+            _imageBanner.sprite = banner;
+            _imageTabNormal.sprite = tab1;
+            _imageTabStandard.sprite = tab2;
+            _imageTabDeluxe.sprite = tab3;
+            OnHide += () =>
+            {
+                _imageBanner.sprite = null;
+                _imageTabNormal.sprite = null;
+                _imageTabStandard.sprite = null;
+                _imageTabDeluxe.sprite = null;
+
+                _assetRefSpriteBanner.AssetRef.ReleaseAsset();
+                _assetRefSpriteTabNormal.AssetRef.ReleaseAsset();
+                _assetRefSpriteTabStandard.AssetRef.ReleaseAsset();
+                _assetRefSpriteTabDeluxe.AssetRef.ReleaseAsset();
+            };
+            await base.Show(fadeDuration);
+        }
+
+        public override void Close(float fadeDuration = 0.3f)
+        {
+            base.Close(fadeDuration);
         }
 
         private void InitInventoryDNA()

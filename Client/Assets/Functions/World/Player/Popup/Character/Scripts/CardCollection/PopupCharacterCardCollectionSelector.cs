@@ -15,21 +15,33 @@ namespace World.Player.PopupCharacter
     {
         public byte LineupIndex;
         public byte SlotIndex;
+
         public override async UniTask Init(TabSwitcherWindowModel model = null)
         {
             _ctsInit?.Cancel();
             _ctsInit = new CancellationTokenSource();
 
             var charData = Global.Instance.Get<CharacterData>();
-            
+
             HashSet<uint> idsExistsInCurrentLineup = new HashSet<uint>();
+            HashSet<uint> templateIdsExistsInCurrentLineup = new HashSet<uint>();
             if (charData.CharacterModel.CardLineups.Count > LineupIndex)
             {
-                idsExistsInCurrentLineup = new HashSet<uint>(charData.CharacterModel.CardLineups[LineupIndex].Cards.Values);
+                idsExistsInCurrentLineup =
+                    new HashSet<uint>(charData.CharacterModel.CardLineups[LineupIndex].Cards.Values);
+                for (int i = 0; i < charData.CharacterModel.CardCollection.Cards.Count; i++)
+                {
+                    if (idsExistsInCurrentLineup.Contains(charData.CharacterModel.CardCollection.Cards[i].Id))
+                    {
+                        templateIdsExistsInCurrentLineup.Add(charData.CharacterModel.CardCollection.Cards[i]
+                            .TemplateId);
+                    }
+                }
             }
 
             var cards = charData.CharacterModel.CardCollection.Cards
-                .Where(i => !idsExistsInCurrentLineup.Contains(i.Id))
+                .Where(i => !idsExistsInCurrentLineup.Contains(i.Id) &&
+                            !templateIdsExistsInCurrentLineup.Contains(i.TemplateId))
                 .ToList();
 
 
