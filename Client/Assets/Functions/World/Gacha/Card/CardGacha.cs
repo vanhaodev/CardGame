@@ -2,6 +2,7 @@ using Functions.World.Player.Inventory;
 using Globals;
 using Popups;
 using UnityEngine;
+using UnityEngine.Events;
 using World.Player.PopupCharacter;
 using World.TheCard;
 
@@ -15,18 +16,28 @@ namespace Functions.World.Gacha
         [SerializeField] private CardModel _receivedCardModel;
         [SerializeField] private ItemModel _receivedItemModel;
         [SerializeField] private uint _receivedItemQuantity;
-        public void InitCard(CardModel cardModel)
+        UnityAction _onOpen;
+
+        public bool IsOpened()
+        {
+            return !_objCardBack.activeSelf;
+        }
+
+        public void InitCard(CardModel cardModel, UnityAction onOpen)
         {
             Init();
             _receivedCardModel = cardModel;
+            _onOpen = onOpen;
         }
 
-        public void InitItem(ItemModel itemModel, uint itemQuantity)
+        public void InitItem(ItemModel itemModel, uint itemQuantity, UnityAction onOpen)
         {
             Init();
             _receivedItemModel = itemModel;
             _receivedItemQuantity = itemQuantity;
+            _onOpen = onOpen;
         }
+
         private void Init()
         {
             _receivedCardModel = null;
@@ -38,11 +49,13 @@ namespace Functions.World.Gacha
             _card.gameObject.SetActive(false);
             _item.gameObject.SetActive(false);
         }
+
         /// <summary>
         /// card back khi được nhấn
         /// </summary>
         public async void OnFlipOpen()
         {
+            if (_receivedCardModel == null && _receivedItemModel == null) return;
             _objCardBack.SetActive(false);
             if (_receivedCardModel != null)
             {
@@ -58,6 +71,8 @@ namespace Functions.World.Gacha
                 });
                 _item.gameObject.SetActive(true);
             }
+
+            _onOpen?.Invoke();
         }
 
         public void OnShowCardInfo()
