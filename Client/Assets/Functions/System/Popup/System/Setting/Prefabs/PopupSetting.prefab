@@ -944,7 +944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 2683353232319194706}
-  _steps: 1e0000003c00000078000000ffffffff
+  _steps: 1e0000003c0000007800000090000000
   _currentStepValue: 0
 --- !u!1 &3017982012369498045
 GameObject:

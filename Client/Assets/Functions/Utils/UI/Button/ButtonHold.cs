@@ -8,56 +8,51 @@ namespace Utils
 {
     public abstract class ButtonHold : MonoBehaviour
     {
-        [Tooltip("Thời gian giữ để kích hoạt sự kiện hold (giây)")]
+        [Tooltip("Thời gian giữ để kích hoạt hold (giây)")]
         public float holdTime = 1.25f;
 
         public UnityEvent onClick;
         public UnityEvent onHold;
 
-        protected bool isHolding = false;
-        protected bool wasHoldTriggered = false;
-        protected CancellationTokenSource _cts;
+        private CancellationTokenSource _cts;
+        private bool _holdTriggered;
 
-        protected void StartHold()
+        protected void BeginHold()
         {
-            _cts?.Cancel();
+            CancelHold();
+            _holdTriggered = false;
             _cts = new CancellationTokenSource();
-            isHolding = true;
-            wasHoldTriggered = false;
-
-            HoldCheckAsync(_cts.Token).Forget();
+            WaitHoldAsync(_cts.Token).Forget();
         }
 
-        protected void ReleaseHold()
+        protected void EndHold(bool isClickCandidate)
         {
-            _cts?.Cancel();
-
-            if (!wasHoldTriggered && isHolding)
+            if (!_holdTriggered && isClickCandidate)
             {
                 onClick?.Invoke();
             }
 
-            isHolding = false;
+            CancelHold();
         }
 
-        private async UniTaskVoid HoldCheckAsync(CancellationToken token)
+        protected void CancelHold()
+        {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = null;
+        }
+
+        private async UniTaskVoid WaitHoldAsync(CancellationToken token)
         {
             try
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(holdTime), cancellationToken: token);
-                if (isHolding)
-                {
-                    wasHoldTriggered = true;
-                    onHold?.Invoke();
-                }
+                _holdTriggered = true;
+                onHold?.Invoke();
             }
             catch (OperationCanceledException) { }
         }
 
-        protected virtual void OnDestroy()
-        {
-            _cts?.Cancel();
-            _cts?.Dispose();
-        }
+        protected virtual void OnDestroy() => CancelHold();
     }
 }

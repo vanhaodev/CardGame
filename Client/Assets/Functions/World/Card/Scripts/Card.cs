@@ -36,7 +36,7 @@ namespace World.TheCard
             _onTouchListener?.Dispose();
             _onTouchListener = _eventOnTouch.Subscribe(action).AddTo(this);
         }
-        
+
         //============================[]==============================\\
 
 
@@ -80,7 +80,7 @@ namespace World.TheCard
 
         public void OnHold()
         {
-
+            Debug.Log("Holded");
         }
     }
 }
