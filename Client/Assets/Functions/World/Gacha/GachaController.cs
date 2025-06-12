@@ -14,7 +14,7 @@ namespace Functions.World.Gacha
         /// VD: nếu random ra 50000, bonus = 10000 thì roll thực tế là 40000.
         /// </param>
         /// <returns>Index phần thưởng trúng trong rewardPool, hoặc -1 nếu không có phần thưởng.</returns>
-        public int PlayGacha(List<GachaRewardModel> rewardPool, int accumulatedBonus = 0)
+        public int PlayGacha(List<GachaResultModel> rewardPool, int accumulatedBonus = 0)
         {
             if (rewardPool == null || rewardPool.Count == 0)
             {

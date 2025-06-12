@@ -35,7 +35,7 @@ namespace World.Player.PopupCharacter
             };
             _txItemQuantity.text = _item.Quantity > 1 ? _item.Quantity.ToString() : string.Empty;
             _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity];
-            
+
             //card shard sẽ lấy icon theo kiểu khác
             bool isCardShard = false;
             if (_itemType == ItemType.Resource)
@@ -73,6 +73,14 @@ namespace World.Player.PopupCharacter
         public void OnHold()
         {
             if (_objLoadingLock.activeSelf) return;
+        }
+
+        public void Clear()
+        {
+            _item = null;
+            _imgBackground.sprite = null;
+            _imgItemIcon.sprite = null;
+            _txItemQuantity.text = String.Empty;
         }
     }
 }

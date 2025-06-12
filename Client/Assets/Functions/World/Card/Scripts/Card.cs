@@ -55,6 +55,7 @@ namespace World.TheCard
 
         private async void Init()
         {
+            if (_cardModel == null) return;
             _spriteCharacter.sprite = await Global.Instance.Get<GameConfigs.GameConfig>().GetCardSprite(_cardModel);
 
             if (_cardStarUI.gameObject.activeSelf)

@@ -371,7 +371,7 @@ TextureImporter:
         width: 315
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -393,7 +393,7 @@ TextureImporter:
         width: 251
         height: 264
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -415,7 +415,7 @@ TextureImporter:
         width: 227
         height: 249
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -424,6 +424,50 @@ TextureImporter:
       bones: []
       spriteID: 7e11a11f15a38e3448bd089aca59e48c
       internalID: 608885506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons_13
+      rect:
+        serializedVersion: 2
+        x: 2988
+        y: 475
+        width: 244
+        height: 317
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b39da373305cd844e8e3e032e91b71bb
+      internalID: -1134588348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons_14
+      rect:
+        serializedVersion: 2
+        x: 3237
+        y: 496
+        width: 244
+        height: 276
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0df826af97bedde4abcb6b6b014b7a79
+      internalID: 1431858611
       vertices: []
       indices: 
       edges: []
@@ -447,6 +491,8 @@ TextureImporter:
       icons_10: 2081308620
       icons_11: 380198737
       icons_12: 608885506
+      icons_13: -1134588348
+      icons_14: 1431858611
       icons_2: 5080264137296596014
       icons_3: 4405962465801672676
       icons_4: -4156871948698838512

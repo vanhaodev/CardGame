@@ -17,12 +17,12 @@ namespace Popups
         public void SetContent(string content, float hideToastMoveDuration = 1)
         {
             _hideToastMoveDuration = hideToastMoveDuration;
-            _transformToast.position = new Vector3(0, 3, 0);
+            _transformToast.position = new Vector3(0, 7, 0);
             _txContent.text = content;
             _sizeFitterToast.UpdateSize();
         }
 
-        public override async UniTask Show(float fadeDuration = 0.3f)
+        public override async UniTask Show(float fadeDuration = 0f)
         {
             await base.Show(fadeDuration);
             await UniTask.WaitForSeconds(1, cancellationToken: destroyCancellationToken);

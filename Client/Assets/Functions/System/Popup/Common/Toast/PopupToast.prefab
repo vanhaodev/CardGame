@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 2871043111703637138}
+  _objBlockInput: {fileID: 0}
   _transformHideZone: {fileID: 2507557894732662956}
   _transformToast: {fileID: 3312189976633414632}
   _sizeFitterToast: {fileID: 4381450471536439458}
@@ -143,7 +144,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +5000 <sprite=0>
+  m_text: +5000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a7f187f335714e44883b0bdb05e20a4, type: 2}
   m_sharedMaterial: {fileID: -6777435314913902292, guid: 9a7f187f335714e44883b0bdb05e20a4, type: 2}
@@ -544,6 +545,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 50}
+  m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

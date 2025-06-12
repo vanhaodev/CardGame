@@ -309,7 +309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 757ca8db8bd609e449364b81d8bcb9b6, type: 3}
+  m_Sprite: {fileID: 5189691121816951081, guid: fc6fcf32eb7c3394e9bec025fff0d263, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -685,7 +685,6 @@ MonoBehaviour:
     Star: 0
     Level:
       _exp: 0
-    BaseAttributes: []
     CalculatedAttributes: []
   _spriteFrame: {fileID: 6741755396499725753}
   _spriteCharacter: {fileID: 4882335940837247439}

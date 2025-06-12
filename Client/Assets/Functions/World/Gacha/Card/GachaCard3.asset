@@ -20,5 +20,5 @@ MonoBehaviour:
     10000,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5],\n    \"Quantity\": 25,\n   
     \"IsHaveCard\": false\n  },\n  {\n    \"Rate\": 6000,\n    \"CardTemplateIds\":
     [1, 2, 3, 4, 5],\n    \"Quantity\": 45,\n    \"IsHaveCard\": false\n  },\n  {\n   
-    \"Rate\": 4000,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5],\n    \"Quantity\":
+    \"Rate\": 80000,\n    \"CardTemplateIds\": [1, 2, 3, 4, 5],\n    \"Quantity\":
     1,\n    \"IsHaveCard\": true\n  }\n]"

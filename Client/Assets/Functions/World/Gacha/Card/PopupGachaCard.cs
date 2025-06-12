@@ -35,6 +35,8 @@ namespace Functions.World.Gacha
         [BoxGroup("Tab")] [SerializeField] private Image _imageTabStandard;
         [BoxGroup("Tab")] [SerializeField] private Image _imageTabDeluxe;
 
+        [BoxGroup("Result")] [SerializeField] private GachaCardResultManager _resultManager;
+
         public override async UniTask SetupData()
         {
             await base.SetupData();
@@ -142,19 +144,26 @@ namespace Functions.World.Gacha
                 {
                     var gachaConfig =
                         await Global.Instance.Get<GameConfig>().GetCardGacha(_tabSwitcher.CurrentIndex + 1);
-                    var result = gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaRewardModel>().ToList())];
-                    Debug.Log(JsonConvert.SerializeObject(result));
+                    var result = gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaResultModel>().ToList())];
                     var cardResultTempId = GetRandomCardTemplateId(result.CardTemplateIds);
+                    var gachaCardRewardModel = new GachaCardRewardModel();
                     if (result.IsHaveCard)
                     {
-                        charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                        gachaCardRewardModel.Card =
+                            charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                        gachaCardRewardModel.Quantity = 1;
                     }
                     else //shard
                     {
                         var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
-                        charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
+                        gachaCardRewardModel.ShardModel =
+                            charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
+                        gachaCardRewardModel.Quantity = result.Quantity;
                     }
 
+                    _resultManager.Show(new List<GachaCardRewardModel>() { gachaCardRewardModel });
+                    Debug.Log(JsonConvert.SerializeObject(result));
+                    Debug.Log(JsonConvert.SerializeObject(gachaCardRewardModel));
                     await charData.CharacterModel.Inventory.Arrange();
                 }
             }
@@ -184,29 +193,39 @@ namespace Functions.World.Gacha
                     var gachaConfig =
                         await Global.Instance.Get<GameConfig>().GetCardGacha(_tabSwitcher.CurrentIndex + 1);
                     var results = new List<GachaCardModel>();
+                    var gachaCardRewardModels = new List<GachaCardRewardModel>();
                     for (int i = 0; i < 10; i++)
                     {
                         var result =
-                            gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaRewardModel>().ToList())];
+                            gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaResultModel>().ToList())];
                         results.Add(result);
                     }
 
                     foreach (var result in results)
                     {
                         var cardResultTempId = GetRandomCardTemplateId(result.CardTemplateIds);
+                        var gachaCardRewardModel = new GachaCardRewardModel();
                         if (result.IsHaveCard)
                         {
-                            charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                            gachaCardRewardModel.Card =
+                                charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                            gachaCardRewardModel.Quantity = 1;
                         }
                         else //shard
                         {
                             var cardTemplate =
                                 await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
-                            charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
+                            gachaCardRewardModel.ShardModel =
+                                charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId,
+                                    result.Quantity);
+                            gachaCardRewardModel.Quantity = result.Quantity;
                         }
+
+                        gachaCardRewardModels.Add(gachaCardRewardModel);
                     }
 
                     Debug.Log(JsonConvert.SerializeObject(results));
+                    _resultManager.Show(gachaCardRewardModels);
                     await charData.CharacterModel.Inventory.Arrange();
                 }
             }

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Functions.World.Player.Inventory;
+using World.TheCard;
 
 namespace Functions.World.Gacha
 {
     [System.Serializable]
-    public class GachaRewardModel
+    public class GachaResultModel
     {
         /// <summary>
         /// 100k = 100% <br/>
@@ -13,7 +15,7 @@ namespace Functions.World.Gacha
     }
 
     [System.Serializable]
-    public class GachaCardModel : GachaRewardModel
+    public class GachaCardModel : GachaResultModel
     {
         /// <summary>
         /// Danh sách có thể nhận trong đây
@@ -28,8 +30,14 @@ namespace Functions.World.Gacha
         public bool IsHaveCard;
     }
 
+    public class GachaCardRewardModel
+    {
+        public CardModel Card;
+        public ItemModel ShardModel;
+        public uint Quantity;
+    }
     [System.Serializable]
-    public class GachaEquipmentModel : GachaRewardModel
+    public class GachaEquipmentModel : GachaResultModel
     {
         /// <summary>
         /// Danh sách có thể nhận trong đây
