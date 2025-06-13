@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using Globals;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace Functions.World.Gacha
@@ -24,11 +25,14 @@ namespace Functions.World.Gacha
         [SerializeField] List<CardGacha> _cardGachas;
         [SerializeField] private Button _btnOpenAll;
         [SerializeField] private Button _btnClose;
+        [SerializeField] private List<RectTransform> _worldShakers;
+        UIShaker _uiShaker;
 
         public void SetFadeSprite(Sprite sprite)
         {
             _imageFade.sprite = sprite;
         }
+
         [Button]
         private void RefreshOriginPositions()
         {
@@ -51,15 +55,18 @@ namespace Functions.World.Gacha
             }
         }
 
+        private bool _isPlayingFallSound;
+
         private async UniTask AnimCardPosSequentialAsync()
         {
             float fallDuration = 0.4f;
             float fallScaleRatio = 0.4f; // nhỏ hơn gốc 60%
-            float fallDelay = 0.05f; // delay giữa các lượt
+            float fallDelay = 0.3f; // delay giữa các lượt
 
             for (int i = 0; i < _cardGachas.Count; i++)
             {
                 var card = _cardGachas[i];
+                if (!card.gameObject.activeSelf) continue;
                 var targetPos = _cardGachasOriginPositions[i];
                 var originScale = _cardGachasOriginScales[i];
                 var cardTransform = card.transform;
@@ -75,17 +82,21 @@ namespace Functions.World.Gacha
 
                 //========================
                 //Step: Animate rơi + scale (không xoay)
-                cardTransform.DOLocalMove(targetPos, fallDuration).OnPlay(() =>
+                cardTransform.DOLocalMove(targetPos, fallDuration).OnPlay(async () =>
                     {
-                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCardFall");
-                    }).OnComplete(() =>
-                    {
+                        if (!_isPlayingFallSound)
+                        {
+                            Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCardFall");
+                            _isPlayingFallSound = true;
+                        }
+
+                        await UniTask.WaitForSeconds(fallDuration * 0.7f);
                         Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCardGround");
-                    })
+                    }).OnComplete(() => { _isPlayingFallSound = false; })
                     .SetEase(Ease.InQuad);
 
                 cardTransform.DOScale(originScale, fallDuration)
-                    .SetEase(Ease.InQuad).OnComplete(()=>card.ShowShadow(true));
+                    .SetEase(Ease.InQuad).OnComplete(() => card.ShowShadow(true));
 
                 //========================
                 //Step: Delay nhẹ trước thẻ tiếp theo
@@ -99,9 +110,11 @@ namespace Functions.World.Gacha
             Global.Instance.Get<SoundManager>().StopSoundLoop(1);
             if (_imageBackground.sprite == null)
             {
+                _uiShaker = new();
                 var bg = await _assetRefSpriteBackground.AssetRef.LoadAssetAsync<Sprite>();
                 _imageBackground.sprite = bg;
             }
+
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
             _imageFade.gameObject.SetActive(true);
             _imageFade.color = new Color(1, 1, 1, 0);
@@ -130,10 +143,11 @@ namespace Functions.World.Gacha
                     _cardGachas[i].gameObject.SetActive(false);
                 }
             }
-            
+
             gameObject.SetActive(true);
             await UniTask.WaitForSeconds(0.4f);
             await _imageFade.DOFade(1, 0.3f);
+            _uiShaker.StartWobble(_worldShakers, 10f, 1.2f);
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
             await UniTask.WaitForSeconds(1f);
             await _imageFade.DOFade(0, 1).OnComplete(() => _imageFade.gameObject.SetActive(false));
@@ -166,12 +180,15 @@ namespace Functions.World.Gacha
         {
             Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Lobby", 1);
             Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_GachaResultAmbient", 2);
+            _uiShaker.StopWobble();
         }
+
         public void Clear()
         {
             _imageBackground.sprite = null;
             _imageFade.gameObject.SetActive(false);
             _assetRefSpriteBackground.AssetRef.ReleaseAsset();
+            _uiShaker = null;
         }
     }
 }

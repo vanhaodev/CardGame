@@ -133,7 +133,7 @@ public class SoundManager : MonoBehaviour, IGlobal
         }
 
         player.AudioSource.Play();
-        Debug.LogError($"Play one shot of type {lib.Type}: {id}");
+        // Debug.LogError($"Play one shot of type {lib.Type}: {id}");
         // Sau khi âm thanh kết thúc, trả lại vào pool
         StartCoroutine(WaitAndReturnToPool(player));
     }
