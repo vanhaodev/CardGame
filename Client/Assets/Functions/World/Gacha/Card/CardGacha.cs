@@ -17,6 +17,7 @@ namespace Functions.World.Gacha
         [SerializeField] private CardModel _receivedCardModel;
         [SerializeField] private ItemModel _receivedItemModel;
         [SerializeField] private uint _receivedItemQuantity;
+        [SerializeField] private GameObject _objShadow;
         UnityAction _onOpen;
 
         public bool IsOpened()
@@ -24,6 +25,10 @@ namespace Functions.World.Gacha
             return !_objCardBack.activeSelf;
         }
 
+        public void ShowShadow(bool isShow)
+        {
+            _objShadow.SetActive(isShow);
+        }
         public void InitCard(CardModel cardModel, UnityAction onOpen)
         {
             Init();

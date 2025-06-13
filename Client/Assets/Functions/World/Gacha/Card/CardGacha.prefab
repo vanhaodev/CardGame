@@ -297,6 +297,7 @@ MonoBehaviour:
       _exp: 0
     CalculatedAttributes: []
   _receivedItemQuantity: 0
+  _objShadow: {fileID: 5991607858204023621}
 --- !u!1001 &218653526758282306
 PrefabInstance:
   m_ObjectHideFlags: 0

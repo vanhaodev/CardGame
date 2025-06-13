@@ -9,11 +9,14 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using Globals;
+using Utils;
 
 namespace Functions.World.Gacha
 {
     public class GachaCardResultManager : MonoBehaviour
     {
+        [BoxGroup("Tab")] [SerializeField] private AssetReferenceWithPath _assetRefSpriteBackground;
+        [BoxGroup("Tab")] [SerializeField] private Image _imageBackground;
         [SerializeField] private Image _imageFade;
         [SerializeField] private Transform _transformStartPos;
         [SerializeField] List<Vector3> _cardGachasOriginPositions;
@@ -44,6 +47,7 @@ namespace Functions.World.Gacha
             {
                 _cardGachas[i].transform.localPosition = _transformStartPos.localPosition;
                 _cardGachas[i].transform.localScale = _cardGachasOriginScales[i];
+                _cardGachas[i].ShowShadow(false);
             }
         }
 
@@ -71,11 +75,17 @@ namespace Functions.World.Gacha
 
                 //========================
                 //Step: Animate rơi + scale (không xoay)
-                cardTransform.DOLocalMove(targetPos, fallDuration)
+                cardTransform.DOLocalMove(targetPos, fallDuration).OnPlay(() =>
+                    {
+                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCardFall");
+                    }).OnComplete(() =>
+                    {
+                        Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCardGround");
+                    })
                     .SetEase(Ease.InQuad);
 
                 cardTransform.DOScale(originScale, fallDuration)
-                    .SetEase(Ease.InQuad);
+                    .SetEase(Ease.InQuad).OnComplete(()=>card.ShowShadow(true));
 
                 //========================
                 //Step: Delay nhẹ trước thẻ tiếp theo
@@ -86,10 +96,15 @@ namespace Functions.World.Gacha
 
         public async void Show(List<GachaCardRewardModel> results)
         {
+            Global.Instance.Get<SoundManager>().StopSoundLoop(1);
+            if (_imageBackground.sprite == null)
+            {
+                var bg = await _assetRefSpriteBackground.AssetRef.LoadAssetAsync<Sprite>();
+                _imageBackground.sprite = bg;
+            }
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
             _imageFade.gameObject.SetActive(true);
             _imageFade.color = new Color(1, 1, 1, 0);
-            Global.Instance.Get<SoundManager>().StopSoundLoop(1);
             Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCard");
             ResetCardPos();
             _btnClose.transform.parent.gameObject.SetActive(false);
@@ -117,11 +132,13 @@ namespace Functions.World.Gacha
             }
             
             gameObject.SetActive(true);
+            await UniTask.WaitForSeconds(0.4f);
             await _imageFade.DOFade(1, 0.3f);
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            await UniTask.WaitForSeconds(5);
+            await UniTask.WaitForSeconds(1f);
             await _imageFade.DOFade(0, 1).OnComplete(() => _imageFade.gameObject.SetActive(false));
             await AnimCardPosSequentialAsync();
+            Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_GachaResultAmbient", 2);
             _btnOpenAll.transform.parent.gameObject.SetActive(true);
         }
 
@@ -148,6 +165,13 @@ namespace Functions.World.Gacha
         private void OnDisable()
         {
             Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Lobby", 1);
+            Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_GachaResultAmbient", 2);
+        }
+        public void Clear()
+        {
+            _imageBackground.sprite = null;
+            _imageFade.gameObject.SetActive(false);
+            _assetRefSpriteBackground.AssetRef.ReleaseAsset();
         }
     }
 }

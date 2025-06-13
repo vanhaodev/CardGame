@@ -65,14 +65,14 @@ namespace Functions.World.Gacha
             );
 
             _imageBanner.sprite = banner;
-            _resultManager.SetFadeSprite(banner);
+            // _resultManager.SetFadeSprite(banner);
             _imageTabNormal.sprite = tab1;
             _imageTabStandard.sprite = tab2;
             _imageTabDeluxe.sprite = tab3;
             OnHide += () =>
             {
                 _imageBanner.sprite = null;
-                _resultManager.SetFadeSprite(null);
+                // _resultManager.SetFadeSprite(null);
                 _imageTabNormal.sprite = null;
                 _imageTabStandard.sprite = null;
                 _imageTabDeluxe.sprite = null;
@@ -81,6 +81,8 @@ namespace Functions.World.Gacha
                 _assetRefSpriteTabNormal.AssetRef.ReleaseAsset();
                 _assetRefSpriteTabStandard.AssetRef.ReleaseAsset();
                 _assetRefSpriteTabDeluxe.AssetRef.ReleaseAsset();
+                
+                _resultManager.Clear();
             };
             await base.Show(fadeDuration);
         }
