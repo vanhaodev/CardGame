@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Globals;
 using Save;
 using UnityEngine;
@@ -30,6 +31,7 @@ public class SoundManager : MonoBehaviour, IGlobal
     /// all spawned object
     /// </summary>
     private Dictionary<SoundType, List<SoundPlayer>> _spawnedSounds;
+    // private readonly Semaphore _concurrent = new Semaphore(1,1); // max 4 sound fx chạy đồng thời
 
     public async UniTask Init()
     {
@@ -154,7 +156,9 @@ public class SoundManager : MonoBehaviour, IGlobal
         player.Id = id;
         player.Type = lib.Type;
         SetVolume(player.AudioSource, lib.Type);
-        _spawnedSounds[lib.Type].Add(player);
+        if (!_spawnedSounds[lib.Type].Contains(player))
+            _spawnedSounds[lib.Type].Add(player);
+        player.gameObject.SetActive(true);
         player.AudioSource.Play();
     }
 
@@ -170,10 +174,17 @@ public class SoundManager : MonoBehaviour, IGlobal
 
     private IEnumerator WaitAndReturnToPool(SoundPlayer player)
     {
-        // Đợi cho âm thanh chơi xong
+        string originalId = player.Id;
         yield return new WaitForSeconds(player.AudioSource.clip.length);
+
+        if (player.Id != originalId)
+        {
+            // Debug.LogError("player đã bị tái sử dụng cho âm thanh khác");
+            yield break; // player đã bị tái sử dụng cho âm thanh khác
+        }
+
         _spawnedSounds[player.Type].Remove(player);
-        // Sau khi âm thanh kết thúc, trả lại pool
         _pool.Put(player);
     }
+
 }

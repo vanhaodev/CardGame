@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using Globals;
 using Popups;
@@ -51,15 +52,27 @@ namespace Functions.World.Gacha
         }
 
         /// <summary>
+        /// avoid duplicate volume
+        /// </summary>
+        static bool _isSFXFlipPlaying;
+
+        /// <summary>
         /// card back khi được nhấn
         /// </summary>
         public async void OnFlipOpen()
         {
             if (_receivedCardModel == null && _receivedItemModel == null) return;
-            _objCardBack.SetActive(false);
+            if (!_isSFXFlipPlaying)
+            {
+                _isSFXFlipPlaying = true;
+                Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCardFlip");
+            }
+            
             if (_receivedCardModel != null)
             {
                 _card.CardModel = _receivedCardModel;
+                await UniTask.WaitForSeconds(0.5f);
+                _objCardBack.SetActive(false);
                 _card.gameObject.SetActive(true);
             }
             else
@@ -69,9 +82,12 @@ namespace Functions.World.Gacha
                     Item = _receivedItemModel,
                     Quantity = _receivedItemQuantity
                 });
+                await UniTask.WaitForSeconds(0.5f);
+                _objCardBack.SetActive(false);
                 _item.gameObject.SetActive(true);
             }
 
+            _isSFXFlipPlaying = false;
             _onOpen?.Invoke();
         }
 

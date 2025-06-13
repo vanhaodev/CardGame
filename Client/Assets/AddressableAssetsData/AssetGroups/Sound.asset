@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 483ae47bd960fc34b99d0956510fb910
+    m_Address: Audios/FX_GachaCardFlip
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f580ef11053a93408ca997b5042fa66
     m_Address: Audios/FX_Attack
     m_ReadOnly: 0
@@ -52,6 +57,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b38e630cfc202df40a8b7e9299f314b1
     m_Address: Audios/FX_Success
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8d7b4f61939ade4e9e35f596dc9541f
+    m_Address: Audios/FX_GachaCard
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -8,11 +8,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
+using Globals;
 
 namespace Functions.World.Gacha
 {
     public class GachaCardResultManager : MonoBehaviour
     {
+        [SerializeField] private Image _imageFade;
         [SerializeField] private Transform _transformStartPos;
         [SerializeField] List<Vector3> _cardGachasOriginPositions;
         [SerializeField] List<Vector3> _cardGachasOriginScales;
@@ -20,6 +22,10 @@ namespace Functions.World.Gacha
         [SerializeField] private Button _btnOpenAll;
         [SerializeField] private Button _btnClose;
 
+        public void SetFadeSprite(Sprite sprite)
+        {
+            _imageFade.sprite = sprite;
+        }
         [Button]
         private void RefreshOriginPositions()
         {
@@ -78,8 +84,13 @@ namespace Functions.World.Gacha
         }
 
 
-        public void Show(List<GachaCardRewardModel> results)
+        public async void Show(List<GachaCardRewardModel> results)
         {
+            gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            _imageFade.gameObject.SetActive(true);
+            _imageFade.color = new Color(1, 1, 1, 0);
+            Global.Instance.Get<SoundManager>().StopSoundLoop(1);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_GachaCard");
             ResetCardPos();
             _btnClose.transform.parent.gameObject.SetActive(false);
             _btnOpenAll.transform.parent.gameObject.SetActive(false);
@@ -104,10 +115,14 @@ namespace Functions.World.Gacha
                     _cardGachas[i].gameObject.SetActive(false);
                 }
             }
-
+            
             gameObject.SetActive(true);
+            await _imageFade.DOFade(1, 0.3f);
+            gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            await UniTask.WaitForSeconds(5);
+            await _imageFade.DOFade(0, 1).OnComplete(() => _imageFade.gameObject.SetActive(false));
+            await AnimCardPosSequentialAsync();
             _btnOpenAll.transform.parent.gameObject.SetActive(true);
-            AnimCardPosSequentialAsync();
         }
 
         public void OpenAll()
@@ -128,6 +143,11 @@ namespace Functions.World.Gacha
 
             _btnClose.transform.parent.gameObject.SetActive(isAllCardsOpened);
             _btnOpenAll.transform.parent.gameObject.SetActive(!isAllCardsOpened);
+        }
+
+        private void OnDisable()
+        {
+            Global.Instance.Get<SoundManager>().PlaySoundLoop("BGM_Lobby", 1);
         }
     }
 }
