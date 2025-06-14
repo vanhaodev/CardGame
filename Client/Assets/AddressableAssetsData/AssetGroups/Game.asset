@@ -15,13 +15,28 @@ MonoBehaviour:
   m_GroupName: Game
   m_GUID: 34776c83da527e74ab4c5ecd9ac57adc
   m_SerializeEntries:
+  - m_GUID: 1464f1213381fe446aa77a79aad740a0
+    m_Address: ItemIcons/5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 68e6db2ebdc24f95958faec2be5558d6
     m_Address: Assets/TextMesh Pro/Shaders/TMP_SDF.shader
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 722d6c793cc9f4142aabeaf0cffe4c08
+    m_Address: ItemIcons/6
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a7f187f335714e44883b0bdb05e20a4
     m_Address: Assets/Statics/Fonts/ProtestGuerrilla-Regular SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ddb13ee495bd0340933025bed39af0c
+    m_Address: ItemIcons/4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

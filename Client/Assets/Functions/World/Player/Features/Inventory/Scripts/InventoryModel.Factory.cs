@@ -49,5 +49,22 @@ namespace Functions.World.Player.Inventory
                 return item;
             }
         }
+        public ItemResourceModel AddNewEquipment(uint itemTemplateId, ItemRarity itemRarity)
+        {
+            var chaData = Global.Instance.Get<CharacterData>();
+            var item = new ItemResourceModel()
+            {
+                Id = chaData.UniqueIdentityModel.ItemId.GetValue(),
+                TemplateId = itemTemplateId,
+                Rarity = itemRarity,
+                CreatedAt = DateTime.UtcNow
+            };
+            Items.Add(new InventoryItemModel()
+            {
+                Item = item,
+                Quantity = 1
+            });
+            return item;
+        }
     }
 }

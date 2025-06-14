@@ -150,7 +150,7 @@ namespace Functions.World.Gacha
                         await Global.Instance.Get<GameConfig>().GetCardGacha(_tabSwitcher.CurrentIndex + 1);
                     var result = gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaResultModel>().ToList())];
                     var cardResultTempId = GetRandomCardTemplateId(result.CardTemplateIds);
-                    var gachaCardRewardModel = new GachaCardRewardModel();
+                    var gachaCardRewardModel = new GachaRewardModel();
                     if (result.IsHaveCard)
                     {
                         gachaCardRewardModel.Card =
@@ -160,12 +160,12 @@ namespace Functions.World.Gacha
                     else //shard
                     {
                         var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
-                        gachaCardRewardModel.ShardModel =
+                        gachaCardRewardModel.ItemModel =
                             charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
                         gachaCardRewardModel.Quantity = result.Quantity;
                     }
 
-                    _resultManager.Show(new List<GachaCardRewardModel>() { gachaCardRewardModel });
+                    _resultManager.Show(new List<GachaRewardModel>() { gachaCardRewardModel });
                     Debug.Log(JsonConvert.SerializeObject(result));
                     Debug.Log(JsonConvert.SerializeObject(gachaCardRewardModel));
                     await charData.CharacterModel.Inventory.Arrange();
@@ -197,7 +197,7 @@ namespace Functions.World.Gacha
                     var gachaConfig =
                         await Global.Instance.Get<GameConfig>().GetCardGacha(_tabSwitcher.CurrentIndex + 1);
                     var results = new List<GachaCardModel>();
-                    var gachaCardRewardModels = new List<GachaCardRewardModel>();
+                    var gachaCardRewardModels = new List<GachaRewardModel>();
                     for (int i = 0; i < 10; i++)
                     {
                         var result =
@@ -208,7 +208,7 @@ namespace Functions.World.Gacha
                     foreach (var result in results)
                     {
                         var cardResultTempId = GetRandomCardTemplateId(result.CardTemplateIds);
-                        var gachaCardRewardModel = new GachaCardRewardModel();
+                        var gachaCardRewardModel = new GachaRewardModel();
                         if (result.IsHaveCard)
                         {
                             gachaCardRewardModel.Card =
@@ -219,7 +219,7 @@ namespace Functions.World.Gacha
                         {
                             var cardTemplate =
                                 await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
-                            gachaCardRewardModel.ShardModel =
+                            gachaCardRewardModel.ItemModel =
                                 charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId,
                                     result.Quantity);
                             gachaCardRewardModel.Quantity = result.Quantity;

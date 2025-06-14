@@ -34,5 +34,9 @@ namespace World.Lobby
         {
             Global.Instance.Get<PopupManager>().ShowGachaCard();
         }
+        public void OpenGachaEquipment()
+        {
+            Global.Instance.Get<PopupManager>().ShowGachaEquipment();
+        }
     }
 }

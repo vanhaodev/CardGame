@@ -105,7 +105,7 @@ namespace Functions.World.Gacha
         }
 
 
-        public async void Show(List<GachaCardRewardModel> results)
+        public async void Show(List<GachaRewardModel> results)
         {
             Global.Instance.Get<SoundManager>().StopSoundLoop(1);
             if (_imageBackground.sprite == null)
@@ -135,7 +135,7 @@ namespace Functions.World.Gacha
                     }
                     else
                     {
-                        _cardGachas[i].InitItem(results[i].ShardModel, results[i].Quantity, OnOpen);
+                        _cardGachas[i].InitItem(results[i].ItemModel, results[i].Quantity, OnOpen);
                     }
                 }
                 else
@@ -147,7 +147,7 @@ namespace Functions.World.Gacha
             gameObject.SetActive(true);
             await UniTask.WaitForSeconds(0.4f);
             await _imageFade.DOFade(1, 0.3f);
-            _uiShaker.StartWobble(_worldShakers, 10f, 1.2f);
+            _uiShaker.StartWobble(_worldShakers, 5, 1.2f);
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
             await UniTask.WaitForSeconds(1f);
             await _imageFade.DOFade(0, 1).OnComplete(() => _imageFade.gameObject.SetActive(false));

@@ -35,7 +35,14 @@ namespace Popups
             pop.Show().Forget();
             onCloseSetter?.Invoke(() => pop.Close());
         }
-
+        [Button]
+        public async void ShowGachaEquipment()
+        {
+            var pop = GetPopup<PopupGachaEquipment>() as PopupGachaEquipment;
+            await pop.SetupData();
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+        }
         [Button]
         public async void ShowGachaCard()
         {

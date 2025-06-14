@@ -30,15 +30,16 @@ namespace Functions.World.Gacha
         public bool IsHaveCard;
     }
 
-    public class GachaCardRewardModel
+    public class GachaRewardModel
     {
         public CardModel Card;
-        public ItemModel ShardModel;
+        public ItemModel ItemModel;
         public uint Quantity;
     }
     [System.Serializable]
     public class GachaEquipmentModel : GachaResultModel
     {
+        public ItemRarity Rarity;
         /// <summary>
         /// Danh sách có thể nhận trong đây
         /// </summary>

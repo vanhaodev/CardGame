@@ -118,7 +118,7 @@ namespace GameConfigs
 
     public partial class GameConfig : MonoBehaviour, IGlobal
     {
-        [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment1; //gacha gỗ
+        [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment1; //gacha sắt
         [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment2; //gacha bạc
         [SerializeReference] private List<GachaEquipmentModel> _gachaEquipment3; //gacha vàng
 
@@ -128,7 +128,7 @@ namespace GameConfigs
         /// 3: vàng <br/>
         /// </summary>
         /// <param name="type"></param>
-        public async UniTask<List<GachaEquipmentModel>> GetEquipmentGacha(byte type)
+        public async UniTask<List<GachaEquipmentModel>> GetEquipmentGacha(int type)
         {
             switch (type)
             {

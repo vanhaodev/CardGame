@@ -2,7 +2,7 @@
 {
     public enum ItemRarity
     {
-        N, //Normal
+        N = 1, //Normal
         R, //Rare
         SR, //Super Rare
         UR, //Ultra Rare
