@@ -20,7 +20,19 @@ MonoBehaviour:
   ShardId: 1002
   Class: 1
   Element: 4
-  Attributes: []
+  Attributes:
+  - Type: 0
+    Value: 212
+  - Type: 1
+    Value: 50
+  - Type: 4
+    Value: 255
+  - Type: 5
+    Value: 534
+  - Type: 15
+    Value: 378
+  - Type: 16
+    Value: 500
   Skills:
   - SlotType: 2
     Skill:

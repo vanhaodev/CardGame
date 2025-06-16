@@ -9,7 +9,7 @@ namespace World.TheCard
 {
     [Serializable]
     [CreateAssetMenu(fileName = "CardTemplateModel", menuName = "Data/CardTemplateModel", order = 1)]
-    public class CardTemplateModel : ScriptableObject
+    public partial class CardTemplateModel : ScriptableObject
     {
         public uint Id;
         public string Name;
@@ -27,5 +27,6 @@ namespace World.TheCard
 
         // thứ tự Passive1, Passive2, BasicSkill, AdvancedSkill, Ultimate
         public List<CardSkillTemplateModel> Skills;
+        
     }
 }

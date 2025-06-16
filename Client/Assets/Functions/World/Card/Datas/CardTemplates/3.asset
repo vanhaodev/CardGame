@@ -22,15 +22,17 @@ MonoBehaviour:
   Element: 5
   Attributes:
   - Type: 0
-    Value: 120
+    Value: 183
   - Type: 1
-    Value: 10
-  - Type: 3
-    Value: 200
+    Value: 57
+  - Type: 15
+    Value: 302
   - Type: 4
+    Value: 243
+  - Type: 2
+    Value: 31
+  - Type: 18
     Value: 500
-  - Type: 5
-    Value: 2000
   Skills:
   - SlotType: 2
     Skill:

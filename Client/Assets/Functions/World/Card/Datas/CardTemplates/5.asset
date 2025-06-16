@@ -22,11 +22,17 @@ MonoBehaviour:
   Element: 2
   Attributes:
   - Type: 0
-    Value: 50
-  - Type: 3
-    Value: 10
+    Value: 167
+  - Type: 1
+    Value: 59
   - Type: 4
-    Value: 10
+    Value: 211
+  - Type: 6
+    Value: 240
+  - Type: 3
+    Value: 193
+  - Type: 20
+    Value: 500
   Skills:
   - SlotType: 2
     Skill:

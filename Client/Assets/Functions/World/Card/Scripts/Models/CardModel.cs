@@ -67,7 +67,7 @@ namespace World.TheCard
             var templateAttributes = AttributeModel.ToDictionary(template.Attributes);
             var levelBonus = Global.Instance.Get<GameConfig>()
                 .CardLevelAttributeBonus(template.Class, Level.GetLevel());
-            var starBonus = Global.Instance.Get<GameConfig>().CardStarAttributeBonus(template.Class, Star);
+            var starBonus = Global.Instance.Get<GameConfig>().CardStarAttributeBonus(template.Class, template.Element, Star);
 
 // Tập hợp tất cả các attribute type có thể có
             var allKeys = new HashSet<AttributeType>(

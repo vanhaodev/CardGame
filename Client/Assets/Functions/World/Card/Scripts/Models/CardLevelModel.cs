@@ -2,6 +2,7 @@
 using Globals;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace World.TheCard.Skill
 {
@@ -11,75 +12,79 @@ namespace World.TheCard.Skill
         /// <summary>
         /// lưu cấp
         /// </summary>
-        private ushort _level;
+        public ushort Level;
 
         /// <summary>
         /// phần chính, exp
         /// </summary>
-        [SerializeField] private uint _exp;
+        public uint Exp;
 
         /// <summary>
         /// exp của lần cập nhật cuối
         /// </summary>
-        private uint _expOfLastUpdate;
+        public uint ExpOfLastUpdate;
 
         /// <summary>
         /// Exp tính từ mốc level hiện tại
         /// </summary>
-        private uint _expCurrent;
+        public uint ExpCurrent;
+
         /// <summary>
         /// exp để đạt level tiếp theo
         /// </summary>
-        private uint _expNext;
+        public uint ExpNext;
 
         /// <summary>
         /// %
         /// </summary>
-        private float _progress;
+        public float Progress;
 
         [Button]
         private void Update()
         {
-            if (_exp == _expOfLastUpdate && _exp != 0) return;
-            var updateData = Global.Instance.Get<GameConfig>().GetLevelProgressAndNextExp(_exp);
-            _level = updateData.level;
-            _expOfLastUpdate = _exp;
-            _expCurrent = updateData.expCurrent;
-            _expNext = updateData.expNext;
-            _progress = updateData.progressPercent;
+            if (Exp == ExpOfLastUpdate && Exp != 0) return;
+            var updateData = Global.Instance.Get<GameConfig>().GetLevelProgressAndNextExp(Exp);
+            Level = updateData.level;
+            ExpOfLastUpdate = Exp;
+            ExpCurrent = updateData.expCurrent;
+            ExpNext = updateData.expNext;
+            Progress = updateData.progressPercent;
         }
 
         public ushort GetLevel(bool isUpdate = true)
         {
             if (isUpdate) Update();
-            return _level;
+            return Level;
         }
 
         public void SetExp(uint exp)
         {
-            _exp = exp;
+            Exp = exp;
             Update();
         }
+
         public uint GetExp(bool isUpdate = true)
         {
             if (isUpdate) Update();
-            return _exp;
+            return Exp;
         }
+
         public uint GetExpCurrent(bool isUpdate = true)
         {
             if (isUpdate) Update();
-            return _expCurrent;
+            return ExpCurrent;
         }
+
         public uint GetExpNext(bool isUpdate = true)
         {
             if (isUpdate) Update();
-            return _expNext;
+            return ExpNext;
         }
 
         public float GetProgress(bool isUpdate = true)
         {
             if (isUpdate) Update();
-            return _progress;
+            return Progress;
         }
     }
 }
