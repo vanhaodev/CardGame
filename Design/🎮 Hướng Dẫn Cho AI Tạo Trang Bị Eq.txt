@@ -179,50 +179,30 @@ LifeSteal – Hút máu theo % sát thương gây ra
 🧠 Gợi Ý Gán Chỉ Số Cho Loại Trang Bị
 🗡 Weapon (Vũ khí)
 📌 Gây sát thương chính
-✅ Attack, CriticalRate, CriticalDamage, ArmorPenetrationChance, ArmorPenetrationDamage, LifeSteal, ToughnessHitRate
+✅ Attack, CriticalRate, CriticalDamage, ArmorPenetrationChance, ArmorPenetrationDamage, LifeSteal, ToughnessHitRate,  EffectHitRate (hiếm)
 ❌ Tránh: HpMax, HealingReceived, Defense, Shield
 
-🛡 Head (Nón, mũ)
-📌 Tăng kháng hiệu ứng & phòng thủ
-✅ Defense, EffectResistRate, DodgeRate, HpMax
-❌ Tránh: Attack, LifeSteal, CriticalDamage
+🛡 Armor (Gộp Head + Chest + Legs)
+📌 Phòng thủ, kháng hiệu ứng, sống sót
+✅ Defense, HpMax, EffectResistRate, DodgeRate, DodgeDamage, HealingReceived
+❌ Tránh: Attack, CriticalRate, CriticalDamage, LifeSteal, Speed
 
-🥋 Chest (Áo giáp)
-📌 Bảo vệ chính, chống sát thương
-✅ Defense, HpMax, HealingReceived, DodgeDamage
-❌ Tránh: Attack, CriticalRate, LifeSteal
-
-👖 Legs (Quần)
-📌 Di chuyển nhanh, phản ứng linh hoạt
-✅ Speed, DodgeRate, EffectResistRate
-❌ Tránh: Attack, UPRegeneration, HealingReceived
-
-👟 Feet (Giày)
-📌 Tăng tốc độ và né tránh
-✅ Speed, DodgeRate, ActionPoint (nếu có), EffectHitRate (hiếm)
-❌ Tránh: CriticalDamage, HpMax, HealingReceived
-
-💍 Ring (Nhẫn)
-📌 Hỗ trợ tấn công/phép thuật
-✅ CriticalRate, EffectHitRate, LifeSteal, ArmorPenetrationChance, Attack
-❌ Tránh: Defense, HpMax, Speed
-
-📿 Amulet (Dây chuyền)
-📌 Kháng phép & hồi phục
-✅ EffectResistRate, HealingReceived, OutgoingHealing, UPRegeneration
-❌ Tránh: Speed, CriticalDamage, Attack
-
-🧤 Glove (Găng tay)
-📌 Chính xác & tăng sát thương
+🧤 Glove
+📌 Hỗ trợ sát thương chính xác
 ✅ Attack, CriticalRate, EffectHitRate, ToughnessHitRate
-❌ Tránh: HealingReceived, HpMax
+❌ Tránh: HpMax, HealingReceived, Defense, Speed
 
-🛡 Shield (Khiên)
-📌 Phòng thủ & chống chịu
-✅ Defense, DodgeDamage, HpMax, HealingReceived, Shield (nếu có riêng)
-❌ Tránh: Attack, CriticalRate, LifeSteal
+👟 Boots (Giày)
+📌 Tăng tốc độ và né tránh
+✅ Speed, DodgeRate, EffectHitRate (hiếm)
+❌ Tránh: HpMax, HealingReceived, CriticalDamage, Attack, ActionPoint
 
-🧿 Relic (Cổ vật)
-📌 Buff/debuff, ulti, hỗ trợ đặc biệt
+💍 Accessory (Gộp Ring + Amulet)
+📌 Hỗ trợ sát thương, kháng phép, hồi phục
+✅ CriticalRate, EffectHitRate, LifeSteal, ArmorPenetrationChance, EffectResistRate, HealingReceived, OutgoingHealing, UPRegeneration
+❌ Tránh: Defense, HpMax, Speed, CriticalDamage
+
+🧿 Relic
+📌 Buff đặc biệt, ulti, hỗ trợ chiến thuật
 ✅ UPRegeneration, OutgoingHealing, EffectHitRate, EffectResistRate, LifeSteal, ToughnessHitRate
-❌ Tránh: Các chỉ số tấn công/phòng thủ cơ bản nếu không phải relic chiến đấu
+❌ Tránh: Attack, Defense, HpMax, CriticalRate, CriticalDamage (nếu không phải relic chiến đấu)

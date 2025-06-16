@@ -16,8 +16,8 @@ namespace Functions.World.Player.Inventory
         /// Có được đeo trùng không, có vài item  cho phép đeo dồn, tuy nhiên hiệu ứng đặc biệt của trang bị sẽ không cộng dồn và chỉ lấy của trang bị có hiệu ứng tốt nhất.
         /// </summary>
         public bool IsDuplicateEquip;
+
         public EquipmentType EquipmentType;
-        public byte Tier = 1;
         /// <summary>
         /// tăng chỉ số static vào người đeo
         /// </summary>
@@ -31,7 +31,6 @@ namespace Functions.World.Player.Inventory
 
         public ItemEquipmentTemplateModel()
         {
-            Tier = 1;
             ItemType = ItemType.Equipment;
             Weight = 25;
         }

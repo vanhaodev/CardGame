@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -84,6 +85,7 @@ namespace GameConfigs
             {
                 return image;
             }
+
             var newSprite = await Global.Instance.Get<AddressableLoader>()
                 .LoadAssetAsync<Sprite>(key);
             // Thêm vào dictionary nếu chưa tồn tại (tránh lỗi "key exists")
@@ -91,6 +93,7 @@ namespace GameConfigs
 
             return newSprite;
         }
+
         public async UniTask<Sprite> GetCardSprite(CardModel cardModel, uint skinId = 0 /*default is null*/)
         {
             var cardTemplateId = cardModel.TemplateId;
@@ -148,6 +151,82 @@ namespace GameConfigs
             // Nếu exp >= max mốc
             ushort maxLevel = ordered.Last().Key;
             return (maxLevel, 100f, 0, 0);
+        }
+
+        /// <summary>
+        /// Tăng chỉ số theo level card: levelValue = baseValue + (baseValue * levelPercentBonus / 100f);
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public float CardLevelAttributePercentBonus(ushort level)
+        {
+            switch (level)
+            {
+                case 1: return 0f;
+                case 2: return 2f;
+                case 3: return 4f;
+                case 4: return 6f;
+                case 5: return 8f;
+                case 6: return 10f;
+                case 7: return 12f;
+                case 8: return 14;
+                case 9: return 16;
+                case 10: return 18;
+                case 11: return 20;
+                case 12: return 22;
+                case 13: return 24;
+                case 14: return 26;
+                case 15: return 28;
+                case 16: return 30;
+                case 17: return 32;
+                case 18: return 34;
+                case 19: return 36;
+                case 20: return 38;
+                case 21: return 40;
+                case 22: return 42;
+                case 23: return 44;
+                case 24: return 46;
+                case 25: return 48;
+                case 26: return 50;
+                case 27: return 52;
+                case 28: return 54;
+                case 29: return 56;
+                case 30: return 58;
+                case 31: return 60;
+                case 32: return 62;
+                case 33: return 64;
+                case 34: return 66;
+                case 35: return 68;
+                case 36: return 70;
+                case 37: return 72;
+                case 38: return 74;
+                case 39: return 76;
+                case 40: return 78;
+                case 41: return 80;
+                case 42: return 100;
+                case 43: return 105;
+                case 44: return 110;
+                case 45: return 115;
+                case 46: return 120;
+                case 47: return 125;
+                case 48: return 130;
+                case 49: return 135;
+                case 50: return 140;
+                default: return 0;
+            }
+        }
+
+        public float CardStarAttributePercentBonus(byte star)
+        {
+            switch (star)
+            {
+                case 1: return 0f;
+                case 2: return 100f;
+                case 3: return 200f;
+                case 4: return 300f;
+                case 5: return 400f;
+                default: return 0f;
+            }
         }
     }
 

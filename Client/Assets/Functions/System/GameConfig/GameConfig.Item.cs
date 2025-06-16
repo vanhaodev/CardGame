@@ -51,7 +51,7 @@ namespace GameConfigs
         }
 
         /// <summary>
-        /// Tăng chỉ số theo cấp cường hoá
+        /// Tăng chỉ số theo cấp cường hoá: upgradedValue = baseValue + (baseValue * upgradePercentBonus / 100f)
         /// </summary>
         /// <param name="upgradeLevel"></param>
         /// <returns></returns>
@@ -60,17 +60,17 @@ namespace GameConfigs
             switch (upgradeLevel)
             {
                 case 0: return 0f;
-                case 1: return 3.6f;
+                case 1: return 3.6f; 
                 case 2: return 5.2f;
                 case 3: return 7.0f;
                 case 4: return 9.0f;
-                case 5: return 12.5f;
+                case 5: return 12.5f; //12.5%
                 case 6: return 15.0f;
                 case 7: return 22.0f;
                 case 8: return 27.5f;
                 case 9: return 32.0f;
                 case 10: return 37.0f;
-                default: return 37.0f;
+                default: return 37.0f; //37%
             }
         }
 

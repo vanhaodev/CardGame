@@ -187,7 +187,11 @@ namespace Functions.World.Gacha
         {
             _imageBackground.sprite = null;
             _imageFade.gameObject.SetActive(false);
-            _assetRefSpriteBackground.AssetRef.ReleaseAsset();
+            if (_assetRefSpriteBackground.AssetRef.OperationHandle.IsValid())
+            {
+                _assetRefSpriteBackground.AssetRef.ReleaseAsset();
+            }
+
             _uiShaker = null;
         }
     }
