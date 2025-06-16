@@ -2,6 +2,6 @@
 {
     public enum ElementType
     {
-        Metal, Wood, Water, Fire, Earth
+        Metal = 1, Wood, Water, Fire, Earth
     }
 }

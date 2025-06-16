@@ -20,20 +20,19 @@ MonoBehaviour:
     - rid: 2316759677127098449
       type: {class: ItemEquipmentTemplateModel, ns: Functions.World.Player.Inventory, asm: Assembly-CSharp}
       data:
-        Id: 7
-        ItemName: Titan Axe
+        Id: 10001
+        ItemName: Iron Knife
         ItemType: 0
-        Description: Can break the rules
-        Weight: 5
-        SellToShopScrapPrice: 1000
+        Description: 
+        Weight: 25
+        SellToShopScrapPrice: 18
         SellToShopCircuitPrice: 0
         LifeSpanMinute: -1
         RequiredLevel: 10
         IsDuplicateEquip: 0
-        EquipmentType: 0
+        EquipmentType: 1
+        Tier: 1
         Attributes:
         - Type: 1
-          Value: 985
-        AttributePercents:
-        - Type: 1
-          Value: 200
+          Value: 7
+        AttributePercents: []
