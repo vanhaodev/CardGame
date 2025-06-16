@@ -38,7 +38,7 @@ namespace World.TheCard
             {
                 { AttributeType.CriticalDamage.ToString(), AttributeType.CriticalRate.ToString() },
                 { AttributeType.DodgeDamage.ToString(), AttributeType.DodgeRate.ToString() },
-                { AttributeType.ArmorPenetrationDamage.ToString(), AttributeType.ArmorPenetrationChance.ToString() }
+                { AttributeType.ArmorPenetrationDamage.ToString(), AttributeType.ArmorPenetrationRate.ToString() }
             };
 
             foreach (var key in parameters.Keys.ToList())
@@ -90,7 +90,8 @@ namespace World.TheCard
         }
 
         /// <summary>
-        /// Tính tổng sát thương từ attacker gây lên victim, dựa trên danh sách effect công thức.
+        /// Tính tổng sát thương từ attacker gây lên victim, dựa trên danh sách effect công thức.<br/>
+        /// đã tính cả defense
         /// </summary>
         public int CalDamage(CardBattle sender, CardBattle receiver, List<SkillDamageTemplateModel> effects)
         {

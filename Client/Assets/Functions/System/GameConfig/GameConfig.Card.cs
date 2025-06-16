@@ -153,79 +153,525 @@ namespace GameConfigs
             return (maxLevel, 100f, 0, 0);
         }
 
-        /// <summary>
-        /// Tăng chỉ số theo level card: levelValue = baseValue + (baseValue * levelPercentBonus / 100f);
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public float CardLevelAttributePercentBonus(ushort level)
+        public Dictionary<AttributeType, int> CardLevelAttributeBonus(ClassType classType, ushort level)
         {
-            switch (level)
+            switch (classType)
             {
-                case 1: return 0f;
-                case 2: return 2f;
-                case 3: return 4f;
-                case 4: return 6f;
-                case 5: return 8f;
-                case 6: return 10f;
-                case 7: return 12f;
-                case 8: return 14;
-                case 9: return 16;
-                case 10: return 18;
-                case 11: return 20;
-                case 12: return 22;
-                case 13: return 24;
-                case 14: return 26;
-                case 15: return 28;
-                case 16: return 30;
-                case 17: return 32;
-                case 18: return 34;
-                case 19: return 36;
-                case 20: return 38;
-                case 21: return 40;
-                case 22: return 42;
-                case 23: return 44;
-                case 24: return 46;
-                case 25: return 48;
-                case 26: return 50;
-                case 27: return 52;
-                case 28: return 54;
-                case 29: return 56;
-                case 30: return 58;
-                case 31: return 60;
-                case 32: return 62;
-                case 33: return 64;
-                case 34: return 66;
-                case 35: return 68;
-                case 36: return 70;
-                case 37: return 72;
-                case 38: return 74;
-                case 39: return 76;
-                case 40: return 78;
-                case 41: return 80;
-                case 42: return 100;
-                case 43: return 105;
-                case 44: return 110;
-                case 45: return 115;
-                case 46: return 120;
-                case 47: return 125;
-                case 48: return 130;
-                case 49: return 135;
-                case 50: return 140;
-                default: return 0;
+                case ClassType.Crusher:
+                    return Crusher();
+                case ClassType.Assassin:
+                    return Assassin();
+                case ClassType.Demolisher:
+                    return Demolisher();
+                case ClassType.Tactician:
+                    return Tactician();
+                case ClassType.Guardian:
+                    return Guardian();
+                case ClassType.Medic:
+                    return Medic();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(classType), classType, null);
+            }
+
+            Dictionary<AttributeType, int> Crusher()
+            {
+                return new Dictionary<AttributeType, int>()
+                {
+                    { AttributeType.HpMax, 80 * level },
+                    { AttributeType.Attack, 8 * level },
+                    { AttributeType.Defense, 8 * level },
+                    { AttributeType.Speed, 2 * level },
+                    { AttributeType.CriticalRate, 8 * level },
+                    { AttributeType.CriticalDamage, 10 * level },
+                };
+            }
+
+            Dictionary<AttributeType, int> Assassin()
+            {
+                return new Dictionary<AttributeType, int>()
+                {
+                    { AttributeType.HpMax, 50 * level },
+                    { AttributeType.Attack, 15 * level },
+                    { AttributeType.Defense, 4 * level },
+                    { AttributeType.Speed, 3 * level },
+                    { AttributeType.ArmorPenetrationRate, 9 * level },
+                    { AttributeType.ArmorPenetrationDamage, 7 * level },
+                };
+            }
+
+            Dictionary<AttributeType, int> Demolisher()
+            {
+                return new Dictionary<AttributeType, int>()
+                {
+                    { AttributeType.HpMax, 60 * level },
+                    { AttributeType.Attack, 6 * level },
+                    { AttributeType.Defense, 6 * level },
+                    { AttributeType.Speed, 1 * level },
+                    { AttributeType.UPRegeneration, 5 * level },
+                };
+            }
+
+            Dictionary<AttributeType, int> Tactician()
+            {
+                return new Dictionary<AttributeType, int>()
+                {
+                    { AttributeType.HpMax, 40 * level },
+                    { AttributeType.Attack, 8 * level },
+                    { AttributeType.Defense, 4 * level },
+                    { AttributeType.Speed, 2 * level },
+                    { AttributeType.DodgeRate, 4 * level },
+                    { AttributeType.DodgeDamage, 5 * level },
+                    { AttributeType.UPRegeneration, 5 * level },
+                };
+            }
+
+            Dictionary<AttributeType, int> Guardian()
+            {
+                return new Dictionary<AttributeType, int>()
+                {
+                    { AttributeType.HpMax, 145 * level },
+                    { AttributeType.Attack, 5 * level },
+                    { AttributeType.Defense, 12 * level },
+                    { AttributeType.Speed, 1 * level },
+                    { AttributeType.DodgeRate, 6 * level },
+                    { AttributeType.DodgeDamage, 8 * level },
+                    { AttributeType.EffectResistRate, 4 * level },
+                    { AttributeType.HealingReceived, 4 * level },
+                };
+            }
+
+            Dictionary<AttributeType, int> Medic()
+            {
+                return new Dictionary<AttributeType, int>()
+                {
+                    { AttributeType.HpMax, 145 * level },
+                    { AttributeType.Attack, 5 * level },
+                    { AttributeType.Defense, 12 * level },
+                    { AttributeType.Speed, 1 * level },
+                    { AttributeType.DodgeRate, 2 * level },
+                    { AttributeType.DodgeDamage, 3 * level },
+                    { AttributeType.OutgoingHealing, 7 * level },
+                    { AttributeType.EffectHitRate, 4 * level },
+                };
             }
         }
 
-        public float CardStarAttributePercentBonus(byte star)
+        /// <summary>
+        /// Không cộng dồn, star nào thì lấy của star đó thôi
+        /// </summary>
+        /// <param name="classType"></param>
+        /// <param name="star"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public Dictionary<AttributeType, int> CardStarAttributeBonus(ClassType classType, byte star)
         {
-            switch (star)
+            switch (classType)
             {
-                case 1: return 0f;
-                case 2: return 100f;
-                case 3: return 200f;
-                case 4: return 300f;
-                case 5: return 400f;
-                default: return 0f;
+                case ClassType.Crusher:
+                    return Crusher();
+                case ClassType.Assassin:
+                    return Assassin();
+                case ClassType.Demolisher:
+                    return Demolisher();
+                case ClassType.Tactician:
+                    return Tactician();
+                case ClassType.Guardian:
+                    return Guardian();
+                case ClassType.Medic:
+                    return Medic();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(classType), classType, null);
+            }
+
+            Dictionary<AttributeType, int> Crusher()
+            {
+                switch (star)
+                {
+                    default: return new();
+                    case 1:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 350 },
+                            { AttributeType.Attack, 40 },
+                            { AttributeType.Defense, 40 },
+                            { AttributeType.Speed, 65 },
+                        };
+                    case 2:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 650 },
+                            { AttributeType.Attack, 100 },
+                            { AttributeType.Defense, 100 },
+                            { AttributeType.Speed, 150 },
+                            { AttributeType.EffectResistRate, 300 },
+                            { AttributeType.ToughnessHitRate, 500 },
+                            { AttributeType.CriticalRate, 300 },
+                            { AttributeType.CriticalDamage, 500 },
+                        };
+                    case 3:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 980 },
+                            { AttributeType.Attack, 180 },
+                            { AttributeType.Defense, 180 },
+                            { AttributeType.Speed, 220 },
+                            { AttributeType.EffectResistRate, 550 },
+                            { AttributeType.ToughnessHitRate, 700 },
+                            { AttributeType.CriticalRate, 550 },
+                            { AttributeType.CriticalDamage, 750 },
+                        };
+                    case 4:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1600 },
+                            { AttributeType.Attack, 250 },
+                            { AttributeType.Defense, 250 },
+                            { AttributeType.Speed, 350 },
+                            { AttributeType.EffectResistRate, 700 },
+                            { AttributeType.ToughnessHitRate, 850 },
+                            { AttributeType.CriticalRate, 700 },
+                            { AttributeType.CriticalDamage, 1000 },
+                        };
+                    case 5:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 2900 },
+                            { AttributeType.Attack, 400 },
+                            { AttributeType.Defense, 400 },
+                            { AttributeType.Speed, 550 },
+                            { AttributeType.EffectResistRate, 1000 },
+                            { AttributeType.ToughnessHitRate, 1100 },
+                            { AttributeType.CriticalRate, 1500 },
+                            { AttributeType.CriticalDamage, 1800 },
+                            { AttributeType.UPRegeneration, 500 },
+                        };
+                }
+            }
+
+            Dictionary<AttributeType, int> Assassin()
+            {
+                switch (star)
+                {
+                    default: return new();
+                    case 1:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 210 },
+                            { AttributeType.Attack, 65 },
+                            { AttributeType.Defense, 25 },
+                            { AttributeType.Speed, 65 },
+                        };
+                    case 2:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 810 },
+                            { AttributeType.Attack, 150 },
+                            { AttributeType.Defense, 50 },
+                            { AttributeType.Speed, 150 },
+                            { AttributeType.ArmorPenetrationRate, 300 },
+                            { AttributeType.ArmorPenetrationDamage, 500 },
+                        };
+                    case 3:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1250 },
+                            { AttributeType.Attack, 250 },
+                            { AttributeType.Defense, 120 },
+                            { AttributeType.Speed, 240 },
+                            { AttributeType.ToughnessHitRate, 900 },
+                            { AttributeType.ArmorPenetrationRate, 500 },
+                            { AttributeType.ArmorPenetrationDamage, 800 },
+                        };
+                    case 4:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1650 },
+                            { AttributeType.Attack, 400 },
+                            { AttributeType.Defense, 190 },
+                            { AttributeType.Speed, 370 },
+                            { AttributeType.ToughnessHitRate, 1000 },
+                            { AttributeType.ArmorPenetrationRate, 750 },
+                            { AttributeType.ArmorPenetrationDamage, 1000 },
+                        };
+                    case 5:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 2500 },
+                            { AttributeType.Attack, 700 },
+                            { AttributeType.Defense, 320 },
+                            { AttributeType.Speed, 600 },
+                            { AttributeType.ToughnessHitRate, 1100 },
+                            { AttributeType.CriticalRate, 1300 },
+                            { AttributeType.ArmorPenetrationRate, 1000 },
+                            { AttributeType.ArmorPenetrationDamage, 1400 },
+                        };
+                }
+            }
+
+            Dictionary<AttributeType, int> Demolisher()
+            {
+                switch (star)
+                {
+                    default:
+                        return new();
+                    case 1:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 300 },
+                            { AttributeType.Attack, 40 },
+                            { AttributeType.Defense, 40 },
+                            { AttributeType.Speed, 20 },
+                            { AttributeType.CriticalRate, 300 },
+                            { AttributeType.CriticalDamage, 500 },
+                            { AttributeType.UPRegeneration, 200 },
+                        };
+                    case 2:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 520 },
+                            { AttributeType.Attack, 100 },
+                            { AttributeType.Defense, 100 },
+                            { AttributeType.Speed, 80 },
+                            { AttributeType.CriticalRate, 550 },
+                            { AttributeType.CriticalDamage, 750 },
+                            { AttributeType.UPRegeneration, 300 },
+                        };
+                    case 3:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 880 },
+                            { AttributeType.Attack, 150 },
+                            { AttributeType.Defense, 150 },
+                            { AttributeType.Speed, 120 },
+                            { AttributeType.CriticalRate, 700 },
+                            { AttributeType.CriticalDamage, 1000 },
+                            { AttributeType.UPRegeneration, 500 },
+                        };
+                    case 4:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1600 },
+                            { AttributeType.Attack, 250 },
+                            { AttributeType.Defense, 250 },
+                            { AttributeType.Speed, 180 },
+                            { AttributeType.CriticalRate, 700 },
+                            { AttributeType.CriticalDamage, 1000 },
+                            { AttributeType.UPRegeneration, 650 },
+                        };
+                    case 5:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 2700 },
+                            { AttributeType.Attack, 350 },
+                            { AttributeType.Defense, 350 },
+                            { AttributeType.Speed, 290 },
+                            { AttributeType.CriticalRate, 900 },
+                            { AttributeType.CriticalDamage, 1300 },
+                            { AttributeType.UPRegeneration, 800 },
+                        };
+                }
+            }
+
+            Dictionary<AttributeType, int> Tactician()
+            {
+                switch (star)
+                {
+                    default: return new();
+                    case 1:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 280 },
+                            { AttributeType.Attack, 20 },
+                            { AttributeType.Defense, 20 },
+                            { AttributeType.Speed, 10 },
+                            { AttributeType.DodgeRate, 150 },
+                            { AttributeType.DodgeDamage, 200 },
+                            { AttributeType.EffectHitRate, 300 },
+                            { AttributeType.UPRegeneration, 200 },
+                        };
+                    case 2:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 660 },
+                            { AttributeType.Attack, 50 },
+                            { AttributeType.Defense, 40 },
+                            { AttributeType.Speed, 45 },
+                            { AttributeType.DodgeRate, 300 },
+                            { AttributeType.DodgeDamage, 500 },
+                            { AttributeType.EffectHitRate, 600 },
+                            { AttributeType.UPRegeneration, 250 },
+                        };
+                    case 3:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1020 },
+                            { AttributeType.Attack, 140 },
+                            { AttributeType.Defense, 80 },
+                            { AttributeType.Speed, 60 },
+                            { AttributeType.DodgeRate, 500 },
+                            { AttributeType.DodgeDamage, 700 },
+                            { AttributeType.EffectHitRate, 900 },
+                            { AttributeType.UPRegeneration, 450 },
+                        };
+                    case 4:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1700 },
+                            { AttributeType.Attack, 200 },
+                            { AttributeType.Defense, 95 },
+                            { AttributeType.Speed, 135 },
+                            { AttributeType.DodgeRate, 650 },
+                            { AttributeType.DodgeDamage, 900 },
+                            { AttributeType.EffectHitRate, 1300 },
+                            { AttributeType.UPRegeneration, 600 },
+                        };
+                    case 5:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 2700 },
+                            { AttributeType.Attack, 300 },
+                            { AttributeType.Defense, 135 },
+                            { AttributeType.Speed, 240 },
+                            { AttributeType.DodgeRate, 800 },
+                            { AttributeType.DodgeDamage, 1400 },
+                            { AttributeType.EffectHitRate, 1900 },
+                            { AttributeType.UPRegeneration, 650 },
+                        };
+                }
+            }
+
+            Dictionary<AttributeType, int> Guardian()
+            {
+                switch (star)
+                {
+                    default: return new();
+                    case 1:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 450 },
+                            { AttributeType.Attack, 20 },
+                            { AttributeType.Defense, 65 },
+                            { AttributeType.Speed, 50 },
+                            { AttributeType.DodgeRate, 200 },
+                            { AttributeType.DodgeDamage, 350 },
+                        };
+                    case 2:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 900 },
+                            { AttributeType.Attack, 40 },
+                            { AttributeType.Defense, 125 },
+                            { AttributeType.Speed, 110 },
+                            { AttributeType.DodgeRate, 400 },
+                            { AttributeType.DodgeDamage, 500 },
+                            { AttributeType.EffectResistRate, 300 },
+                            { AttributeType.HealingReceived, 200 },
+                        };
+                    case 3:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1450 },
+                            { AttributeType.Attack, 110 },
+                            { AttributeType.Defense, 230 },
+                            { AttributeType.Speed, 135 },
+                            { AttributeType.DodgeRate, 700 },
+                            { AttributeType.DodgeDamage, 800 },
+                            { AttributeType.EffectResistRate, 450 },
+                            { AttributeType.HealingReceived, 350 },
+                        };
+                    case 4:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 2500 },
+                            { AttributeType.Attack, 160 },
+                            { AttributeType.Defense, 380 },
+                            { AttributeType.Speed, 250 },
+                            { AttributeType.DodgeRate, 900 },
+                            { AttributeType.DodgeDamage, 1100 },
+                            { AttributeType.EffectResistRate, 650 },
+                            { AttributeType.HealingReceived, 450 },
+                        };
+                    case 5:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 3900 },
+                            { AttributeType.Attack, 270 },
+                            { AttributeType.Defense, 600 },
+                            { AttributeType.Speed, 380 },
+                            { AttributeType.DodgeRate, 1500 },
+                            { AttributeType.DodgeDamage, 2000 },
+                            { AttributeType.EffectResistRate, 800 },
+                            { AttributeType.HealingReceived, 700 },
+                        };
+                }
+            }
+
+            Dictionary<AttributeType, int> Medic()
+            {
+                switch (star)
+                {
+                    default: return new();
+                    case 1:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 300 },
+                            { AttributeType.Attack, 20 },
+                            { AttributeType.Defense, 20 },
+                            { AttributeType.Speed, 70 },
+                            { AttributeType.DodgeRate, 200 },
+                            { AttributeType.DodgeDamage, 350 },
+                            { AttributeType.OutgoingHealing, 350 },
+                            { AttributeType.EffectHitRate, 350 },
+                        };
+                    case 2:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 700 },
+                            { AttributeType.Attack, 40 },
+                            { AttributeType.Defense, 50 },
+                            { AttributeType.Speed, 150 },
+                            { AttributeType.DodgeRate, 400 },
+                            { AttributeType.DodgeDamage, 500 },
+                            { AttributeType.OutgoingHealing, 500 },
+                            { AttributeType.EffectHitRate, 550 },
+                        };
+                    case 3:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1280 },
+                            { AttributeType.Attack, 95 },
+                            { AttributeType.Defense, 110 },
+                            { AttributeType.Speed, 240 },
+                            { AttributeType.DodgeRate, 600 },
+                            { AttributeType.DodgeDamage, 750 },
+                            { AttributeType.OutgoingHealing, 700 },
+                            { AttributeType.EffectHitRate, 700 },
+                        };
+                    case 4:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 1600 },
+                            { AttributeType.Attack, 150 },
+                            { AttributeType.Defense, 230 },
+                            { AttributeType.Speed, 280 },
+                            { AttributeType.DodgeRate, 750 },
+                            { AttributeType.DodgeDamage, 850 },
+                            { AttributeType.OutgoingHealing, 850 },
+                            { AttributeType.EffectHitRate, 850 },
+                        };
+                    case 5:
+                        return new()
+                        {
+                            { AttributeType.HpMax, 2100 },
+                            { AttributeType.Attack, 250 },
+                            { AttributeType.Defense, 300 },
+                            { AttributeType.Speed, 300 },
+                            { AttributeType.DodgeRate, 900 },
+                            { AttributeType.DodgeDamage, 1000 },
+                            { AttributeType.OutgoingHealing, 1300 },
+                            { AttributeType.EffectHitRate, 1000 },
+                        };
+                }
             }
         }
     }

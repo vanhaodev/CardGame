@@ -8,7 +8,7 @@
         /// "Chiến Thần" - Sát thương cận chiến mạnh, công thủ toàn diện (The Destruction) <br/>
         /// Hướng tới DPS cận chiến mạnh, tăng ATK và HP khá cao, đồng thời có một chút cải thiện về DEF và Critical Chance. Sát thương Break cũng cao để phá vỡ mục tiêu nhanh chóng.
         /// </summary>
-        Juggernaut = 1,
+        Crusher = 1,
         /// <summary>
         /// "Sát Thủ" - Sát thương đơn cực mạnh, ưu tiên mục tiêu quan trọng (The Hunt) <br/>
         /// ATK rất cao để tối ưu hóa sát thương đơn mục tiêu. Chỉ số Speed cao giúp hành động trước và có khả năng Critical Damage mạnh. Tuy nhiên, DEF không cao.

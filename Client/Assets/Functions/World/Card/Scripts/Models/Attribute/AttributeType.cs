@@ -40,7 +40,7 @@
         /// <summary>
         /// Tỉ lệ xuyên giáp
         /// </summary>
-        ArmorPenetrationChance,
+        ArmorPenetrationRate,
         /// <summary>
         /// Xuyên giáp thành công sẽ giảm % thủ của mục tiêu để sát thương bớt bị hao hụt bởi phòng thủ
         /// </summary>

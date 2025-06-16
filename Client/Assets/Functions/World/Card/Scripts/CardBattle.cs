@@ -157,7 +157,7 @@ namespace World.TheCard
 
             //==================[ArmorPiercing]========================\\
             if (CalArmorPiercing(
-                    attacker.Attributes[AttributeType.ArmorPenetrationChance],
+                    attacker.Attributes[AttributeType.ArmorPenetrationRate],
                     attacker.Attributes[AttributeType.ArmorPenetrationDamage],
                     ref victimTotalDefense))
             {

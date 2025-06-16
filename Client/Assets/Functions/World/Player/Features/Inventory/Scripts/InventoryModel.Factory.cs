@@ -16,7 +16,7 @@ namespace Functions.World.Player.Inventory
             {
                 Id = chaData.UniqueIdentityModel.CardId.GetValue(),
                 TemplateId = cardTemplateId,
-                Star = 1,
+                Star = 0,
                 Level = new CardLevelModel()
             };
             chaData.CharacterModel.CardCollection.Cards.Add(card);

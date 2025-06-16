@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using GameConfigs;
@@ -62,22 +63,41 @@ namespace World.TheCard
             }
 
             CalculatedAttributes = new List<AttributeModel>();
+
             var templateAttributes = AttributeModel.ToDictionary(template.Attributes);
-            //bonus từ cấp độ
-            float levelPercentBonus =
-                Global.Instance.Get<GameConfig>().CardLevelAttributePercentBonus(Level.GetLevel());
-            //bonus từ star
-            var starAttributePercentBonus =
-                Global.Instance.Get<GameConfig>().CardStarAttributePercentBonus(Star);
-            foreach (var attribute in templateAttributes)
+            var levelBonus = Global.Instance.Get<GameConfig>()
+                .CardLevelAttributeBonus(template.Class, Level.GetLevel());
+            var starBonus = Global.Instance.Get<GameConfig>().CardStarAttributeBonus(template.Class, Star);
+
+// Tập hợp tất cả các attribute type có thể có
+            var allKeys = new HashSet<AttributeType>(
+                templateAttributes.Keys
+                    .Union(levelBonus.Keys)
+                    .Union(starBonus.Keys)
+            );
+
+            foreach (var key in allKeys)
             {
                 int finalValue = 0;
-                finalValue += attribute.Value + (int)(attribute.Value * levelPercentBonus / 100f);
-                finalValue += attribute.Value + (int)(attribute.Value * starAttributePercentBonus / 100f);
+
+                if (templateAttributes.TryGetValue(key, out var baseValue))
+                {
+                    finalValue += baseValue;
+                }
+
+                if (levelBonus.TryGetValue(key, out var levelValue))
+                {
+                    finalValue += levelValue;
+                }
+
+                if (starBonus.TryGetValue(key, out var starValue))
+                {
+                    finalValue += starValue;
+                }
 
                 CalculatedAttributes.Add(new AttributeModel
                 {
-                    Type = attribute.Key,
+                    Type = key,
                     Value = finalValue
                 });
             }

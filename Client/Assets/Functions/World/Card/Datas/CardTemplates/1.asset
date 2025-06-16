@@ -19,7 +19,7 @@ MonoBehaviour:
     guiding Asgard\u2019s destiny with unmatched will and far-reaching insight."
   ShardId: 1001
   Class: 4
-  Element: 0
+  Element: 1
   Attributes:
   - Type: 0
     Value: 50
