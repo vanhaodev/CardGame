@@ -7,6 +7,7 @@ using Globals;
 using Popups;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utils.Tab;
 using World.Player.Character;
@@ -14,7 +15,7 @@ using Random = UnityEngine.Random;
 
 namespace World.Player.PopupCharacter
 {
-    public class EquipmentUpgrade : MonoBehaviour
+    public class EquipmentUpgrade : MonoBehaviour, ITabSwitcherWindow
     {
         [SerializeField] private GameObject _objBlockInput;
         [SerializeField] private GameObject _objMaxLevel;
@@ -32,21 +33,28 @@ namespace World.Player.PopupCharacter
         private ushort _successRate;
         private uint _scrapCost;
         private uint _myScrap;
+        private Action _onChange;
+        private Action _onRegularChange;
         private ItemEquipmentModel EquipmentItem => PopupEquipment.EquipmentItem;
 
         private void OnEnable()
         {
-            _btnUpgrade.onClick.AddListener(OnUpgrade);
-            Init();
+            _btnUpgrade.onClick.AddListener(OnUpgrade); ;
         }
 
         private void OnDisable()
         {
             _btnUpgrade.onClick.RemoveListener(OnUpgrade);
+            _onChange?.Invoke();
         }
 
-        public void Init()
+        public async UniTask Init(TabSwitcherWindowModel model = null)
         {
+            if (model != null)
+            {
+                _onChange = model.OnChanged;
+                _onRegularChange = model.OnRegularChanged;
+            }
             _btnUpgrade.interactable = false;
 
             RefreshUpgradeData();
@@ -93,6 +101,7 @@ namespace World.Player.PopupCharacter
                 _particleSuccess.Play();
                 itemNeedToUp.UpgradeLevel += 1;
                 await itemNeedToUp.UpdateAttribute();
+                _onRegularChange?.Invoke();
                 Init(); // Refresh lại toàn bộ UI sau khi nâng cấp
             }
             else
@@ -135,6 +144,11 @@ namespace World.Player.PopupCharacter
             _txIncreaseRate.text =
                 $"{increasePercentCurrent:0.##}% -> <color=#6BFF00>{increasePercentNext:0.##}% Increase";
             _txSuccessRate.text = $"{_successRate / 100f:0.##}% Success rate";
+        }
+
+        public UniTask LateInit()
+        {
+           return UniTask.CompletedTask;
         }
     }
 }

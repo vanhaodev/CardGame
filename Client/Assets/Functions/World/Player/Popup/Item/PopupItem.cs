@@ -32,7 +32,7 @@ namespace World.Player.PopupCharacter
             _sellCircuitPrice = template.SellToShopCircuitPrice;
             _item = item;
             _itemUI.Init(item);
-            var starColor = Global.Instance.Get<GameConfig>().GetRarityColor((byte)(item.Item.Rarity + 1));
+            var starColor = Global.Instance.Get<GameConfig>().GetRarityColor((byte)(item.Item.Rarity));
             _txName.text = template.ItemName;
             _txName.enableVertexGradient = true;
             ColorUtility.TryParseHtmlString(starColor.gradient, out var topColor);

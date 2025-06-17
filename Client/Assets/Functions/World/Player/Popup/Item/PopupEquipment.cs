@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using GameConfigs;
 using Globals;
+using Popups;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,11 +27,15 @@ namespace World.Player.PopupCharacter
             _tab.OnTabSwitched -= ReInit;
         }
 
-        public void SetItem(InventoryItemModel item)
+        public void SetItem(InventoryItemModel item, Action onChanged)
         {
             _item = item;
             EquipmentItem = item.Item as ItemEquipmentModel;
-            _tab.Init();
+            _tab.Init(new TabSwitcherWindowModel()
+            {
+                OnChanged = onChanged,
+                OnRegularChanged = () => ReInit(0)
+            });
             _tab.OnTabSwitched += ReInit;
         }
 
@@ -47,10 +52,15 @@ namespace World.Player.PopupCharacter
             //upgrade
             if (EquipmentItem.UpgradeLevel > 0)
             {
-                _txName.text += " +" + EquipmentItem.UpgradeLevel.ToString();
+                _txName.text += "\n" + $"[Tier {EquipmentItem.Tier}] " + $"[+{EquipmentItem.UpgradeLevel}]";
+            }
+            else
+            {
+                _txName.text += "\n" + $"[Tier {EquipmentItem.Tier}]";
             }
 
-            _txRequiredLevel.text = $"Required Level: {(template as ItemEquipmentTemplateModel).RequiredLevel}"; //nếu null thì chắc đang config sai itemtype của item
+            _txRequiredLevel.text =
+                $"Required Level: {(template as ItemEquipmentTemplateModel).RequiredLevel}"; //nếu null thì chắc đang config sai itemtype của item
             //attribute
             _attributeUI.Init(AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributes),
                 AttributeModel.ToDictionary(EquipmentItem.CalculatedAttributePercents));

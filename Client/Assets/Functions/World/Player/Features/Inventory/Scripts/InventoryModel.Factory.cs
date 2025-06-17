@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using GameConfigs;
 using Globals;
 using World.Player.Character;
@@ -9,21 +10,22 @@ namespace Functions.World.Player.Inventory
 {
     public partial class InventoryModel
     {
-        public CardModel AddNewCard(uint cardTemplateId, uint quantity = 1)
+        public async UniTask <CardModel>AddNewCard(uint cardTemplateId, uint quantity = 1)
         {
             var chaData = Global.Instance.Get<CharacterData>();
             var card = new CardModel
             {
-                Id = chaData.UniqueIdentityModel.CardId.GetValue(),
+                Id = await chaData.UniqueIdentityModel.CardId.GetValue(),
                 TemplateId = cardTemplateId,
                 Star = 0,
                 Level = new CardLevelModel()
             };
             chaData.CharacterModel.CardCollection.Cards.Add(card);
+            card?.UpdateAttribute();
             return card;
         }
 
-        public ItemResourceModel AddNewCardShard(uint itemTemplateId, uint quantity = 1)
+        public async UniTask<ItemResourceModel> AddNewCardShard(uint itemTemplateId, uint quantity = 1)
         {
             var itemInInv = GetItemByTemplateId(itemTemplateId);
             if (itemInInv != null)
@@ -36,7 +38,7 @@ namespace Functions.World.Player.Inventory
                 var chaData = Global.Instance.Get<CharacterData>();
                 var item = new ItemResourceModel()
                 {
-                    Id = chaData.UniqueIdentityModel.ItemId.GetValue(),
+                    Id =  await chaData.UniqueIdentityModel.ItemId.GetValue(),
                     TemplateId = itemTemplateId,
                     Rarity = ItemRarity.UR,
                     CreatedAt = DateTime.UtcNow
@@ -49,12 +51,12 @@ namespace Functions.World.Player.Inventory
                 return item;
             }
         }
-        public ItemResourceModel AddNewEquipment(uint itemTemplateId, ItemRarity itemRarity)
+        public async UniTask<ItemEquipmentModel> AddNewEquipment(uint itemTemplateId, ItemRarity itemRarity)
         {
             var chaData = Global.Instance.Get<CharacterData>();
-            var item = new ItemResourceModel()
+            var item = new ItemEquipmentModel()
             {
-                Id = chaData.UniqueIdentityModel.ItemId.GetValue(),
+                Id = await chaData.UniqueIdentityModel.ItemId.GetValue(),
                 TemplateId = itemTemplateId,
                 Rarity = itemRarity,
                 CreatedAt = DateTime.UtcNow
@@ -64,6 +66,7 @@ namespace Functions.World.Player.Inventory
                 Item = item,
                 Quantity = 1
             });
+            item?.UpdateAttribute();
             return item;
         }
     }

@@ -24,7 +24,7 @@ namespace GameConfigs
                 1 => ("#F5F5F5", "#F5F5F5", "#CCCCCC"),       // Trắng
                 2 => ("#66CCFF", "#66CCFF", "#0066CC"),       // Xanh
                 3 => ("#C580FF", "#C580FF", "#6B1EFF"),       // Tím
-                4 => ("#FFE066", "#FFE066", "#FF9900"),       // Vàng
+                4 => ("#FFE066", "#FFE066", "#FFE066"),       // Vàng
                 5 => ("#FF9966", "#FF9966", "#FF3300"),       // Cam
                 _ => ("#F5F5F5", "#F5F5F5", "#CCCCCC"),       // Trắng
             };

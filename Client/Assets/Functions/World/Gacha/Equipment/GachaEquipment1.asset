@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: GachaEquipment1
   m_EditorClassIdentifier: 
   Content: "[\n  {\n    \"Rarity\": 1,\n    \"Rate\": 61900,\n    \"EquipmentTemplateIds\":
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rarity\": 2,\n    \"Rate\":
-    25800,\n    \"EquipmentTemplateIds\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n 
-    {\n    \"Rarity\": 3,\n    \"Rate\": 10300,\n    \"EquipmentTemplateIds\": [1,
-    2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rarity\": 4,\n    \"Rate\": 2000,\n   
-    \"EquipmentTemplateIds\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n  },\n  {\n    \"Rarity\":
-    5,\n    \"Rate\": 0,\n    \"EquipmentTemplateIds\": [1, 2, 3, 4, 5, 6, 7, 8,
-    9, 10]\n  }\n]"
+    [10001, 10002, 10003, 10004, 10005]\n  },\n  {\n    \"Rarity\": 2,\n    \"Rate\":
+    25800,\n    \"EquipmentTemplateIds\": [10001, 10002, 10003, 10004, 10005]\n 
+    },\n  {\n    \"Rarity\": 3,\n    \"Rate\": 10300,\n    \"EquipmentTemplateIds\":
+    [10001, 10002, 10003, 10004, 10005]\n  },\n  {\n    \"Rarity\": 4,\n    \"Rate\":
+    2000,\n    \"EquipmentTemplateIds\": [10001, 10002, 10003, 10004, 10005]\n  },\n 
+    {\n    \"Rarity\": 5,\n    \"Rate\": 0,\n    \"EquipmentTemplateIds\": [10001,
+    10002, 10003, 10004, 10005]\n  }\n]"

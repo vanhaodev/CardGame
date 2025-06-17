@@ -16,15 +16,15 @@ namespace Functions.World.Player.Inventory
         /// Cường hoá + <br/>
         /// Mỗi cấp cộng 0.25% điểm att đang có
         /// </summary>
-        public byte UpgradeLevel = 1;
-
+        public byte UpgradeLevel = 0;
+        public byte Tier = 1;
         /// <summary>
         /// tăng chỉ số static vào người đeo
         /// </summary>
         public List<AttributeModel> CalculatedAttributes;
 
         /// <summary>
-        /// Tăng chỉ số người đeo theo %
+        /// Tăng chỉ số base của người đeo theo %
         /// </summary>
         public List<AttributeModel> CalculatedAttributePercents;
 
@@ -49,7 +49,9 @@ namespace Functions.World.Player.Inventory
 
             // Lấy bonus phần trăm từ cấp cường hóa (ví dụ 26f nghĩa là 26%)
             float upgradePercentBonus = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(UpgradeLevel);
-
+            float tierPercentBonus = Global.Instance.Get<GameConfig>().EquipmentTierPercentBonus(Tier);
+            float rarityPercentBonus = Global.Instance.Get<GameConfig>().EquipmentRarityPercentBonus(Rarity);
+            upgradePercentBonus = upgradePercentBonus + tierPercentBonus + rarityPercentBonus;
             CalculatedAttributes = new List<AttributeModel>();
             CalculatedAttributePercents = new List<AttributeModel>();
 

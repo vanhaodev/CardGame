@@ -31,8 +31,7 @@ MonoBehaviour:
         RequiredLevel: 10
         IsDuplicateEquip: 0
         EquipmentType: 1
-        Tier: 1
         Attributes:
-        - Type: 1
-          Value: 7
+        - Type: 8
+          Value: 1000
         AttributePercents: []

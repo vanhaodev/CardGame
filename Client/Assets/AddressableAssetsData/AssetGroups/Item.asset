@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b528783aba13744cbed014a66e44917
+    m_Address: ItemTemplates/10005
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 33c1c97befeda214fa190fc33cca7310
     m_Address: ItemSprites/gacha_equipment_golden_tab
     m_ReadOnly: 0
@@ -40,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 391f2b953bfb3f24295d681b857de92a
+    m_Address: ItemIcons/10004
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b8f8637939ec0e45ada2443998b92ca
     m_Address: ItemConfigs/GachaEquipment3
     m_ReadOnly: 0
@@ -57,6 +67,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 675ce8f6177b7204088f44acd0ebd837
     m_Address: ItemTemplates/1001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7137972c5636af8418d8d51945b7e08c
+    m_Address: ItemTemplates/10003
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -81,7 +96,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 83728443ad195034a95c65dcbcfdbaab
-    m_Address: ItemIcons/7
+    m_Address: ItemIcons/10001
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -100,6 +115,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b57b9ab45f5e1a84f886ac59020c1f06
+    m_Address: ItemIcons/10002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b58d346734bb81b4081ab3a84fc3f23c
+    m_Address: ItemTemplates/10004
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b923ab85b289b474280a41e0aff89fcc
     m_Address: ItemTemplates/2
     m_ReadOnly: 0
@@ -110,8 +135,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca6f2561ae3d42449b660d1c5c751866
+    m_Address: ItemTemplates/10002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd4226487bf0d964d997f60c8890171b
     m_Address: ItemConfigs/GachaEquipment2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cdd826bb73614354fb7e83a3926e2320
+    m_Address: ItemIcons/10003
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -122,6 +157,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e8db8888dff129f46b9dc2bbc7de99c4
     m_Address: ItemSprites/gacha_equipment_silver_tab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef28fbfd4214d2d47b806f7dc4236bbb
+    m_Address: ItemIcons/10005
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

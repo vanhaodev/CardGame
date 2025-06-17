@@ -46,10 +46,17 @@ namespace World.TheCard
         [SerializeReference]
         public Dictionary<CardSkillSlotType, SkillModel> Skills = new Dictionary<CardSkillSlotType, SkillModel>();
 
-        [Button]
+        /// <summary>
+        /// lưu luôn trong card, không cần để trong inventory nữa
+        /// </summary>
+        [SerializeReference] public List<ItemEquipmentModel> Equipments =
+            new List<ItemEquipmentModel>();
+
         /// <summary>
         /// Cập nhật khi cường hoá hoặc phiên bản mới
         /// </summary>
+        /// <exception cref="Exception"></exception>
+        [Button]
         public async UniTask UpdateAttribute()
         {
             // Lấy template (có thể thay đổi mỗi bản cập nhật)
@@ -67,9 +74,10 @@ namespace World.TheCard
             var templateAttributes = AttributeModel.ToDictionary(template.Attributes);
             var levelBonus = Global.Instance.Get<GameConfig>()
                 .CardLevelAttributeBonus(template.Class, Level.GetLevel());
-            var starBonus = Global.Instance.Get<GameConfig>().CardStarAttributeBonus(template.Class, template.Element, Star);
+            var starBonus = Global.Instance.Get<GameConfig>()
+                .CardStarAttributeBonus(template.Class, template.Element, Star);
 
-// Tập hợp tất cả các attribute type có thể có
+            // Tập hợp tất cả các attribute type có thể có  
             var allKeys = new HashSet<AttributeType>(
                 templateAttributes.Keys
                     .Union(levelBonus.Keys)

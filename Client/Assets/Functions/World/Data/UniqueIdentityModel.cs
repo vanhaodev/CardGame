@@ -1,4 +1,7 @@
-﻿namespace Functions.World.Data
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace Functions.World.Data
 {
     /// <summary>
     /// UniqueId
@@ -8,46 +11,47 @@
     {
         public UniqueIdentityUIntModel ItemId;
         public UniqueIdentityUIntModel CardId;
-
-        public void SetDefault()
-        {
-            ItemId = new UniqueIdentityUIntModel();
-            CardId = new UniqueIdentityUIntModel();
-            ItemId.SetDefault();
-            CardId.SetDefault();
-        }
     }
 
     [System.Serializable]
     public class UniqueIdentityIntModel
     {
-        public int Value;
+        public int Value = 0; // Giữ nguyên public
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        public int GetValue()
+        public async Task<int> GetValue()
         {
-            Value += 1;
-            return Value;
-        }
-
-        public void SetDefault()
-        {
-            Value = 0;
+            await _semaphore.WaitAsync();
+            try
+            {
+                Value += 1;
+                return Value;
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
     }
     [System.Serializable]
     public class UniqueIdentityUIntModel
     {
-        public uint Value;
+        public uint Value = 0; // Giữ nguyên public
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        public uint GetValue()
+        public async Task<uint> GetValue()
         {
-            Value += 1;
-            return Value;
-        }
-
-        public void SetDefault()
-        {
-            Value = 0;
+            await _semaphore.WaitAsync();
+            try
+            {
+                Value += 1;
+                return Value;
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
     }
+
 }

@@ -1,7 +1,18 @@
-﻿namespace Utils.Tab
+﻿using System;
+using UnityEngine.Events;
+
+namespace Utils.Tab
 {
-    public abstract class TabSwitcherWindowModel
+    public class TabSwitcherWindowModel
     {
-        
+        /// <summary>
+        /// Change khi hoàn thành công việc
+        /// Dành cho các tab có những hành động có thể thay đổi data, thì khi onchange sẽ giúp tab chính cập nhật lại hiển thị đúng
+        /// </summary>
+        public Action OnChanged;
+        /// <summary>
+        /// Change liên tục ở công việc đang làm
+        /// </summary>
+        public Action OnRegularChanged;
     }
 }

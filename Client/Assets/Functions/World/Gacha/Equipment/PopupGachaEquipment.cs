@@ -49,6 +49,7 @@ namespace Functions.World.Gacha
 
             InitInventoryAmount();
         }
+
         public override async UniTask Show(float fadeDuration = 0.3f)
         {
             var (banner, tab1, tab2, tab3) = await UniTask.WhenAll(
@@ -75,11 +76,12 @@ namespace Functions.World.Gacha
                 _assetRefSpriteTabIron.AssetRef.ReleaseAsset();
                 _assetRefSpriteTabSilver.AssetRef.ReleaseAsset();
                 _assetRefSpriteTabGolden.AssetRef.ReleaseAsset();
-                
+
                 _resultManager.Clear();
             };
             await base.Show(fadeDuration);
         }
+
         private void InitInventoryAmount()
         {
             var charData = Global.Instance.Get<CharacterData>();
@@ -89,6 +91,7 @@ namespace Functions.World.Gacha
             _txSilverKeyAmount.text = (items.Find(i => i.Item.TemplateId == 5)?.Quantity.ToString()) ?? "0";
             _txGoldenAmount.text = (items.Find(i => i.Item.TemplateId == 6)?.Quantity.ToString()) ?? "0";
         }
+
         protected override async void OnTabSwitched(int index)
         {
             base.OnTabSwitched(index);
@@ -117,7 +120,8 @@ namespace Functions.World.Gacha
             _txPlayGachaPriceAmountX1.text = "1";
             _txPlayGachaPriceAmountX10.text = "10";
         }
-         public override async void PlayGachaX1()
+
+        public override async void PlayGachaX1()
         {
             _btnPlayGachaX1.interactable = false;
             _btnPlayGachaX10.interactable = false;
@@ -137,7 +141,7 @@ namespace Functions.World.Gacha
                     var resulTemplateId = GetRandomTemplateId(result.EquipmentTemplateIds);
                     var gachaRewardModel = new GachaRewardModel();
                     gachaRewardModel.ItemModel =
-                        charData.CharacterModel.Inventory.AddNewEquipment(resulTemplateId, result.Rarity);
+                        await charData.CharacterModel.Inventory.AddNewEquipment(resulTemplateId, result.Rarity);
                     gachaRewardModel.Quantity = 1;
 
                     _resultManager.Show(new List<GachaRewardModel>() { gachaRewardModel });
@@ -154,7 +158,8 @@ namespace Functions.World.Gacha
             _btnPlayGachaX1.interactable = true;
             _btnPlayGachaX10.interactable = true;
         }
-           public override async void PlayGachaX10()
+
+        public override async void PlayGachaX10()
         {
             _btnPlayGachaX1.interactable = false;
             _btnPlayGachaX10.interactable = false;
@@ -174,18 +179,19 @@ namespace Functions.World.Gacha
                     var rewardModels = new List<GachaRewardModel>();
                     for (int i = 0; i < 10; i++)
                     {
-                        var result = gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaResultModel>().ToList())];
+                        var result =
+                            gachaConfig[_gachaController.PlayGacha(gachaConfig.Cast<GachaResultModel>().ToList())];
                         results.Add(result);
                     }
 
                     foreach (var result in results)
                     {
-                        var resulTemplateId = GetRandomTemplateId(result.EquipmentTemplateIds);
                         var gachaRewardModel = new GachaRewardModel();
+                        var resulTemplateId = GetRandomTemplateId(result.EquipmentTemplateIds);
+                        Debug.Log(resulTemplateId);
                         gachaRewardModel.ItemModel =
-                            charData.CharacterModel.Inventory.AddNewEquipment(resulTemplateId, result.Rarity);
+                            await charData.CharacterModel.Inventory.AddNewEquipment(resulTemplateId, result.Rarity);
                         gachaRewardModel.Quantity = 1;
-                        _resultManager.Show(new List<GachaRewardModel>() { gachaRewardModel });
                         rewardModels.Add(gachaRewardModel);
                     }
 
@@ -202,6 +208,7 @@ namespace Functions.World.Gacha
             _btnPlayGachaX1.interactable = true;
             _btnPlayGachaX10.interactable = true;
         }
+
         private uint GetRandomTemplateId(List<uint> templateIds)
         {
             return templateIds[UnityEngine.Random.Range(0, templateIds.Count)];

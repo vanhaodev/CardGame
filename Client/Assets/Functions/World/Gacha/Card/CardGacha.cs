@@ -18,6 +18,8 @@ namespace Functions.World.Gacha
         [SerializeField] private ItemModel _receivedItemModel;
         [SerializeField] private uint _receivedItemQuantity;
         [SerializeField] private GameObject _objShadow;
+        [SerializeField] private GameObject _objItemUREffect;
+        [SerializeField] private GameObject _objItemLREffect;
         UnityAction _onOpen;
 
         public bool IsOpened()
@@ -61,6 +63,7 @@ namespace Functions.World.Gacha
         /// </summary>
         static bool _isSFXFlipPlaying;
 
+        // bool IsReceivedCardModelNull() => _receivedCardModel == null;
         /// <summary>
         /// card back khi được nhấn
         /// </summary>
@@ -75,6 +78,8 @@ namespace Functions.World.Gacha
             
             if (_receivedCardModel != null)
             {
+                _objItemUREffect.SetActive(false);
+                _objItemLREffect.SetActive(false);
                 _card.CardModel = _receivedCardModel;
                 await UniTask.WaitForSeconds(0.5f);
                 _objCardBack.SetActive(false);
@@ -87,6 +92,10 @@ namespace Functions.World.Gacha
                     Item = _receivedItemModel,
                     Quantity = _receivedItemQuantity
                 });
+                _objShadow.SetActive(false);
+                _item.gameObject.SetActive(false);
+                _objItemUREffect.SetActive(_receivedItemModel.Rarity == ItemRarity.UR);
+                _objItemLREffect.SetActive(_receivedItemModel.Rarity == ItemRarity.LR);
                 await UniTask.WaitForSeconds(0.5f);
                 _objCardBack.SetActive(false);
                 _item.gameObject.SetActive(true);

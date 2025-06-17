@@ -65,7 +65,7 @@ namespace Popups
         {
             var pop = GetPopup<PopupEquipment>() as PopupEquipment;
             await pop.SetupData();
-            pop.SetItem(item);
+            pop.SetItem(item, onChanged);
             pop.Init(null, onChanged);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();

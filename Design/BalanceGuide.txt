@@ -1,0 +1,69 @@
+
+📘 HƯỚNG DẪN CÂN BẰNG CHỈ SỐ NHÂN VẬT
+
+1. CHỈ SỐ CƠ BẢN (BASE ATTRIBUTES)
+----------------------------------
+- Mỗi tướng có base theo ClassType + ElementType.
+- Giới hạn chỉ số:
+  - HpMax: ≤ 350
+  - Attack, Defense: ≤ 70
+  - Speed: ≤ 200
+  - UPRegeneration: ≤ 5% (500)
+  - Các chỉ số dạng Rate: ≤ 3% (300)
+  - Các chỉ số Damage (kéo theo Rate): ≤ 7% (700)
+  - OutgoingHealing, HealingReceived: ≤ 5% (500)
+- Không sử dụng:
+  - AllElementResistant, AllElementDamage
+  - MetalDamage, WoodDamage, WaterDamage, FireDamage, EarthDamage
+- Kháng nguyên tố: Gắn 500 điểm `ElementResistant` với hệ khắc mình.
+
+2. CỘNG CHỈ SỐ THEO CẤP ĐỘ (LEVEL BONUS)
+----------------------------------------
+- Level từ 1 đến 50.
+- Chia 2 mốc:
+  - 1–30: tăng đều
+  - 31–50: tăng mạnh hơn
+- Bonus tính như: `bonus = hệ số * level`
+- Ước lượng tối đa:
+  - HpMax: ~4000
+  - Attack/Defense: 500–700
+  - Speed: 150–200
+  - % Rate: 300–500
+  - % Damage: 600–1000
+  - Healing/UP: 400–600
+
+3. BONUS THEO SAO (STAR TIER)
+-----------------------------
+- Có 5 sao: 1⭐ đến 5⭐.
+- Không cộng dồn giữa sao.
+- Tăng >50% mỗi cấp.
+- Mỗi class chia riêng theo 5 hệ để đa dạng.
+
+4. NGŨ HÀNH TƯƠNG KHẮC (ELEMENT SYSTEM)
+----------------------------------------
+- Tương khắc & kháng:
+  - Metal → khắc Wood → +500 WoodResistant
+  - Wood → khắc Earth → +500 EarthResistant
+  - Earth → khắc Water → +500 WaterResistant
+  - Water → khắc Fire → +500 FireResistant
+  - Fire → khắc Metal → +500 MetalResistant
+
+5. CLASS OVERVIEW
+------------------
+- Crusher: DPS cận chiến, máu cao, sát thương đều.
+- Assassin: Damage đơn, tốc độ cao, crit mạnh.
+- Demolisher: Gây sát thương diện rộng, buff.
+- Tactician: Hỗ trợ hiệu ứng, tăng chỉ số team.
+- Guardian: Tank chính, phòng thủ, hồi phục.
+- Medic: Hồi máu chính, hiệu ứng support tốt.
+
+6. ĐỊNH DẠNG CHỈ SỐ
+--------------------
+- Dạng ushort: 10.000 = 100%
+- 1% = 100, 5% = 500...
+- Sinh chỉ số thông qua:
+  - MakeAttribute()
+  - CardLevelAttributeBonus()
+  - CardStarAttributeBonus()
+
+👉 Tất cả đều đã chia hệ và class rõ ràng để đảm bảo tính chiến lược và đa dạng build.

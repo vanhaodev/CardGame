@@ -81,7 +81,7 @@ namespace Functions.World.Gacha
                 _assetRefSpriteTabNormal.AssetRef.ReleaseAsset();
                 _assetRefSpriteTabStandard.AssetRef.ReleaseAsset();
                 _assetRefSpriteTabDeluxe.AssetRef.ReleaseAsset();
-                
+
                 _resultManager.Clear();
             };
             await base.Show(fadeDuration);
@@ -154,14 +154,15 @@ namespace Functions.World.Gacha
                     if (result.IsHaveCard)
                     {
                         gachaCardRewardModel.Card =
-                            charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                            await charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
                         gachaCardRewardModel.Quantity = 1;
                     }
                     else //shard
                     {
                         var cardTemplate = await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
                         gachaCardRewardModel.ItemModel =
-                            charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId, result.Quantity);
+                            await charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId,
+                                result.Quantity);
                         gachaCardRewardModel.Quantity = result.Quantity;
                     }
 
@@ -212,7 +213,7 @@ namespace Functions.World.Gacha
                         if (result.IsHaveCard)
                         {
                             gachaCardRewardModel.Card =
-                                charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
+                                await charData.CharacterModel.Inventory.AddNewCard(cardResultTempId, result.Quantity);
                             gachaCardRewardModel.Quantity = 1;
                         }
                         else //shard
@@ -220,7 +221,7 @@ namespace Functions.World.Gacha
                             var cardTemplate =
                                 await Global.Instance.Get<GameConfig>().GetCardTemplate(cardResultTempId);
                             gachaCardRewardModel.ItemModel =
-                                charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId,
+                                await charData.CharacterModel.Inventory.AddNewCardShard(cardTemplate.ShardId,
                                     result.Quantity);
                             gachaCardRewardModel.Quantity = result.Quantity;
                         }

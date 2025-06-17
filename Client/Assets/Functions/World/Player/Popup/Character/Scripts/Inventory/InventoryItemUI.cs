@@ -6,6 +6,7 @@ using Globals;
 using Popups;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace World.Player.PopupCharacter
@@ -14,9 +15,13 @@ namespace World.Player.PopupCharacter
     {
         [SerializeField] Image _imgBackground;
         [SerializeField] private Image _imgItemIcon;
+        [SerializeField] private Image _imgRarityTag;
         [SerializeField] private TextMeshProUGUI _txItemQuantity;
+        [SerializeField] private TextMeshProUGUI _txItemUpgradeLevel;
+        [SerializeField] private TextMeshProUGUI _txItemTier;
         [SerializeField] private GameObject _objLoadingLock;
         [SerializeField] Sprite[] _spriteBackgrounds;
+        [SerializeField] private Sprite[] _spriteRarityTags;
         [SerializeField] private InventoryItemModel _item;
         [SerializeField] private ItemType _itemType;
         public InventoryItemModel Item => _item;
@@ -24,7 +29,15 @@ namespace World.Player.PopupCharacter
 
         public async UniTask Init(InventoryItemModel inventoryItemModel)
         {
-            if (inventoryItemModel.Quantity < 1) gameObject.SetActive(false);
+            if (inventoryItemModel.Quantity > 0)
+            {
+                
+            }
+            else
+            {
+                gameObject.SetActive(false);
+                return;
+            }
             _objLoadingLock.SetActive(true);
             _item = inventoryItemModel;
             _itemType = _item.Item switch
@@ -34,7 +47,33 @@ namespace World.Player.PopupCharacter
                 _ => throw new Exception("Unknown item type")
             };
             _txItemQuantity.text = _item.Quantity > 1 ? _item.Quantity.ToString() : string.Empty;
-            _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity];
+            _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity - 1];
+            if (ItemType == ItemType.Equipment)
+            {
+                _imgRarityTag.gameObject.transform.parent.gameObject.SetActive(true);
+                _imgRarityTag.sprite = _spriteRarityTags[(int)_item.Item.Rarity - 1];
+
+                var localVarEquipment = (_item.Item as ItemEquipmentModel);
+                if (localVarEquipment.UpgradeLevel > 0)
+                {
+                    _txItemUpgradeLevel.gameObject.transform.parent.gameObject.SetActive(true);
+                    _txItemUpgradeLevel.text = "+" + localVarEquipment.UpgradeLevel.ToString();
+                }
+                else
+                {
+                    _txItemUpgradeLevel.gameObject.transform.parent.gameObject.SetActive(false);
+                }
+                _txItemTier.gameObject.transform.parent.gameObject.SetActive(true);
+                _txItemTier.text = localVarEquipment.Tier.ToString();
+            }
+            else
+            {
+                _txItemUpgradeLevel.text = String.Empty;
+                _imgRarityTag.sprite = null;
+                _imgRarityTag.gameObject.transform.parent.gameObject.SetActive(false);
+                _txItemUpgradeLevel.gameObject.transform.parent.gameObject.SetActive(false);
+                _txItemTier.gameObject.transform.parent.gameObject.SetActive(false);
+            }
 
             //card shard sẽ lấy icon theo kiểu khác
             bool isCardShard = false;
@@ -53,7 +92,7 @@ namespace World.Player.PopupCharacter
             {
                 _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
             }
-
+            gameObject.SetActive(true);
             _objLoadingLock.SetActive(false);
         }
 

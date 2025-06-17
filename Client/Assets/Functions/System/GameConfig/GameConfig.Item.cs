@@ -73,7 +73,37 @@ namespace GameConfigs
                 default: return 37.0f; //37%
             }
         }
+        public float EquipmentTierPercentBonus(byte tier)
+        {
+            switch (tier)
+            {
+                case 1: return 0f;
+                case 2: return 30f; 
+                case 3: return 50f;
+                case 4: return 70f;
+                case 5: return 100f;
+                default: return 0f;
+            }
+        }
 
+        public float EquipmentRarityPercentBonus(ItemRarity rarity)
+        {
+            switch (rarity)
+            {
+                case ItemRarity.N:
+                    return 0f;
+                case ItemRarity.R:
+                    return 20f;
+                case ItemRarity.SR:
+                    return 40f;
+                case ItemRarity.UR:
+                    return 70f;
+                case ItemRarity.LR:
+                    return 100f;
+                default:
+                    return 0f;
+            }
+        }
         /// <summary>
         /// tỉ lệ cường hoá thành công theo cấp
         /// </summary>
@@ -137,7 +167,7 @@ namespace GameConfigs
                     if (_gachaEquipment1 == null || _gachaEquipment1.Count == 0)
                     {
                         var json1 = await Global.Instance.Get<AddressableLoader>()
-                            .LoadAssetAsync<TextSO>("CardConfigs/GachaEquipment1");
+                            .LoadAssetAsync<TextSO>("ItemConfigs/GachaEquipment1");
                         _gachaEquipment1 = JsonConvert.DeserializeObject<List<GachaEquipmentModel>>(json1.Content);
                     }
 
@@ -148,7 +178,7 @@ namespace GameConfigs
                     if (_gachaEquipment2 == null || _gachaEquipment2.Count == 0)
                     {
                         var json2 = await Global.Instance.Get<AddressableLoader>()
-                            .LoadAssetAsync<TextSO>("CardConfigs/GachaEquipment2");
+                            .LoadAssetAsync<TextSO>("ItemConfigs/GachaEquipment2");
                         _gachaEquipment2 = JsonConvert.DeserializeObject<List<GachaEquipmentModel>>(json2.Content);
                     }
 
@@ -159,7 +189,7 @@ namespace GameConfigs
                     if (_gachaEquipment3 == null || _gachaEquipment3.Count == 0)
                     {
                         var json3 = await Global.Instance.Get<AddressableLoader>()
-                            .LoadAssetAsync<TextSO>("CardConfigs/GachaEquipment3");
+                            .LoadAssetAsync<TextSO>("ItemConfigs/GachaEquipment3");
                         _gachaEquipment3 = JsonConvert.DeserializeObject<List<GachaEquipmentModel>>(json3.Content);
                     }
 
