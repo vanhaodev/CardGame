@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Item
   m_GUID: 68d04e96cdfd97d4bb7953e421afaf6b
   m_SerializeEntries:
+  - m_GUID: 20ef015c7b2a8624ab6c719a9b2027f0
+    m_Address: ItemSprites/equipment_chest_silver
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 23eecf98922f06d4c86a0cbd8e3f7bb3
     m_Address: ItemTemplates/3
     m_ReadOnly: 0
@@ -90,6 +95,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bcfbf902d95ea94c9ee1409581fa470
+    m_Address: ItemSprites/equipment_chest_iron
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 81691d32578e1c348a57540f4b48c4f9
     m_Address: ItemTemplates/5
     m_ReadOnly: 0
@@ -107,6 +117,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a840a782840470245ba762a6683d3b43
     m_Address: ItemConfigs/GachaEquipment1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a99d0abd41635d4428714644ea45d032
+    m_Address: ItemSprites/equipment_chest_golden
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

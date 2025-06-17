@@ -31,7 +31,7 @@ namespace Functions.World.Gacha
         [BoxGroup("Tab")] [SerializeField] private Image _imageTabIron;
         [BoxGroup("Tab")] [SerializeField] private Image _imageTabSilver;
         [BoxGroup("Tab")] [SerializeField] private Image _imageTabGolden;
-        [BoxGroup("Result")] [SerializeField] private GachaCardResultManager _resultManager;
+        [BoxGroup("Result")] [SerializeField] private GachaEquipmentResultManager _resultManager;
 
         public override async UniTask SetupData()
         {
@@ -101,18 +101,21 @@ namespace Functions.World.Gacha
                 {
                     _imagePlayGachaPriceIconX1.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(4);
                     _imagePlayGachaPriceIconX10.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(4);
+                    await _resultManager.SetupChestSprite(1);
                     break;
                 }
                 case 1:
                 {
                     _imagePlayGachaPriceIconX1.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(5);
                     _imagePlayGachaPriceIconX10.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(5);
+                    await _resultManager.SetupChestSprite(2);
                     break;
                 }
                 case 2:
                 {
                     _imagePlayGachaPriceIconX1.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(6);
                     _imagePlayGachaPriceIconX10.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(6);
+                    await _resultManager.SetupChestSprite(3);
                     break;
                 }
             }

@@ -22,7 +22,7 @@ namespace Functions.World.Gacha
         [SerializeField] private Transform _transformStartPos;
         [SerializeField] List<Vector3> _cardGachasOriginPositions;
         [SerializeField] List<Vector3> _cardGachasOriginScales;
-        [SerializeField] List<CardGacha> _cardGachas;
+        [SerializeField] protected List<CardGacha> _cardGachas;
         [SerializeField] private Button _btnOpenAll;
         [SerializeField] private Button _btnClose;
         [SerializeField] private List<RectTransform> _worldShakers;
@@ -42,6 +42,27 @@ namespace Functions.World.Gacha
             {
                 _cardGachasOriginPositions.Add(_cardGachas[i].transform.localPosition);
                 _cardGachasOriginScales.Add(_cardGachas[i].transform.localScale);
+            }
+        }
+        [Button]
+        private void RestoreOriginTransforms()
+        {
+            if (_cardGachasOriginPositions == null || _cardGachasOriginScales == null)
+            {
+                Debug.LogWarning("Origin positions or scales are null. Make sure to call RefreshOriginPositions first.");
+                return;
+            }
+
+            if (_cardGachas.Count != _cardGachasOriginPositions.Count || _cardGachas.Count != _cardGachasOriginScales.Count)
+            {
+                Debug.LogWarning("Mismatch in card gacha count and saved origin data. Cannot restore.");
+                return;
+            }
+
+            for (int i = 0; i < _cardGachas.Count; i++)
+            {
+                _cardGachas[i].transform.localPosition = _cardGachasOriginPositions[i];
+                _cardGachas[i].transform.localScale = _cardGachasOriginScales[i];
             }
         }
 
@@ -183,7 +204,7 @@ namespace Functions.World.Gacha
             _uiShaker.StopWobble();
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             _imageBackground.sprite = null;
             _imageFade.gameObject.SetActive(false);

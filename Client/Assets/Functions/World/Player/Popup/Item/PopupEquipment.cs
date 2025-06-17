@@ -34,7 +34,7 @@ namespace World.Player.PopupCharacter
             _tab.Init(new TabSwitcherWindowModel()
             {
                 OnChanged = onChanged,
-                OnRegularChanged = () => ReInit(0)
+                OnRegularChanged = () =>   Init(_item, _onChanged)
             });
             _tab.OnTabSwitched += ReInit;
         }

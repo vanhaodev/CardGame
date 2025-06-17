@@ -51,10 +51,10 @@ namespace Functions.World.Gacha
             _receivedCardModel = null;
             _receivedItemModel = null;
             _receivedItemQuantity = 0;
-            _card.CardModel = null;
+            if(_card != null)_card.CardModel = null;
             _item.Clear();
             _objCardBack.SetActive(true);
-            _card.gameObject.SetActive(false);
+            _card?.gameObject.SetActive(false);
             _item.gameObject.SetActive(false);
         }
 
@@ -92,12 +92,12 @@ namespace Functions.World.Gacha
                     Item = _receivedItemModel,
                     Quantity = _receivedItemQuantity
                 });
-                _objShadow.SetActive(false);
                 _item.gameObject.SetActive(false);
                 _objItemUREffect.SetActive(_receivedItemModel.Rarity == ItemRarity.UR);
                 _objItemLREffect.SetActive(_receivedItemModel.Rarity == ItemRarity.LR);
                 await UniTask.WaitForSeconds(0.5f);
                 _objCardBack.SetActive(false);
+                _objShadow.SetActive(false);
                 _item.gameObject.SetActive(true);
             }
 
