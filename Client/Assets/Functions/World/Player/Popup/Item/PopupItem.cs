@@ -7,6 +7,7 @@ using Popups;
 using Popups.Commons.Choice;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using World.Player.Character;
 
@@ -18,14 +19,18 @@ namespace World.Player.PopupCharacter
         [SerializeField] protected TextMeshProUGUI _txName;
         [SerializeField] private TextMeshProUGUI _txDescription;
         [SerializeField] private Button _btnUse;
+        [SerializeField] private Button _btnUnSelect;
+        [SerializeField] private Button _btnSell;
         private uint _sellScrapPrice;
         private uint _sellCircuitPrice;
         protected InventoryItemModel _item;
         protected Action _onChanged;
+        protected UnityAction _onUnSelect;
 
-        public virtual async void Init(InventoryItemModel item, Action onChanged)
+        public virtual async void Init(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
         {
             _onChanged = onChanged;
+            _onUnSelect = onUnEquip;
             _onChanged += () => _itemUI.Init(item);
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(item.Item.TemplateId);
             _sellScrapPrice = template.SellToShopScrapPrice;
@@ -44,7 +49,9 @@ namespace World.Player.PopupCharacter
             _txDescription.text = template.Description;
 
             bool isUsable = template is ItemCardShardTemplateModel;
-            _btnUse.gameObject.SetActive(isUsable);
+            _btnUse.gameObject.SetActive(isUsable && _onUnSelect == null);
+            _btnUnSelect.gameObject.SetActive(_onUnSelect != null);
+            _btnSell.gameObject.SetActive(_onUnSelect == null);
         }
 
         public async void Use()

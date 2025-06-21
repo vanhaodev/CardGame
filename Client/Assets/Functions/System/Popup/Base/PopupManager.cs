@@ -9,6 +9,7 @@ using Globals;
 using Popups.Commons.Choice;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 using Utils;
 using World.Player.PopupCharacter;
 using World.TheCard;
@@ -35,6 +36,7 @@ namespace Popups
             pop.Show().Forget();
             onCloseSetter?.Invoke(() => pop.Close());
         }
+
         [Button]
         public async void ShowGachaEquipment()
         {
@@ -43,6 +45,7 @@ namespace Popups
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
+
         [Button]
         public async void ShowGachaCard()
         {
@@ -52,7 +55,7 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        public async void ShowItemInfo(InventoryItemModel item, Action onChanged)
+        public async void ShowItemInfo(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
         {
             var pop = GetPopup<PopupItem>() as PopupItem;
             await pop.SetupData();
@@ -61,7 +64,7 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        public async void ShowEquipmentInfo(InventoryItemModel item, Action onChanged)
+        public async void ShowEquipmentInfo(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
         {
             var pop = GetPopup<PopupEquipment>() as PopupEquipment;
             await pop.SetupData();

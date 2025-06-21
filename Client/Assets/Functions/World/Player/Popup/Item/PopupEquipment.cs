@@ -8,6 +8,7 @@ using Globals;
 using Popups;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utils.Tab;
 using World.TheCard;
@@ -27,7 +28,7 @@ namespace World.Player.PopupCharacter
             _tab.OnTabSwitched -= ReInit;
         }
 
-        public void SetItem(InventoryItemModel item, Action onChanged)
+        public void SetItem(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
         {
             _item = item;
             EquipmentItem = item.Item as ItemEquipmentModel;
@@ -45,7 +46,7 @@ namespace World.Player.PopupCharacter
             Init(_item, _onChanged);
         }
 
-        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, Action onChanged)
+        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, Action onChanged, UnityAction onUnEquip = null)
         {
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(_item.Item.TemplateId);
             base.Init(_item, onChanged);

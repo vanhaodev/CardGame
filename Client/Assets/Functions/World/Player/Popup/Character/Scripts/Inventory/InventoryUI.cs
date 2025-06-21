@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
+using GameConfigs;
 using Globals;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,11 @@ namespace World.Player.PopupCharacter
     public class InventoryUI : MonoBehaviour
     {
         [SerializeField] private TabSwitcher _tabSwitcherItemType;
+        private int _currentItemTypeFilterIndex;
+        [SerializeField] private TabSwitcher _tabSwitcherItemEquipmentType;
+        private int _currentItemEquipmentTypeFilterIndex;
+        [SerializeField] private TabSwitcher _tabSwitcherItemRarity;
+        private int _currentItemRarityFilterIndex;
         [SerializeField] private InventoryItemUI _prefabInventoryItemUI;
         [SerializeField] private Transform _inventoryItemContainer;
         [SerializeField] private List<InventoryItemUI> _inventoryItemUIs;
@@ -53,21 +59,30 @@ namespace World.Player.PopupCharacter
 
             tasks.Add(InitWeight(inv));
             await UniTask.WhenAll(tasks);
-            _tabSwitcherItemType.Init();
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init();
+            if (_tabSwitcherItemEquipmentType != null) _tabSwitcherItemEquipmentType?.Init();
+            if (_tabSwitcherItemRarity != null) _tabSwitcherItemRarity?.Init();
         }
 
         private void OnEnable()
         {
-            _tabSwitcherItemType.OnTabSwitched += FilterItem;
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched += FilterItemType;
+            if (_tabSwitcherItemEquipmentType != null)
+                _tabSwitcherItemEquipmentType.OnTabSwitched += FilterItemEquipmentType;
+            if (_tabSwitcherItemRarity != null) _tabSwitcherItemRarity.OnTabSwitched += FilterItemRarity;
         }
 
         private void OnDisable()
         {
-            _tabSwitcherItemType.OnTabSwitched -= FilterItem;
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched -= FilterItemType;
+            if (_tabSwitcherItemEquipmentType != null)
+                _tabSwitcherItemEquipmentType.OnTabSwitched -= FilterItemEquipmentType;
+            if (_tabSwitcherItemRarity != null) _tabSwitcherItemRarity.OnTabSwitched -= FilterItemRarity;
         }
 
         async UniTask InitWeight(InventoryModel inventory)
         {
+            if (_txWeigthCurrent == null) return;
             var currentWeight = await inventory.GetCurrentWeight();
             var maxWeight = inventory.MaxWeight;
 
@@ -77,16 +92,64 @@ namespace World.Player.PopupCharacter
         }
 
 
-        private void FilterItem(int index)
+        private void FilterItemType(int index)
         {
-            var itemType = index -= 1;
+            _currentItemTypeFilterIndex = index -= 1;
             foreach (var item in _inventoryItemUIs)
             {
-                if(item.Item.Quantity < 1) continue;
+                if (item.Item.Quantity < 1) continue;
                 var isActive = false;
-                if (itemType != -1)
+                if (_currentItemTypeFilterIndex != -1)
                 {
-                    isActive = itemType == (int)item.ItemType;
+                    isActive = _currentItemTypeFilterIndex == (int)item.ItemType;
+                }
+                else
+                {
+                    isActive = true;
+                }
+
+                item.transform.gameObject.SetActive(isActive);
+            }
+        }
+
+        private async void FilterItemEquipmentType(int index)
+        {
+            _currentItemEquipmentTypeFilterIndex = index -= 1;
+            foreach (var item in _inventoryItemUIs)
+            {
+                if (item.Item.Quantity < 1) continue;
+                var isActive = false;
+                if (_currentItemEquipmentTypeFilterIndex != -1)
+                {
+                    isActive = _currentItemEquipmentTypeFilterIndex == await GetEquipmentType(item.Item.Item);
+                }
+                else
+                {
+                    isActive = true;
+                }
+
+                item.transform.gameObject.SetActive(isActive);
+            }
+
+            async UniTask<int> GetEquipmentType(ItemModel item)
+            {
+                var temp =
+                    await Global.Instance.Get<GameConfig>().GetItemTemplate(item.TemplateId) as
+                        ItemEquipmentTemplateModel;
+                return (int)temp.EquipmentType;
+            }
+        }
+
+        private void FilterItemRarity(int index)
+        {
+            _currentItemRarityFilterIndex = index -= 1;
+            foreach (var item in _inventoryItemUIs)
+            {
+                if (item.Item.Quantity < 1) continue;
+                var isActive = false;
+                if (_currentItemRarityFilterIndex != -1)
+                {
+                    isActive = _currentItemRarityFilterIndex == (int)item.Item.Item.Rarity;
                 }
                 else
                 {

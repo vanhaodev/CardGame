@@ -44,7 +44,7 @@ namespace World.Player.PopupCharacter
             {
                 ItemEquipmentModel => ItemType.Equipment,
                 ItemResourceModel => ItemType.Resource,
-                _ => throw new Exception("Unknown item type")
+                _ => throw new Exception("Unknown item type " + _itemType)
             };
             _txItemQuantity.text = _item.Quantity > 1 ? _item.Quantity.ToString() : string.Empty;
             _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity - 1];
