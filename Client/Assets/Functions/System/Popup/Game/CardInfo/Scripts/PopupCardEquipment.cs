@@ -40,6 +40,12 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
     void OnSelectSlot(InventoryItemSelectSlot slot)
     {
         Debug.Log(slot.Identity);
+        if (slot.IsEmpty)
+        {
+            return;
+        }
+
+        slot.ShowItemInfor();
     }
 
     public UniTask LateInit()
