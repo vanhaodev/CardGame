@@ -48,4 +48,9 @@ public class InventoryItemSelectSlot : MonoBehaviour
     {
         _onSelect += onSelect;
     }
+
+    public void ShowItemInfor()
+    {
+        _itemUI.OnTouch();
+    }
 }
