@@ -46,7 +46,8 @@ namespace World.Player.PopupCharacter
                 topColor, topColor, // Top Left, Top Right
                 bottomColor, bottomColor // Bottom Left, Bottom Right
             );
-            _txDescription.text = template.Description;
+            _txDescription.text = $"ID:{_item.Item.Id} | TempID: {template.Id}\n" +
+                                  $"{template.Description}";
 
             bool isUsable = template is ItemCardShardTemplateModel;
             _btnUse.gameObject.SetActive(isUsable && _onUnSelect == null);
@@ -66,17 +67,20 @@ namespace World.Player.PopupCharacter
                     bool isHaveEnough = _item.Quantity >= requiredShardCount;
                     if (isHaveEnough)
                     {
-                        
                     }
                     else
                     {
-                        Global.Instance.Get<PopupManager>().ShowChoice($"You need to have at least {requiredShardCount} shards to combine the card.");
+                        Global.Instance.Get<PopupManager>()
+                            .ShowChoice($"You need to have at least {requiredShardCount} shards to combine the card.");
                     }
+
                     break;
                 }
             }
+
             _btnUse.interactable = true;
         }
+
         public void Sell()
         {
             // Giả lập localization (sau thay bằng hệ thống real sau)

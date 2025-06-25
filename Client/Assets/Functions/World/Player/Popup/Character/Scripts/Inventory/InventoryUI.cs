@@ -91,24 +91,38 @@ namespace World.Player.PopupCharacter
             _txWeigthMax.text = maxWeight + " <size=80%>kg</size>";
         }
 
-
         private void FilterItemType(int index)
         {
-            _currentItemTypeFilterIndex = index -= 1;
+            _currentItemTypeFilterIndex = index - 1; // UI index 0 = All -> filter -1 = All
             foreach (var item in _inventoryItemUIs)
             {
                 if (item.Item.Quantity < 1) continue;
-                var isActive = false;
-                if (_currentItemTypeFilterIndex != -1)
+
+                bool isShardItem = item.Item.Item.TemplateId is >= 1001 and <= 1999;
+                bool isActive;
+
+                if (_currentItemTypeFilterIndex == 2)
                 {
-                    isActive = _currentItemTypeFilterIndex == (int)item.ItemType;
+                    // Nếu đang lọc shard riêng → chỉ hiện shard
+                    isActive = isShardItem;
                 }
                 else
                 {
-                    isActive = true;
+                    // Nếu lọc theo loại (Equipment/Resource)
+                    if (_currentItemTypeFilterIndex == -1)
+                    {
+                        // All type → hiện tất cả (gồm cả shard)
+                        isActive = true;
+                    }
+                    else
+                    {
+                        // Chỉ hiện đúng loại, shard tính là item loại riêng nên bị loại
+                        isActive = !isShardItem && _currentItemTypeFilterIndex == (int)item.ItemType;
+                    }
                 }
 
                 item.transform.gameObject.SetActive(isActive);
+               // Debug.Log($"FilterItemType: { item.Item.Item.TemplateId} == isshard {isShardItem} isactive {isActive} _currentItemRarityFilterIndex {_currentItemRarityFilterIndex}");
             }
         }
 
