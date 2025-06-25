@@ -13,10 +13,11 @@ public class InventoryItemSelectSlot : MonoBehaviour
     /// </summary>
     public string Identity;
 
+    [SerializeField] protected GameObject _objAdd;
     public bool IsEmpty => _itemUI.Item == null;
-    [SerializeField] private InventoryItemUI _itemUI;
-    [SerializeField] Button _btnSelect;
-    private UnityAction<InventoryItemSelectSlot> _onSelect;
+    [SerializeField] protected InventoryItemUI _itemUI;
+    [SerializeField] protected Button _btnSelect;
+    protected UnityAction<InventoryItemSelectSlot> _onSelect;
 
     private void Start()
     {

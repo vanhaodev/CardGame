@@ -7,7 +7,7 @@ using World.TheCard;
 
 public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 {
-    [SerializeField] private InventoryItemSelectSlot[] _slots;
+    [SerializeField] private InventoryEquipmentSlot[] _slots;
     private CardModel _cardModel;
 
     private void Awake()
@@ -34,6 +34,8 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             {
                 await _slots[i].InitSlot(null);
             }
+
+            _slots[i].InitLevelRequirement(_cardModel.Level.GetLevel(i == 0 ? true : false));
         }
     }
 
