@@ -9,6 +9,10 @@ using World.TheCard;
 
 namespace Functions.World.Player.Inventory
 {
+    /// <summary>
+    /// Trang bị cộng % theo chỉ số gốc trước, sau đó mới cộng giá trị cố định.
+    /// VD: base từ người đeo: 100, +20% từ trang bị → 120, rồi +30 từ trang bị → 150.
+    /// </summary>
     [System.Serializable]
     public class ItemEquipmentModel : ItemModel
     {
@@ -17,7 +21,9 @@ namespace Functions.World.Player.Inventory
         /// Mỗi cấp cộng 0.25% điểm att đang có
         /// </summary>
         public byte UpgradeLevel = 0;
+
         public byte Tier = 1;
+
         /// <summary>
         /// tăng chỉ số static vào người đeo
         /// </summary>
@@ -35,7 +41,8 @@ namespace Functions.World.Player.Inventory
         public async UniTask UpdateAttribute()
         {
             // Lấy template (có thể thay đổi mỗi bản cập nhật)
-            var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(TemplateId) as ItemEquipmentTemplateModel;
+            var template =
+                await Global.Instance.Get<GameConfig>().GetItemTemplate(TemplateId) as ItemEquipmentTemplateModel;
 
             // Nếu template null thì log warning và thoát
             if (template == null)
@@ -85,7 +92,9 @@ namespace Functions.World.Player.Inventory
                 });
             }
         }
+
         #region old
+
 /*
          public async UniTask UpdateAttribute()
         {
@@ -159,6 +168,7 @@ namespace Functions.World.Player.Inventory
         }
 
 */
+
         #endregion
     }
 }

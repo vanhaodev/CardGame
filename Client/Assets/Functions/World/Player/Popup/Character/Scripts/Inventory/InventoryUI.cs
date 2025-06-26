@@ -23,7 +23,15 @@ namespace World.Player.PopupCharacter
         [SerializeField] private TextMeshProUGUI _txWeigthMax;
         [SerializeField] private TextMeshProUGUI _txWeigthCurrent;
 
-        public async UniTask Init()
+        private void Awake()
+        {
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched += FilterItemType;
+        }
+        private void OnDestroy()
+        {
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched -= FilterItemType;
+        }
+        public async UniTask Init(int itemTypeFilterIndex = -1)
         {
             var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
             await inv.Arrange();
@@ -56,17 +64,7 @@ namespace World.Player.PopupCharacter
 
             tasks.Add(InitWeight(inv));
             await UniTask.WhenAll(tasks);
-            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init();
-        }
-
-        private void OnEnable()
-        {
-            if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched += FilterItemType;
-        }
-
-        private void OnDisable()
-        {
-            if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched -= FilterItemType;
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init(switchIndex: itemTypeFilterIndex);
         }
 
         async UniTask InitWeight(InventoryModel inventory)
@@ -111,8 +109,10 @@ namespace World.Player.PopupCharacter
                 }
 
                 item.transform.gameObject.SetActive(isActive);
-               // Debug.Log($"FilterItemType: { item.Item.Item.TemplateId} == isshard {isShardItem} isactive {isActive} _currentItemRarityFilterIndex {_currentItemRarityFilterIndex}");
+                // Debug.Log($"FilterItemType: { item.Item.Item.TemplateId} == isshard {isShardItem} isactive {isActive} _currentItemRarityFilterIndex {_currentItemRarityFilterIndex}");
             }
+
+            Debug.Log($"FilterItemType: " + _currentItemTypeFilterIndex);
         }
 
         // private async void FilterItemEquipmentType(int index)

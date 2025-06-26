@@ -20,6 +20,7 @@ namespace Utils.Tab
         [SerializeField] TabSwitcherButton _prefabTabButton;
         [SerializeField] Transform _parentTabButton;
         [SerializeField] private TextMeshProUGUI _txWindowTitle;
+
         /// <summary>
         /// sinh tab button or dùng tab có sẵn
         /// </summary>
@@ -67,10 +68,13 @@ namespace Utils.Tab
 
                 Tabs[i].TabSwitcherButton = tabBtn;
                 var theModel = model;
-                tabBtn.Set(_isInstantiateTabButton, Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon, () => SwitchTab(index, theModel));
+                tabBtn.Set(_isInstantiateTabButton, Tabs[i].TabButtonName, Tabs[i].SpriteTabButtonIcon,
+                    () => SwitchTab(index, theModel));
             }
 
-            SwitchTab(switchIndex >= 0 ? switchIndex : DefaultIndex, model);
+            Debug.Log("Init switchIndex = " + switchIndex);
+            CurrentIndex = switchIndex >= 0 ? switchIndex : DefaultIndex;
+            SwitchTab(CurrentIndex, model);
         }
 
         public async void SwitchTab(int index, TabSwitcherWindowModel model = null)
@@ -82,7 +86,7 @@ namespace Utils.Tab
                 {
                     //chỉ chạy khi hệ thống tab có sử dụng window, một vài loại dùng event để check tab thay vì hiện window
                     var iTab = Tabs[i].ObjWindow?.GetComponent<ITabSwitcherWindow>();
-                    if(iTab != null) await iTab.Init(model);
+                    if (iTab != null) await iTab.Init(model);
                     Tabs[i].Set(true);
                     if (iTab != null) await iTab.LateInit();
                 }
@@ -103,7 +107,7 @@ namespace Utils.Tab
                 }
             }
 
-            // Debug.Log($"SwitchTab {index}");
+            Debug.Log($"SwitchTab {index}");
             CurrentIndex = index;
             OnTabSwitched?.Invoke(index);
             OnTabSwitchedEvent?.Invoke(index);

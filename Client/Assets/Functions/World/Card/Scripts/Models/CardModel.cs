@@ -76,12 +76,17 @@ namespace World.TheCard
                 .CardLevelAttributeBonus(template.Class, Level.GetLevel());
             var starBonus = Global.Instance.Get<GameConfig>()
                 .CardStarAttributeBonus(template.Class, template.Element, Star);
-
+            var equipmenntValueBonus =
+                AttributeModel.ToDictionary(Equipments.SelectMany(i => i.CalculatedAttributes).ToList());
+            var equipmenntPercentBonus =
+                AttributeModel.ToDictionary(Equipments.SelectMany(i => i.CalculatedAttributePercents).ToList());
             // Tập hợp tất cả các attribute type có thể có  
             var allKeys = new HashSet<AttributeType>(
                 templateAttributes.Keys
                     .Union(levelBonus.Keys)
                     .Union(starBonus.Keys)
+                    .Union(equipmenntValueBonus.Keys)
+                //ko cần union percent vì nếu ko có value thì không cần percent
             );
 
             foreach (var key in allKeys)
@@ -101,6 +106,18 @@ namespace World.TheCard
                 if (starBonus.TryGetValue(key, out var starValue))
                 {
                     finalValue += starValue;
+                }
+
+                //cộng % trước
+                if (equipmenntPercentBonus.TryGetValue(key, out var equipmentPercent))
+                {
+                    finalValue += finalValue * (int)(equipmentPercent / 10000f);
+                }
+
+                //cộng value sau đó
+                if (equipmenntValueBonus.TryGetValue(key, out var equipmentValue))
+                {
+                    finalValue += equipmentValue;
                 }
 
                 CalculatedAttributes.Add(new AttributeModel

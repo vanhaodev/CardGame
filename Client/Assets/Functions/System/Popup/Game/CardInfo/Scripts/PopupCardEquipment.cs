@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Globals;
 using Popups;
 using UnityEngine;
 using Utils.Tab;
@@ -44,6 +45,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         Debug.Log(slot.Identity);
         if (slot.IsEmpty)
         {
+            Global.Instance.Get<PopupManager>().ShowItemSelector(1);
             return;
         }
 

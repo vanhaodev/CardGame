@@ -82,7 +82,13 @@ namespace Popups
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
-
+        public async void ShowItemSelector(int itemTypeFilterIndex = -1)
+        {
+            var pop = GetPopup<PopupItemSelector>() as PopupItemSelector;
+            await pop.InitItem(itemTypeFilterIndex);
+            pop.gameObject.SetActive(true);
+            pop.Show().Forget();
+        }
         public async void ShowSetting()
         {
             var pop = GetPopup<PopupSetting>() as PopupSetting;
