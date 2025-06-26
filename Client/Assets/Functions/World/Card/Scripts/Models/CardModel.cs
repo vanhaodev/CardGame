@@ -49,8 +49,8 @@ namespace World.TheCard
         /// <summary>
         /// lưu luôn trong card, không cần để trong inventory nữa
         /// </summary>
-        [SerializeReference] public List<ItemEquipmentModel> Equipments =
-            new List<ItemEquipmentModel>();
+        [SerializeReference] public Dictionary<byte, ItemEquipmentModel> Equipments =
+            new ();
 
         /// <summary>
         /// Cập nhật khi cường hoá hoặc phiên bản mới
@@ -77,9 +77,9 @@ namespace World.TheCard
             var starBonus = Global.Instance.Get<GameConfig>()
                 .CardStarAttributeBonus(template.Class, template.Element, Star);
             var equipmenntValueBonus =
-                AttributeModel.ToDictionary(Equipments.SelectMany(i => i.CalculatedAttributes).ToList());
+                AttributeModel.ToDictionary( Equipments.SelectMany(i => i.Value.CalculatedAttributes).ToList());
             var equipmenntPercentBonus =
-                AttributeModel.ToDictionary(Equipments.SelectMany(i => i.CalculatedAttributePercents).ToList());
+                AttributeModel.ToDictionary(Equipments.SelectMany(i => i.Value.CalculatedAttributePercents).ToList());
             // Tập hợp tất cả các attribute type có thể có  
             var allKeys = new HashSet<AttributeType>(
                 templateAttributes.Keys

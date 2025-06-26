@@ -18,6 +18,7 @@ public class InventoryItemSelectSlot : MonoBehaviour
     [SerializeField] protected InventoryItemUI _itemUI;
     [SerializeField] protected Button _btnSelect;
     protected UnityAction<InventoryItemSelectSlot> _onSelect;
+    protected UnityAction<InventoryItemSelectSlot> _onUnSelect;
 
     private void Start()
     {
@@ -30,7 +31,7 @@ public class InventoryItemSelectSlot : MonoBehaviour
         _onSelect = null;
     }
 
-    public async UniTask InitSlot(ItemModel item)
+    public async UniTask InitSlot(ItemModel item, UnityAction<ItemModel> onUnSelect)
     {
         if (item == null)
         {
@@ -44,19 +45,14 @@ public class InventoryItemSelectSlot : MonoBehaviour
             Quantity = 1
         }, new()
         {
-            OnUnequip = OnUnequip
+            OnUnequip = onUnSelect
         });
     }
 
-    void OnUnequip(ItemModel slot)
+    public void ListenOnClick(UnityAction<InventoryItemSelectSlot> onSelect)
     {
-        Debug.Log("Unequip " + slot.Id);
+        _onSelect = onSelect;
     }
-    public void ListenOnSelect(UnityAction<InventoryItemSelectSlot> onSelect)
-    {
-        _onSelect += onSelect;
-    }
-
     public void ShowItemInfor()
     {
         _itemUI.OnTouch();

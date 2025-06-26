@@ -11,13 +11,13 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 {
     [SerializeField] private InventoryEquipmentSlot[] _slots;
     private CardModel _cardModel;
-
+    private string _currentSlot;
     private void Awake()
     {
         for (int i = 0; i < _slots.Length; i++)
         {
             _slots[i].Identity = i.ToString();
-            _slots[i].ListenOnSelect(OnSelectSlot);
+            _slots[i].ListenOnClick(SelectSlot);
         }
     }
 
@@ -25,30 +25,33 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
     {
         var tabSwitcherWindowModel = model as PopupCardTabSwitcherWindowModel;
         _cardModel = tabSwitcherWindowModel.PopupCardModel.CardModel;
-
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            if (i < _cardModel.Equipments.Count)
-            {
-                await _slots[i].InitSlot(_cardModel.Equipments[i]);
-            }
-            else
-            {
-                await _slots[i].InitSlot(null);
-            }
-
-            _slots[i].InitLevelRequirement(_cardModel.Level.GetLevel(i == 0 ? true : false));
-        }
+        await InitSlots();
     }
 
-    void OnSelectSlot(InventoryItemSelectSlot slot)
+     async UniTask InitSlots()
     {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            ItemEquipmentModel equipment = null;
+
+            if (_cardModel.Equipments.TryGetValue((byte)i, out var foundEquip))
+            {
+                equipment = foundEquip;
+            }
+
+            await _slots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null);
+            _slots[i].InitLevelRequirement(_cardModel.Level.GetLevel(i == 0));
+        }
+    }
+    void SelectSlot(InventoryItemSelectSlot slot)
+    {
+        _currentSlot = slot.Identity;
         Debug.Log(slot.Identity);
         if (slot.IsEmpty)
         {
             Global.Instance.Get<PopupManager>().ShowItemSelector(new ItemActionModel()
             {
-                OnEquip = OnEquip
+                OnEquip = OnSelect
             }, 1);
             return;
         }
@@ -56,11 +59,16 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         slot.ShowItemInfor();
     }
 
-    void OnEquip(ItemModel item)
+    void OnSelect(ItemModel item)
     {
         Debug.Log("Select " + item.Id);
+        InitSlots();
     }
-
+    void OnUnSelect(ItemModel item)
+    {
+        Debug.Log("OnUnequip " + item.Id);
+        InitSlots();
+    }
     public UniTask LateInit()
     {
         return UniTask.CompletedTask;
