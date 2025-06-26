@@ -24,14 +24,14 @@ namespace World.Player.PopupCharacter
         private uint _sellScrapPrice;
         private uint _sellCircuitPrice;
         protected InventoryItemModel _item;
-        protected UnityAction _onChanged;
-        protected UnityAction<ItemModel> _onUnSelect;
+        protected ItemActionModel _itemActionModel;
 
         public virtual async void Init(InventoryItemModel item, ItemActionModel itemActionModel = null)
         {
-            _onChanged = itemActionModel.OnChanged;
-            _onUnSelect = itemActionModel.OnUnEquip;
-            _onChanged += () => _itemUI.Init(item);
+            _itemActionModel = itemActionModel;
+            itemActionModel.OnChanged = itemActionModel.OnChanged;
+            itemActionModel.OnUnEquip = itemActionModel.OnUnEquip;
+            itemActionModel.OnChanged += () => _itemUI.Init(item);
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(item.Item.TemplateId);
             _sellScrapPrice = template.SellToShopScrapPrice;
             _sellCircuitPrice = template.SellToShopCircuitPrice;
@@ -50,9 +50,9 @@ namespace World.Player.PopupCharacter
                                   $"{template.Description}";
 
             bool isUsable = template is ItemCardShardTemplateModel;
-            _btnUse.gameObject.SetActive(isUsable && _onUnSelect == null);
-            _btnUnSelect.gameObject.SetActive(_onUnSelect != null);
-            _btnSell.gameObject.SetActive(_onUnSelect == null);
+            _btnUse.gameObject.SetActive(isUsable && itemActionModel.OnUnEquip == null);
+            _btnUnSelect.gameObject.SetActive(itemActionModel.OnUnEquip != null);
+            _btnSell.gameObject.SetActive(itemActionModel.OnUnEquip == null);
         }
 
         public async void Use()
@@ -137,7 +137,7 @@ namespace World.Player.PopupCharacter
                         _item.Quantity -= quantity;
                         charData.InvokeOnCharacterChanged();
                         onCloseChoice?.Invoke(); //khi nhấn bán, sẽ đóng popup choice bán
-                        _onChanged?.Invoke();
+                        _itemActionModel.OnChanged?.Invoke();
                         if (_item.Quantity < 1)
                         {
                             //nếu hết quantity đóng luôn info

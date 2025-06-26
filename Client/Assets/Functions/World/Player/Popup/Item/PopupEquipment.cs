@@ -43,7 +43,7 @@ namespace World.Player.PopupCharacter
         private void ReInit(int _)
         {
             if (_tab.CurrentIndex != 0) return;
-            Init(_item, new ItemActionModel(){OnChanged = _onChanged,OnUnEquip = _onUnSelect});
+            Init(_item, _itemActionModel);
         }
 
         public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, ItemActionModel itemActionModel = null)
