@@ -42,9 +42,16 @@ public class InventoryItemSelectSlot : MonoBehaviour
         {
             Item = item,
             Quantity = 1
+        }, new()
+        {
+            OnUnequip = OnUnequip
         });
     }
 
+    void OnUnequip(ItemModel slot)
+    {
+        Debug.Log("Unequip " + slot.Id);
+    }
     public void ListenOnSelect(UnityAction<InventoryItemSelectSlot> onSelect)
     {
         _onSelect += onSelect;

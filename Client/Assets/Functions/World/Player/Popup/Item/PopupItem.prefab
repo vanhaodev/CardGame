@@ -173,9 +173,9 @@ RectTransform:
   - {fileID: 4178544800442526659}
   m_Father: {fileID: 8432230134395799532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 103.01565, y: -174.21875}
   m_SizeDelta: {x: 206.0313, y: 69.6875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7019459611890326766
@@ -652,9 +652,9 @@ RectTransform:
   - {fileID: 3207867911324416489}
   m_Father: {fileID: 8432230134395799532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 103.01565, y: -104.53125}
   m_SizeDelta: {x: 206.0313, y: 69.6875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7032442707723578245
@@ -741,7 +741,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4848171321162187515}
         m_TargetAssemblyTypeName: World.Player.PopupCharacter.PopupItem, Assembly-CSharp
-        m_MethodName: Use
+        m_MethodName: UnUse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -859,9 +859,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7624391921871791868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 294.45563, y: -46.783}
   m_SizeDelta: {x: 519.1, y: 53.566}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3749414198258578967
@@ -1784,9 +1784,9 @@ RectTransform:
   - {fileID: 4220816985532208623}
   m_Father: {fileID: 8432230134395799532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 103.01565, y: -34.84375}
   m_SizeDelta: {x: 206.0313, y: 69.6875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6034373929291997891
@@ -1995,7 +1995,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 294.45563, y: -91.571}
-  m_SizeDelta: {x: 519.1, y: 0}
+  m_SizeDelta: {x: 519.1, y: 36.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &415064218203366157
 CanvasRenderer:

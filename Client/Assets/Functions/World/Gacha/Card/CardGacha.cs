@@ -91,7 +91,7 @@ namespace Functions.World.Gacha
                 {
                     Item = _receivedItemModel,
                     Quantity = _receivedItemQuantity
-                });
+                }, new());
                 _item.gameObject.SetActive(false);
                 _objItemUREffect.SetActive(_receivedItemModel.Rarity == ItemRarity.UR);
                 _objItemLREffect.SetActive(_receivedItemModel.Rarity == ItemRarity.LR);

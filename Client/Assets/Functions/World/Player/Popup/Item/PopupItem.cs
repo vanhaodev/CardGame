@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using GameConfigs;
 using Globals;
@@ -26,17 +27,18 @@ namespace World.Player.PopupCharacter
         protected InventoryItemModel _item;
         protected ItemActionModel _itemActionModel;
 
-        public virtual async void Init(InventoryItemModel item, ItemActionModel itemActionModel = null)
+        public virtual async void Init(InventoryItemModel item, ItemActionModel itemActionModel)
         {
+            Debug.Log($"OnChanged: {itemActionModel.OnChangedData != null}\n" +
+                      $"OnEquip: {itemActionModel.OnEquip != null}\n" +
+                      $"OnUnequip: {itemActionModel.OnUnequip != null}");
             _itemActionModel = itemActionModel;
-            itemActionModel.OnChanged = itemActionModel.OnChanged;
-            itemActionModel.OnUnEquip = itemActionModel.OnUnEquip;
-            itemActionModel.OnChanged += () => _itemUI.Init(item);
+            itemActionModel.OnChangedData += () => _itemUI.Init(item, itemActionModel);
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(item.Item.TemplateId);
             _sellScrapPrice = template.SellToShopScrapPrice;
             _sellCircuitPrice = template.SellToShopCircuitPrice;
             _item = item;
-            _itemUI.Init(item);
+            _itemUI.Init(item, itemActionModel);
             var starColor = Global.Instance.Get<GameConfig>().GetRarityColor((byte)(item.Item.Rarity));
             _txName.text = template.ItemName;
             _txName.enableVertexGradient = true;
@@ -49,10 +51,10 @@ namespace World.Player.PopupCharacter
             _txDescription.text = $"ID:{_item.Item.Id} | TempID: {template.Id}\n" +
                                   $"{template.Description}";
 
-            bool isUsable = template is ItemCardShardTemplateModel;
-            _btnUse.gameObject.SetActive(isUsable && itemActionModel.OnUnEquip == null);
-            _btnUnSelect.gameObject.SetActive(itemActionModel.OnUnEquip != null);
-            _btnSell.gameObject.SetActive(itemActionModel.OnUnEquip == null);
+            bool isUsable = template is ItemCardShardTemplateModel || template is ItemEquipmentTemplateModel;
+            _btnUse.gameObject.SetActive(isUsable && _itemActionModel.OnEquip != null);
+            _btnUnSelect.gameObject.SetActive(_itemActionModel.OnUnequip != null);
+            _btnSell.gameObject.SetActive(_itemActionModel.OnEquip == null && _itemActionModel.OnUnequip == null);
         }
 
         public async void Use()
@@ -67,18 +69,33 @@ namespace World.Player.PopupCharacter
                     bool isHaveEnough = _item.Quantity >= requiredShardCount;
                     if (isHaveEnough)
                     {
+                        
                     }
                     else
                     {
                         Global.Instance.Get<PopupManager>()
                             .ShowChoice($"You need to have at least {requiredShardCount} shards to combine the card.");
+                        return;
                     }
 
+                    break;
+                }
+                default:
+                {
+                    _itemActionModel.OnEquip?.Invoke(_item.Item);
                     break;
                 }
             }
 
             _btnUse.interactable = true;
+        }
+
+        /// <summary>
+        /// Unequip
+        /// </summary>
+        public void UnUse()
+        {
+            _itemActionModel.OnUnequip?.Invoke(_item.Item);
         }
 
         public void Sell()
@@ -137,7 +154,7 @@ namespace World.Player.PopupCharacter
                         _item.Quantity -= quantity;
                         charData.InvokeOnCharacterChanged();
                         onCloseChoice?.Invoke(); //khi nhấn bán, sẽ đóng popup choice bán
-                        _itemActionModel.OnChanged?.Invoke();
+                        _itemActionModel.OnChangedData?.Invoke();
                         if (_item.Quantity < 1)
                         {
                             //nếu hết quantity đóng luôn info

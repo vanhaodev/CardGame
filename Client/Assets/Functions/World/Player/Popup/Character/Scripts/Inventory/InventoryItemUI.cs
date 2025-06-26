@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using GameConfigs;
 using Globals;
+using Newtonsoft.Json;
 using Popups;
 using TMPro;
 using UnityEngine;
@@ -19,15 +20,17 @@ namespace World.Player.PopupCharacter
         [SerializeField] private TextMeshProUGUI _txItemQuantity;
         [SerializeField] private TextMeshProUGUI _txItemUpgradeLevel;
         [SerializeField] private TextMeshProUGUI _txItemTier;
+        [SerializeField] private TextMeshProUGUI _txItemId;
         [SerializeField] private GameObject _objLoadingLock;
         [SerializeField] Sprite[] _spriteBackgrounds;
         [SerializeField] private Sprite[] _spriteRarityTags;
         [SerializeField] private InventoryItemModel _item;
         [SerializeField] private ItemType _itemType;
+        protected ItemActionModel _itemActionModel;
         public InventoryItemModel Item => _item;
         public ItemType ItemType => _itemType;
 
-        public async UniTask Init(InventoryItemModel inventoryItemModel)
+        public async UniTask Init(InventoryItemModel inventoryItemModel, ItemActionModel itemActionModel)
         {
             if (inventoryItemModel.Quantity > 0)
             {
@@ -38,8 +41,10 @@ namespace World.Player.PopupCharacter
                 return;
             }
 
-            _objLoadingLock.SetActive(true);
             _item = inventoryItemModel;
+            _itemActionModel = itemActionModel;
+
+            _objLoadingLock.SetActive(true);
             _itemType = _item.Item switch
             {
                 ItemEquipmentModel => ItemType.Equipment,
@@ -66,6 +71,8 @@ namespace World.Player.PopupCharacter
 
                 _txItemTier.gameObject.transform.parent.gameObject.SetActive(true);
                 _txItemTier.text = localVarEquipment.Tier.ToString();
+                //test
+                _txItemId.text = $"[{_item.Item.Id}]";
             }
             else
             {
@@ -101,19 +108,23 @@ namespace World.Player.PopupCharacter
         public void OnTouch()
         {
             if (_objLoadingLock.activeSelf) return;
+
+            //sao ko gắn _itemActionModel? vì mỗi item một action nếu set thì luôn bị ghi đè item cuối cùng
+            var itemAction = new ItemActionModel()
+            {
+                OnChangedData = () => Init(_item, _itemActionModel),
+                OnEquip = _itemActionModel.OnEquip != null ? (item) => _itemActionModel.OnEquip?.Invoke(item) : null,
+                OnUnequip = _itemActionModel.OnUnequip != null
+                    ? (item) => _itemActionModel.OnUnequip?.Invoke(item)
+                    : null
+            };
             if (_itemType == ItemType.Resource)
             {
-                Global.Instance.Get<PopupManager>().ShowItemInfo(_item, new ItemActionModel()
-                {
-                    OnChanged = () => { Init(_item); }
-                });
+                Global.Instance.Get<PopupManager>().ShowItemInfo(_item, itemAction);
             }
             else if (_itemType == ItemType.Equipment)
             {
-                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item, new ItemActionModel()
-                {
-                    OnChanged = () => { Init(_item); }
-                });
+                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item, itemAction);
             }
         }
 

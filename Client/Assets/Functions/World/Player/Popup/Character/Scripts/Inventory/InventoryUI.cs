@@ -31,7 +31,7 @@ namespace World.Player.PopupCharacter
         {
             if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched -= FilterItemType;
         }
-        public async UniTask Init(int itemTypeFilterIndex = -1)
+        public async UniTask Init(ItemActionModel itemActionModel, int itemTypeFilterIndex = -1)
         {
             var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
             await inv.Arrange();
@@ -54,7 +54,7 @@ namespace World.Player.PopupCharacter
                 if (i < items.Count)
                 {
                     _inventoryItemUIs[i].gameObject.SetActive(true);
-                    tasks.Add(_inventoryItemUIs[i].Init(items[i]));
+                    tasks.Add(_inventoryItemUIs[i].Init(items[i], itemActionModel));
                 }
                 else
                 {
@@ -115,6 +115,8 @@ namespace World.Player.PopupCharacter
             Debug.Log($"FilterItemType: " + _currentItemTypeFilterIndex);
         }
 
+        #region MyRegion
+
         // private async void FilterItemEquipmentType(int index)
         // {
         //     _currentItemEquipmentTypeFilterIndex = index -= 1;
@@ -160,7 +162,9 @@ namespace World.Player.PopupCharacter
         //         }
         //
         //         item.transform.gameObject.SetActive(isActive);
-        //     }
         // }
+        //     }
+
+        #endregion
     }
 }

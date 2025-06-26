@@ -55,7 +55,7 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        public async void ShowItemInfo(InventoryItemModel item, ItemActionModel itemActionModel = null)
+        public async void ShowItemInfo(InventoryItemModel item, ItemActionModel itemActionModel)
         {
             var pop = GetPopup<PopupItem>() as PopupItem;
             await pop.SetupData();
@@ -64,7 +64,7 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        public async void ShowEquipmentInfo(InventoryItemModel item, ItemActionModel itemActionModel = null)
+        public async void ShowEquipmentInfo(InventoryItemModel item, ItemActionModel itemActionModel)
         {
             var pop = GetPopup<PopupEquipment>() as PopupEquipment;
             await pop.SetupData();
@@ -82,10 +82,10 @@ namespace Popups
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
-        public async void ShowItemSelector(int itemTypeFilterIndex = -1)
+        public async void ShowItemSelector( ItemActionModel itemActionModel, int itemTypeFilterIndex = -1)
         {
             var pop = GetPopup<PopupItemSelector>() as PopupItemSelector;
-            await pop.InitItem(itemTypeFilterIndex);
+            await pop.InitItem(itemActionModel, itemTypeFilterIndex);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }

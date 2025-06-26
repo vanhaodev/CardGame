@@ -4,9 +4,9 @@ namespace Functions.World.Player.Inventory
 {
     public class ItemActionModel
     {
-        public UnityAction OnChanged;
-        public UnityAction<ItemModel> OnChangedItem;
+        public UnityAction OnChangedData;
+        public UnityAction<ItemModel> OnChangedDataWithModel;
         public UnityAction<ItemModel> OnEquip;
-        public UnityAction<ItemModel> OnUnEquip;
+        public UnityAction<ItemModel> OnUnequip;
     }
 }

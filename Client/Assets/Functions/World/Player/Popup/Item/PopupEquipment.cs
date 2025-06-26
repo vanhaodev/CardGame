@@ -28,13 +28,13 @@ namespace World.Player.PopupCharacter
             _tab.OnTabSwitched -= ReInit;
         }
 
-        public void SetItem(InventoryItemModel item, ItemActionModel itemActionModel = null)
+        public void SetItem(InventoryItemModel item, ItemActionModel itemActionModel)
         {
             _item = item;
             EquipmentItem = item.Item as ItemEquipmentModel;
             _tab.Init(new TabSwitcherWindowModel()
             {
-                OnChanged = itemActionModel.OnChanged,
+                OnChanged = itemActionModel.OnChangedData,
                 OnRegularChanged = () => Init(_item, itemActionModel),
             });
             _tab.OnTabSwitched += ReInit;
@@ -46,7 +46,7 @@ namespace World.Player.PopupCharacter
             Init(_item, _itemActionModel);
         }
 
-        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, ItemActionModel itemActionModel = null)
+        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, ItemActionModel itemActionModel)
         {
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(_item.Item.TemplateId);
             base.Init(_item, itemActionModel);

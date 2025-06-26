@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Functions.World.Player.Inventory;
 using Globals;
 using Popups;
 using UnityEngine;
@@ -45,11 +46,19 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         Debug.Log(slot.Identity);
         if (slot.IsEmpty)
         {
-            Global.Instance.Get<PopupManager>().ShowItemSelector(1);
+            Global.Instance.Get<PopupManager>().ShowItemSelector(new ItemActionModel()
+            {
+                OnEquip = OnEquip
+            }, 1);
             return;
         }
 
         slot.ShowItemInfor();
+    }
+
+    void OnEquip(ItemModel item)
+    {
+        Debug.Log("Select " + item.Id);
     }
 
     public UniTask LateInit()
