@@ -28,14 +28,14 @@ namespace World.Player.PopupCharacter
             _tab.OnTabSwitched -= ReInit;
         }
 
-        public void SetItem(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
+        public void SetItem(InventoryItemModel item, ItemActionModel itemActionModel = null)
         {
             _item = item;
             EquipmentItem = item.Item as ItemEquipmentModel;
             _tab.Init(new TabSwitcherWindowModel()
             {
-                OnChanged = onChanged,
-                OnRegularChanged = () =>   Init(_item, _onChanged)
+                OnChanged = itemActionModel.OnChanged,
+                OnRegularChanged = () => Init(_item, itemActionModel),
             });
             _tab.OnTabSwitched += ReInit;
         }
@@ -43,13 +43,13 @@ namespace World.Player.PopupCharacter
         private void ReInit(int _)
         {
             if (_tab.CurrentIndex != 0) return;
-            Init(_item, _onChanged);
+            Init(_item, new ItemActionModel(){OnChanged = _onChanged,OnUnEquip = _onUnSelect});
         }
 
-        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, Action onChanged, UnityAction onUnEquip = null)
+        public override async void Init(InventoryItemModel item /*null đấy đừng dùng*/, ItemActionModel itemActionModel = null)
         {
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(_item.Item.TemplateId);
-            base.Init(_item, onChanged);
+            base.Init(_item, itemActionModel);
             //upgrade
             if (EquipmentItem.UpgradeLevel > 0)
             {

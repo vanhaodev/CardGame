@@ -55,21 +55,21 @@ namespace Popups
             pop.Show().Forget();
         }
 
-        public async void ShowItemInfo(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
+        public async void ShowItemInfo(InventoryItemModel item, ItemActionModel itemActionModel = null)
         {
             var pop = GetPopup<PopupItem>() as PopupItem;
             await pop.SetupData();
-            pop.Init(item, onChanged);
+            pop.Init(item, itemActionModel);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
 
-        public async void ShowEquipmentInfo(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
+        public async void ShowEquipmentInfo(InventoryItemModel item, ItemActionModel itemActionModel = null)
         {
             var pop = GetPopup<PopupEquipment>() as PopupEquipment;
             await pop.SetupData();
-            pop.SetItem(item, onChanged);
-            pop.Init(null, onChanged);
+            pop.SetItem(item, itemActionModel);
+            pop.Init(null, itemActionModel);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }

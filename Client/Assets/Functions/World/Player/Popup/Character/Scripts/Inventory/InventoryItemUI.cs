@@ -31,13 +31,13 @@ namespace World.Player.PopupCharacter
         {
             if (inventoryItemModel.Quantity > 0)
             {
-                
             }
             else
             {
                 gameObject.SetActive(false);
                 return;
             }
+
             _objLoadingLock.SetActive(true);
             _item = inventoryItemModel;
             _itemType = _item.Item switch
@@ -63,6 +63,7 @@ namespace World.Player.PopupCharacter
                 {
                     _txItemUpgradeLevel.gameObject.transform.parent.gameObject.SetActive(false);
                 }
+
                 _txItemTier.gameObject.transform.parent.gameObject.SetActive(true);
                 _txItemTier.text = localVarEquipment.Tier.ToString();
             }
@@ -92,6 +93,7 @@ namespace World.Player.PopupCharacter
             {
                 _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
             }
+
             gameObject.SetActive(true);
             _objLoadingLock.SetActive(false);
         }
@@ -101,11 +103,17 @@ namespace World.Player.PopupCharacter
             if (_objLoadingLock.activeSelf) return;
             if (_itemType == ItemType.Resource)
             {
-                Global.Instance.Get<PopupManager>().ShowItemInfo(_item, () => { Init(_item); });
+                Global.Instance.Get<PopupManager>().ShowItemInfo(_item, new ItemActionModel()
+                {
+                    OnChanged = () => { Init(_item); }
+                });
             }
             else if (_itemType == ItemType.Equipment)
             {
-                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item, () => { Init(_item); });
+                Global.Instance.Get<PopupManager>().ShowEquipmentInfo(_item, new ItemActionModel()
+                {
+                    OnChanged = () => { Init(_item); }
+                });
             }
         }
 

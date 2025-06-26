@@ -24,13 +24,13 @@ namespace World.Player.PopupCharacter
         private uint _sellScrapPrice;
         private uint _sellCircuitPrice;
         protected InventoryItemModel _item;
-        protected Action _onChanged;
-        protected UnityAction _onUnSelect;
+        protected UnityAction _onChanged;
+        protected UnityAction<ItemModel> _onUnSelect;
 
-        public virtual async void Init(InventoryItemModel item, Action onChanged, UnityAction onUnEquip = null)
+        public virtual async void Init(InventoryItemModel item, ItemActionModel itemActionModel = null)
         {
-            _onChanged = onChanged;
-            _onUnSelect = onUnEquip;
+            _onChanged = itemActionModel.OnChanged;
+            _onUnSelect = itemActionModel.OnUnEquip;
             _onChanged += () => _itemUI.Init(item);
             var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(item.Item.TemplateId);
             _sellScrapPrice = template.SellToShopScrapPrice;

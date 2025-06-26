@@ -33,8 +33,8 @@ namespace World.Player.PopupCharacter
         private ushort _successRate;
         private uint _scrapCost;
         private uint _myScrap;
-        private Action _onChange;
-        private Action _onRegularChange;
+        private UnityAction _onChange;
+        private UnityAction _onRegularChange;
         private ItemEquipmentModel EquipmentItem => PopupEquipment.EquipmentItem;
 
         private void OnEnable()
