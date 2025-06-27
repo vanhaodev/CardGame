@@ -51,6 +51,8 @@ namespace World.Player.PopupCharacter
                 ItemResourceModel => ItemType.Resource,
                 _ => throw new Exception("Unknown item type " + _itemType)
             };
+            _imgBackground.gameObject.SetActive(true);
+            _imgItemIcon.gameObject.SetActive(true);
             _txItemQuantity.text = _item.Quantity > 1 ? _item.Quantity.ToString() : string.Empty;
             _imgBackground.sprite = _spriteBackgrounds[(int)_item.Item.Rarity - 1];
             if (ItemType == ItemType.Equipment)
@@ -112,12 +114,17 @@ namespace World.Player.PopupCharacter
             //sao ko gắn _itemActionModel? vì mỗi item một action nếu set thì luôn bị ghi đè item cuối cùng
             var itemAction = new ItemActionModel()
             {
-                OnChangedData = () => Init(_item, _itemActionModel),
+                OnChangedData = () =>
+                {
+                    Init(_item, _itemActionModel);
+                    _itemActionModel.OnChangedData?.Invoke(); //có chạy
+                },
                 OnEquip = _itemActionModel.OnEquip != null ? (item) => _itemActionModel.OnEquip?.Invoke(item) : null,
                 OnUnequip = _itemActionModel.OnUnequip != null
                     ? (item) => _itemActionModel.OnUnequip?.Invoke(item)
                     : null
             };
+            _itemActionModel.OnClose += ()=> itemAction.OnClose?.Invoke();
             if (_itemType == ItemType.Resource)
             {
                 Global.Instance.Get<PopupManager>().ShowItemInfo(_item, itemAction);
@@ -137,7 +144,9 @@ namespace World.Player.PopupCharacter
         {
             _item = null;
             _imgBackground.sprite = null;
+            _imgBackground.gameObject.SetActive(false);
             _imgItemIcon.sprite = null;
+            _imgItemIcon.gameObject.SetActive(false);
             _txItemQuantity.text = String.Empty;
         }
     }

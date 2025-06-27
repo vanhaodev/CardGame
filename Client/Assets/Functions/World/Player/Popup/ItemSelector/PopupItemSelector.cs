@@ -14,6 +14,7 @@ public class PopupItemSelector : Popup
     /// <param name="itemTypeFilterIndex"></param>
     public async UniTask InitItem(ItemActionModel itemActionModel, int itemTypeFilterIndex = -1)
     {
+        itemActionModel.OnClose += ()=> Close();
         await _inventoryUI.Init(itemActionModel, itemTypeFilterIndex);
     }
 }

@@ -69,8 +69,8 @@ namespace GameConfigs
                 case 7: return 22.0f;
                 case 8: return 27.5f;
                 case 9: return 32.0f;
-                case 10: return 37.0f;
-                default: return 37.0f; //37%
+                case 10: return 40.0f;
+                default: return 40.0f; //37%
             }
         }
         public float EquipmentTierPercentBonus(byte tier)

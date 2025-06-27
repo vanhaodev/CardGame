@@ -1,17 +1,23 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
+using GameConfigs;
 using Globals;
 using Popups;
 using UnityEngine;
+using UnityEngine.Events;
 using Utils.Tab;
+using World.Player.Character;
 using World.TheCard;
 
 public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 {
     [SerializeField] private InventoryEquipmentSlot[] _slots;
     private CardModel _cardModel;
-    private string _currentSlot;
+    private int _currentSlotIndex;
+    private UnityAction _onClosePopupAfterUseItem;
+
     private void Awake()
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -28,7 +34,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         await InitSlots();
     }
 
-     async UniTask InitSlots()
+    async UniTask InitSlots()
     {
         for (int i = 0; i < _slots.Length; i++)
         {
@@ -39,36 +45,113 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
                 equipment = foundEquip;
             }
 
-            await _slots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null);
+            await _slots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null,
+                () => _cardModel.UpdateAttribute(), _onClosePopupAfterUseItem);
             _slots[i].InitLevelRequirement(_cardModel.Level.GetLevel(i == 0));
         }
     }
+
     void SelectSlot(InventoryItemSelectSlot slot)
     {
-        _currentSlot = slot.Identity;
+        _currentSlotIndex = Array.IndexOf(_slots, slot);
         Debug.Log(slot.Identity);
         if (slot.IsEmpty)
         {
-            Global.Instance.Get<PopupManager>().ShowItemSelector(new ItemActionModel()
+            var theAc = new ItemActionModel()
             {
+                // OnChangedData = () =>
+                // {
+                //     Debug.Log("Item in equipment has changed");
+                //     _cardModel.UpdateAttribute();
+                // }, //empty no need changed
                 OnEquip = OnSelect
-            }, 1);
+            };
+            _onClosePopupAfterUseItem = () => { theAc.OnClose?.Invoke(); };
+
+            Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, 1);
             return;
         }
 
         slot.ShowItemInfor();
     }
 
-    void OnSelect(ItemModel item)
+    async void OnSelect(ItemModel item)
     {
         Debug.Log("Select " + item.Id);
-        InitSlots();
+
+        var temp =
+            await Global.Instance.Get<GameConfig>().GetItemTemplate(item.TemplateId) as ItemEquipmentTemplateModel;
+
+        if (_cardModel.Level.GetLevel(false) < temp.RequiredLevel)
+        {
+            Global.Instance.Get<PopupManager>()
+                .ShowChoice($"You need to be at least Level {temp.RequiredLevel}.");
+            return;
+        }
+
+        if (temp.EquipmentType == EquipmentType.Boots)
+        {
+            foreach (var e in _cardModel.Equipments.Values)
+            {
+                var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(e.TemplateId) as ItemEquipmentTemplateModel;
+                if (template.EquipmentType == EquipmentType.Boots)
+                {
+                    Global.Instance.Get<PopupManager>()
+                        .ShowChoice($"You already wear boots.");
+                    return;
+                }
+            }
+        }
+        else
+        {
+            //có equipment có thể mặc nhiều equipment cùng loại
+            int sameEquipCount = _cardModel.Equipments.Values.Count(e => e.TemplateId == item.TemplateId);
+            bool isMaxSame = sameEquipCount >= temp.DuplicateEquipCount;
+            if (isMaxSame)
+            {
+                Global.Instance.Get<PopupManager>()
+                    .ShowChoice($"You already wear this type. Max allowed: {temp.DuplicateEquipCount}.");
+                return;
+            }
+        }
+
+       
+
+        _cardModel.Equipments[(byte)(_currentSlotIndex)] = item as ItemEquipmentModel;
+        Global.Instance.Get<CharacterData>().CharacterModel.Inventory.RemoveItem(item.Id, 1);
+        await UniTask.WhenAll(
+            _cardModel.UpdateAttribute(),
+            InitSlots()
+        );
+
+        _onClosePopupAfterUseItem?.Invoke();
     }
-    void OnUnSelect(ItemModel item)
+
+    async void OnUnSelect(ItemModel item)
     {
         Debug.Log("OnUnequip " + item.Id);
-        InitSlots();
+        var isEnoughInvSlot = await Global.Instance.Get<CharacterData>().CharacterModel.Inventory
+            .IsWeightEnough(item.TemplateId, 1);
+        if (!isEnoughInvSlot)
+        {
+            Global.Instance.Get<PopupManager>()
+                .ShowToast("You don't have enough inventory space", PopupToastSoundType.Error);
+            return;
+        }
+
+        _cardModel.Equipments.Remove((byte)_currentSlotIndex);
+        Global.Instance.Get<CharacterData>().CharacterModel.Inventory.Items.Add(new InventoryItemModel()
+        {
+            Item = item,
+            Quantity = 1
+        });
+        await UniTask.WhenAll(
+            _cardModel.UpdateAttribute(),
+            InitSlots()
+        );
+        _onClosePopupAfterUseItem?.Invoke();
     }
+
     public UniTask LateInit()
     {
         return UniTask.CompletedTask;

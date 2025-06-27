@@ -155,7 +155,7 @@ namespace Functions.World.Gacha
             }
             else
             {
-                Global.Instance.Get<PopupManager>().ShowToast("You don't have enough inventory space");
+                Global.Instance.Get<PopupManager>().ShowToast("You don't have enough inventory space", PopupToastSoundType.Error);
             }
 
             _btnPlayGachaX1.interactable = true;
@@ -205,7 +205,7 @@ namespace Functions.World.Gacha
             }
             else
             {
-                Global.Instance.Get<PopupManager>().ShowToast("You don't have enough inventory space");
+                Global.Instance.Get<PopupManager>().ShowToast("You don't have enough inventory space", PopupToastSoundType.Error);
             }
 
             _btnPlayGachaX1.interactable = true;
@@ -241,7 +241,7 @@ namespace Functions.World.Gacha
 
             if (currentQuantity < quantityNeed)
             {
-                Global.Instance.Get<PopupManager>().ShowToast("You don't have enough Key");
+                Global.Instance.Get<PopupManager>().ShowToast("You don't have enough Key", PopupToastSoundType.Error);
                 return false;
             }
 

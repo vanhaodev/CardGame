@@ -18,7 +18,6 @@ public class InventoryItemSelectSlot : MonoBehaviour
     [SerializeField] protected InventoryItemUI _itemUI;
     [SerializeField] protected Button _btnSelect;
     protected UnityAction<InventoryItemSelectSlot> _onSelect;
-    protected UnityAction<InventoryItemSelectSlot> _onUnSelect;
 
     private void Start()
     {
@@ -31,7 +30,7 @@ public class InventoryItemSelectSlot : MonoBehaviour
         _onSelect = null;
     }
 
-    public async UniTask InitSlot(ItemModel item, UnityAction<ItemModel> onUnSelect)
+    public async UniTask InitSlot(ItemModel item, UnityAction<ItemModel> onUnSelect, UnityAction OnChangedData, UnityAction onClose /*closepopup*/)
     {
         if (item == null)
         {
@@ -45,7 +44,9 @@ public class InventoryItemSelectSlot : MonoBehaviour
             Quantity = 1
         }, new()
         {
-            OnUnequip = onUnSelect
+            OnChangedData = OnChangedData,
+            OnUnequip = onUnSelect,
+            OnClose = onClose,
         });
     }
 

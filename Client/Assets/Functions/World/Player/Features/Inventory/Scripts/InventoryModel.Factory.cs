@@ -69,5 +69,28 @@ namespace Functions.World.Player.Inventory
             item?.UpdateAttribute();
             return item;
         }
+
+        public void RemoveItem(uint itemId, uint quantity = 1)
+        {
+            var inInv = Items.Find(i => i.Item.Id == itemId);
+            if (inInv != null)
+            {
+                // Nếu quantity <=0 thì xoá luôn
+                if (quantity <= 0)
+                {
+                    Items.Remove(inInv);
+                    return;
+                }
+
+                // Trừ số lượng
+                inInv.Quantity -= (uint)quantity;
+
+                // Nếu sau khi trừ <=0 thì xoá
+                if (inInv.Quantity <= 0)
+                {
+                    Items.Remove(inInv);
+                }
+            }
+        }
     }
 }

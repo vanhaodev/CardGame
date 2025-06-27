@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using GameConfigs;
 using Globals;
 using Sirenix.OdinInspector;
+using UnityEngine;
 using World.TheCard;
 
 namespace Functions.World.Player.Inventory
@@ -58,7 +59,6 @@ namespace Functions.World.Player.Inventory
             float upgradePercentBonus = Global.Instance.Get<GameConfig>().UpgradeItemPercentBonus(UpgradeLevel);
             float tierPercentBonus = Global.Instance.Get<GameConfig>().EquipmentTierPercentBonus(Tier);
             float rarityPercentBonus = Global.Instance.Get<GameConfig>().EquipmentRarityPercentBonus(Rarity);
-            upgradePercentBonus = upgradePercentBonus + tierPercentBonus + rarityPercentBonus;
             CalculatedAttributes = new List<AttributeModel>();
             CalculatedAttributePercents = new List<AttributeModel>();
 
@@ -67,9 +67,10 @@ namespace Functions.World.Player.Inventory
             {
                 var type = pair.Key;
                 var baseValue = pair.Value;
-
-                float upgradedValue = baseValue + (baseValue * upgradePercentBonus / 100f);
-
+                //cộng trước tier và raity vì nó là bases
+                Debug.Log($"upgradedValue = {baseValue} + ({baseValue} * {upgradePercentBonus} / 100f)");
+                float tierAndRarityValue = baseValue + (baseValue * (tierPercentBonus + rarityPercentBonus) / 100f);
+                float upgradedValue = tierAndRarityValue + (tierAndRarityValue * upgradePercentBonus / 100f);
                 CalculatedAttributes.Add(new AttributeModel
                 {
                     Type = type,

@@ -15,7 +15,7 @@ namespace Functions.World.Player.Inventory
         /// <summary>
         /// Có được đeo trùng không, có vài item  cho phép đeo dồn, tuy nhiên hiệu ứng đặc biệt của trang bị sẽ không cộng dồn và chỉ lấy của trang bị có hiệu ứng tốt nhất.
         /// </summary>
-        public bool IsDuplicateEquip;
+        public byte DuplicateEquipCount = 1;
 
         public EquipmentType EquipmentType;
         /// <summary>
