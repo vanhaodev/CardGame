@@ -50,14 +50,11 @@ namespace World.Player.Character
             {
                 app.IsFirstPlay = false;
                 CharacterModel = new CharacterModel();
-                CharacterModel.SetDefault();
+                await CharacterModel.SetDefault();
                 UniqueIdentityModel = new UniqueIdentityModel();
 
                 await save.Save(app);
-                await save.Save(new SavePlayerModel()
-                {
-                    CharacterModel = CharacterModel
-                });
+                await Save();
             }
             //old
             else
@@ -78,7 +75,7 @@ namespace World.Player.Character
         }
 
         [Button]
-        public async void Save()
+        public async UniTask Save()
         {
             await new SaveManager().Save(new SavePlayerModel()
             {

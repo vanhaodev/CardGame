@@ -42,7 +42,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 
             if (_cardModel.Equipments.TryGetValue((byte)i, out var foundEquip))
             {
-                equipment = foundEquip;
+                equipment = foundEquip.equipment;
             }
 
             await _slots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null,
@@ -93,7 +93,9 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         {
             foreach (var e in _cardModel.Equipments.Values)
             {
-                var template = await Global.Instance.Get<GameConfig>().GetItemTemplate(e.TemplateId) as ItemEquipmentTemplateModel;
+                var template =
+                    await Global.Instance.Get<GameConfig>().GetItemTemplate(e.equipment.TemplateId) as
+                        ItemEquipmentTemplateModel;
                 if (template.EquipmentType == EquipmentType.Boots)
                 {
                     Global.Instance.Get<PopupManager>()
@@ -105,7 +107,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         else
         {
             //có equipment có thể mặc nhiều equipment cùng loại
-            int sameEquipCount = _cardModel.Equipments.Values.Count(e => e.TemplateId == item.TemplateId);
+            int sameEquipCount = _cardModel.Equipments.Values.Count(e => e.equipment.TemplateId == item.TemplateId);
             bool isMaxSame = sameEquipCount >= temp.DuplicateEquipCount;
             if (isMaxSame)
             {
@@ -115,9 +117,15 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             }
         }
 
-       
 
-        _cardModel.Equipments[(byte)(_currentSlotIndex)] = item as ItemEquipmentModel;
+        if (!_cardModel.Equipments.ContainsKey((byte)_currentSlotIndex))
+        {
+            _cardModel.Equipments[(byte)_currentSlotIndex] = new CardEquipmentModel();
+        }
+
+        _cardModel.Equipments[(byte)_currentSlotIndex].equipment = item as ItemEquipmentModel;
+
+
         Global.Instance.Get<CharacterData>().CharacterModel.Inventory.RemoveItem(item.Id, 1);
         await UniTask.WhenAll(
             _cardModel.UpdateAttribute(),
@@ -129,7 +137,6 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 
     async void OnUnSelect(ItemModel item)
     {
-        Debug.Log("OnUnequip " + item.Id);
         var isEnoughInvSlot = await Global.Instance.Get<CharacterData>().CharacterModel.Inventory
             .IsWeightEnough(item.TemplateId, 1);
         if (!isEnoughInvSlot)
@@ -138,8 +145,15 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
                 .ShowToast("You don't have enough inventory space", PopupToastSoundType.Error);
             return;
         }
-
-        _cardModel.Equipments.Remove((byte)_currentSlotIndex);
+        
+        if (_cardModel.Equipments.ContainsKey((byte)_currentSlotIndex))
+        {
+            _cardModel.Equipments.Remove((byte)_currentSlotIndex);
+        }
+        else
+        {
+            throw new Exception("Slot not found");
+        }
         Global.Instance.Get<CharacterData>().CharacterModel.Inventory.Items.Add(new InventoryItemModel()
         {
             Item = item,
@@ -150,6 +164,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             InitSlots()
         );
         _onClosePopupAfterUseItem?.Invoke();
+        Debug.Log("OnUnequip " + item.Id);
     }
 
     public UniTask LateInit()

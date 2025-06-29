@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine.Serialization;
 
 namespace Save
@@ -12,9 +13,9 @@ namespace Save
         {
             DataName = "App";
         }
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await base.SetDefault();
             IsFirstPlay = true;
         }
     }

@@ -60,14 +60,14 @@ namespace Save
                     return deserializedData;
                 }
 
-                temp.SetDefault();
+                await temp.SetDefault();
                 return temp;
             }
             catch (Exception e)
             {
                 Debug.LogError($"Error when loading save of {typeof(T)}: {e.Message}");
                 T temp = new T();
-                temp.SetDefault();
+                await temp.SetDefault();
                 return temp;
             }
         }

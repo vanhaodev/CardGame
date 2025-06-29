@@ -23,6 +23,7 @@ MonoBehaviour:
         Id: 4
         ItemName: Iron Key
         ItemType: 1
+        Rarity: 3
         Description: Used to open equipment chest
         Weight: 0
         SellToShopScrapPrice: 10

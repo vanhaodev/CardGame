@@ -152,10 +152,10 @@ namespace Popups
             await _controller.SaveGraphic(graphic);
         }
 
-        public void RestoreDefault()
+        public async UniTask RestoreDefault()
         {
-            var sound = _controller.RestoreSoundDefault();
-            var graphic = _controller.RestoreGraphicDefault();
+            var sound = await _controller.RestoreSoundDefault();
+            var graphic = await _controller.RestoreGraphicDefault();
             Init(sound, graphic);
         }
 

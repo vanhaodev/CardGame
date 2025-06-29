@@ -10,6 +10,10 @@ namespace Functions.World.Player.Inventory
         public uint Id;
         public string ItemName;
         public ItemType ItemType;
+        /// <summary>
+        /// Base rarity, can dynamic in equipment
+        /// </summary>
+        public ItemRarity Rarity = ItemRarity.N;
         public string Description;
 
         /// <summary>

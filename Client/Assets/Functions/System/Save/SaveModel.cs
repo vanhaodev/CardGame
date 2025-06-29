@@ -1,4 +1,5 @@
 ﻿
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Save
@@ -16,7 +17,7 @@ namespace Save
             DataName = GetType().Name;
         }
 
-        public virtual void SetDefault()
+        public virtual async UniTask SetDefault()
         {
         }
     }

@@ -390,15 +390,11 @@ MonoBehaviour:
       ExpNext: 0
       Progress: 0
     CalculatedAttributes: []
-    Equipments: []
   _receivedItemQuantity: 0
   _objShadow: {fileID: 5991607858204023621}
   _objItemUREffect: {fileID: 8761792212497397817}
   _objItemLREffect: {fileID: 4783497974461416644}
   _imageChest: {fileID: 8296622325744016290}
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &8348096092912948018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,6 +1216,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5362284049407751488, guid: d4aecd119a2e543409b8f2c70db08b88, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5926722754551814950, guid: d4aecd119a2e543409b8f2c70db08b88, type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6025434382841097489, guid: d4aecd119a2e543409b8f2c70db08b88, type: 3}

@@ -12,5 +12,9 @@ namespace Functions.World.Player.Inventory
         /// UTC
         /// </summary>
         public DateTime CreatedAt;
+        /// <summary>
+        /// UTC
+        /// </summary>
+        public DateTime? ExpiresAt;
     }
 }

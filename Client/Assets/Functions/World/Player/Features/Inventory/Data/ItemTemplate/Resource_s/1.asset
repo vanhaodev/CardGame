@@ -23,6 +23,7 @@ MonoBehaviour:
         Id: 1
         ItemName: Normal DNA
         ItemType: 1
+        Rarity: 3
         Description: Used to summon cards
         Weight: 0
         SellToShopScrapPrice: 10

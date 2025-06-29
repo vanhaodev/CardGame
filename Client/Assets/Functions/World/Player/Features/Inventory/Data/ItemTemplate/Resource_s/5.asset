@@ -23,6 +23,7 @@ MonoBehaviour:
         Id: 5
         ItemName: Silver Key
         ItemType: 1
+        Rarity: 4
         Description: Used to open equipment chest
         Weight: 0
         SellToShopScrapPrice: 10

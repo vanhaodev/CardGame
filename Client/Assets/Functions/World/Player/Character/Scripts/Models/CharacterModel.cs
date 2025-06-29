@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Functions.World.Player;
 using Functions.World.Player.Inventory;
 using Newtonsoft.Json;
@@ -53,7 +54,7 @@ namespace World.Player.Character
         public void InvokeOnCardLineupChanged() => OnCardLineupChanged.OnNext(Unit.Default);
 
         //========================================================================//
-        public void SetDefault()
+        public async UniTask SetDefault()
         {
             Id = Guid.NewGuid().ToString();
             AvatarId = 1;
@@ -76,6 +77,10 @@ namespace World.Player.Character
                 },
             };
             Inventory = new InventoryModel();
+            await UniTask.WhenAll(
+                Inventory.AddNewNormalItem(3, 5000), 
+                Inventory.AddNewNormalItem(6, 5000)
+            );
             CardCollection = new CardCollectionModel();
             MaxLineupTeamCount = 3;
             CardLineups = new List<CardLineupModel>();

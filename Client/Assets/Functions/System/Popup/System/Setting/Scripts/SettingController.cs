@@ -23,16 +23,16 @@ namespace Popups
         {
             await  _saveManager.Save(model);
         }
-        public SaveSettingSoundModel RestoreSoundDefault()
+        public async UniTask<SaveSettingSoundModel> RestoreSoundDefault()
         {
             var model = new SaveSettingSoundModel();
-            model.SetDefault();
+            await model.SetDefault();
             return model;
         }
-        public SaveSettingGraphicModel RestoreGraphicDefault()
+        public async UniTask<SaveSettingGraphicModel> RestoreGraphicDefault()
         {
             var model = new SaveSettingGraphicModel();
-            model.SetDefault();
+            await model.SetDefault();
             return model;
         }
     }

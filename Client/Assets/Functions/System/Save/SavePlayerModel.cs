@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Functions.World.Data;
 using Functions.World.Player;
 using Functions.World.Player.Inventory;
@@ -17,11 +18,11 @@ namespace Save
             DataName = "Player";
         }
 
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await  base.SetDefault();
             CharacterModel = new CharacterModel();
-            CharacterModel.SetDefault();
+            await CharacterModel.SetDefault();
         }
     }
 
@@ -30,9 +31,9 @@ namespace Save
     {
         public List<CurrencyModel> Currencies;
 
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await  base.SetDefault();
             Currencies = new List<CurrencyModel>()
             {
                 new CurrencyModel()
@@ -53,9 +54,9 @@ namespace Save
     public class SaveInventoryModel : SaveModel
     {
         public InventoryModel Inventory;
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await base.SetDefault();
             Inventory = new InventoryModel();
         }
     }
@@ -66,9 +67,9 @@ namespace Save
         public CardCollectionModel CardCollection;
         public byte MaxLineupTeamCount;
         public List<CardLineupModel> CardLineups;
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await base.SetDefault();
             CardCollection = new CardCollectionModel();
             MaxLineupTeamCount = 3;
             CardLineups = new List<CardLineupModel>();
@@ -79,9 +80,9 @@ namespace Save
     public class SaveUniqueIdentityModel : SaveModel
     {
         public UniqueIdentityModel UniqueIdentity;
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await base.SetDefault();
             UniqueIdentity = new UniqueIdentityModel();
         }
     }

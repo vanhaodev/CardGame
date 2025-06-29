@@ -23,6 +23,7 @@ MonoBehaviour:
         Id: 1003
         ItemName: Abinus Shard
         ItemType: 1
+        Rarity: 4
         Description: 
         Weight: 1
         SellToShopScrapPrice: 10

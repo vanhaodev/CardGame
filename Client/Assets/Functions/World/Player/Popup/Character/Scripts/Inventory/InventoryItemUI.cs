@@ -124,7 +124,7 @@ namespace World.Player.PopupCharacter
                     ? (item) => _itemActionModel.OnUnequip?.Invoke(item)
                     : null
             };
-            _itemActionModel.OnClose += ()=> itemAction.OnClose?.Invoke();
+            _itemActionModel.OnClose += () => itemAction.OnClose?.Invoke();
             if (_itemType == ItemType.Resource)
             {
                 Global.Instance.Get<PopupManager>().ShowItemInfo(_item, itemAction);
@@ -148,6 +148,9 @@ namespace World.Player.PopupCharacter
             _imgItemIcon.sprite = null;
             _imgItemIcon.gameObject.SetActive(false);
             _txItemQuantity.text = String.Empty;
+
+            _imgRarityTag.gameObject.transform.parent.gameObject.SetActive(false);
+            _txItemTier.gameObject.transform.parent.gameObject.SetActive(false);
         }
     }
 }

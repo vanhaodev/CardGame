@@ -23,13 +23,14 @@ MonoBehaviour:
         Id: 10001
         ItemName: Iron Knife
         ItemType: 0
+        Rarity: 1
         Description: 
         Weight: 25
         SellToShopScrapPrice: 18
         SellToShopCircuitPrice: 0
         LifeSpanMinute: -1
         RequiredLevel: 10
-        IsDuplicateEquip: 0
+        DuplicateEquipCount: 1
         EquipmentType: 1
         Attributes:
         - Type: 8

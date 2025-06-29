@@ -1,4 +1,6 @@
-﻿namespace Save
+﻿using Cysharp.Threading.Tasks;
+
+namespace Save
 {
     [System.Serializable]
     public class SaveSettingGraphicModel : SaveModel
@@ -17,9 +19,9 @@
         {
             DataName = "Graphic";
         }
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await base.SetDefault();
             Fps = 60; //unlimited
             OtherPlayerEnableAround = -1; //unlimited
             IsHideOtherPlayerTextures = false;
@@ -39,9 +41,9 @@
         {
             DataName = "Sound";
         }
-        public override void SetDefault()
+        public override async UniTask SetDefault()
         {
-            base.SetDefault();
+            await base.SetDefault();
             MusicVolume = 1;
             EnviromentVolume = 1;
             EffectVolume = 1;

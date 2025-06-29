@@ -9,8 +9,8 @@ namespace Functions.World.Data
     [System.Serializable]
     public class UniqueIdentityModel
     {
-        public UniqueIdentityUIntModel ItemId;
-        public UniqueIdentityUIntModel CardId;
+        public UniqueIdentityUIntModel ItemId = new();
+        public UniqueIdentityUIntModel CardId = new();
     }
 
     [System.Serializable]
