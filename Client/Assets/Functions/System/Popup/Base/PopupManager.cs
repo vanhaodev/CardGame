@@ -85,6 +85,7 @@ namespace Popups
         public async void ShowItemSelector( ItemActionModel itemActionModel, int itemTypeFilterIndex = -1)
         {
             var pop = GetPopup<PopupItemSelector>() as PopupItemSelector;
+            await pop.SetupData();
             await pop.InitItem(itemActionModel, itemTypeFilterIndex);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
