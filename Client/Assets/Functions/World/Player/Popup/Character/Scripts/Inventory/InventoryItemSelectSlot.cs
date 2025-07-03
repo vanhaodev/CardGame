@@ -37,7 +37,7 @@ public class InventoryItemSelectSlot : MonoBehaviour
             _itemUI.Clear();
             return;
         }
-
+        
         await _itemUI.Init(new InventoryItemModel()
         {
             Item = item,

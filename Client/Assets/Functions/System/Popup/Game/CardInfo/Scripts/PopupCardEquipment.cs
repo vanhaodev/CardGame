@@ -29,6 +29,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 
     public async UniTask Init(TabSwitcherWindowModel model = null)
     {
+        _onClosePopupAfterUseItem = null;
         var tabSwitcherWindowModel = model as PopupCardTabSwitcherWindowModel;
         _cardModel = tabSwitcherWindowModel.PopupCardModel.CardModel;
         await InitSlots();
@@ -117,22 +118,20 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             }
         }
 
-
         if (!_cardModel.Equipments.ContainsKey((byte)_currentSlotIndex))
         {
             _cardModel.Equipments[(byte)_currentSlotIndex] = new CardEquipmentModel();
         }
 
         _cardModel.Equipments[(byte)_currentSlotIndex].equipment = item as ItemEquipmentModel;
-
-
+        
         Global.Instance.Get<CharacterData>().CharacterModel.Inventory.RemoveItem(item.Id, 1);
         await UniTask.WhenAll(
             _cardModel.UpdateAttribute(),
             InitSlots()
         );
 
-        _onClosePopupAfterUseItem?.Invoke();
+        _onClosePopupAfterUseItem.Invoke();
     }
 
     async void OnUnSelect(ItemModel item)
@@ -145,7 +144,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
                 .ShowToast("You don't have enough inventory space", PopupToastSoundType.Error);
             return;
         }
-        
+
         if (_cardModel.Equipments.ContainsKey((byte)_currentSlotIndex))
         {
             _cardModel.Equipments.Remove((byte)_currentSlotIndex);
@@ -154,6 +153,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         {
             throw new Exception("Slot not found");
         }
+
         Global.Instance.Get<CharacterData>().CharacterModel.Inventory.Items.Add(new InventoryItemModel()
         {
             Item = item,
@@ -163,7 +163,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             _cardModel.UpdateAttribute(),
             InitSlots()
         );
-        _onClosePopupAfterUseItem?.Invoke();
+        _onClosePopupAfterUseItem.Invoke();
         Debug.Log("OnUnequip " + item.Id);
     }
 

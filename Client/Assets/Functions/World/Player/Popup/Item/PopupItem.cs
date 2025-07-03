@@ -29,7 +29,11 @@ namespace World.Player.PopupCharacter
 
         public virtual async void Init(InventoryItemModel item, ItemActionModel itemActionModel)
         {
-            itemActionModel.OnClose += () => Close();
+            itemActionModel.OnClose += () =>
+            {
+                Debug.Log("PopupItem itemActionModel.OnClose");
+                Close();
+            };
             Debug.Log($"OnChanged: {itemActionModel.OnChangedData != null}\n" +
                       $"OnEquip: {itemActionModel.OnEquip != null}\n" +
                       $"OnUnequip: {itemActionModel.OnUnequip != null}");
