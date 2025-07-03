@@ -29,7 +29,6 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 
     public async UniTask Init(TabSwitcherWindowModel model = null)
     {
-        _onClosePopupAfterUseItem = null;
         var tabSwitcherWindowModel = model as PopupCardTabSwitcherWindowModel;
         _cardModel = tabSwitcherWindowModel.PopupCardModel.CardModel;
         await InitSlots();
@@ -37,6 +36,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
 
     async UniTask InitSlots()
     {
+        _onClosePopupAfterUseItem = () => { };
         for (int i = 0; i < _slots.Length; i++)
         {
             ItemEquipmentModel equipment = null;
@@ -47,9 +47,11 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             }
 
             await _slots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null,
-                () => _cardModel.UpdateAttribute(), _onClosePopupAfterUseItem);
+                () => _cardModel.UpdateAttribute());
             _slots[i].InitLevelRequirement(_cardModel.Level.GetLevel(i == 0));
         }
+
+        Debug.Log("Check _onClosePopupAfterUseItem is null == " + (_onClosePopupAfterUseItem == null));
     }
 
     void SelectSlot(InventoryItemSelectSlot slot)
@@ -67,15 +69,19 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
                 // }, //empty no need changed
                 OnEquip = OnSelect
             };
-            _onClosePopupAfterUseItem = () => { theAc.OnClose?.Invoke(); };
-
+            _onClosePopupAfterUseItem = () =>
+            {
+                Debug.Log(" void SelectSlot(InventoryItemSelectSlot slot)   slot.IsEmpty");
+                theAc.OnClose?.Invoke();
+            };
             Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, 1);
             return;
         }
 
-        slot.ShowItemInfor();
+        slot.ShowItemInfor(ref _onClosePopupAfterUseItem);
     }
 
+//Thật ra unbselect không hề gắn đúng 
     async void OnSelect(ItemModel item)
     {
         Debug.Log("Select " + item.Id);
@@ -124,14 +130,13 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
         }
 
         _cardModel.Equipments[(byte)_currentSlotIndex].equipment = item as ItemEquipmentModel;
-        
+
         Global.Instance.Get<CharacterData>().CharacterModel.Inventory.RemoveItem(item.Id, 1);
+        _onClosePopupAfterUseItem.Invoke();
         await UniTask.WhenAll(
             _cardModel.UpdateAttribute(),
             InitSlots()
         );
-
-        _onClosePopupAfterUseItem.Invoke();
     }
 
     async void OnUnSelect(ItemModel item)
@@ -159,11 +164,11 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             Item = item,
             Quantity = 1
         });
+        _onClosePopupAfterUseItem.Invoke();
         await UniTask.WhenAll(
             _cardModel.UpdateAttribute(),
             InitSlots()
         );
-        _onClosePopupAfterUseItem.Invoke();
         Debug.Log("OnUnequip " + item.Id);
     }
 

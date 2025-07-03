@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Popups;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -30,6 +31,11 @@ namespace World.Player.PopupCharacter
         public InventoryItemModel Item => _item;
         public ItemType ItemType => _itemType;
 
+        public void InvokeItemActionOnClose()
+        {
+            Debug.Log("Invoking item action on close");
+            _itemActionModel.OnClose?.Invoke();
+        }
         public async UniTask Init(InventoryItemModel inventoryItemModel, ItemActionModel itemActionModel)
         {
             if (inventoryItemModel.Quantity > 0)
@@ -124,7 +130,12 @@ namespace World.Player.PopupCharacter
                     ? (item) => _itemActionModel.OnUnequip?.Invoke(item)
                     : null
             };
-            _itemActionModel.OnClose += () => itemAction.OnClose?.Invoke();
+
+            _itemActionModel.OnClose += () =>
+            {
+                Debug.Log($"OnClose: InventoryItemUI OnTouch");
+                itemAction.OnClose?.Invoke();
+            };
             if (_itemType == ItemType.Resource)
             {
                 Global.Instance.Get<PopupManager>().ShowItemInfo(_item, itemAction);
