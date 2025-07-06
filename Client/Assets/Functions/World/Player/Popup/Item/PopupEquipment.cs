@@ -32,8 +32,9 @@ namespace World.Player.PopupCharacter
         {
             _item = item;
             EquipmentItem = item.Item as ItemEquipmentModel;
-            _tab.Init(new TabSwitcherWindowModel()
+            _tab.Init(new TabSwitcherWindowPopupEquipmentModel()
             {
+                Item = item,
                 OnChanged = itemActionModel.OnChangedData,
                 OnRegularChanged = () => Init(_item, itemActionModel),
             });
