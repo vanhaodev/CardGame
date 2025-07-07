@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
+using Functions.World.Player.Popup.ItemSelector;
 using GameConfigs;
 using Globals;
 using Popups;
@@ -74,14 +75,17 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
                 Debug.Log(" void SelectSlot(InventoryItemSelectSlot slot)   slot.IsEmpty");
                 theAc.OnClose?.Invoke();
             };
-            Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, 1);
+            Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, new ItemSelectorFilterModel()
+            {
+                ItemTypeFilterIndex = (int)(ItemType.Equipment + 1),
+            });
             return;
         }
 
         slot.ShowItemInfor(ref _onClosePopupAfterUseItem);
     }
 
-//Thật ra unbselect không hề gắn đúng 
+    //Thật ra unbselect không hề gắn đúng 
     async void OnSelect(ItemModel item)
     {
         Debug.Log("Select " + item.Id);

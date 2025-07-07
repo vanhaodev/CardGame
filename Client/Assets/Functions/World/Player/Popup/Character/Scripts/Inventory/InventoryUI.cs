@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
+using Functions.World.Player.Popup.ItemSelector;
 using GameConfigs;
 using Globals;
 using TMPro;
@@ -27,11 +28,13 @@ namespace World.Player.PopupCharacter
         {
             if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched += FilterItemType;
         }
+
         private void OnDestroy()
         {
             if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched -= FilterItemType;
         }
-        public async UniTask Init(ItemActionModel itemActionModel, int itemTypeFilterIndex = -1)
+
+        public async UniTask Init(ItemActionModel itemActionModel, ItemSelectorFilterModel filter)
         {
             var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
             await inv.Arrange();
@@ -40,6 +43,40 @@ namespace World.Player.PopupCharacter
                 .ThenByDescending(i => i.Item.Rarity)
                 .ThenByDescending(i => i.Quantity)
                 .ToList();
+            if (filter.ItemTemplateIdWanteds != null)
+            {
+                items = items.Where(i => filter.ItemTemplateIdWanteds.Contains(i.Item.TemplateId)).ToList();
+            }
+
+            if (filter.ItemTemplateIdNotWanteds != null)
+            {
+                items = items.Where(i => !filter.ItemTemplateIdNotWanteds.Contains(i.Item.TemplateId)).ToList();
+            }
+
+            if (filter.ItemIdWanteds != null)
+            {
+                items = items.Where(i => filter.ItemIdWanteds.Contains(i.Item.Id)).ToList();
+            }
+
+            if (filter.ItemIdNotWanteds != null)
+            {
+                items = items.Where(i => !filter.ItemIdNotWanteds.Contains(i.Item.Id)).ToList();
+            }
+
+            if (filter.EquipmentTierWanteds != null)
+            {
+                //nếu không phải equipment sẽ bị lọc mất
+                items = items
+                    .Where(i =>
+                    {
+                        var equip = i.Item as ItemEquipmentModel;
+                        return equip != null && filter.EquipmentTierWanteds.Contains(equip.Tier);
+                    })
+                    .ToList();
+            }
+
+            Debug.Log(items.Count + "\n" +
+                      _inventoryItemUIs.Count);
             var tasks = new List<UniTask>();
             // Instantiate thêm nếu list chưa đủ
             while (_inventoryItemUIs.Count < items.Count)
@@ -58,13 +95,15 @@ namespace World.Player.PopupCharacter
                 }
                 else
                 {
+                    Debug.Log($"Slot {i}: ACTIVE false");
                     _inventoryItemUIs[i].gameObject.SetActive(false);
+                    tasks.Add(_inventoryItemUIs[i].Init(null, itemActionModel));
                 }
             }
 
             tasks.Add(InitWeight(inv));
             await UniTask.WhenAll(tasks);
-            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init(switchIndex: itemTypeFilterIndex);
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init(switchIndex: filter.ItemTypeFilterIndex);
         }
 
         async UniTask InitWeight(InventoryModel inventory)
@@ -83,7 +122,11 @@ namespace World.Player.PopupCharacter
             _currentItemTypeFilterIndex = index - 1; // UI index 0 = All -> filter -1 = All
             foreach (var item in _inventoryItemUIs)
             {
-                if (item.Item.Quantity < 1) continue;
+                if (item.Item == null || item.Item.Quantity < 1)
+                {
+                    item.transform.gameObject.SetActive(false);
+                    continue;
+                }
 
                 bool isShardItem = item.Item.Item.TemplateId is >= 1001 and <= 1999;
                 bool isActive;

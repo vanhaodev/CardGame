@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Functions.World.Gacha;
 using Functions.World.Player.Inventory;
+using Functions.World.Player.Popup.ItemSelector;
 using Globals;
 using Popups.Commons.Choice;
 using Sirenix.OdinInspector;
@@ -82,11 +83,11 @@ namespace Popups
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }
-        public async void ShowItemSelector( ItemActionModel itemActionModel, int itemTypeFilterIndex = -1)
+        public async void ShowItemSelector( ItemActionModel itemActionModel, ItemSelectorFilterModel filter = null)
         {
             var pop = GetPopup<PopupItemSelector>() as PopupItemSelector;
             await pop.SetupData();
-            await pop.InitItem(itemActionModel, itemTypeFilterIndex);
+            await pop.InitItem(itemActionModel, filter);
             pop.gameObject.SetActive(true);
             pop.Show().Forget();
         }

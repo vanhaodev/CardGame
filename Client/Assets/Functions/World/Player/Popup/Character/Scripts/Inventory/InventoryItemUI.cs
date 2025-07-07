@@ -38,12 +38,10 @@ namespace World.Player.PopupCharacter
         }
         public async UniTask Init(InventoryItemModel inventoryItemModel, ItemActionModel itemActionModel)
         {
-            if (inventoryItemModel.Quantity > 0)
-            {
-            }
-            else
+            if (inventoryItemModel == null || inventoryItemModel.Quantity <= 0)
             {
                 gameObject.SetActive(false);
+                Clear();
                 return;
             }
 
