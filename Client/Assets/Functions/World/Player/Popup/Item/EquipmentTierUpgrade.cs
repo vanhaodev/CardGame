@@ -41,6 +41,10 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
     private uint _myScrap;
     private UnityAction _onChange;
     private UnityAction _onRegularChange;
+    private UnityAction _onRespawnItemList;
+
+    //auto
+    [SerializeField] private Button _btnAutoSelectEquirementEquipment;
 
     private void Awake()
     {
@@ -50,13 +54,13 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
             _equipmentNeedSlots[i].ListenOnClick(SelectEquipmentNeedSlot);
         }
     }
-
     public async UniTask Init(TabSwitcherWindowModel model = null)
     {
         if (model != null)
         {
             _onChange = model.OnChanged;
             _onRegularChange = model.OnRegularChanged;
+            _onRespawnItemList = (model as TabSwitcherWindowPopupEquipmentModel).ItemAction.OnRespawnItemList; 
             var equipment = (model as TabSwitcherWindowPopupEquipmentModel).Item.Item as ItemEquipmentModel;
             _itemInfo = equipment;
         }
@@ -101,32 +105,41 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
                 Debug.Log(" void SelectSlot(InventoryItemSelectSlot slot)   slot.IsEmpty");
                 theAc.OnClose?.Invoke();
             };
-            var itemIdNotWanteds = new HashSet<uint>(
-                new[] { _itemInfo.Id }
-                    .Concat(
-                        _selectedEquipments.Values
-                            .Select(e => e.Id)
-                    )
-            );
-            Debug.Log(JsonConvert.SerializeObject(itemIdNotWanteds));
-            Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, new ItemSelectorFilterModel()
-            {
-                ItemTypeFilterIndex = (int)(ItemType.Equipment + 1),
-                ItemTemplateIdWanteds = new HashSet<uint>() { _itemInfo.TemplateId },
-                ItemIdNotWanteds = itemIdNotWanteds,
-                EquipmentTierWanteds = new HashSet<byte>() { _itemInfo.Tier }
-            });
+
+            Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, GetFilter());
             return;
         }
 
         slot.ShowItemInfor(ref _onClosePopupAfterUseItem);
     }
 
+    public ItemSelectorFilterModel GetFilter()
+    {
+        var itemIdNotWanteds = new HashSet<uint>(
+            new[] { _itemInfo.Id }
+                .Concat(
+                    _selectedEquipments.Values
+                        .Select(e => e.Id)
+                )
+        );
+        return new ItemSelectorFilterModel()
+        {
+            ItemTypeNeedIndex = (int)ItemType.Equipment,
+            ItemTemplateIdWanteds = new HashSet<uint>() { _itemInfo.TemplateId },
+            ItemIdNotWanteds = itemIdNotWanteds,
+            EquipmentTierWanteds = new HashSet<byte>() { _itemInfo.Tier },
+            ItemRarityWanteds = new HashSet<ItemRarity>()
+            {
+                _itemInfo.Rarity
+            }
+        };
+    }
+
     async void OnSelectEquipmentNeedSlot(ItemModel item)
     {
         Debug.Log("Select " + item.Id);
-        var temp =
-            await Global.Instance.Get<GameConfig>().GetItemTemplate(item.TemplateId) as ItemEquipmentTemplateModel;
+        // var temp =
+        //     await Global.Instance.Get<GameConfig>().GetItemTemplate(item.TemplateId) as ItemEquipmentTemplateModel;
 
         if (!_selectedEquipments.ContainsKey((byte)_currentSlotIndex))
         {
@@ -156,6 +169,33 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
             InitEquipmentNeedSlots()
         );
         Debug.Log("OnUnequip " + item.Id);
+    }
+
+    public async void AutoSelectEquipment()
+    {
+        _objBlockInput.SetActive(true);
+        var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
+        await inv.Arrange();
+        var items = inv.Items;
+        _selectedEquipments.Clear();
+        var filter = GetFilter();
+        items = filter.ApplyFilter(items);
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (i == 3) break; //3 slots
+            _selectedEquipments[(byte)i] = items[i].Item as ItemEquipmentModel;
+        }
+
+        if (_selectedEquipments.Count < 3)
+        {
+            Global.Instance.Get<PopupManager>().ShowToast("You don't have enough equipment to upgrade tier",
+                PopupToastSoundType.Error);
+        }
+
+        await UniTask.WhenAll(
+            InitEquipmentNeedSlots()
+        );
+        _objBlockInput.SetActive(false);
     }
 
 //===============================================================\\
@@ -215,6 +255,7 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
         _itemInfo.Tier += 1;
         await _itemInfo.UpdateAttribute();
         _onRegularChange?.Invoke();
+        _onRespawnItemList?.Invoke();
         Init();
         _objProgressLoad.SetActive(false);
         _btnUpgrade.interactable = true;

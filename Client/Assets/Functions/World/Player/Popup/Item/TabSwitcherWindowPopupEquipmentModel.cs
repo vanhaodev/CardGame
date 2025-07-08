@@ -6,5 +6,6 @@ namespace World.Player.PopupCharacter
     public class TabSwitcherWindowPopupEquipmentModel : TabSwitcherWindowModel
     {
         public InventoryItemModel Item;
+        public ItemActionModel ItemAction;
     }
 }

@@ -77,7 +77,7 @@ public class PopupCardEquipment : MonoBehaviour, ITabSwitcherWindow
             };
             Global.Instance.Get<PopupManager>().ShowItemSelector(theAc, new ItemSelectorFilterModel()
             {
-                ItemTypeFilterIndex = (int)(ItemType.Equipment + 1),
+                ItemTypeNeedIndex = (int)ItemType.Equipment,
             });
             return;
         }

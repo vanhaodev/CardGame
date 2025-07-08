@@ -37,6 +37,7 @@ namespace World.Player.PopupCharacter
                 Item = item,
                 OnChanged = itemActionModel.OnChangedData,
                 OnRegularChanged = () => Init(_item, itemActionModel),
+                ItemAction = itemActionModel,
             });
             _tab.OnTabSwitched += ReInit;
         }

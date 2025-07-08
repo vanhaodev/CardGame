@@ -44,6 +44,7 @@ namespace World.Player.PopupCharacter
             _sellCircuitPrice = template.SellToShopCircuitPrice;
             _item = item;
             _itemUI.Init(item, itemActionModel);
+            _itemUI.gameObject.SetActive(true);
             var starColor = Global.Instance.Get<GameConfig>().GetRarityColor((byte)(item.Item.Rarity));
             _txName.text = template.ItemName;
             _txName.enableVertexGradient = true;
@@ -74,7 +75,6 @@ namespace World.Player.PopupCharacter
                     bool isHaveEnough = _item.Quantity >= requiredShardCount;
                     if (isHaveEnough)
                     {
-                        
                     }
                     else
                     {

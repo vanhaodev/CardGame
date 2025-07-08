@@ -123,6 +123,7 @@ namespace World.Player.PopupCharacter
                     Init(_item, _itemActionModel);
                     _itemActionModel.OnChangedData?.Invoke(); //có chạy
                 },
+                OnRespawnItemList = _itemActionModel.OnRespawnItemList,
                 OnEquip = _itemActionModel.OnEquip != null ? (item) => _itemActionModel.OnEquip?.Invoke(item) : null,
                 OnUnequip = _itemActionModel.OnUnequip != null
                     ? (item) => _itemActionModel.OnUnequip?.Invoke(item)

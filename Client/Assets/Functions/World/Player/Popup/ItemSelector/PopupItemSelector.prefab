@@ -4661,6 +4661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24511033bfef48499e3080704731a97b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objBlockInput: {fileID: 5960251616704215875}
   _tabSwitcherItemType: {fileID: 8154328451541571406}
   _prefabInventoryItemUI: {fileID: 2685307751112399548, guid: d4aecd119a2e543409b8f2c70db08b88, type: 3}
   _inventoryItemContainer: {fileID: 7251280716389153414}

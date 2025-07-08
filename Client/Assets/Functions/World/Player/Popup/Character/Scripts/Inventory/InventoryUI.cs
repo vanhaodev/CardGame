@@ -16,6 +16,7 @@ namespace World.Player.PopupCharacter
 {
     public class InventoryUI : MonoBehaviour
     {
+        [SerializeField] private GameObject _objBlockInput;
         [SerializeField] private TabSwitcher _tabSwitcherItemType;
         private int _currentItemTypeFilterIndex;
         [SerializeField] private InventoryItemUI _prefabInventoryItemUI;
@@ -34,8 +35,9 @@ namespace World.Player.PopupCharacter
             if (_tabSwitcherItemType != null) _tabSwitcherItemType.OnTabSwitched -= FilterItemType;
         }
 
-        public async UniTask Init(ItemActionModel itemActionModel, ItemSelectorFilterModel filter)
+        private async UniTask SpawnItem(ItemActionModel itemActionModel, ItemSelectorFilterModel filter)
         {
+            _objBlockInput.SetActive(true);
             var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
             await inv.Arrange();
             var items = inv.Items
@@ -43,37 +45,7 @@ namespace World.Player.PopupCharacter
                 .ThenByDescending(i => i.Item.Rarity)
                 .ThenByDescending(i => i.Quantity)
                 .ToList();
-            if (filter.ItemTemplateIdWanteds != null)
-            {
-                items = items.Where(i => filter.ItemTemplateIdWanteds.Contains(i.Item.TemplateId)).ToList();
-            }
-
-            if (filter.ItemTemplateIdNotWanteds != null)
-            {
-                items = items.Where(i => !filter.ItemTemplateIdNotWanteds.Contains(i.Item.TemplateId)).ToList();
-            }
-
-            if (filter.ItemIdWanteds != null)
-            {
-                items = items.Where(i => filter.ItemIdWanteds.Contains(i.Item.Id)).ToList();
-            }
-
-            if (filter.ItemIdNotWanteds != null)
-            {
-                items = items.Where(i => !filter.ItemIdNotWanteds.Contains(i.Item.Id)).ToList();
-            }
-
-            if (filter.EquipmentTierWanteds != null)
-            {
-                //nếu không phải equipment sẽ bị lọc mất
-                items = items
-                    .Where(i =>
-                    {
-                        var equip = i.Item as ItemEquipmentModel;
-                        return equip != null && filter.EquipmentTierWanteds.Contains(equip.Tier);
-                    })
-                    .ToList();
-            }
+            items = filter.ApplyFilter(items);
 
             Debug.Log(items.Count + "\n" +
                       _inventoryItemUIs.Count);
@@ -84,7 +56,6 @@ namespace World.Player.PopupCharacter
                 var newItemUI = Instantiate(_prefabInventoryItemUI, _inventoryItemContainer);
                 _inventoryItemUIs.Add(newItemUI);
             }
-
             // Init hoặc SetActive từng item
             for (int i = 0; i < _inventoryItemUIs.Count; i++)
             {
@@ -103,7 +74,16 @@ namespace World.Player.PopupCharacter
 
             tasks.Add(InitWeight(inv));
             await UniTask.WhenAll(tasks);
-            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init(switchIndex: filter.ItemTypeFilterIndex);
+            _objBlockInput.SetActive(false);
+        }
+        public async UniTask Init(ItemActionModel itemActionModel, ItemSelectorFilterModel filter)
+        {
+            await SpawnItem(itemActionModel, filter);
+            itemActionModel.OnRespawnItemList = async () =>
+            {
+               await SpawnItem(itemActionModel, filter);
+            };
+            if (_tabSwitcherItemType != null) _tabSwitcherItemType?.Init(switchIndex: filter.ItemTypeNeedIndex + 1);
         }
 
         async UniTask InitWeight(InventoryModel inventory)
@@ -119,7 +99,7 @@ namespace World.Player.PopupCharacter
 
         private void FilterItemType(int index)
         {
-            _currentItemTypeFilterIndex = index - 1; // UI index 0 = All -> filter -1 = All
+            _currentItemTypeFilterIndex = index-1;
             foreach (var item in _inventoryItemUIs)
             {
                 if (item.Item == null || item.Item.Quantity < 1)
