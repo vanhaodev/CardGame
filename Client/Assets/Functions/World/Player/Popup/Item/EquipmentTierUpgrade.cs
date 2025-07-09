@@ -66,7 +66,7 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
         }
 
         _selectedEquipments = new();
-        _mainEquipment.InitSlot(_itemInfo, null, null);
+        _mainEquipment.InitSlot(_itemInfo, 1, null, null);
         await InitEquipmentNeedSlots();
     }
 
@@ -82,7 +82,7 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
                 equipment = result;
             }
 
-            await _equipmentNeedSlots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null,
+            await _equipmentNeedSlots[i].InitSlot(equipment, 1, equipment != null ? OnUnSelect : null,
                 null);
             _equipmentNeedSlots[i].InitLevelRequirement(0);
         }

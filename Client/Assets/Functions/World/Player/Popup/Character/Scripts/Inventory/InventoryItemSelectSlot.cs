@@ -30,18 +30,19 @@ public class InventoryItemSelectSlot : MonoBehaviour
         _onSelect = null;
     }
 
-    public async UniTask InitSlot(ItemModel item, UnityAction<ItemModel> onUnSelect, UnityAction OnChangedData)
+    public async UniTask InitSlot(ItemModel item, uint quantity, UnityAction<ItemModel> onUnSelect,
+        UnityAction OnChangedData)
     {
         if (item == null)
         {
             _itemUI.Clear();
             return;
         }
-        
+
         await _itemUI.Init(new InventoryItemModel()
         {
             Item = item,
-            Quantity = 1
+            Quantity = quantity
         }, new()
         {
             OnChangedData = OnChangedData,
@@ -53,6 +54,7 @@ public class InventoryItemSelectSlot : MonoBehaviour
     {
         _onSelect = onSelect;
     }
+
     public void ShowItemInfor(ref UnityAction onClose)
     {
         onClose = () =>

@@ -49,7 +49,7 @@ namespace Popups
                     equipment = foundEquip.equipment;
                 }
 
-                await _slots[i].InitSlot(equipment, equipment != null ? OnUnSelect : null,
+                await _slots[i].InitSlot(equipment, 1, equipment != null ? OnUnSelect : null,
                     () => _cardModel.UpdateAttribute());
                 _slots[i].InitLevelRequirement(_cardModel.Level.GetLevel(i == 0));
             }
