@@ -14,10 +14,4 @@
     {
         public ushort CardTemplateId;
     }
-
-    [System.Serializable]
-    public class ItemCardLevelBoosterTemplateModel : ItemResourceTemplateModel
-    {
-        public int Exp;
-    }
 }

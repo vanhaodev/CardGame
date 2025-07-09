@@ -24,7 +24,8 @@ namespace Popups
                 {
                     Close();
                     model.OnClose?.Invoke();
-                })
+                }),
+                ItemActionModel = null
             });
 
             switch (model)

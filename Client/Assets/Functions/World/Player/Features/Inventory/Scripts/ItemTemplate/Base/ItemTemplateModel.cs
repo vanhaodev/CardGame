@@ -14,7 +14,7 @@ namespace Functions.World.Player.Inventory
         /// Base rarity, can dynamic in equipment
         /// </summary>
         public ItemRarity Rarity = ItemRarity.N;
-        public string Description;
+        [TextArea] public string Description;
 
         /// <summary>
         /// Khối lượng của item (Kilogram)

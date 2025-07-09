@@ -1702,6 +1702,18 @@ namespace GameConfigs
                 }
             }
         }
+
+        public int CardExpItem(uint cardExpItemTemplateId)
+        {
+            switch (cardExpItemTemplateId)
+            {
+                case 11: return 100;
+                case 12: return 400;
+                case 13: return 1000;
+                case 14: return 2500;
+            }
+            throw new NotImplementedException();
+        }
     }
 
     public partial class GameConfig : MonoBehaviour, IGlobal

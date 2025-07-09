@@ -97,14 +97,14 @@ namespace World.Player.PopupCharacter
                 if (temp is ItemCardShardTemplateModel cardShard)
                 {
                     _imgItemIcon.sprite =
-                        await Global.Instance.Get<GameConfig>().GetCardShardIcon(cardShard.CardTemplateId);
+                        await Global.Instance.Get<GameConfig>().GetCardShardIcon(cardShard.CardTemplateId) ?? null;
                     isCardShard = true;
                 }
             }
 
             if (!isCardShard)
             {
-                _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId);
+                _imgItemIcon.sprite = await Global.Instance.Get<GameConfig>().GetItemIcon(_item.Item.TemplateId) ?? null;
             }
 
             gameObject.SetActive(true);
