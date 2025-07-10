@@ -1708,9 +1708,9 @@ namespace GameConfigs
             switch (cardExpItemTemplateId)
             {
                 case 11: return 100;
-                case 12: return 400;
-                case 13: return 1000;
-                case 14: return 2500;
+                case 12: return 500;
+                case 13: return 2500;
+                case 14: return 7000;
             }
             throw new NotImplementedException();
         }

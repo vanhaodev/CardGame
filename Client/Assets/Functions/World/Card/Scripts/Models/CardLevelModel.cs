@@ -86,5 +86,26 @@ namespace World.TheCard.Skill
             if (isUpdate) Update();
             return Progress;
         }
+
+        public void AddExp(uint exp, bool isUpdate = true)
+        {
+            Exp += exp;
+            if (isUpdate) Update();
+        }
+
+        public void AddExp(int exp, bool isUpdate = true)
+        {
+            if (exp >= 0)
+            {
+                Exp += (uint)exp;
+            }
+            else
+            {
+                uint abs = (uint)(-exp);
+                Exp = (Exp > abs) ? (Exp - abs) : 0;
+            }
+
+            if (isUpdate) Update();
+        }
     }
 }

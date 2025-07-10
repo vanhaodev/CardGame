@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Utils;
 using World.Player.Character;
 
 namespace World.Player.PopupCharacter
@@ -19,6 +20,7 @@ namespace World.Player.PopupCharacter
         [SerializeField] private InventoryItemUI _itemUI;
         [SerializeField] protected TextMeshProUGUI _txName;
         [SerializeField] private TextMeshProUGUI _txDescription;
+        [SerializeField] private ContentSizeFitter2 _contentSizeFitter2Description;
         [SerializeField] private Button _btnUse;
         [SerializeField] private Button _btnUnSelect;
         [SerializeField] private Button _btnSell;
@@ -56,9 +58,17 @@ namespace World.Player.PopupCharacter
             );
             _txDescription.text = $"ID:{_item.Item.Id} | TempID: {template.Id}\n" +
                                   $"{template.Description}";
+            await _contentSizeFitter2Description.UpdateSize();
+            if (_itemActionModel.OnEquip == null)
+            {
+                bool isUsable = template is ItemCardShardTemplateModel;
+                _btnUse.gameObject.SetActive(isUsable);
+            }
+            else
+            {
+                _btnUse.gameObject.SetActive(_itemActionModel.OnEquip != null);
+            }
 
-            bool isUsable = template is ItemCardShardTemplateModel || template is ItemEquipmentTemplateModel;
-            _btnUse.gameObject.SetActive(isUsable && _itemActionModel.OnEquip != null);
             _btnUnSelect.gameObject.SetActive(_itemActionModel.OnUnequip != null);
             _btnSell.gameObject.SetActive(_itemActionModel.OnEquip == null && _itemActionModel.OnUnequip == null);
         }

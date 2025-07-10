@@ -24,8 +24,8 @@ MonoBehaviour:
         ItemName: Blood Drop
         ItemType: 1
         Rarity: 2
-        Description: Grants 100 EXP to a Card.\nA drop of blood left from the chaotic
-          era, holding faint memories of battle.
+        Description: Grants 100 EXP to a Goddess.\nThe faint memory of ancient wars
+          still lingers in this drop.
         Weight: 0
         SellToShopScrapPrice: 10
         SellToShopCircuitPrice: 0

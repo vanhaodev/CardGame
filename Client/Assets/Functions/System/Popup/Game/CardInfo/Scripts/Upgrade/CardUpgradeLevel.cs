@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Functions.World.Player.Inventory;
 using Functions.World.Player.Popup.ItemSelector;
+using GameConfigs;
 using Globals;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Popups
     public partial class CardUpgradeLevel : CardUpgrade
     {
         [SerializeField] private GameObject _objBlockInput;
+        [SerializeField] private GameObject _objMaxLevel;
         [SerializeField] private InventoryItemSelectSlot _itemExpSlot;
         [SerializeField] private Button _btnUpgrade;
         private ItemModel _selectedItem;
@@ -35,6 +37,8 @@ namespace Popups
         public override async UniTask SetData(CardModel cardModel, ItemActionModel itemAction)
         {
             await base.SetData(cardModel, itemAction);
+            var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
+            await inv.Arrange();
             await Init();
         }
 
@@ -46,12 +50,13 @@ namespace Popups
                 "<color=black>/</color>" +
                 $"{_cardModel.Level.GetExpNext(false).ToString()}";
             _imgLevelExpFill.fillAmount = _cardModel.Level.GetProgress(false) / 100;
-
+            bool isMaxLevel = _cardModel.Level.GetLevel(false) >= 50;
+            _objMaxLevel.SetActive(isMaxLevel);
+            _itemExpSlot.gameObject.SetActive(!isMaxLevel);
             _onClosePopupAfterUseItem = () => { };
             if (_selectedItem != null)
             {
                 var inv = Global.Instance.Get<CharacterData>().CharacterModel.Inventory;
-                await inv.Arrange();
                 var selectedItem = inv.GetItemByTemplateId(_selectedItem.TemplateId);
                 _selectedItemQuantity = selectedItem.Quantity;
 
@@ -61,7 +66,7 @@ namespace Popups
             await _itemExpSlot.InitSlot(_selectedItem, _selectedItemQuantity, _selectedItem != null ? OnUnSelect : null,
                 null);
 
-            _btnUpgrade.interactable = _selectedItem != null;
+            _btnUpgrade.interactable = _selectedItem != null && _selectedItemQuantity > 0 && !isMaxLevel;
         }
 
         void SelectItemSlot(InventoryItemSelectSlot slot)
@@ -118,6 +123,13 @@ namespace Popups
         {
             _btnUpgrade.interactable = false;
             _objBlockInput.SetActive(true);
+            int exp = Global.Instance.Get<GameConfig>().CardExpItem(_selectedItem.TemplateId);
+            Global.Instance.Get<CharacterData>().CharacterModel.Inventory.RemoveItem(_selectedItem.Id, 1);
+            Global.Instance.Get<SoundManager>().PlaySoundOneShot("FX_UpgradeSuccess");
+            _cardModel.Level.AddExp(exp);
+            await UniTask.WaitForSeconds(0.1f);
+            await Init();
+            _objBlockInput.SetActive(false);
         }
     }
 

@@ -21,11 +21,11 @@ MonoBehaviour:
       type: {class: ItemResourceTemplateModel, ns: Functions.World.Player.Inventory, asm: Assembly-CSharp}
       data:
         Id: 13
-        ItemName: Blood Core
+        ItemName: Divine Bloodline
         ItemType: 1
         Rarity: 4
-        Description: "Grants 1000 EXP to a Card.\\nWhen divine blood merges, ancient
-          memories resurface within the Card\u2019s mind.tal combat experience."
+        Description: "Grants 2500 EXP to a Goddess.\\nWhen divine blood merges, ancient
+          memories resurface within the Goddess\u2019s mind."
         Weight: 0
         SellToShopScrapPrice: 10
         SellToShopCircuitPrice: 0

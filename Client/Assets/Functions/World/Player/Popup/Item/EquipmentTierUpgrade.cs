@@ -72,6 +72,8 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
 
     async UniTask InitEquipmentNeedSlots()
     {
+        RefreshUpgradeData();
+        RefreshScrapStatus();
         _onClosePopupAfterUseItem = () => { };
         for (int i = 0; i < _equipmentNeedSlots.Length; i++)
         {
@@ -221,8 +223,6 @@ public class EquipmentTierUpgrade : MonoBehaviour, ITabSwitcherWindow
     {
         _btnUpgrade.interactable = false;
         _objBlockInput.SetActive(true);
-        RefreshUpgradeData();
-        RefreshScrapStatus();
 
         if (!_isHasScrap)
         {

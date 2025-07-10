@@ -24,8 +24,8 @@ MonoBehaviour:
         ItemName: Blood Core
         ItemType: 1
         Rarity: 3
-        Description: Grants 400 EXP to a Card.\nA core forged from bloodshed, infused
-          with vital combat experience.
+        Description: Grants 500 EXP to a Goddess.\nCondensed through countless battles,
+          this core pulses with primal energy.
         Weight: 0
         SellToShopScrapPrice: 10
         SellToShopCircuitPrice: 0

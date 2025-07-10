@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Item
   m_GUID: 68d04e96cdfd97d4bb7953e421afaf6b
   m_SerializeEntries:
+  - m_GUID: 112254e5db44cee409d8548214638617
+    m_Address: ItemIcons/12
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 20ef015c7b2a8624ab6c719a9b2027f0
     m_Address: ItemSprites/equipment_chest_silver
     m_ReadOnly: 0
@@ -52,6 +57,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 391f2b953bfb3f24295d681b857de92a
     m_Address: ItemIcons/10004
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f9f8dacf2900dd458b95c5b6160d2f4
+    m_Address: ItemIcons/13
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4412401c260d8ba4c8ab5cf85dc0d8cb
+    m_Address: ItemIcons/14
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -182,6 +197,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d3368c01e8d9c1c419707ab35cc940f2
     m_Address: ItemTemplates/13
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2cd7afd3de70304a80bab6ab5377e62
+    m_Address: ItemIcons/11
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

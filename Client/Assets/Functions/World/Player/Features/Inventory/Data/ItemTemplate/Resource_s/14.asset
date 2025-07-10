@@ -24,8 +24,8 @@ MonoBehaviour:
         ItemName: Eternal Blood Crystal
         ItemType: 1
         Rarity: 5
-        Description: Grants 2500 EXP to a Card.\nA crystal forged from divine blood
-          over millennia. A single drop carries the weight of an era.
+        Description: Grants 7000 EXP to a Goddess.\nInside this timeless crystal
+          sleeps the sacrifice of a forgotten goddess.
         Weight: 0
         SellToShopScrapPrice: 10
         SellToShopCircuitPrice: 0
